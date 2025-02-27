@@ -109,8 +109,10 @@
     </Compile>
     <Compile Include="Components\Customer.cs" />
     <Compile Include="Components\Employee.cs" />
+    <Compile Include="Components\Supplier.cs" />
     <Compile Include="Data Access Layer\CustomerDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeDAL.cs" />
+    <Compile Include="Data Access Layer\SupplierDAL.cs" />
     <Compile Include="ProjectManager\AllocatePersonnel.cs">
       <SubType>UserControl</SubType>
     </Compile>
