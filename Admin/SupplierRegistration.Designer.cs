@@ -31,7 +31,7 @@
             this.pnlIdCompany = new System.Windows.Forms.Panel();
             this.lblstarIdCompany = new System.Windows.Forms.Label();
             this.lblIdCompany = new System.Windows.Forms.Label();
-            this.txtIdCompany = new System.Windows.Forms.TextBox();
+            this.txtJuristic = new System.Windows.Forms.TextBox();
             this.pnlName = new System.Windows.Forms.Panel();
             this.lblstarCompanyName = new System.Windows.Forms.Label();
             this.lblCompanyName = new System.Windows.Forms.Label();
@@ -42,8 +42,9 @@
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.pnlAddress = new System.Windows.Forms.Panel();
             this.lblToppic2 = new System.Windows.Forms.Label();
-            this.dtgvSuppiler = new System.Windows.Forms.DataGridView();
+            this.dtgvSupplier = new System.Windows.Forms.DataGridView();
             this.pnlSuppilerdata = new System.Windows.Forms.Panel();
+            this.searchboxSuppiler = new JRSApplication.SearchboxControl();
             this.pnlStep = new System.Windows.Forms.Panel();
             this.pnlActionMenu = new System.Windows.Forms.Panel();
             this.btDelete = new System.Windows.Forms.Button();
@@ -60,11 +61,10 @@
             this.lblstarPhone = new System.Windows.Forms.Label();
             this.lblPhone = new System.Windows.Forms.Label();
             this.txtPhone = new System.Windows.Forms.TextBox();
-            this.searchboxSuppiler = new JRSApplication.SearchboxControl();
             this.pnlIdCompany.SuspendLayout();
             this.pnlName.SuspendLayout();
             this.pnlAddress.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvSuppiler)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvSupplier)).BeginInit();
             this.pnlSuppilerdata.SuspendLayout();
             this.pnlActionMenu.SuspendLayout();
             this.pnlInfomation.SuspendLayout();
@@ -77,7 +77,7 @@
             // 
             this.pnlIdCompany.Controls.Add(this.lblstarIdCompany);
             this.pnlIdCompany.Controls.Add(this.lblIdCompany);
-            this.pnlIdCompany.Controls.Add(this.txtIdCompany);
+            this.pnlIdCompany.Controls.Add(this.txtJuristic);
             this.pnlIdCompany.Location = new System.Drawing.Point(387, 149);
             this.pnlIdCompany.Margin = new System.Windows.Forms.Padding(2);
             this.pnlIdCompany.Name = "pnlIdCompany";
@@ -108,17 +108,17 @@
             this.lblIdCompany.TabIndex = 2;
             this.lblIdCompany.Text = "เลขทะเบียนนิติบุคคล";
             // 
-            // txtIdCompany
+            // txtJuristic
             // 
-            this.txtIdCompany.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtIdCompany.Enabled = false;
-            this.txtIdCompany.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtIdCompany.Location = new System.Drawing.Point(0, 37);
-            this.txtIdCompany.Margin = new System.Windows.Forms.Padding(2);
-            this.txtIdCompany.Name = "txtIdCompany";
-            this.txtIdCompany.ReadOnly = true;
-            this.txtIdCompany.Size = new System.Drawing.Size(329, 36);
-            this.txtIdCompany.TabIndex = 2;
+            this.txtJuristic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtJuristic.Enabled = false;
+            this.txtJuristic.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtJuristic.Location = new System.Drawing.Point(0, 37);
+            this.txtJuristic.Margin = new System.Windows.Forms.Padding(2);
+            this.txtJuristic.Name = "txtJuristic";
+            this.txtJuristic.ReadOnly = true;
+            this.txtJuristic.Size = new System.Drawing.Size(329, 36);
+            this.txtJuristic.TabIndex = 2;
             // 
             // pnlName
             // 
@@ -237,17 +237,17 @@
             this.lblToppic2.TabIndex = 2;
             this.lblToppic2.Text = "บัญชีบริษัทซัพพลายเออร์";
             // 
-            // dtgvSuppiler
+            // dtgvSupplier
             // 
-            this.dtgvSuppiler.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvSuppiler.Location = new System.Drawing.Point(30, 86);
-            this.dtgvSuppiler.Name = "dtgvSuppiler";
-            this.dtgvSuppiler.Size = new System.Drawing.Size(1525, 270);
-            this.dtgvSuppiler.TabIndex = 4;
+            this.dtgvSupplier.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvSupplier.Location = new System.Drawing.Point(30, 86);
+            this.dtgvSupplier.Name = "dtgvSupplier";
+            this.dtgvSupplier.Size = new System.Drawing.Size(1525, 270);
+            this.dtgvSupplier.TabIndex = 4;
             // 
             // pnlSuppilerdata
             // 
-            this.pnlSuppilerdata.Controls.Add(this.dtgvSuppiler);
+            this.pnlSuppilerdata.Controls.Add(this.dtgvSupplier);
             this.pnlSuppilerdata.Controls.Add(this.searchboxSuppiler);
             this.pnlSuppilerdata.Controls.Add(this.lblToppic2);
             this.pnlSuppilerdata.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -256,6 +256,15 @@
             this.pnlSuppilerdata.Name = "pnlSuppilerdata";
             this.pnlSuppilerdata.Size = new System.Drawing.Size(1584, 369);
             this.pnlSuppilerdata.TabIndex = 7;
+            // 
+            // searchboxSuppiler
+            // 
+            this.searchboxSuppiler.BackColor = System.Drawing.Color.White;
+            this.searchboxSuppiler.Location = new System.Drawing.Point(905, 22);
+            this.searchboxSuppiler.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxSuppiler.Name = "searchboxSuppiler";
+            this.searchboxSuppiler.Size = new System.Drawing.Size(650, 50);
+            this.searchboxSuppiler.TabIndex = 3;
             // 
             // pnlStep
             // 
@@ -454,15 +463,6 @@
             this.txtPhone.Size = new System.Drawing.Size(329, 36);
             this.txtPhone.TabIndex = 2;
             // 
-            // searchboxSuppiler
-            // 
-            this.searchboxSuppiler.BackColor = System.Drawing.Color.White;
-            this.searchboxSuppiler.Location = new System.Drawing.Point(905, 22);
-            this.searchboxSuppiler.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxSuppiler.Name = "searchboxSuppiler";
-            this.searchboxSuppiler.Size = new System.Drawing.Size(650, 50);
-            this.searchboxSuppiler.TabIndex = 3;
-            // 
             // SupplierRegistration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -479,7 +479,7 @@
             this.pnlName.PerformLayout();
             this.pnlAddress.ResumeLayout(false);
             this.pnlAddress.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvSuppiler)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvSupplier)).EndInit();
             this.pnlSuppilerdata.ResumeLayout(false);
             this.pnlSuppilerdata.PerformLayout();
             this.pnlActionMenu.ResumeLayout(false);
@@ -499,7 +499,7 @@
         private System.Windows.Forms.Panel pnlIdCompany;
         private System.Windows.Forms.Label lblstarIdCompany;
         private System.Windows.Forms.Label lblIdCompany;
-        private System.Windows.Forms.TextBox txtIdCompany;
+        private System.Windows.Forms.TextBox txtJuristic;
         private System.Windows.Forms.Panel pnlName;
         private System.Windows.Forms.Label lblstarCompanyName;
         private System.Windows.Forms.Label lblCompanyName;
@@ -511,7 +511,7 @@
         private System.Windows.Forms.TextBox txtAddress;
         private System.Windows.Forms.Panel pnlAddress;
         private System.Windows.Forms.Label lblToppic2;
-        private System.Windows.Forms.DataGridView dtgvSuppiler;
+        private System.Windows.Forms.DataGridView dtgvSupplier;
         private System.Windows.Forms.Panel pnlSuppilerdata;
         private System.Windows.Forms.Panel pnlStep;
         private System.Windows.Forms.Panel pnlActionMenu;
