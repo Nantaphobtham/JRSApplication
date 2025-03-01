@@ -17,5 +17,14 @@ namespace JRSApplication
             InitializeComponent();
         }
 
+        private void btnSearchCustomer_Click(object sender, EventArgs e)
+        {
+            //OpenSearchForm("Customer", txtCustomerID, txtCustomerName);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            //OpenSearchForm("Employee", txtEmployeeID, txtEmployeeName);
+        }
     }
 }

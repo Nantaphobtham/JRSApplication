@@ -19,16 +19,34 @@ namespace JRSApplication
             InitializeComponent();
             CustomizeDataGridView(); // ✅ ปรับแต่ง DataGridView
             LoadSupplierData(); // ✅ โหลดข้อมูลเมื่อฟอร์มเปิด
+            searchboxSuppiler.SetRoleAndFunction("Admin", "ทะเบียนลูกค้า");
+            searchboxSuppiler.SearchTriggered += searchboxSuppiler_SearchTriggered;
+        }
+        private void searchboxSuppiler_SearchTriggered(object sender, SearchEventArgs e)
+        {
+            LoadSupplierData(e.SearchBy, e.Keyword); // โหลดข้อมูลที่ค้นหา
         }
 
-        private void LoadSupplierData()
+        private void LoadSupplierData(string searchBy = "", string keyword = "")
         {
             SupplierDAL dal = new SupplierDAL();
-            DataTable dt = dal.GetAllSuppliers(); // ✅ ดึงข้อมูลจาก MySQL
-            dtgvSupplier.DataSource = dt; // ✅ แสดงข้อมูลใน DataGridView
+            DataTable dt;
+
+            // ถ้ามีเงื่อนไขการค้นหา
+            if (!string.IsNullOrEmpty(searchBy) && !string.IsNullOrEmpty(keyword))
+            {
+                dt = dal.SearchSuppliers(searchBy, keyword); // ค้นหาตามเงื่อนไข
+            }
+            else
+            {
+                dt = dal.GetAllSuppliers(); // โหลดข้อมูลทั้งหมด
+            }
+
+            dtgvSupplier.DataSource = dt; // แสดงข้อมูลใน DataGridView
         }
 
- 
+
+
         private void CustomizeDataGridView()
         {
             dtgvSupplier.BorderStyle = BorderStyle.None;

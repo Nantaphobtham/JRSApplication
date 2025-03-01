@@ -64,7 +64,7 @@
             this.lblEmployeeLastName = new System.Windows.Forms.Label();
             this.txtRole = new System.Windows.Forms.TextBox();
             this.lblEmployeeName = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
+            this.btnSearchEmployee = new System.Windows.Forms.Button();
             this.txtEmployeeLastName = new System.Windows.Forms.TextBox();
             this.starProjectManager = new System.Windows.Forms.Label();
             this.lblProjectManager = new System.Windows.Forms.Label();
@@ -161,7 +161,7 @@
             this.pnlInfomation.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInfomation.Location = new System.Drawing.Point(0, 0);
             this.pnlInfomation.Name = "pnlInfomation";
-            this.pnlInfomation.Size = new System.Drawing.Size(1482, 738);
+            this.pnlInfomation.Size = new System.Drawing.Size(1448, 738);
             this.pnlInfomation.TabIndex = 0;
             // 
             // subInfo
@@ -526,7 +526,7 @@
             this.pnlProjectManager.Controls.Add(this.lblEmployeeLastName);
             this.pnlProjectManager.Controls.Add(this.txtRole);
             this.pnlProjectManager.Controls.Add(this.lblEmployeeName);
-            this.pnlProjectManager.Controls.Add(this.button6);
+            this.pnlProjectManager.Controls.Add(this.btnSearchEmployee);
             this.pnlProjectManager.Controls.Add(this.txtEmployeeLastName);
             this.pnlProjectManager.Controls.Add(this.starProjectManager);
             this.pnlProjectManager.Controls.Add(this.lblProjectManager);
@@ -583,18 +583,19 @@
             this.lblEmployeeName.TabIndex = 5;
             this.lblEmployeeName.Text = "ชื่อ";
             // 
-            // button6
+            // btnSearchEmployee
             // 
-            this.button6.BackColor = System.Drawing.Color.White;
-            this.button6.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button6.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(7, 54);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(126, 78);
-            this.button6.TabIndex = 4;
-            this.button6.Text = "ค้นหาผู้ดูแลโครงการ";
-            this.button6.UseVisualStyleBackColor = false;
+            this.btnSearchEmployee.BackColor = System.Drawing.Color.White;
+            this.btnSearchEmployee.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.btnSearchEmployee.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchEmployee.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearchEmployee.Location = new System.Drawing.Point(7, 54);
+            this.btnSearchEmployee.Name = "btnSearchEmployee";
+            this.btnSearchEmployee.Size = new System.Drawing.Size(126, 78);
+            this.btnSearchEmployee.TabIndex = 4;
+            this.btnSearchEmployee.Text = "ค้นหาผู้ดูแลโครงการ";
+            this.btnSearchEmployee.UseVisualStyleBackColor = false;
+            this.btnSearchEmployee.Click += new System.EventHandler(this.button6_Click);
             // 
             // txtEmployeeLastName
             // 
@@ -865,6 +866,7 @@
             this.btnSearchCustomer.TabIndex = 4;
             this.btnSearchCustomer.Text = "ค้นหาลูกค้า";
             this.btnSearchCustomer.UseVisualStyleBackColor = false;
+            this.btnSearchCustomer.Click += new System.EventHandler(this.btnSearchCustomer_Click);
             // 
             // txtCustomerIDCard
             // 
@@ -1234,7 +1236,7 @@
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 738);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1482, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1448, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDelete
@@ -1295,7 +1297,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 832);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1482, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1448, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // pnlProjectdata
@@ -1306,7 +1308,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 842);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1482, 371);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1448, 371);
             this.pnlProjectdata.TabIndex = 3;
             // 
             // dtgvProject
@@ -1347,7 +1349,7 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.pnlInfomation);
             this.Name = "ManageProject";
-            this.Size = new System.Drawing.Size(1482, 954);
+            this.Size = new System.Drawing.Size(1448, 954);
             this.pnlInfomation.ResumeLayout(false);
             this.subInfo.ResumeLayout(false);
             this.pnlPhaseData.ResumeLayout(false);
@@ -1455,7 +1457,7 @@
         private System.Windows.Forms.Label lblEmployeeLastName;
         private System.Windows.Forms.TextBox txtRole;
         private System.Windows.Forms.Label lblEmployeeName;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button btnSearchEmployee;
         private System.Windows.Forms.TextBox txtEmployeeLastName;
         private System.Windows.Forms.Label starProjectManager;
         private System.Windows.Forms.Label lblProjectManager;

@@ -179,5 +179,42 @@ namespace JRSApplication.Data_Access_Layer
             }
             return isSuccess;
         }
+
+        public DataTable SearchSuppliers(string searchBy, string keyword)
+        {
+            DataTable dt = new DataTable();
+            string query = "SELECT * FROM suppliers WHERE ";
+
+            // ตรวจสอบตัวเลือกที่ใช้ค้นหา
+            switch (searchBy)
+            {
+                case "ชื่อลูกค้า":
+                    query += "supplier_name LIKE @Keyword";
+                    break;
+                case "เลขประจำตัว":
+                    query += "supplier_idcard LIKE @Keyword";
+                    break;
+                case "อีเมล":
+                    query += "supplier_email LIKE @Keyword";
+                    break;
+                default:
+                    query = "SELECT * FROM suppliers"; // ถ้าไม่มีตัวเลือกให้ดึงข้อมูลทั้งหมด
+                    break;
+            }
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Keyword", "%" + keyword + "%");
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(dt);
+                    }
+                }
+            }
+            return dt;
+        }
     }
 }
