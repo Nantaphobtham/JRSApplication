@@ -163,7 +163,7 @@ namespace JRSApplication
                 starIdCompany.Visible = false;
             }
 
-            if (string.IsNullOrWhiteSpace(phone))
+            if (string.IsNullOrWhiteSpace(phone) || !IsValidPhoneNumber(phone))
             {
                 starPhone.Visible = true;
                 hasError = true;
@@ -173,7 +173,7 @@ namespace JRSApplication
                 starPhone.Visible = false;
             }
 
-            if (string.IsNullOrWhiteSpace(email))
+            if (string.IsNullOrWhiteSpace(email) || !IsValidEmail(email))
             {
                 starEmail.Visible = true;
                 hasError = true;
