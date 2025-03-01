@@ -59,12 +59,11 @@ namespace JRSApplication.Data_Access_Layer
             {
                 string randoms = rnd.Next(1000, 9999).ToString(); // สุ่มเลข 4 หลัก
                 newID = year + month + randoms;
-            } while (dal.CheckDuplicateSupplierID(newID)); // ✅ ตรวจสอบว่าซ้ำหรือไม่
+            } while (dal.CheckDuplicateSupplierID(newID));  // ✅ ตรวจสอบว่าซ้ำหรือไม่
 
             return newID;
         }
 
-        // ✅ 3️⃣ ตรวจสอบว่า ID, Email ซ้ำหรือไม่
         public bool CheckDuplicateSupplierID(string supplierID)
         {
             bool exists = false;
@@ -82,22 +81,40 @@ namespace JRSApplication.Data_Access_Layer
             return exists;
         }
 
-        public bool CheckDuplicateSupplier(string email)
+        // ✅ 3️⃣ ตรวจสอบว่า ID, Email ซ้ำหรือไม่
+        public bool CheckDuplicateSupplier(string email, string phone, string juristic, string name, string supplierID)
         {
-            bool exists = false;
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                string sql = "SELECT COUNT(*) FROM supplier WHERE sup_email = @Email";
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                conn.Open();
+
+                string query = "SELECT COUNT(*) FROM supplier WHERE "
+                             + "(sup_email = @Email OR sup_tel = @Phone OR sup_juristic = @Juristic OR sup_name = @Name) ";
+
+                // ✅ ถ้ามี `supplierID` แสดงว่าเป็นการอัปเดต ไม่ต้องเช็คตัวเอง
+                if (!string.IsNullOrEmpty(supplierID))
+                {
+                    query += " AND sup_id != @SupplierID";
+                }
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Email", email);
-                    conn.Open();
+                    cmd.Parameters.AddWithValue("@Phone", phone);
+                    cmd.Parameters.AddWithValue("@Juristic", juristic);
+                    cmd.Parameters.AddWithValue("@Name", name);
+
+                    if (!string.IsNullOrEmpty(supplierID))
+                    {
+                        cmd.Parameters.AddWithValue("@SupplierID", supplierID);
+                    }
+
                     int count = Convert.ToInt32(cmd.ExecuteScalar());
-                    exists = count > 0;
+                    return count > 0; // ✅ คืนค่า true ถ้าข้อมูลซ้ำ
                 }
             }
-            return exists;
         }
+
 
         // ✅ 4️⃣ เพิ่มข้อมูลซัพพลายเออร์
         public bool InsertSupplier(Supplier sup)
@@ -107,7 +124,7 @@ namespace JRSApplication.Data_Access_Layer
             {
                 string supplierID = GenerateSupplierID(); // ✅ สร้างรหัสซัพพลายเออร์ใหม่
 
-                if (CheckDuplicateSupplier(sup.Email))
+                if (CheckDuplicateSupplier(sup.Email, sup.Phone, sup.Juristic, sup.Name, ""))
                 {
                     MessageBox.Show("อีเมลซ้ำในระบบ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
@@ -134,31 +151,30 @@ namespace JRSApplication.Data_Access_Layer
         }
 
         // ✅ 5️⃣ อัปเดตข้อมูลซัพพลายเออร์
-        public bool UpdateSupplier(Supplier sup)
+        public bool UpdateSupplier(string supplierID, string name, string juristic, string phone, string email, string address)
         {
-            bool isSuccess = false;
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                string sql = "UPDATE supplier SET sup_name = @Name, sup_juristic = @Juristic, " +
-                             "sup_tel = @Phone, sup_address = @Address, sup_email = @Email " +
-                             "WHERE sup_id = @SupplierID";
+                conn.Open();
+                string query = "UPDATE supplier SET sup_name = @Name, sup_juristic = @Juristic, " +
+                               "sup_tel = @Phone, sup_email = @Email, sup_address = @Address " +
+                               "WHERE sup_id = @SupplierID";
 
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@SupplierID", sup.SupplierID);
-                    cmd.Parameters.AddWithValue("@Name", sup.Name);
-                    cmd.Parameters.AddWithValue("@Juristic", sup.Juristic);
-                    cmd.Parameters.AddWithValue("@Phone", sup.Phone);
-                    cmd.Parameters.AddWithValue("@Address", sup.Address);
-                    cmd.Parameters.AddWithValue("@Email", sup.Email);
+                    cmd.Parameters.AddWithValue("@SupplierID", supplierID);
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Juristic", juristic);
+                    cmd.Parameters.AddWithValue("@Phone", phone);
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@Address", address);
 
-                    conn.Open();
                     int rows = cmd.ExecuteNonQuery();
-                    isSuccess = rows > 0;
+                    return rows > 0; // ✅ คืนค่า true ถ้ามีแถวถูกอัปเดต
                 }
             }
-            return isSuccess;
         }
+
 
         // ✅ 6️⃣ ลบซัพพลายเออร์
         public bool DeleteSupplier(string supplierID)
@@ -188,10 +204,10 @@ namespace JRSApplication.Data_Access_Layer
             // ตรวจสอบตัวเลือกที่ใช้ค้นหา
             switch (searchBy)
             {
-                case "ชื่อลูกค้า":
+                case "ชื่อบริษัท":
                     query += "supplier_name LIKE @Keyword";
                     break;
-                case "เลขประจำตัว":
+                case "เลขทะเบียนนิติบุคคล":
                     query += "supplier_idcard LIKE @Keyword";
                     break;
                 case "อีเมล":

@@ -244,6 +244,7 @@
             this.dtgvSupplier.Name = "dtgvSupplier";
             this.dtgvSupplier.Size = new System.Drawing.Size(1525, 270);
             this.dtgvSupplier.TabIndex = 4;
+            this.dtgvSupplier.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvSupplier_CellClick);
             // 
             // pnlSuppilerdata
             // 
