@@ -114,6 +114,22 @@ namespace JRSApplication
         private string originalName = "";
         private string originalJuristic = "";
 
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        private bool IsValidPhoneNumber(string phone)
+        {
+            return phone.All(char.IsDigit) && phone.Length >= 9 && phone.Length <= 15;
+        }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -125,12 +141,66 @@ namespace JRSApplication
             string address = txtAddress.Text.Trim();
 
             // ✅ 2️⃣ ตรวจสอบข้อมูล (Validation)
-            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(juristic) ||
-                string.IsNullOrEmpty(phone) || string.IsNullOrEmpty(email))
+            bool hasError = false;
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                starCompanyName.Visible = true;
+                hasError = true;
+            }
+            else
+            {
+                starCompanyName.Visible = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(juristic))
+            {
+                starIdCompany.Visible = true;
+                hasError = true;
+            }
+            else
+            {
+                starIdCompany.Visible = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(phone))
+            {
+                starPhone.Visible = true;
+                hasError = true;
+            }
+            else
+            {
+                starPhone.Visible = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                starEmail.Visible = true;
+                hasError = true;
+            }
+            else
+            {
+                starEmail.Visible = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                starAddress.Visible = true;
+                hasError = true;
+            }
+            else
+            {
+                starAddress.Visible = false;
+            }
+
+            // ✅ หยุดทำงานหากมีช่องที่ยังไม่ได้กรอก
+            if (hasError)
             {
                 MessageBox.Show("กรุณากรอกข้อมูลให้ครบถ้วน!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+
 
             SupplierDAL dal = new SupplierDAL();
 
@@ -312,6 +382,31 @@ namespace JRSApplication
             txtPhone.Clear();
             txtEmail.Clear();
             txtAddress.Clear();
+        }
+
+        private void txtName_TextChanged(object sender, EventArgs e)
+        {
+            starCompanyName.Visible = string.IsNullOrWhiteSpace(txtName.Text);
+        }
+
+        private void txtJuristic_TextChanged(object sender, EventArgs e)
+        {
+            starIdCompany.Visible = string.IsNullOrWhiteSpace(txtJuristic.Text);
+        }
+
+        private void txtPhone_TextChanged(object sender, EventArgs e)
+        {
+            starPhone.Visible = string.IsNullOrWhiteSpace(txtPhone.Text);
+        }
+
+        private void txtEmail_TextChanged(object sender, EventArgs e)
+        {
+            starEmail.Visible = string.IsNullOrWhiteSpace(txtEmail.Text);
+        }
+
+        private void txtAddress_TextChanged(object sender, EventArgs e)
+        {
+            starAddress.Visible = string.IsNullOrWhiteSpace(txtAddress.Text);
         }
     }
 }

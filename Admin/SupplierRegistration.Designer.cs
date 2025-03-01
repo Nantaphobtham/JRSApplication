@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.pnlIdCompany = new System.Windows.Forms.Panel();
-            this.lblstarIdCompany = new System.Windows.Forms.Label();
+            this.starIdCompany = new System.Windows.Forms.Label();
             this.lblIdCompany = new System.Windows.Forms.Label();
             this.txtJuristic = new System.Windows.Forms.TextBox();
             this.pnlName = new System.Windows.Forms.Panel();
-            this.lblstarCompanyName = new System.Windows.Forms.Label();
+            this.starCompanyName = new System.Windows.Forms.Label();
             this.lblCompanyName = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.lblToppic1 = new System.Windows.Forms.Label();
-            this.lblstarAddress = new System.Windows.Forms.Label();
+            this.starAddress = new System.Windows.Forms.Label();
             this.lblAddress = new System.Windows.Forms.Label();
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.pnlAddress = new System.Windows.Forms.Panel();
@@ -54,11 +54,11 @@
             this.pnlInfomation = new System.Windows.Forms.Panel();
             this.subInfo = new System.Windows.Forms.Panel();
             this.pnlEmail = new System.Windows.Forms.Panel();
-            this.lblstarEmail = new System.Windows.Forms.Label();
+            this.starEmail = new System.Windows.Forms.Label();
             this.lblEmail = new System.Windows.Forms.Label();
             this.txtEmail = new System.Windows.Forms.TextBox();
             this.pnlPhone = new System.Windows.Forms.Panel();
-            this.lblstarPhone = new System.Windows.Forms.Label();
+            this.starPhone = new System.Windows.Forms.Label();
             this.lblPhone = new System.Windows.Forms.Label();
             this.txtPhone = new System.Windows.Forms.TextBox();
             this.pnlIdCompany.SuspendLayout();
@@ -75,7 +75,7 @@
             // 
             // pnlIdCompany
             // 
-            this.pnlIdCompany.Controls.Add(this.lblstarIdCompany);
+            this.pnlIdCompany.Controls.Add(this.starIdCompany);
             this.pnlIdCompany.Controls.Add(this.lblIdCompany);
             this.pnlIdCompany.Controls.Add(this.txtJuristic);
             this.pnlIdCompany.Location = new System.Drawing.Point(387, 149);
@@ -84,18 +84,18 @@
             this.pnlIdCompany.Size = new System.Drawing.Size(331, 74);
             this.pnlIdCompany.TabIndex = 4;
             // 
-            // lblstarIdCompany
+            // starIdCompany
             // 
-            this.lblstarIdCompany.AutoSize = true;
-            this.lblstarIdCompany.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarIdCompany.ForeColor = System.Drawing.Color.Red;
-            this.lblstarIdCompany.Location = new System.Drawing.Point(192, 3);
-            this.lblstarIdCompany.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarIdCompany.Name = "lblstarIdCompany";
-            this.lblstarIdCompany.Size = new System.Drawing.Size(22, 30);
-            this.lblstarIdCompany.TabIndex = 2;
-            this.lblstarIdCompany.Text = "*";
-            this.lblstarIdCompany.Visible = false;
+            this.starIdCompany.AutoSize = true;
+            this.starIdCompany.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starIdCompany.ForeColor = System.Drawing.Color.Red;
+            this.starIdCompany.Location = new System.Drawing.Point(192, 3);
+            this.starIdCompany.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starIdCompany.Name = "starIdCompany";
+            this.starIdCompany.Size = new System.Drawing.Size(22, 30);
+            this.starIdCompany.TabIndex = 2;
+            this.starIdCompany.Text = "*";
+            this.starIdCompany.Visible = false;
             // 
             // lblIdCompany
             // 
@@ -119,10 +119,11 @@
             this.txtJuristic.ReadOnly = true;
             this.txtJuristic.Size = new System.Drawing.Size(329, 36);
             this.txtJuristic.TabIndex = 2;
+            this.txtJuristic.TextChanged += new System.EventHandler(this.txtJuristic_TextChanged);
             // 
             // pnlName
             // 
-            this.pnlName.Controls.Add(this.lblstarCompanyName);
+            this.pnlName.Controls.Add(this.starCompanyName);
             this.pnlName.Controls.Add(this.lblCompanyName);
             this.pnlName.Controls.Add(this.txtName);
             this.pnlName.Location = new System.Drawing.Point(387, 47);
@@ -131,18 +132,18 @@
             this.pnlName.Size = new System.Drawing.Size(331, 74);
             this.pnlName.TabIndex = 7;
             // 
-            // lblstarCompanyName
+            // starCompanyName
             // 
-            this.lblstarCompanyName.AutoSize = true;
-            this.lblstarCompanyName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarCompanyName.ForeColor = System.Drawing.Color.Red;
-            this.lblstarCompanyName.Location = new System.Drawing.Point(83, 3);
-            this.lblstarCompanyName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarCompanyName.Name = "lblstarCompanyName";
-            this.lblstarCompanyName.Size = new System.Drawing.Size(22, 30);
-            this.lblstarCompanyName.TabIndex = 2;
-            this.lblstarCompanyName.Text = "*";
-            this.lblstarCompanyName.Visible = false;
+            this.starCompanyName.AutoSize = true;
+            this.starCompanyName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starCompanyName.ForeColor = System.Drawing.Color.Red;
+            this.starCompanyName.Location = new System.Drawing.Point(83, 3);
+            this.starCompanyName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starCompanyName.Name = "starCompanyName";
+            this.starCompanyName.Size = new System.Drawing.Size(22, 30);
+            this.starCompanyName.TabIndex = 2;
+            this.starCompanyName.Text = "*";
+            this.starCompanyName.Visible = false;
             // 
             // lblCompanyName
             // 
@@ -166,6 +167,7 @@
             this.txtName.ReadOnly = true;
             this.txtName.Size = new System.Drawing.Size(329, 36);
             this.txtName.TabIndex = 2;
+            this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
             // 
             // lblToppic1
             // 
@@ -178,18 +180,18 @@
             this.lblToppic1.TabIndex = 1;
             this.lblToppic1.Text = "ข้อมูลบริษัทซัพพลายเออร์";
             // 
-            // lblstarAddress
+            // starAddress
             // 
-            this.lblstarAddress.AutoSize = true;
-            this.lblstarAddress.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarAddress.ForeColor = System.Drawing.Color.Red;
-            this.lblstarAddress.Location = new System.Drawing.Point(47, 3);
-            this.lblstarAddress.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarAddress.Name = "lblstarAddress";
-            this.lblstarAddress.Size = new System.Drawing.Size(22, 30);
-            this.lblstarAddress.TabIndex = 2;
-            this.lblstarAddress.Text = "*";
-            this.lblstarAddress.Visible = false;
+            this.starAddress.AutoSize = true;
+            this.starAddress.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starAddress.ForeColor = System.Drawing.Color.Red;
+            this.starAddress.Location = new System.Drawing.Point(47, 3);
+            this.starAddress.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starAddress.Name = "starAddress";
+            this.starAddress.Size = new System.Drawing.Size(22, 30);
+            this.starAddress.TabIndex = 2;
+            this.starAddress.Text = "*";
+            this.starAddress.Visible = false;
             // 
             // lblAddress
             // 
@@ -214,10 +216,11 @@
             this.txtAddress.ReadOnly = true;
             this.txtAddress.Size = new System.Drawing.Size(441, 215);
             this.txtAddress.TabIndex = 2;
+            this.txtAddress.TextChanged += new System.EventHandler(this.txtAddress_TextChanged);
             // 
             // pnlAddress
             // 
-            this.pnlAddress.Controls.Add(this.lblstarAddress);
+            this.pnlAddress.Controls.Add(this.starAddress);
             this.pnlAddress.Controls.Add(this.lblAddress);
             this.pnlAddress.Controls.Add(this.txtAddress);
             this.pnlAddress.Location = new System.Drawing.Point(767, 47);
@@ -372,7 +375,7 @@
             // 
             // pnlEmail
             // 
-            this.pnlEmail.Controls.Add(this.lblstarEmail);
+            this.pnlEmail.Controls.Add(this.starEmail);
             this.pnlEmail.Controls.Add(this.lblEmail);
             this.pnlEmail.Controls.Add(this.txtEmail);
             this.pnlEmail.Location = new System.Drawing.Point(387, 353);
@@ -381,18 +384,18 @@
             this.pnlEmail.Size = new System.Drawing.Size(331, 74);
             this.pnlEmail.TabIndex = 2;
             // 
-            // lblstarEmail
+            // starEmail
             // 
-            this.lblstarEmail.AutoSize = true;
-            this.lblstarEmail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarEmail.ForeColor = System.Drawing.Color.Red;
-            this.lblstarEmail.Location = new System.Drawing.Point(50, 3);
-            this.lblstarEmail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarEmail.Name = "lblstarEmail";
-            this.lblstarEmail.Size = new System.Drawing.Size(22, 30);
-            this.lblstarEmail.TabIndex = 2;
-            this.lblstarEmail.Text = "*";
-            this.lblstarEmail.Visible = false;
+            this.starEmail.AutoSize = true;
+            this.starEmail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starEmail.ForeColor = System.Drawing.Color.Red;
+            this.starEmail.Location = new System.Drawing.Point(50, 3);
+            this.starEmail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starEmail.Name = "starEmail";
+            this.starEmail.Size = new System.Drawing.Size(22, 30);
+            this.starEmail.TabIndex = 2;
+            this.starEmail.Text = "*";
+            this.starEmail.Visible = false;
             // 
             // lblEmail
             // 
@@ -416,10 +419,11 @@
             this.txtEmail.ReadOnly = true;
             this.txtEmail.Size = new System.Drawing.Size(329, 36);
             this.txtEmail.TabIndex = 2;
+            this.txtEmail.TextChanged += new System.EventHandler(this.txtEmail_TextChanged);
             // 
             // pnlPhone
             // 
-            this.pnlPhone.Controls.Add(this.lblstarPhone);
+            this.pnlPhone.Controls.Add(this.starPhone);
             this.pnlPhone.Controls.Add(this.lblPhone);
             this.pnlPhone.Controls.Add(this.txtPhone);
             this.pnlPhone.Location = new System.Drawing.Point(387, 251);
@@ -428,18 +432,18 @@
             this.pnlPhone.Size = new System.Drawing.Size(331, 74);
             this.pnlPhone.TabIndex = 3;
             // 
-            // lblstarPhone
+            // starPhone
             // 
-            this.lblstarPhone.AutoSize = true;
-            this.lblstarPhone.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarPhone.ForeColor = System.Drawing.Color.Red;
-            this.lblstarPhone.Location = new System.Drawing.Point(124, 3);
-            this.lblstarPhone.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarPhone.Name = "lblstarPhone";
-            this.lblstarPhone.Size = new System.Drawing.Size(22, 30);
-            this.lblstarPhone.TabIndex = 2;
-            this.lblstarPhone.Text = "*";
-            this.lblstarPhone.Visible = false;
+            this.starPhone.AutoSize = true;
+            this.starPhone.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starPhone.ForeColor = System.Drawing.Color.Red;
+            this.starPhone.Location = new System.Drawing.Point(124, 3);
+            this.starPhone.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starPhone.Name = "starPhone";
+            this.starPhone.Size = new System.Drawing.Size(22, 30);
+            this.starPhone.TabIndex = 2;
+            this.starPhone.Text = "*";
+            this.starPhone.Visible = false;
             // 
             // lblPhone
             // 
@@ -463,6 +467,7 @@
             this.txtPhone.ReadOnly = true;
             this.txtPhone.Size = new System.Drawing.Size(329, 36);
             this.txtPhone.TabIndex = 2;
+            this.txtPhone.TextChanged += new System.EventHandler(this.txtPhone_TextChanged);
             // 
             // SupplierRegistration
             // 
@@ -498,16 +503,16 @@
         #endregion
 
         private System.Windows.Forms.Panel pnlIdCompany;
-        private System.Windows.Forms.Label lblstarIdCompany;
+        private System.Windows.Forms.Label starIdCompany;
         private System.Windows.Forms.Label lblIdCompany;
         private System.Windows.Forms.TextBox txtJuristic;
         private System.Windows.Forms.Panel pnlName;
-        private System.Windows.Forms.Label lblstarCompanyName;
+        private System.Windows.Forms.Label starCompanyName;
         private System.Windows.Forms.Label lblCompanyName;
         private System.Windows.Forms.TextBox txtName;
         private SearchboxControl searchboxSuppiler;
         private System.Windows.Forms.Label lblToppic1;
-        private System.Windows.Forms.Label lblstarAddress;
+        private System.Windows.Forms.Label starAddress;
         private System.Windows.Forms.Label lblAddress;
         private System.Windows.Forms.TextBox txtAddress;
         private System.Windows.Forms.Panel pnlAddress;
@@ -523,11 +528,11 @@
         private System.Windows.Forms.Panel pnlInfomation;
         private System.Windows.Forms.Panel subInfo;
         private System.Windows.Forms.Panel pnlEmail;
-        private System.Windows.Forms.Label lblstarEmail;
+        private System.Windows.Forms.Label starEmail;
         private System.Windows.Forms.Label lblEmail;
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.Panel pnlPhone;
-        private System.Windows.Forms.Label lblstarPhone;
+        private System.Windows.Forms.Label starPhone;
         private System.Windows.Forms.Label lblPhone;
         private System.Windows.Forms.TextBox txtPhone;
     }
