@@ -24,15 +24,15 @@ namespace JRSApplication
 
                 if (searchType == "Customer")
                 {
-                    query = "SELECT cus_id AS 'รหัสลูกค้า', cus_name AS 'ชื่อ', cus_lname AS 'นามสกุล', " +
-                            "cus_tel AS 'เบอร์โทร', cus_email AS 'อีเมล' FROM customers " +
-                            "WHERE cus_name LIKE @Keyword OR cus_lname LIKE @Keyword";
+                    query = "SELECT cus_id AS 'ID', cus_name AS 'ชื่อ', cus_lname AS 'นามสกุล', " +
+                            "cus_id_card AS 'เลขบัตรประชาชน', cus_tel AS 'เบอร์โทร', cus_email AS 'อีเมล' " +
+                            "FROM customer WHERE cus_name LIKE @Keyword OR cus_lname LIKE @Keyword";
                 }
                 else if (searchType == "Employee")
                 {
-                    query = "SELECT emp_id AS 'รหัสพนักงาน', emp_name AS 'ชื่อ', emp_lname AS 'นามสกุล', " +
-                            "emp_role AS 'ตำแหน่ง' FROM employees " +
-                            "WHERE emp_role = 'Project Manager' AND (emp_name LIKE @Keyword OR emp_lname LIKE @Keyword)";
+                    query = "SELECT emp_id AS 'ID', emp_name AS 'ชื่อ', emp_lname AS 'นามสกุล', " +
+                            "emp_pos AS 'ตำแหน่ง' FROM employee " +
+                            "WHERE emp_name LIKE @Keyword OR emp_lname LIKE @Keyword";
                 }
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -47,5 +47,7 @@ namespace JRSApplication
 
             return dt;
         }
+
+
     }
 }

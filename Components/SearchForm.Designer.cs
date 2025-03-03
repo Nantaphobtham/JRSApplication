@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             this.dtgvAlldata = new System.Windows.Forms.DataGridView();
-            this.lblToppic = new System.Windows.Forms.Label();
+            this.lblTitle = new System.Windows.Forms.Label();
             this.btnBack = new System.Windows.Forms.Button();
             this.btnConfirm = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.lblSearchBy = new System.Windows.Forms.Label();
             this.lblSearch = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnSearch = new System.Windows.Forms.PictureBox();
             this.cmbSearchBy = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvAlldata)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnSearch)).BeginInit();
             this.SuspendLayout();
             // 
             // dtgvAlldata
@@ -49,16 +49,16 @@
             this.dtgvAlldata.Size = new System.Drawing.Size(962, 247);
             this.dtgvAlldata.TabIndex = 2;
             // 
-            // lblToppic
+            // lblTitle
             // 
-            this.lblToppic.AutoSize = true;
-            this.lblToppic.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblToppic.Location = new System.Drawing.Point(20, 29);
-            this.lblToppic.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblToppic.Name = "lblToppic";
-            this.lblToppic.Size = new System.Drawing.Size(85, 37);
-            this.lblToppic.TabIndex = 9;
-            this.lblToppic.Text = "ค้นหา";
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.Location = new System.Drawing.Point(20, 29);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(85, 37);
+            this.lblTitle.TabIndex = 9;
+            this.lblTitle.Text = "ค้นหา";
             // 
             // btnBack
             // 
@@ -75,6 +75,7 @@
             this.btnBack.TabIndex = 10;
             this.btnBack.Text = "ยกเลิก";
             this.btnBack.UseVisualStyleBackColor = false;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
             // btnConfirm
             // 
@@ -91,6 +92,7 @@
             this.btnConfirm.TabIndex = 11;
             this.btnConfirm.Text = "ยืนยัน";
             this.btnConfirm.UseVisualStyleBackColor = false;
+            this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
             // 
             // txtSearch
             // 
@@ -100,6 +102,7 @@
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(268, 35);
             this.txtSearch.TabIndex = 12;
+            this.txtSearch.TabIndexChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // lblSearchBy
             // 
@@ -121,15 +124,16 @@
             this.lblSearch.TabIndex = 14;
             this.lblSearch.Text = "คำค้นหา";
             // 
-            // pictureBox1
+            // btnSearch
             // 
-            this.pictureBox1.Image = global::JRSApplication.Properties.Resources.search;
-            this.pictureBox1.Location = new System.Drawing.Point(935, 42);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(46, 35);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 15;
-            this.pictureBox1.TabStop = false;
+            this.btnSearch.Image = global::JRSApplication.Properties.Resources.search;
+            this.btnSearch.Location = new System.Drawing.Point(935, 42);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(46, 35);
+            this.btnSearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnSearch.TabIndex = 15;
+            this.btnSearch.TabStop = false;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // cmbSearchBy
             // 
@@ -146,18 +150,18 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(993, 438);
             this.Controls.Add(this.cmbSearchBy);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.lblSearch);
             this.Controls.Add(this.lblSearchBy);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnConfirm);
-            this.Controls.Add(this.lblToppic);
+            this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.dtgvAlldata);
             this.Name = "SearchForm";
             this.Text = "ค้นหา";
             ((System.ComponentModel.ISupportInitialize)(this.dtgvAlldata)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnSearch)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -166,13 +170,13 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dtgvAlldata;
-        private System.Windows.Forms.Label lblToppic;
+        private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Button btnConfirm;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Label lblSearchBy;
         private System.Windows.Forms.Label lblSearch;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox btnSearch;
         private System.Windows.Forms.ComboBox cmbSearchBy;
     }
 }

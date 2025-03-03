@@ -43,9 +43,9 @@
             this.lblRemarkPhase = new System.Windows.Forms.Label();
             this.starPercentPhase = new System.Windows.Forms.Label();
             this.lblPercentPhase = new System.Windows.Forms.Label();
-            this.textBox13 = new System.Windows.Forms.TextBox();
+            this.txtPercentPhase = new System.Windows.Forms.TextBox();
             this.pnlPhaseNumber = new System.Windows.Forms.Panel();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.cmbPhaseNumber = new System.Windows.Forms.ComboBox();
             this.starPhaseNumber = new System.Windows.Forms.Label();
             this.lblPhaseNumber = new System.Windows.Forms.Label();
             this.pnlRemark = new System.Windows.Forms.Panel();
@@ -62,7 +62,7 @@
             this.pnlProjectManager = new System.Windows.Forms.Panel();
             this.lblRole = new System.Windows.Forms.Label();
             this.lblEmployeeLastName = new System.Windows.Forms.Label();
-            this.txtRole = new System.Windows.Forms.TextBox();
+            this.txtEmployeeRole = new System.Windows.Forms.TextBox();
             this.lblEmployeeName = new System.Windows.Forms.Label();
             this.btnSearchEmployee = new System.Windows.Forms.Button();
             this.txtEmployeeLastName = new System.Windows.Forms.TextBox();
@@ -93,7 +93,7 @@
             this.txtCustomerName = new System.Windows.Forms.TextBox();
             this.pnlStep1 = new System.Windows.Forms.Panel();
             this.pnlPhase = new System.Windows.Forms.Panel();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cmbCurrentPhaseNumber = new System.Windows.Forms.ComboBox();
             this.starPhase = new System.Windows.Forms.Label();
             this.lblPhase = new System.Windows.Forms.Label();
             this.pnlBudget = new System.Windows.Forms.Panel();
@@ -114,7 +114,7 @@
             this.pnlNumber = new System.Windows.Forms.Panel();
             this.starNumber = new System.Windows.Forms.Label();
             this.lblNumber = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtNumber = new System.Windows.Forms.TextBox();
             this.pnlProjectName = new System.Windows.Forms.Panel();
             this.starProjectName = new System.Windows.Forms.Label();
             this.lblProjectName = new System.Windows.Forms.Label();
@@ -128,6 +128,7 @@
             this.pnlProjectdata = new System.Windows.Forms.Panel();
             this.dtgvProject = new System.Windows.Forms.DataGridView();
             this.lblToppic1 = new System.Windows.Forms.Label();
+            this.lblTotalPercentage = new System.Windows.Forms.Label();
             this.searchboxProject = new JRSApplication.SearchboxControl();
             this.pnlInfomation.SuspendLayout();
             this.subInfo.SuspendLayout();
@@ -161,7 +162,7 @@
             this.pnlInfomation.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInfomation.Location = new System.Drawing.Point(0, 0);
             this.pnlInfomation.Name = "pnlInfomation";
-            this.pnlInfomation.Size = new System.Drawing.Size(1448, 738);
+            this.pnlInfomation.Size = new System.Drawing.Size(1499, 738);
             this.pnlInfomation.TabIndex = 0;
             // 
             // subInfo
@@ -195,6 +196,7 @@
             // 
             // pnlPhaseData
             // 
+            this.pnlPhaseData.Controls.Add(this.lblTotalPercentage);
             this.pnlPhaseData.Controls.Add(this.lblPhaseData);
             this.pnlPhaseData.Controls.Add(this.dtgvPhase);
             this.pnlPhaseData.Location = new System.Drawing.Point(985, 360);
@@ -218,11 +220,12 @@
             this.dtgvPhase.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgvPhase.Location = new System.Drawing.Point(6, 43);
             this.dtgvPhase.Name = "dtgvPhase";
-            this.dtgvPhase.Size = new System.Drawing.Size(526, 305);
+            this.dtgvPhase.Size = new System.Drawing.Size(526, 267);
             this.dtgvPhase.TabIndex = 5;
             // 
             // btnEditPhase
             // 
+            this.btnEditPhase.Enabled = false;
             this.btnEditPhase.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnEditPhase.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOrange;
             this.btnEditPhase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -236,6 +239,7 @@
             // 
             // btnAddPhase
             // 
+            this.btnAddPhase.Enabled = false;
             this.btnAddPhase.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnAddPhase.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnAddPhase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -246,6 +250,7 @@
             this.btnAddPhase.TabIndex = 28;
             this.btnAddPhase.Text = "เพิ่ม";
             this.btnAddPhase.UseVisualStyleBackColor = true;
+            this.btnAddPhase.Click += new System.EventHandler(this.btnAddPhase_Click);
             // 
             // pnlPhaseDetail
             // 
@@ -285,11 +290,13 @@
             // txtPhaseDetail
             // 
             this.txtPhaseDetail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPhaseDetail.Enabled = false;
             this.txtPhaseDetail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPhaseDetail.Location = new System.Drawing.Point(2, 35);
             this.txtPhaseDetail.Margin = new System.Windows.Forms.Padding(2);
             this.txtPhaseDetail.Multiline = true;
             this.txtPhaseDetail.Name = "txtPhaseDetail";
+            this.txtPhaseDetail.ReadOnly = true;
             this.txtPhaseDetail.Size = new System.Drawing.Size(533, 132);
             this.txtPhaseDetail.TabIndex = 2;
             // 
@@ -298,7 +305,7 @@
             this.pnlPercentPhase.Controls.Add(this.lblRemarkPhase);
             this.pnlPercentPhase.Controls.Add(this.starPercentPhase);
             this.pnlPercentPhase.Controls.Add(this.lblPercentPhase);
-            this.pnlPercentPhase.Controls.Add(this.textBox13);
+            this.pnlPercentPhase.Controls.Add(this.txtPercentPhase);
             this.pnlPercentPhase.Location = new System.Drawing.Point(1331, 12);
             this.pnlPercentPhase.Margin = new System.Windows.Forms.Padding(2);
             this.pnlPercentPhase.Name = "pnlPercentPhase";
@@ -341,19 +348,21 @@
             this.lblPercentPhase.TabIndex = 2;
             this.lblPercentPhase.Text = "เปอร์เซ็นต์งาน";
             // 
-            // textBox13
+            // txtPercentPhase
             // 
-            this.textBox13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox13.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox13.Location = new System.Drawing.Point(4, 35);
-            this.textBox13.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(176, 36);
-            this.textBox13.TabIndex = 2;
+            this.txtPercentPhase.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPercentPhase.Enabled = false;
+            this.txtPercentPhase.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPercentPhase.Location = new System.Drawing.Point(4, 35);
+            this.txtPercentPhase.Margin = new System.Windows.Forms.Padding(2);
+            this.txtPercentPhase.Name = "txtPercentPhase";
+            this.txtPercentPhase.ReadOnly = true;
+            this.txtPercentPhase.Size = new System.Drawing.Size(176, 36);
+            this.txtPercentPhase.TabIndex = 2;
             // 
             // pnlPhaseNumber
             // 
-            this.pnlPhaseNumber.Controls.Add(this.comboBox2);
+            this.pnlPhaseNumber.Controls.Add(this.cmbPhaseNumber);
             this.pnlPhaseNumber.Controls.Add(this.starPhaseNumber);
             this.pnlPhaseNumber.Controls.Add(this.lblPhaseNumber);
             this.pnlPhaseNumber.Location = new System.Drawing.Point(985, 12);
@@ -362,14 +371,15 @@
             this.pnlPhaseNumber.Size = new System.Drawing.Size(166, 74);
             this.pnlPhaseNumber.TabIndex = 24;
             // 
-            // comboBox2
+            // cmbPhaseNumber
             // 
-            this.comboBox2.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(3, 33);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(159, 38);
-            this.comboBox2.TabIndex = 3;
+            this.cmbPhaseNumber.Enabled = false;
+            this.cmbPhaseNumber.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbPhaseNumber.FormattingEnabled = true;
+            this.cmbPhaseNumber.Location = new System.Drawing.Point(3, 33);
+            this.cmbPhaseNumber.Name = "cmbPhaseNumber";
+            this.cmbPhaseNumber.Size = new System.Drawing.Size(159, 38);
+            this.cmbPhaseNumber.TabIndex = 3;
             // 
             // starPhaseNumber
             // 
@@ -433,10 +443,12 @@
             // txtRemark
             // 
             this.txtRemark.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtRemark.Enabled = false;
             this.txtRemark.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtRemark.Location = new System.Drawing.Point(6, 37);
             this.txtRemark.Margin = new System.Windows.Forms.Padding(2);
             this.txtRemark.Name = "txtRemark";
+            this.txtRemark.ReadOnly = true;
             this.txtRemark.Size = new System.Drawing.Size(935, 36);
             this.txtRemark.TabIndex = 2;
             // 
@@ -453,6 +465,7 @@
             // btnInsertDemolitionFile
             // 
             this.btnInsertDemolitionFile.BackColor = System.Drawing.Color.White;
+            this.btnInsertDemolitionFile.Enabled = false;
             this.btnInsertDemolitionFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInsertDemolitionFile.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnInsertDemolitionFile.Location = new System.Drawing.Point(6, 36);
@@ -461,6 +474,7 @@
             this.btnInsertDemolitionFile.TabIndex = 3;
             this.btnInsertDemolitionFile.Text = "เลือกไฟล์";
             this.btnInsertDemolitionFile.UseVisualStyleBackColor = false;
+            this.btnInsertDemolitionFile.Click += new System.EventHandler(this.btnInsertDemolitionFile_Click);
             // 
             // lblDemolition
             // 
@@ -487,6 +501,7 @@
             // btnInsertBlueprintFile
             // 
             this.btnInsertBlueprintFile.BackColor = System.Drawing.Color.White;
+            this.btnInsertBlueprintFile.Enabled = false;
             this.btnInsertBlueprintFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInsertBlueprintFile.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnInsertBlueprintFile.Location = new System.Drawing.Point(6, 36);
@@ -495,6 +510,7 @@
             this.btnInsertBlueprintFile.TabIndex = 3;
             this.btnInsertBlueprintFile.Text = "เลือกไฟล์";
             this.btnInsertBlueprintFile.UseVisualStyleBackColor = false;
+            this.btnInsertBlueprintFile.Click += new System.EventHandler(this.btnInsertBlueprintFile_Click);
             // 
             // starBlueprint
             // 
@@ -524,7 +540,7 @@
             // 
             this.pnlProjectManager.Controls.Add(this.lblRole);
             this.pnlProjectManager.Controls.Add(this.lblEmployeeLastName);
-            this.pnlProjectManager.Controls.Add(this.txtRole);
+            this.pnlProjectManager.Controls.Add(this.txtEmployeeRole);
             this.pnlProjectManager.Controls.Add(this.lblEmployeeName);
             this.pnlProjectManager.Controls.Add(this.btnSearchEmployee);
             this.pnlProjectManager.Controls.Add(this.txtEmployeeLastName);
@@ -559,18 +575,18 @@
             this.lblEmployeeLastName.TabIndex = 7;
             this.lblEmployeeLastName.Text = "นามสกุล";
             // 
-            // txtRole
+            // txtEmployeeRole
             // 
-            this.txtRole.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.txtRole.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtRole.Enabled = false;
-            this.txtRole.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRole.Location = new System.Drawing.Point(156, 177);
-            this.txtRole.Margin = new System.Windows.Forms.Padding(2);
-            this.txtRole.Name = "txtRole";
-            this.txtRole.ReadOnly = true;
-            this.txtRole.Size = new System.Drawing.Size(288, 36);
-            this.txtRole.TabIndex = 6;
+            this.txtEmployeeRole.BackColor = System.Drawing.SystemColors.Control;
+            this.txtEmployeeRole.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtEmployeeRole.Enabled = false;
+            this.txtEmployeeRole.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtEmployeeRole.Location = new System.Drawing.Point(156, 177);
+            this.txtEmployeeRole.Margin = new System.Windows.Forms.Padding(2);
+            this.txtEmployeeRole.Name = "txtEmployeeRole";
+            this.txtEmployeeRole.ReadOnly = true;
+            this.txtEmployeeRole.Size = new System.Drawing.Size(288, 36);
+            this.txtEmployeeRole.TabIndex = 6;
             // 
             // lblEmployeeName
             // 
@@ -586,6 +602,7 @@
             // btnSearchEmployee
             // 
             this.btnSearchEmployee.BackColor = System.Drawing.Color.White;
+            this.btnSearchEmployee.Enabled = false;
             this.btnSearchEmployee.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.btnSearchEmployee.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchEmployee.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -595,11 +612,11 @@
             this.btnSearchEmployee.TabIndex = 4;
             this.btnSearchEmployee.Text = "ค้นหาผู้ดูแลโครงการ";
             this.btnSearchEmployee.UseVisualStyleBackColor = false;
-            this.btnSearchEmployee.Click += new System.EventHandler(this.button6_Click);
+            this.btnSearchEmployee.Click += new System.EventHandler(this.btnSearchEmployee_Click);
             // 
             // txtEmployeeLastName
             // 
-            this.txtEmployeeLastName.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.txtEmployeeLastName.BackColor = System.Drawing.SystemColors.Control;
             this.txtEmployeeLastName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEmployeeLastName.Enabled = false;
             this.txtEmployeeLastName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -636,7 +653,7 @@
             // 
             // txtEmployeeName
             // 
-            this.txtEmployeeName.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.txtEmployeeName.BackColor = System.Drawing.SystemColors.Control;
             this.txtEmployeeName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEmployeeName.Enabled = false;
             this.txtEmployeeName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -685,11 +702,13 @@
             // txtProjectAddress
             // 
             this.txtProjectAddress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtProjectAddress.Enabled = false;
             this.txtProjectAddress.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProjectAddress.Location = new System.Drawing.Point(2, 34);
             this.txtProjectAddress.Margin = new System.Windows.Forms.Padding(2);
             this.txtProjectAddress.Multiline = true;
             this.txtProjectAddress.Name = "txtProjectAddress";
+            this.txtProjectAddress.ReadOnly = true;
             this.txtProjectAddress.Size = new System.Drawing.Size(477, 122);
             this.txtProjectAddress.TabIndex = 2;
             // 
@@ -731,11 +750,13 @@
             // txtProjectDetail
             // 
             this.txtProjectDetail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtProjectDetail.Enabled = false;
             this.txtProjectDetail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProjectDetail.Location = new System.Drawing.Point(2, 35);
             this.txtProjectDetail.Margin = new System.Windows.Forms.Padding(2);
             this.txtProjectDetail.Multiline = true;
             this.txtProjectDetail.Name = "txtProjectDetail";
+            this.txtProjectDetail.ReadOnly = true;
             this.txtProjectDetail.Size = new System.Drawing.Size(477, 106);
             this.txtProjectDetail.TabIndex = 2;
             // 
@@ -773,7 +794,7 @@
             // 
             // txtCustomerEmail
             // 
-            this.txtCustomerEmail.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.txtCustomerEmail.BackColor = System.Drawing.SystemColors.Control;
             this.txtCustomerEmail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCustomerEmail.Enabled = false;
             this.txtCustomerEmail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -797,7 +818,7 @@
             // 
             // txtCustomerPhone
             // 
-            this.txtCustomerPhone.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.txtCustomerPhone.BackColor = System.Drawing.SystemColors.Control;
             this.txtCustomerPhone.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCustomerPhone.Enabled = false;
             this.txtCustomerPhone.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -821,7 +842,7 @@
             // 
             // txtCustomerLastName
             // 
-            this.txtCustomerLastName.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.txtCustomerLastName.BackColor = System.Drawing.SystemColors.Control;
             this.txtCustomerLastName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCustomerLastName.Enabled = false;
             this.txtCustomerLastName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -857,6 +878,7 @@
             // btnSearchCustomer
             // 
             this.btnSearchCustomer.BackColor = System.Drawing.Color.White;
+            this.btnSearchCustomer.Enabled = false;
             this.btnSearchCustomer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.btnSearchCustomer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchCustomer.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -870,7 +892,7 @@
             // 
             // txtCustomerIDCard
             // 
-            this.txtCustomerIDCard.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.txtCustomerIDCard.BackColor = System.Drawing.SystemColors.Control;
             this.txtCustomerIDCard.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCustomerIDCard.Enabled = false;
             this.txtCustomerIDCard.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -907,7 +929,7 @@
             // 
             // txtCustomerName
             // 
-            this.txtCustomerName.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.txtCustomerName.BackColor = System.Drawing.SystemColors.Control;
             this.txtCustomerName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCustomerName.Enabled = false;
             this.txtCustomerName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -928,7 +950,7 @@
             // 
             // pnlPhase
             // 
-            this.pnlPhase.Controls.Add(this.comboBox1);
+            this.pnlPhase.Controls.Add(this.cmbCurrentPhaseNumber);
             this.pnlPhase.Controls.Add(this.starPhase);
             this.pnlPhase.Controls.Add(this.lblPhase);
             this.pnlPhase.Location = new System.Drawing.Point(743, 12);
@@ -937,14 +959,16 @@
             this.pnlPhase.Size = new System.Drawing.Size(215, 74);
             this.pnlPhase.TabIndex = 14;
             // 
-            // comboBox1
+            // cmbCurrentPhaseNumber
             // 
-            this.comboBox1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(3, 33);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(206, 38);
-            this.comboBox1.TabIndex = 3;
+            this.cmbCurrentPhaseNumber.Enabled = false;
+            this.cmbCurrentPhaseNumber.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbCurrentPhaseNumber.FormattingEnabled = true;
+            this.cmbCurrentPhaseNumber.Location = new System.Drawing.Point(3, 33);
+            this.cmbCurrentPhaseNumber.Name = "cmbCurrentPhaseNumber";
+            this.cmbCurrentPhaseNumber.Size = new System.Drawing.Size(206, 38);
+            this.cmbCurrentPhaseNumber.TabIndex = 3;
+            this.cmbCurrentPhaseNumber.SelectedIndexChanged += new System.EventHandler(this.cmbCurrentPhaseNumber_SelectedIndexChanged);
             // 
             // starPhase
             // 
@@ -1008,12 +1032,17 @@
             // txtBudget
             // 
             this.txtBudget.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtBudget.Enabled = false;
             this.txtBudget.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBudget.Location = new System.Drawing.Point(0, 37);
             this.txtBudget.Margin = new System.Windows.Forms.Padding(2);
             this.txtBudget.Name = "txtBudget";
+            this.txtBudget.ReadOnly = true;
             this.txtBudget.Size = new System.Drawing.Size(254, 36);
             this.txtBudget.TabIndex = 2;
+            this.txtBudget.Enter += new System.EventHandler(this.txtBudget_Enter);
+            this.txtBudget.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBudget_KeyPress);
+            this.txtBudget.Leave += new System.EventHandler(this.txtBudget_Leave);
             // 
             // pnlSumDate
             // 
@@ -1038,7 +1067,7 @@
             // 
             // txtSumDate
             // 
-            this.txtSumDate.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.txtSumDate.BackColor = System.Drawing.SystemColors.Control;
             this.txtSumDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSumDate.Enabled = false;
             this.txtSumDate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1048,6 +1077,7 @@
             this.txtSumDate.ReadOnly = true;
             this.txtSumDate.Size = new System.Drawing.Size(243, 36);
             this.txtSumDate.TabIndex = 2;
+            this.txtSumDate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // panel3
             // 
@@ -1062,12 +1092,14 @@
             // 
             // dtpkEndDate
             // 
+            this.dtpkEndDate.Enabled = false;
             this.dtpkEndDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpkEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpkEndDate.Location = new System.Drawing.Point(3, 36);
             this.dtpkEndDate.Name = "dtpkEndDate";
             this.dtpkEndDate.Size = new System.Drawing.Size(209, 35);
             this.dtpkEndDate.TabIndex = 3;
+            this.dtpkEndDate.ValueChanged += new System.EventHandler(this.dtpkEndDate_ValueChanged);
             // 
             // starEndDate
             // 
@@ -1106,12 +1138,14 @@
             // 
             // dtpkStartDate
             // 
+            this.dtpkStartDate.Enabled = false;
             this.dtpkStartDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpkStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpkStartDate.Location = new System.Drawing.Point(3, 36);
             this.dtpkStartDate.Name = "dtpkStartDate";
             this.dtpkStartDate.Size = new System.Drawing.Size(209, 35);
             this.dtpkStartDate.TabIndex = 3;
+            this.dtpkStartDate.ValueChanged += new System.EventHandler(this.dtpkStartDate_ValueChanged);
             // 
             // starStartDate
             // 
@@ -1141,7 +1175,7 @@
             // 
             this.pnlNumber.Controls.Add(this.starNumber);
             this.pnlNumber.Controls.Add(this.lblNumber);
-            this.pnlNumber.Controls.Add(this.textBox1);
+            this.pnlNumber.Controls.Add(this.txtNumber);
             this.pnlNumber.Location = new System.Drawing.Point(377, 12);
             this.pnlNumber.Margin = new System.Windows.Forms.Padding(2);
             this.pnlNumber.Name = "pnlNumber";
@@ -1172,15 +1206,16 @@
             this.lblNumber.TabIndex = 2;
             this.lblNumber.Text = "เลขที่สัญญา";
             // 
-            // textBox1
+            // txtNumber
             // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(0, 37);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(358, 36);
-            this.textBox1.TabIndex = 2;
+            this.txtNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtNumber.Enabled = false;
+            this.txtNumber.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNumber.Location = new System.Drawing.Point(0, 37);
+            this.txtNumber.Margin = new System.Windows.Forms.Padding(2);
+            this.txtNumber.Name = "txtNumber";
+            this.txtNumber.Size = new System.Drawing.Size(358, 36);
+            this.txtNumber.TabIndex = 2;
             // 
             // pnlProjectName
             // 
@@ -1220,10 +1255,12 @@
             // txtProjectName
             // 
             this.txtProjectName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtProjectName.Enabled = false;
             this.txtProjectName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProjectName.Location = new System.Drawing.Point(0, 37);
             this.txtProjectName.Margin = new System.Windows.Forms.Padding(2);
             this.txtProjectName.Name = "txtProjectName";
+            this.txtProjectName.ReadOnly = true;
             this.txtProjectName.Size = new System.Drawing.Size(358, 36);
             this.txtProjectName.TabIndex = 2;
             // 
@@ -1236,7 +1273,7 @@
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 738);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1448, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1499, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDelete
@@ -1251,6 +1288,7 @@
             this.btnDelete.TabIndex = 7;
             this.btnDelete.Text = "ลบข้อมูล";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnEdit
             // 
@@ -1264,6 +1302,7 @@
             this.btnEdit.TabIndex = 8;
             this.btnEdit.Text = "แก้ไขข้อมูล";
             this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // btnAdd
             // 
@@ -1277,6 +1316,7 @@
             this.btnAdd.TabIndex = 9;
             this.btnAdd.Text = "เพิ่มข้อมูล";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnSave
             // 
@@ -1290,6 +1330,7 @@
             this.btnSave.TabIndex = 6;
             this.btnSave.Text = "บันทึกข้อมูล";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // pnlStep2
             // 
@@ -1297,7 +1338,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 832);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1448, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1499, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // pnlProjectdata
@@ -1308,7 +1349,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 842);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1448, 371);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1499, 371);
             this.pnlProjectdata.TabIndex = 3;
             // 
             // dtgvProject
@@ -1318,6 +1359,7 @@
             this.dtgvProject.Name = "dtgvProject";
             this.dtgvProject.Size = new System.Drawing.Size(1514, 270);
             this.dtgvProject.TabIndex = 5;
+            this.dtgvProject.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvProject_CellClick);
             // 
             // lblToppic1
             // 
@@ -1329,6 +1371,16 @@
             this.lblToppic1.Size = new System.Drawing.Size(201, 37);
             this.lblToppic1.TabIndex = 3;
             this.lblToppic1.Text = "โครงการทั้งหมด";
+            // 
+            // lblTotalPercentage
+            // 
+            this.lblTotalPercentage.AutoSize = true;
+            this.lblTotalPercentage.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalPercentage.Location = new System.Drawing.Point(29, 318);
+            this.lblTotalPercentage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblTotalPercentage.Name = "lblTotalPercentage";
+            this.lblTotalPercentage.Size = new System.Drawing.Size(0, 30);
+            this.lblTotalPercentage.TabIndex = 10;
             // 
             // searchboxProject
             // 
@@ -1349,7 +1401,7 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.pnlInfomation);
             this.Name = "ManageProject";
-            this.Size = new System.Drawing.Size(1448, 954);
+            this.Size = new System.Drawing.Size(1499, 954);
             this.pnlInfomation.ResumeLayout(false);
             this.subInfo.ResumeLayout(false);
             this.pnlPhaseData.ResumeLayout(false);
@@ -1413,7 +1465,7 @@
         private System.Windows.Forms.Panel pnlNumber;
         private System.Windows.Forms.Label starNumber;
         private System.Windows.Forms.Label lblNumber;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtNumber;
         private System.Windows.Forms.Panel pnlProjectName;
         private System.Windows.Forms.Label starProjectName;
         private System.Windows.Forms.Label lblProjectName;
@@ -1442,7 +1494,7 @@
         private System.Windows.Forms.Label lblCustomer;
         private System.Windows.Forms.TextBox txtCustomerName;
         private System.Windows.Forms.Panel pnlStep1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cmbCurrentPhaseNumber;
         private System.Windows.Forms.Label lblCustomerPhone;
         private System.Windows.Forms.TextBox txtCustomerPhone;
         private System.Windows.Forms.Label lblCustomerLastName;
@@ -1455,7 +1507,7 @@
         private System.Windows.Forms.Panel pnlProjectManager;
         private System.Windows.Forms.Label lblRole;
         private System.Windows.Forms.Label lblEmployeeLastName;
-        private System.Windows.Forms.TextBox txtRole;
+        private System.Windows.Forms.TextBox txtEmployeeRole;
         private System.Windows.Forms.Label lblEmployeeName;
         private System.Windows.Forms.Button btnSearchEmployee;
         private System.Windows.Forms.TextBox txtEmployeeLastName;
@@ -1478,7 +1530,7 @@
         private System.Windows.Forms.Label starBlueprint;
         private System.Windows.Forms.Label lblBlueprint;
         private System.Windows.Forms.Panel pnlPhaseNumber;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox cmbPhaseNumber;
         private System.Windows.Forms.Label starPhaseNumber;
         private System.Windows.Forms.Label lblPhaseNumber;
         private System.Windows.Forms.Panel pnlRemark;
@@ -1495,10 +1547,11 @@
         private System.Windows.Forms.Label lblRemarkPhase;
         private System.Windows.Forms.Label starPercentPhase;
         private System.Windows.Forms.Label lblPercentPhase;
-        private System.Windows.Forms.TextBox textBox13;
+        private System.Windows.Forms.TextBox txtPercentPhase;
         private System.Windows.Forms.Panel pnlPhaseData;
         private System.Windows.Forms.Label lblPhaseData;
         private System.Windows.Forms.DataGridView dtgvPhase;
         private System.Windows.Forms.DataGridView dtgvProject;
+        private System.Windows.Forms.Label lblTotalPercentage;
     }
 }

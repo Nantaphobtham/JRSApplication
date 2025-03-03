@@ -109,9 +109,15 @@
     </Compile>
     <Compile Include="Components\Customer.cs" />
     <Compile Include="Components\Employee.cs" />
+    <Compile Include="Components\EmployeeAssignment.cs" />
+    <Compile Include="Components\Project.cs" />
+    <Compile Include="Components\ProjectPhase.cs" />
     <Compile Include="Components\Supplier.cs" />
     <Compile Include="Data Access Layer\CustomerDAL.cs" />
+    <Compile Include="Data Access Layer\EmployeeAssignmentDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeDAL.cs" />
+    <Compile Include="Data Access Layer\ProjectDAL.cs" />
+    <Compile Include="Data Access Layer\ProjectPhaseDAL.cs" />
     <Compile Include="Data Access Layer\SupplierDAL.cs" />
     <Compile Include="ProjectManager\AllocatePersonnel.cs">
       <SubType>UserControl</SubType>
@@ -222,7 +228,7 @@
     <Compile Include="Components\SearchForm.Designer.cs">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SearchService.cs" />
+    <Compile Include="Components\SearchService.cs" />
     <Compile Include="Sitesupervisor\PurchaseOrder.cs">
       <SubType>UserControl</SubType>
     </Compile>

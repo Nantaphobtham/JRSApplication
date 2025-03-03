@@ -16,12 +16,17 @@ namespace JRSApplication
         public string SearchMode { get; set; }  // "Customer" หรือ "Employee"
         public string SelectedID { get; private set; } = "";
         public string SelectedName { get; private set; } = "";
+        public string SelectedLastName { get; private set; } = "";
+        public string SelectedIDCardOrRole { get; private set; } = "";
+        public string SelectedPhone { get; private set; } = "";
+        public string SelectedEmail { get; private set; } = "";
 
         public SearchForm(string mode)
         {
             InitializeComponent();
             SearchMode = mode;
-            LoadSearchData("");
+            lblTitle.Text = SearchMode == "Customer" ? "ค้นหาลูกค้า" : "ค้นหาพนักงาน"; // ✅ เปลี่ยนชื่อหัวข้อ
+            LoadSearchData(""); // ✅ โหลดข้อมูลเริ่มต้น
         }
 
         // โหลดข้อมูลตามประเภทที่เลือก (ลูกค้าหรือพนักงาน)
@@ -41,8 +46,21 @@ namespace JRSApplication
         {
             if (dtgvAlldata.SelectedRows.Count > 0)
             {
-                SelectedID = dtgvAlldata.SelectedRows[0].Cells[0].Value.ToString();
-                SelectedName = dtgvAlldata.SelectedRows[0].Cells[1].Value.ToString();
+                SelectedID = dtgvAlldata.SelectedRows[0].Cells["ID"].Value.ToString();
+                SelectedName = dtgvAlldata.SelectedRows[0].Cells["ชื่อ"].Value.ToString();
+                SelectedLastName = dtgvAlldata.SelectedRows[0].Cells["นามสกุล"].Value.ToString();
+
+                if (SearchMode == "Customer")
+                {
+                    SelectedIDCardOrRole = dtgvAlldata.SelectedRows[0].Cells["เลขบัตรประชาชน"].Value.ToString();
+                    SelectedPhone = dtgvAlldata.SelectedRows[0].Cells["เบอร์โทร"].Value.ToString();
+                    SelectedEmail = dtgvAlldata.SelectedRows[0].Cells["อีเมล"].Value.ToString();
+                }
+                else if (SearchMode == "Employee")
+                {
+                    SelectedIDCardOrRole = dtgvAlldata.SelectedRows[0].Cells["ตำแหน่ง"].Value.ToString();
+                }
+
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -51,5 +69,18 @@ namespace JRSApplication
                 MessageBox.Show("กรุณาเลือกข้อมูลก่อน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            LoadSearchData(txtSearch.Text.Trim()); // ✅ ค้นหาตาม Keyword
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            //ปิดหน้าจอ
+            this.Close();
+        }
+
+        
     }
 }
