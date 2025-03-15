@@ -1,5 +1,7 @@
 ﻿using JRSApplication.Components;
 using JRSApplication.Data_Access_Layer;
+using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows.Forms;
 
 namespace JRSApplication
@@ -33,15 +36,7 @@ namespace JRSApplication
         }
         private void LoadProjectData()
         {
-            ProjectDAL dal = new ProjectDAL();
-            List<Project> projects = dal.GetAllProjects();
-
-            dtgvProject.Rows.Clear();
-            foreach (var project in projects)
-            {
-                dtgvProject.Rows.Add(project.ProjectID, project.ProjectName, project.ProjectStart.ToShortDateString(),
-                                      project.ProjectEnd.ToShortDateString(), project.ProjectBudget);
-            }
+            //รอ
         }
 
         //กำหนดค่าลงใน cmbCurrentPhaseNumber
@@ -78,7 +73,7 @@ namespace JRSApplication
         }
 
 
-
+        // เปิด กล่องค้นหา
         private void btnSearchEmployee_Click(object sender, EventArgs e)
         {
             using (SearchForm searchForm = new SearchForm("Employee"))
@@ -115,14 +110,11 @@ namespace JRSApplication
                 }
             }
         }
-
         private void btnSearchCustomer_Click(object sender, EventArgs e)
         {
             OpenSearchForm("Customer", txtCustomerName, txtCustomerLastName, txtCustomerIDCard, txtCustomerPhone, txtCustomerEmail);
         }
-
-        private void OpenSearchForm(string searchType, TextBox nameTextBox, TextBox lastNameTextBox,
-                            TextBox idCardOrRoleTextBox, TextBox phoneTextBox = null, TextBox emailTextBox = null)
+        private void OpenSearchForm(string searchType, TextBox nameTextBox, TextBox lastNameTextBox,TextBox idCardOrRoleTextBox, TextBox phoneTextBox = null, TextBox emailTextBox = null)
         {
             using (SearchForm searchForm = new SearchForm(searchType))
             {
@@ -149,14 +141,130 @@ namespace JRSApplication
             }
         }
 
+        //สำหรับบันทึกลงฐานข้อมูล
+        private bool ValidateProjectData()
+        {
+            // ✅ ตรวจสอบค่าที่จำเป็นต้องกรอก
+            if (string.IsNullOrWhiteSpace(txtProjectName.Text))
+            {
+                MessageBox.Show("กรุณากรอกชื่อโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtProjectName.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtNumber.Text))
+            {
+                MessageBox.Show("กรุณากรอกเลขที่สัญญา", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNumber.Focus();
+                return false;
+            }
+
+            if (cmbCurrentPhaseNumber.SelectedItem == null)
+            {
+                MessageBox.Show("กรุณาระบุจำนวนเฟส", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cmbCurrentPhaseNumber.Focus();
+                return false;
+            }
+
+            if (dtpkStartDate.Value > dtpkEndDate.Value)
+            {
+                MessageBox.Show("วันที่สิ้นสุดโครงการต้องไม่น้อยกว่าวันที่เริ่มต้น", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dtpkEndDate.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtBudget.Text) || !decimal.TryParse(txtBudget.Text.Replace(",", ""), out _))
+            {
+                MessageBox.Show("กรุณากรอกจำนวนเงินจ้างที่ถูกต้อง", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtBudget.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(selectedCustomerID))
+            {
+                MessageBox.Show("กรุณาเลือกข้อมูลลูกค้า", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(selectedEmployeeID))
+            {
+                MessageBox.Show("กรุณาเลือกข้อมูลผู้ดูแลโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            // ✅ ตรวจสอบเปอร์เซ็นต์รวมของเฟส (ต้องเท่ากับ 100%)
+            decimal totalPercent = projectPhases.Sum(p => p.PhasePercent);
+            if (totalPercent != 100)
+            {
+                MessageBox.Show("เปอร์เซ็นต์รวมของเฟสต้องเท่ากับ 100%", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true; // ✅ ผ่านทุกเงื่อนไข
+        }
+
+
         //Action button
         private void btnSave_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+
+                // ✅ ตรวจสอบข้อมูลก่อนบันทึก
+                if (!ValidateProjectData())
+                {
+                    return; // ❌ ถ้าข้อมูลไม่ครบ จะไม่ดำเนินการต่อ
+                }
+
+                ProjectDAL dal = new ProjectDAL();
+                int projectID = dal.GenerateProjectID(); // ✅ สร้าง `pro_id` ก่อน
+
+                Project project = new Project
+                {
+                    ProjectID = projectID,
+                    ProjectName = txtProjectName.Text.Trim(),
+                    ProjectDetail = txtProjectDetail.Text.Trim(),
+                    ProjectAddress = txtProjectAddress.Text.Trim(),
+                    ProjectBudget = decimal.Parse(txtBudget.Text.Replace(",", "")),
+                    ProjectStart = dtpkStartDate.Value,
+                    ProjectEnd = dtpkEndDate.Value,
+                    CurrentPhaseNumber = int.Parse(cmbCurrentPhaseNumber.SelectedItem.ToString()),
+                    Remark = txtRemark.Text.Trim(),
+                    ProjectNumber = txtNumber.Text.Trim(),
+                    ConstructionBlueprint = btnInsertBlueprintFile.Text.Trim(),
+                    DemolitionModel = btnInsertDemolitionFile.Text.Trim(),
+                    EmployeeID = int.Parse(selectedEmployeeID),
+                    CustomerID = int.Parse(selectedCustomerID)
+                };
+
+                bool success = dal.InsertProjectWithPhases(project, projectPhases);
+
+                if (success)
+                {
+                    MessageBox.Show("บันทึกโครงการเรียบร้อย", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadProjectData(); // ✅ โหลดข้อมูลใหม่
+                }
+                else
+                {
+                    MessageBox.Show("เกิดข้อผิดพลาดในการบันทึก", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ข้อผิดพลาด: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            //เคลียฟอร์ม
+            ClearForm();
+            ReadOnlyControls_close();
+            EnableControls_close();
+
         }
+
+
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            //เพิ่ม
+            //เพิ่ม เปิดการทำงาน
             EnableControls_open();
             ReadOnlyControls_open();
             txtProjectName.Focus();
@@ -164,37 +272,12 @@ namespace JRSApplication
         private void btnEdit_Click(object sender, EventArgs e)
         {
             //แก้ไข
+
         }
         private void btnDelete_Click(object sender, EventArgs e)
         {
             //ลบ
-            if (dtgvProject.SelectedRows.Count == 0)
-            {
-                MessageBox.Show("กรุณาเลือกโครงการที่ต้องการลบ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            int projectID = Convert.ToInt32(dtgvProject.SelectedRows[0].Cells[0].Value);
-
-            DialogResult result = MessageBox.Show("คุณแน่ใจหรือไม่ว่าต้องการลบโครงการนี้?", "ยืนยันการลบ", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (result == DialogResult.Yes)
-            {
-                ProjectDAL dal = new ProjectDAL();
-                bool success = dal.DeleteProject(projectID);
-
-                if (success)
-                {
-                    MessageBox.Show("ลบข้อมูลโครงการสำเร็จ!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadProjectData();
-                    ClearForm();
-                    EnableControls_close();
-                    ReadOnlyControls_close();
-                }
-                else
-                {
-                    MessageBox.Show("เกิดข้อผิดพลาดในการลบข้อมูล!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            
         }
 
 
@@ -321,18 +404,7 @@ namespace JRSApplication
             selectedEmployeeID = "";
         }
 
-        private void dtgvProject_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                int projectID = Convert.ToInt32(dtgvProject.Rows[e.RowIndex].Cells[0].Value);
-
-                // ✅ โหลดเฟสของโครงการที่เลือก
-                LoadPhaseData(projectID);
-            }
-        }
-
-        
+    
 
         //นำเข้าไฟล์ PDF
         private void SelectFileAndSetButtonText(Button button)
@@ -399,24 +471,12 @@ namespace JRSApplication
 
 
         // phase data
-        private void LoadPhaseData(int projectID)
-        {
-            ProjectPhaseDAL dal = new ProjectPhaseDAL();
-            List<ProjectPhase> phases = dal.GetPhasesByProject(projectID);
-
-            dtgvPhase.Rows.Clear();
-            foreach (var phase in phases)
-            {
-                dtgvPhase.Rows.Add(phase.PhaseNumber, phase.PhaseDetail, phase.PhaseBudget);
-            }
-        }
-
         // 🟢 เก็บรายการเฟสทั้งหมด
         private List<ProjectPhase> projectPhases = new List<ProjectPhase>();
 
         // 🟢 ใช้เก็บเฟสที่กำลังแก้ไข
         private ProjectPhase currentEditingPhase = null;
-
+        //ตาราง
         private void InitializePhaseDataGridView()
         {
             // ✅ ป้องกันการเพิ่มคอลัมน์ซ้ำ
@@ -498,8 +558,6 @@ namespace JRSApplication
             // ✅ คำนวณเปอร์เซ็นต์รวม
             CalculateTotalPhasePercentage();
         }
-
-
         private void dtgvPhase_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0) // ✅ ตรวจสอบว่าคลิกที่แถวที่มีข้อมูล
@@ -523,7 +581,7 @@ namespace JRSApplication
             }
             
         }
-
+        // action button phase
         private void btnAddPhase_Click(object sender, EventArgs e)
         {
             // ✅ ตรวจสอบว่ากรอกข้อมูลครบ
@@ -539,6 +597,12 @@ namespace JRSApplication
             if (!decimal.TryParse(txtPercentPhase.Text, out decimal phasePercent) || phasePercent <= 0)
             {
                 MessageBox.Show("กรุณากรอกเปอร์เซ็นต์งานให้ถูกต้อง!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtBudget.Text))
+            {
+                MessageBox.Show("กรุณากรอกงบประมาณก่อนเพิ่มเฟส!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -587,7 +651,6 @@ namespace JRSApplication
             btnAddPhase.Text = "เพิ่ม";
             currentEditingPhase = null;
         }
-
         private void btnEditPhase_Click(object sender, EventArgs e)
         {
             if (currentEditingPhase != null)  // ✅ ตรวจสอบว่ามีเฟสที่ถูกเลือกหรือไม่
@@ -619,9 +682,9 @@ namespace JRSApplication
             // ✅ เปลี่ยนสีตัวเลขถ้าครบ 100%
             lblTotalPercentage.ForeColor = totalPercent == 100 ? Color.Green : Color.Red;
         }
-
+        //เปิดปิด การทำงาน phase
         private void clearPhaseForm()
-        {   //ล้านข้อมูล
+        {   //ล้างข้อมูล
             txtPhaseDetail.Clear();
             txtPercentPhase.Clear();
             cmbPhaseNumber.SelectedIndex = -1;
@@ -642,7 +705,6 @@ namespace JRSApplication
             txtPhaseDetail.Enabled = true;
             txtPercentPhase.Enabled = true;
         }
-
         private void btnTurnoffEditing_Click(object sender, EventArgs e)
         {
             PhaseAbleOn();

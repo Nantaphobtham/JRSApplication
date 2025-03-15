@@ -1388,7 +1388,6 @@
             this.dtgvProject.Name = "dtgvProject";
             this.dtgvProject.Size = new System.Drawing.Size(1514, 270);
             this.dtgvProject.TabIndex = 5;
-            this.dtgvProject.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvProject_CellClick);
             // 
             // lblToppic1
             // 
