@@ -20,7 +20,7 @@ namespace JRSApplication
         private string selectedEmployeeID = "";
         private string loggedInUser = "Admin"; // ✅ เก็บชื่อผู้ใช้ที่ล็อกอินมา
         private List<EmployeeAssignment> assignedEmployees = new List<EmployeeAssignment>(); // ✅ เก็บพนักงานที่เลือกไว้ก่อนบันทึก
-        private List<ProjectPhase> projectPhases = new List<ProjectPhase>();
+        
 
 
 
@@ -225,7 +225,7 @@ namespace JRSApplication
             CalculateProjectDuration(); // คำนวณใหม่เมื่อเปลี่ยนวันที่สิ้นสุด
         }
 
-        //เปิด ปิด ล้าง ฟอร์ม
+        //เปิด ปิด ล้าง ฟอร์ม ทั้งหมด
         private void EnableControls_open()
         {
             txtProjectName.Enabled = true;
@@ -332,17 +332,7 @@ namespace JRSApplication
             }
         }
 
-        private void LoadPhaseData(int projectID)
-        {
-            ProjectPhaseDAL dal = new ProjectPhaseDAL();
-            List<ProjectPhase> phases = dal.GetPhasesByProject(projectID);
-
-            dtgvPhase.Rows.Clear();
-            foreach (var phase in phases)
-            {
-                dtgvPhase.Rows.Add(phase.PhaseNumber, phase.PhaseDetail, phase.PhaseBudget);
-            }
-        }
+        
 
         //นำเข้าไฟล์ PDF
         private void SelectFileAndSetButtonText(Button button)
@@ -409,6 +399,24 @@ namespace JRSApplication
 
 
         // phase data
+        private void LoadPhaseData(int projectID)
+        {
+            ProjectPhaseDAL dal = new ProjectPhaseDAL();
+            List<ProjectPhase> phases = dal.GetPhasesByProject(projectID);
+
+            dtgvPhase.Rows.Clear();
+            foreach (var phase in phases)
+            {
+                dtgvPhase.Rows.Add(phase.PhaseNumber, phase.PhaseDetail, phase.PhaseBudget);
+            }
+        }
+
+        // 🟢 เก็บรายการเฟสทั้งหมด
+        private List<ProjectPhase> projectPhases = new List<ProjectPhase>();
+
+        // 🟢 ใช้เก็บเฟสที่กำลังแก้ไข
+        private ProjectPhase currentEditingPhase = null;
+
         private void InitializePhaseDataGridView()
         {
             // ✅ ป้องกันการเพิ่มคอลัมน์ซ้ำ
@@ -419,7 +427,8 @@ namespace JRSApplication
                 // ✅ เพิ่มคอลัมน์
                 dtgvPhase.Columns.Add("PhaseNumber", "เฟสที่");
                 dtgvPhase.Columns.Add("PhaseDetail", "รายละเอียดการดำเนินงาน");
-                dtgvPhase.Columns.Add("PhaseBudget", "งบประมาณเฟส (บาท)"); // ✅ เปลี่ยนจาก "เปอร์เซ็นต์งาน"
+                dtgvPhase.Columns.Add("PhaseBudget", "งบประมาณเฟส (บาท)");
+                dtgvPhase.Columns.Add("PhasePercent", "เปอร์เซ็นต์งาน (%)"); // 🟢 เพิ่มคอลัมน์
 
                 // ✅ ปรับแต่งคอลัมน์
                 dtgvPhase.Columns["PhaseNumber"].Width = 60;
@@ -435,7 +444,11 @@ namespace JRSApplication
                 dtgvPhase.Columns["PhaseBudget"].DefaultCellStyle.Format = "N2"; // ✅ แสดงเป็น 1,200.00
                 dtgvPhase.Columns["PhaseBudget"].ReadOnly = true;
 
-                // ✅ ปรับแต่ง UI
+                dtgvPhase.Columns["PhasePercent"].Width = 100;
+                dtgvPhase.Columns["PhasePercent"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dtgvPhase.Columns["PhasePercent"].DefaultCellStyle.Format = "0.00"; // ✅ แสดงเป็น 2 ตำแหน่ง
+                dtgvPhase.Columns["PhasePercent"].ReadOnly = true;
+
                 CustomizeDataGridViewPhase();
             }
         }
@@ -471,18 +484,52 @@ namespace JRSApplication
             dtgvPhase.AllowUserToAddRows = false;
             dtgvPhase.AllowUserToResizeRows = false;
         }
-        private void btnAddPhase_Click(object sender, EventArgs e)
+        private void LoadPhaseToGridView()
         {
-            // ✅ ตรวจสอบค่าซ้ำ
-            int phaseNumber = int.Parse(cmbPhaseNumber.SelectedItem.ToString());
-            if (projectPhases.Any(p => p.PhaseNumber == phaseNumber))
+            dtgvPhase.Rows.Clear();
+
+            foreach (var phase in projectPhases)
             {
-                MessageBox.Show("เฟสนี้มีอยู่แล้ว กรุณาเลือกเฟสใหม่!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                dtgvPhase.Rows.Add(phase.PhaseNumber, phase.PhaseDetail,
+                                   phase.PhaseBudget.ToString("N2"),
+                                   phase.PhasePercent.ToString("0.00"));
             }
 
+            // ✅ คำนวณเปอร์เซ็นต์รวม
+            CalculateTotalPhasePercentage();
+        }
+
+
+        private void dtgvPhase_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) // ✅ ตรวจสอบว่าคลิกที่แถวที่มีข้อมูล
+            {
+                DataGridViewRow row = dtgvPhase.Rows[e.RowIndex];
+
+                // ✅ ค้นหาเฟสที่ถูกเลือกจาก `List<ProjectPhase>`
+                int selectedPhaseNumber = int.Parse(row.Cells["PhaseNumber"].Value.ToString());
+                currentEditingPhase = projectPhases.FirstOrDefault(p => p.PhaseNumber == selectedPhaseNumber);
+                if (currentEditingPhase != null)
+                {
+                    // ✅ แสดงค่าลงในช่องป้อนข้อมูล
+                    cmbPhaseNumber.SelectedItem = currentEditingPhase.PhaseNumber.ToString();
+                    txtPhaseDetail.Text = currentEditingPhase.PhaseDetail;
+                    txtPercentPhase.Text = currentEditingPhase.PhasePercent.ToString("0.00");
+
+                    // ห้ามแก้ไข
+                    PhaseDisableEditing();
+                    btnTurnoffEditing.Visible = true;
+                }
+            }
+            
+        }
+
+        private void btnAddPhase_Click(object sender, EventArgs e)
+        {
             // ✅ ตรวจสอบว่ากรอกข้อมูลครบ
-            if (cmbPhaseNumber.SelectedItem == null || string.IsNullOrWhiteSpace(txtPhaseDetail.Text) || string.IsNullOrWhiteSpace(txtPercentPhase.Text))
+            if (cmbPhaseNumber.SelectedItem == null ||
+                string.IsNullOrWhiteSpace(txtPhaseDetail.Text) ||
+                string.IsNullOrWhiteSpace(txtPercentPhase.Text))
             {
                 MessageBox.Show("กรุณากรอกข้อมูลให้ครบถ้วน!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -498,59 +545,109 @@ namespace JRSApplication
             // ✅ คำนวณ phase_budget (budget * phasePercent / 100)
             decimal totalBudget = decimal.Parse(txtBudget.Text.Replace(",", ""));
             decimal phaseBudget = (totalBudget * phasePercent) / 100;
+            int phaseNumber = int.Parse(cmbPhaseNumber.SelectedItem.ToString());
 
-            // ✅ สร้างอ็อบเจ็กต์ของเฟส (ใช้ตัวแปร phaseNumber ที่มีอยู่แล้ว)
-            ProjectPhase newPhase = new ProjectPhase
+            if (btnAddPhase.Text == "บันทึก" && currentEditingPhase != null)
             {
-                PhaseNumber = phaseNumber, // ❌ ห้ามใช้ `int phaseNumber` ซ้ำ
-                PhaseDetail = txtPhaseDetail.Text.Trim(),
-                PhaseBudget = phaseBudget
-            };
-
-            // ✅ เพิ่มเข้าไปใน List
-            projectPhases.Add(newPhase);
-
-            // ✅ โหลดข้อมูลลง DataGridView
-            LoadPhaseToGridView();
-
-            // ✅ ล้างค่าฟอร์มเพื่อให้กรอกเฟสถัดไป
-            clearPhaseForm();
-        }
-        private void LoadPhaseToGridView()
-        {
-            dtgvPhase.Rows.Clear();
-
-            foreach (var phase in projectPhases)
-            {
-                dtgvPhase.Rows.Add(phase.PhaseNumber, phase.PhaseDetail, phase.PhaseBudget.ToString("N2")); // ✅ แสดงงบประมาณแทนเปอร์เซ็นต์
-            }
-
-            // ✅ คำนวณงบประมาณรวม
-            CalculateTotalPhasePercentage();
-        }
-        private void CalculateTotalPhasePercentage()
-        {
-            decimal totalPercent = projectPhases.Sum(p => (p.PhaseBudget * 100) / decimal.Parse(txtBudget.Text.Replace(",", "")));
-
-            // ✅ แสดงผลรวมที่ตารางด้านล่าง
-            lblTotalPercentage.Text = $"รวม  {totalPercent:0.00}%";
-
-            if (totalPercent != 100)
-            {
-                lblTotalPercentage.ForeColor = Color.Red;
+                // ✅ แก้ไขข้อมูลเดิม
+                currentEditingPhase.PhaseDetail = txtPhaseDetail.Text.Trim();
+                currentEditingPhase.PhasePercent = phasePercent;
+                currentEditingPhase.PhaseBudget = phaseBudget;
             }
             else
             {
-                lblTotalPercentage.ForeColor = Color.Green;
+                // ✅ ตรวจสอบว่ามีเฟสนี้แล้วหรือยัง
+                if (projectPhases.Any(p => p.PhaseNumber == phaseNumber))
+                {
+                    MessageBox.Show("เฟสนี้มีอยู่แล้ว กรุณาเลือกเฟสใหม่!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // ✅ เพิ่มข้อมูลใหม่
+                ProjectPhase newPhase = new ProjectPhase
+                {
+                    PhaseNumber = phaseNumber,
+                    PhaseDetail = txtPhaseDetail.Text.Trim(),
+                    PhasePercent = phasePercent,
+                    PhaseBudget = phaseBudget
+                };
+
+                projectPhases.Add(newPhase);
+            }
+
+            // ✅ โหลดข้อมูลใหม่ลงตาราง
+            LoadPhaseToGridView();
+
+            // ✅ ล้างค่าฟอร์ม
+            clearPhaseForm();
+            PhaseAbleOn();
+            btnTurnoffEditing.Visible = false;
+
+            // ✅ เปลี่ยนปุ่มกลับเป็น "เพิ่ม"
+            btnAddPhase.Text = "เพิ่ม";
+            currentEditingPhase = null;
+        }
+
+        private void btnEditPhase_Click(object sender, EventArgs e)
+        {
+            if (currentEditingPhase != null)  // ✅ ตรวจสอบว่ามีเฟสที่ถูกเลือกหรือไม่
+            {
+                // ✅ เปิดการแก้ไขเฉพาะรายละเอียดงาน & เปอร์เซ็นต์
+                txtPhaseDetail.ReadOnly = false;
+                txtPercentPhase.ReadOnly = false;
+                txtPhaseDetail.Enabled = true;
+                txtPercentPhase.Enabled = true;
+
+                // ✅ ปิดการแก้ไขหมายเลขเฟส เพื่อป้องกันการเปลี่ยนหมายเลขเฟส
+                cmbPhaseNumber.Enabled = false;
+
+                // ✅ เปลี่ยนปุ่ม "เพิ่ม" เป็น "บันทึก"
+                btnAddPhase.Text = "บันทึก";
+            }
+            else
+            {
+                MessageBox.Show("กรุณาเลือกเฟสที่ต้องการแก้ไข", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-        private void clearPhaseForm()
+        //คำนวณเปอร์เซ็นต์รวมของเฟส
+        private void CalculateTotalPhasePercentage()
         {
-            txtPhaseDetail.Clear();
-            txtPercentPhase.Clear();
-            cmbPhaseNumber.SelectedIndex = -1; // ✅ ล้างค่าเลือกเฟส
+            decimal totalPercent = projectPhases.Sum(p => p.PhasePercent);
+
+            lblTotalPercentage.Text = $"รวม {totalPercent:0.00}%";
+
+            // ✅ เปลี่ยนสีตัวเลขถ้าครบ 100%
+            lblTotalPercentage.ForeColor = totalPercent == 100 ? Color.Green : Color.Red;
         }
 
+        private void clearPhaseForm()
+        {   //ล้านข้อมูล
+            txtPhaseDetail.Clear();
+            txtPercentPhase.Clear();
+            cmbPhaseNumber.SelectedIndex = -1;
+        }
+        private void PhaseDisableEditing()
+        {   //ปิดการทำงาน
+            txtPhaseDetail.ReadOnly = true;
+            txtPercentPhase.ReadOnly = true;
+            cmbPhaseNumber.Enabled = false;
+            txtPhaseDetail.Enabled = false;
+            txtPercentPhase.Enabled = false;
+        }
+        private void PhaseAbleOn()
+        {//เปิดการทำงาน
+            txtPhaseDetail.ReadOnly = false;
+            txtPercentPhase.ReadOnly = false;
+            cmbPhaseNumber.Enabled = true;
+            txtPhaseDetail.Enabled = true;
+            txtPercentPhase.Enabled = true;
+        }
 
+        private void btnTurnoffEditing_Click(object sender, EventArgs e)
+        {
+            PhaseAbleOn();
+            clearPhaseForm();
+            btnTurnoffEditing.Visible = false;
+        }
     }
 }

@@ -30,7 +30,9 @@
         {
             this.pnlInfomation = new System.Windows.Forms.Panel();
             this.subInfo = new System.Windows.Forms.Panel();
+            this.btnTurnoffEditing = new System.Windows.Forms.Button();
             this.pnlPhaseData = new System.Windows.Forms.Panel();
+            this.lblTotalPercentage = new System.Windows.Forms.Label();
             this.lblPhaseData = new System.Windows.Forms.Label();
             this.dtgvPhase = new System.Windows.Forms.DataGridView();
             this.btnEditPhase = new System.Windows.Forms.Button();
@@ -128,7 +130,6 @@
             this.pnlProjectdata = new System.Windows.Forms.Panel();
             this.dtgvProject = new System.Windows.Forms.DataGridView();
             this.lblToppic1 = new System.Windows.Forms.Label();
-            this.lblTotalPercentage = new System.Windows.Forms.Label();
             this.searchboxProject = new JRSApplication.SearchboxControl();
             this.pnlInfomation.SuspendLayout();
             this.subInfo.SuspendLayout();
@@ -162,12 +163,13 @@
             this.pnlInfomation.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInfomation.Location = new System.Drawing.Point(0, 0);
             this.pnlInfomation.Name = "pnlInfomation";
-            this.pnlInfomation.Size = new System.Drawing.Size(1499, 738);
+            this.pnlInfomation.Size = new System.Drawing.Size(1519, 738);
             this.pnlInfomation.TabIndex = 0;
             // 
             // subInfo
             // 
             this.subInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.subInfo.Controls.Add(this.btnTurnoffEditing);
             this.subInfo.Controls.Add(this.pnlPhaseData);
             this.subInfo.Controls.Add(this.btnEditPhase);
             this.subInfo.Controls.Add(this.btnAddPhase);
@@ -194,6 +196,21 @@
             this.subInfo.Size = new System.Drawing.Size(1528, 721);
             this.subInfo.TabIndex = 0;
             // 
+            // btnTurnoffEditing
+            // 
+            this.btnTurnoffEditing.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnTurnoffEditing.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
+            this.btnTurnoffEditing.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTurnoffEditing.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTurnoffEditing.Location = new System.Drawing.Point(986, 313);
+            this.btnTurnoffEditing.Name = "btnTurnoffEditing";
+            this.btnTurnoffEditing.Size = new System.Drawing.Size(132, 41);
+            this.btnTurnoffEditing.TabIndex = 30;
+            this.btnTurnoffEditing.Text = "ปิดการแก้ไข";
+            this.btnTurnoffEditing.UseVisualStyleBackColor = true;
+            this.btnTurnoffEditing.Visible = false;
+            this.btnTurnoffEditing.Click += new System.EventHandler(this.btnTurnoffEditing_Click);
+            // 
             // pnlPhaseData
             // 
             this.pnlPhaseData.Controls.Add(this.lblTotalPercentage);
@@ -203,6 +220,16 @@
             this.pnlPhaseData.Name = "pnlPhaseData";
             this.pnlPhaseData.Size = new System.Drawing.Size(535, 358);
             this.pnlPhaseData.TabIndex = 29;
+            // 
+            // lblTotalPercentage
+            // 
+            this.lblTotalPercentage.AutoSize = true;
+            this.lblTotalPercentage.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalPercentage.Location = new System.Drawing.Point(29, 318);
+            this.lblTotalPercentage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblTotalPercentage.Name = "lblTotalPercentage";
+            this.lblTotalPercentage.Size = new System.Drawing.Size(0, 30);
+            this.lblTotalPercentage.TabIndex = 10;
             // 
             // lblPhaseData
             // 
@@ -222,6 +249,7 @@
             this.dtgvPhase.Name = "dtgvPhase";
             this.dtgvPhase.Size = new System.Drawing.Size(526, 267);
             this.dtgvPhase.TabIndex = 5;
+            this.dtgvPhase.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvPhase_CellClick);
             // 
             // btnEditPhase
             // 
@@ -236,6 +264,7 @@
             this.btnEditPhase.TabIndex = 27;
             this.btnEditPhase.Text = "แก้ไข";
             this.btnEditPhase.UseVisualStyleBackColor = true;
+            this.btnEditPhase.Click += new System.EventHandler(this.btnEditPhase_Click);
             // 
             // btnAddPhase
             // 
@@ -1273,7 +1302,7 @@
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 738);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1499, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1519, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDelete
@@ -1338,7 +1367,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 832);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1499, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1519, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // pnlProjectdata
@@ -1349,7 +1378,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 842);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1499, 371);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1519, 371);
             this.pnlProjectdata.TabIndex = 3;
             // 
             // dtgvProject
@@ -1372,16 +1401,6 @@
             this.lblToppic1.TabIndex = 3;
             this.lblToppic1.Text = "โครงการทั้งหมด";
             // 
-            // lblTotalPercentage
-            // 
-            this.lblTotalPercentage.AutoSize = true;
-            this.lblTotalPercentage.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalPercentage.Location = new System.Drawing.Point(29, 318);
-            this.lblTotalPercentage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblTotalPercentage.Name = "lblTotalPercentage";
-            this.lblTotalPercentage.Size = new System.Drawing.Size(0, 30);
-            this.lblTotalPercentage.TabIndex = 10;
-            // 
             // searchboxProject
             // 
             this.searchboxProject.BackColor = System.Drawing.Color.White;
@@ -1401,7 +1420,7 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.pnlInfomation);
             this.Name = "ManageProject";
-            this.Size = new System.Drawing.Size(1499, 954);
+            this.Size = new System.Drawing.Size(1519, 954);
             this.pnlInfomation.ResumeLayout(false);
             this.subInfo.ResumeLayout(false);
             this.pnlPhaseData.ResumeLayout(false);
@@ -1553,5 +1572,6 @@
         private System.Windows.Forms.DataGridView dtgvPhase;
         private System.Windows.Forms.DataGridView dtgvProject;
         private System.Windows.Forms.Label lblTotalPercentage;
+        private System.Windows.Forms.Button btnTurnoffEditing;
     }
 }

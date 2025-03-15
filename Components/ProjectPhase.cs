@@ -14,6 +14,8 @@ namespace JRSApplication.Components
         public string PhaseRemark { get; set; }  // phase_remark
         public int ProjectID { get; set; }  // pro_id (FK)
         public string SupplierID { get; set; }  // sup_id (FK)
+
+        public decimal PhasePercent { get; set; }  // ✅ เปอร์เซ็นต์งานของแต่ละเฟส
     }
 
 }

@@ -27,6 +27,7 @@ namespace JRSApplication
             SearchMode = mode;
             lblTitle.Text = SearchMode == "Customer" ? "ค้นหาลูกค้า" : "ค้นหาพนักงาน"; // ✅ เปลี่ยนชื่อหัวข้อ
             LoadSearchData(""); // ✅ โหลดข้อมูลเริ่มต้น
+            CustomizeDataGridViewAlldata(); // ✅ ปรับแต่ง DataGridView
         }
 
         // โหลดข้อมูลตามประเภทที่เลือก (ลูกค้าหรือพนักงาน)
@@ -44,31 +45,70 @@ namespace JRSApplication
         // กดปุ่มยืนยัน (btnConfirm) เพื่อนำข้อมูลไปใช้
         private void btnConfirm_Click(object sender, EventArgs e)
         {
-            if (dtgvAlldata.SelectedRows.Count > 0)
+            if (dtgvAlldata.SelectedRows.Count > 0) // ✅ ตรวจสอบว่ามีการเลือกแถว
             {
-                SelectedID = dtgvAlldata.SelectedRows[0].Cells["ID"].Value.ToString();
-                SelectedName = dtgvAlldata.SelectedRows[0].Cells["ชื่อ"].Value.ToString();
-                SelectedLastName = dtgvAlldata.SelectedRows[0].Cells["นามสกุล"].Value.ToString();
+                DataGridViewRow selectedRow = dtgvAlldata.SelectedRows[0]; // ✅ ดึงแถวที่เลือก
+
+                SelectedID = selectedRow.Cells["ID"].Value?.ToString() ?? "";
+                SelectedName = selectedRow.Cells["ชื่อ"].Value?.ToString() ?? "";
+                SelectedLastName = selectedRow.Cells["นามสกุล"].Value?.ToString() ?? "";
 
                 if (SearchMode == "Customer")
                 {
-                    SelectedIDCardOrRole = dtgvAlldata.SelectedRows[0].Cells["เลขบัตรประชาชน"].Value.ToString();
-                    SelectedPhone = dtgvAlldata.SelectedRows[0].Cells["เบอร์โทร"].Value.ToString();
-                    SelectedEmail = dtgvAlldata.SelectedRows[0].Cells["อีเมล"].Value.ToString();
+                    SelectedIDCardOrRole = selectedRow.Cells["เลขบัตรประชาชน"].Value?.ToString() ?? "";
+                    SelectedPhone = selectedRow.Cells["เบอร์โทร"].Value?.ToString() ?? "";
+                    SelectedEmail = selectedRow.Cells["อีเมล"].Value?.ToString() ?? "";
                 }
                 else if (SearchMode == "Employee")
                 {
-                    SelectedIDCardOrRole = dtgvAlldata.SelectedRows[0].Cells["ตำแหน่ง"].Value.ToString();
+                    SelectedIDCardOrRole = selectedRow.Cells["ตำแหน่ง"].Value?.ToString() ?? "";
                 }
 
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                this.DialogResult = DialogResult.OK; // ✅ ส่งผลลัพธ์กลับ
+                this.Close(); // ✅ ปิดฟอร์ม
             }
             else
             {
                 MessageBox.Show("กรุณาเลือกข้อมูลก่อน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+        private void CustomizeDataGridViewAlldata()
+        {
+            dtgvAlldata.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dtgvAlldata.MultiSelect = false; // ✅ เลือกได้ทีละแถวเท่านั้น
+
+            dtgvAlldata.BorderStyle = BorderStyle.None;
+            dtgvAlldata.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dtgvAlldata.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dtgvAlldata.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
+            dtgvAlldata.DefaultCellStyle.SelectionForeColor = Color.White;
+            dtgvAlldata.BackgroundColor = Color.White;
+
+            dtgvAlldata.EnableHeadersVisualStyles = false;
+            dtgvAlldata.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dtgvAlldata.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            dtgvAlldata.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dtgvAlldata.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            dtgvAlldata.ColumnHeadersHeight = 30;
+
+            dtgvAlldata.DefaultCellStyle.Font = new Font("Segoe UI", 12);
+            dtgvAlldata.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvAlldata.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvAlldata.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
+
+            dtgvAlldata.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgvAlldata.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dtgvAlldata.RowTemplate.Height = 30;
+
+            dtgvAlldata.GridColor = Color.LightGray;
+            dtgvAlldata.RowHeadersVisible = false;
+
+            dtgvAlldata.ReadOnly = true;
+            dtgvAlldata.AllowUserToAddRows = false;
+            dtgvAlldata.AllowUserToResizeRows = false;
+        }
+
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
