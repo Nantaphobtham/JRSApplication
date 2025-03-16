@@ -14,13 +14,13 @@ namespace JRSApplication
     {
         private string userFullName;
         private string userRole;
-        public ProjectManagerForm()
+        public ProjectManagerForm(string fullName, string role)
         {
             InitializeComponent();
 
             // เก็บค่าที่รับมา
-            //userFullName = fullName;
-            //userRole = role;
+            userFullName = fullName;
+            userRole = role;
         }
 
         private void ProjectManagerForm_Load(object sender, EventArgs e)
@@ -55,31 +55,60 @@ namespace JRSApplication
         private void btnProjectInformation_Click(object sender, EventArgs e)
         {
             LoadUserControl(new ProjectData());
+            txtFunctionname.Text = "ตรวจสอบข้อมูลโครงการ";
+            txtsubFunctionname.Visible = false;
         }
 
         private void btnPaymentsInfomation_Click(object sender, EventArgs e)
         {
             LoadUserControl(new CheckProjectPayments());
+            txtFunctionname.Text = "ตรวจสอบการชำระเงินโครงการ";
+            txtsubFunctionname.Visible = false;
         }
 
         private void btnPurchaseOrder_Click(object sender, EventArgs e)
         {
             LoadUserControl(new ApprovePurchaseOrder());
+            txtFunctionname.Text = "อนุมัติใบสั่งซื้อ";
+            txtsubFunctionname.Visible = false;
         }
 
         private void btnChooseSubcontractors_Click(object sender, EventArgs e)
         {
             LoadUserControl(new DetermineSubcontractors());
+            txtFunctionname.Text = "กำหนดผู้รับเหมาช่วง";
+            txtsubFunctionname.Visible = false;
         }
 
         private void btnAllocateEmployee_Click(object sender, EventArgs e)
         {
             LoadUserControl(new AllocatePersonnel());
+            txtFunctionname.Text = "จัดสรรบุคลากร";
+            txtsubFunctionname.Visible = false;
         }
 
         private void btnProjectPhaseUpdate_Click(object sender, EventArgs e)
         {
             LoadUserControl(new UpdateProjectPhase());
+            txtFunctionname.Text = "ปรับปรุงข้อมูลโครงการ";
+            txtsubFunctionname.Visible = true;
+            txtsubFunctionname.Text = "ปรับปรุงข้อมูลเฟส";
+        }
+
+        private void btnHeadmenu_Click(object sender, EventArgs e)
+        {
+            menuTransition.Start();
+            txtFunctionname.Text = "ปรับปรุงข้อมูลโครงการ";
+            txtsubFunctionname.Visible = true;
+            txtsubFunctionname.Text = "";
+        }
+
+        private void btnRequestsforApproval_Click(object sender, EventArgs e)
+        {
+            LoadUserControl(new ProjectPhaseListRequestsforApproval());
+            txtFunctionname.Text = "ปรับปรุงข้อมูลโครงการ";
+            txtsubFunctionname.Visible = true;
+            txtsubFunctionname.Text = "รายการคำขออนุมัติผลการดำเนินงาน";
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -91,6 +120,32 @@ namespace JRSApplication
         {
             this.WindowState = FormWindowState.Minimized; // ย่อหน้าต่าง
         }
+        bool menuExpand = false;
+        private void menuTransition_Tick(object sender, EventArgs e)
+        {
+            if (menuExpand == false)
+            {
+                menuContainer.Height += 10;
+                if(menuContainer.Height >= 246)
+                {
+                    menuTransition.Stop();
+                    menuExpand = true;
+                }
+            }
+            else
+            {
+                menuContainer.Height -= 10;
+                if(menuContainer.Height <= 80)
+                {
+                    menuTransition.Stop();
+                    menuExpand = false;
+
+                }
+            }
+
+        }
+
+        
 
         
     }

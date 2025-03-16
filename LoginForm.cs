@@ -106,13 +106,13 @@ namespace JRSApplication
                     dashboard = new AdminForm(fullName, role); // ✅ ส่งค่าชื่อและตำแหน่งไป AdminForm
                     break;
                 case "Projectmanager":
-                    dashboard = new ProjectManagerForm();
+                    dashboard = new ProjectManagerForm(fullName, role); // ✅ ส่งค่าชื่อและตำแหน่ง
                     break;
                 case "Sitesupervisor":
-                    dashboard = new SiteSupervisorForm();
+                    dashboard = new SiteSupervisorForm(); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role
                     break;
                 case "Accountant":
-                    dashboard = new AccountantForm();
+                    dashboard = new AccountantForm(); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role
                     break;
                 default:
                     throw new InvalidOperationException("ตำแหน่งงานไม่ถูกต้อง");
