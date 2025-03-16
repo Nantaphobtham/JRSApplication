@@ -14,6 +14,9 @@ namespace JRSApplication
 {
     public partial class CustomerRegistration : UserControl
     {
+        private bool isEditMode = false;  // ตรวจสอบโหมด เพิ่ม/แก้ไข
+        private string selectedCustomerID = "";  // เก็บรหัสลูกค้าที่เลือก
+
         public CustomerRegistration()
         {
             InitializeComponent();
@@ -67,38 +70,49 @@ namespace JRSApplication
             dtgvCustomer.AllowUserToAddRows = false;
             dtgvCustomer.AllowUserToResizeRows = false;
         }
+        private void dtgvCustomer_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dtgvCustomer.Rows[e.RowIndex];
+
+                selectedCustomerID = row.Cells["รหัสลูกค้า"].Value?.ToString();
+                txtName.Text = row.Cells["ชื่อ"].Value?.ToString();
+                txtLastname.Text = row.Cells["นามสกุล"].Value?.ToString();
+                txtIdcard.Text = row.Cells["เลขบัตรประชาชน"].Value?.ToString();
+                txtPhone.Text = row.Cells["เบอร์โทร"].Value?.ToString();
+                txtEmail.Text = row.Cells["อีเมล"].Value?.ToString();
+                txtAddress.Text = row.Cells["ที่อยู่"].Value?.ToString();
+            }
+        }
 
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            CustomerDAL dal = new CustomerDAL(); // ✅ ประกาศตัวแปรก่อนใช้
-            //บันทึก
-            // ✅ 1️⃣ ดึงค่าจากฟอร์ม
-            string customerID = dal.GenerateCustomerID();
+            CustomerDAL dal = new CustomerDAL();
             string firstName = txtName.Text.Trim();
             string lastName = txtLastname.Text.Trim();
             string idCard = txtIdcard.Text.Trim();
             string phone = txtPhone.Text.Trim();
-            string address = txtAddress.Text.Trim();
             string email = txtEmail.Text.Trim();
+            string address = txtAddress.Text.Trim();
 
-            // ✅ 2️⃣ ตรวจสอบข้อมูล (Validation)
+            // ✅ ตรวจสอบว่ากรอกข้อมูลครบหรือไม่
             if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) ||
                 string.IsNullOrEmpty(idCard) || string.IsNullOrEmpty(phone) ||
-                string.IsNullOrEmpty(email))
+                string.IsNullOrEmpty(email) || string.IsNullOrEmpty(address))
             {
                 MessageBox.Show("กรุณากรอกข้อมูลให้ครบถ้วน!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // ✅ 3️⃣ ตรวจสอบว่า Email หรือ ID Card ซ้ำหรือไม่
-            if (dal.CheckDuplicateCustomer(customerID, email, idCard))
+            // ✅ ตรวจสอบอีเมล และ เลขบัตรประชาชนซ้ำ
+            if (dal.CheckDuplicateCustomer(selectedCustomerID, email, idCard))
             {
-                MessageBox.Show("เลขบัตรประชาชน หรืออีเมลนี้ถูกใช้งานแล้ว!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("อีเมลหรือเลขบัตรประชาชนนี้มีอยู่แล้ว!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // ✅ 4️⃣ สร้าง `Customer` Object
             Customer cus = new Customer
             {
                 FirstName = firstName,
@@ -109,43 +123,89 @@ namespace JRSApplication
                 Email = email
             };
 
-            // ✅ 5️⃣ บันทึกลงฐานข้อมูล
-            bool success = dal.InsertCustomer(cus);
+            bool success;
+            if (isEditMode)
+            {
+                // ✅ ถ้าเป็นโหมดแก้ไข ให้ Update
+                cus.CustomerID = int.Parse(selectedCustomerID);
+                success = dal.UpdateCustomer(cus);
+            }
+            else
+            {
+                // ✅ ถ้าเป็นโหมดเพิ่มข้อมูลใหม่
+                success = dal.InsertCustomer(cus);
+            }
 
-            // ✅ 6️⃣ แสดงผลลัพธ์
             if (success)
             {
                 MessageBox.Show("บันทึกข้อมูลสำเร็จ!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-               // LoadCustomerData(); // ✅ โหลดข้อมูลใหม่หลังบันทึก
-               // ReadOnlyControls(); // ✅ ปิดการแก้ไข
-               ClearForm();
+                LoadCustomerData();
+                ClearForm();
+                ReadOnlyControlsOff();
+                EnableControlsOff();
+                isEditMode = false;
+                selectedCustomerID = "";
             }
             else
             {
                 MessageBox.Show("เกิดข้อผิดพลาดในการบันทึกข้อมูล!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
             //เพิ่ม
-            ReadOnlyControls();
-            EnableControls();
+            ReadOnlyControlsOn();
+            EnableControlsOn();
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
             //แก้ไข
+            if (string.IsNullOrEmpty(selectedCustomerID))
+            {
+                MessageBox.Show("กรุณาเลือกลูกค้าก่อนแก้ไข", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            isEditMode = true; // ✅ เข้าโหมดแก้ไข
+            ReadOnlyControlsOn(); // ✅ เปิดให้แก้ไข
+            EnableControlsOn();
+            txtName.Focus();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
             //ลบ
-        }
+            if (string.IsNullOrEmpty(selectedCustomerID))
+            {
+                MessageBox.Show("กรุณาเลือกลูกค้าก่อนลบ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-        private void ReadOnlyControls()
+            DialogResult result = MessageBox.Show("คุณแน่ใจหรือไม่ว่าต้องการลบลูกค้านี้?", "ยืนยันการลบ", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result != DialogResult.Yes)
+            {
+                return;
+            }
+
+            CustomerDAL dal = new CustomerDAL();
+            bool success = dal.DeleteCustomer(Convert.ToInt32(selectedCustomerID));
+
+            if (success)
+            {
+                MessageBox.Show("ลบข้อมูลสำเร็จ!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadCustomerData();
+                ClearForm();
+                selectedCustomerID = "";
+            }
+            else
+            {
+                MessageBox.Show("เกิดข้อผิดพลาดในการลบข้อมูล!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        //เปิด ปิด ล้าง ฟอร์ม
+        private void ReadOnlyControlsOn()
         {
             txtName.ReadOnly = false;
             txtLastname.ReadOnly = false;
@@ -154,7 +214,7 @@ namespace JRSApplication
             txtEmail.ReadOnly = false;
             txtAddress.ReadOnly = false;
         }
-        private void EnableControls()
+        private void EnableControlsOn()
         {
             txtName.Enabled = true;
             txtLastname.Enabled = true;
@@ -162,6 +222,24 @@ namespace JRSApplication
             txtPhone.Enabled = true;
             txtEmail.Enabled = true;
             txtAddress.Enabled = true;
+        }
+        private void ReadOnlyControlsOff()
+        {
+            txtName.ReadOnly = true;
+            txtLastname.ReadOnly = true;
+            txtIdcard.ReadOnly = true;
+            txtPhone.ReadOnly = true;
+            txtEmail.ReadOnly = true;
+            txtAddress.ReadOnly = true;
+        }
+        private void EnableControlsOff()
+        {
+            txtName.Enabled = false;
+            txtLastname.Enabled = false;
+            txtIdcard.Enabled = false;
+            txtPhone.Enabled = false;
+            txtEmail.Enabled = false;
+            txtAddress.Enabled = false;
         }
         private void ClearForm()
         {

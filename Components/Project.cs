@@ -22,6 +22,9 @@ namespace JRSApplication.Components
         public string DemolitionModel { get; set; }  // pro_demolition_model
         public int EmployeeID { get; set; }  // emp_id (FK)
         public int CustomerID { get; set; }  // cus_id (FK)
+
+        public string CustomerName { get; set; } // ✅ ชื่อลูกค้า
+        public string EmployeeName { get; set; } // ✅ ชื่อผู้ดูแลโครงการ
     }
 
 }

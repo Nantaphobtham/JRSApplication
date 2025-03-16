@@ -33,45 +33,45 @@
             this.lblToppic2 = new System.Windows.Forms.Label();
             this.pnlRole = new System.Windows.Forms.Panel();
             this.cmbRole = new System.Windows.Forms.ComboBox();
-            this.lblstarRole = new System.Windows.Forms.Label();
+            this.starRole = new System.Windows.Forms.Label();
             this.lblRole = new System.Windows.Forms.Label();
             this.pnlconfirmPassword = new System.Windows.Forms.Panel();
             this.cbxShowPassword2 = new System.Windows.Forms.CheckBox();
-            this.lblstarconfirmPassword = new System.Windows.Forms.Label();
+            this.starConfirmPassword = new System.Windows.Forms.Label();
             this.lblconfirmPassword = new System.Windows.Forms.Label();
             this.txtConfirmPassword = new System.Windows.Forms.TextBox();
             this.pnlUsername = new System.Windows.Forms.Panel();
-            this.lblstarUsername = new System.Windows.Forms.Label();
+            this.starUsername = new System.Windows.Forms.Label();
             this.lblUsername = new System.Windows.Forms.Label();
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.pnlPassword = new System.Windows.Forms.Panel();
             this.cbxShowPassword1 = new System.Windows.Forms.CheckBox();
-            this.lblstarPassword = new System.Windows.Forms.Label();
+            this.starPassword = new System.Windows.Forms.Label();
             this.lblPassword = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.pnlStep1 = new System.Windows.Forms.Panel();
             this.pnlEmail = new System.Windows.Forms.Panel();
-            this.lblstarEmail = new System.Windows.Forms.Label();
+            this.starEmail = new System.Windows.Forms.Label();
             this.lblEmail = new System.Windows.Forms.Label();
             this.txtEmail = new System.Windows.Forms.TextBox();
             this.pnlPhone = new System.Windows.Forms.Panel();
-            this.lblstarPhone = new System.Windows.Forms.Label();
+            this.starPhone = new System.Windows.Forms.Label();
             this.lblPhone = new System.Windows.Forms.Label();
             this.txtPhone = new System.Windows.Forms.TextBox();
             this.pnlIdcard = new System.Windows.Forms.Panel();
-            this.lblstarIdcard = new System.Windows.Forms.Label();
+            this.starIdcard = new System.Windows.Forms.Label();
             this.lblIdcard = new System.Windows.Forms.Label();
             this.txtIdcard = new System.Windows.Forms.TextBox();
             this.pnlLastname = new System.Windows.Forms.Panel();
-            this.lblstarLastname = new System.Windows.Forms.Label();
+            this.starLastname = new System.Windows.Forms.Label();
             this.lblLastname = new System.Windows.Forms.Label();
             this.txtLastname = new System.Windows.Forms.TextBox();
             this.pnlAddress = new System.Windows.Forms.Panel();
-            this.lblstarAddress = new System.Windows.Forms.Label();
+            this.starAddress = new System.Windows.Forms.Label();
             this.lblAddress = new System.Windows.Forms.Label();
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.pnlName = new System.Windows.Forms.Panel();
-            this.lblstarName = new System.Windows.Forms.Label();
+            this.starName = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.lblToppic1 = new System.Windows.Forms.Label();
@@ -146,7 +146,7 @@
             // pnlRole
             // 
             this.pnlRole.Controls.Add(this.cmbRole);
-            this.pnlRole.Controls.Add(this.lblstarRole);
+            this.pnlRole.Controls.Add(this.starRole);
             this.pnlRole.Controls.Add(this.lblRole);
             this.pnlRole.Location = new System.Drawing.Point(1059, 347);
             this.pnlRole.Margin = new System.Windows.Forms.Padding(2);
@@ -171,18 +171,18 @@
             this.cmbRole.Size = new System.Drawing.Size(329, 38);
             this.cmbRole.TabIndex = 1;
             // 
-            // lblstarRole
+            // starRole
             // 
-            this.lblstarRole.AutoSize = true;
-            this.lblstarRole.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarRole.ForeColor = System.Drawing.Color.Red;
-            this.lblstarRole.Location = new System.Drawing.Point(76, 3);
-            this.lblstarRole.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarRole.Name = "lblstarRole";
-            this.lblstarRole.Size = new System.Drawing.Size(22, 30);
-            this.lblstarRole.TabIndex = 2;
-            this.lblstarRole.Text = "*";
-            this.lblstarRole.Visible = false;
+            this.starRole.AutoSize = true;
+            this.starRole.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starRole.ForeColor = System.Drawing.Color.Red;
+            this.starRole.Location = new System.Drawing.Point(76, 3);
+            this.starRole.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starRole.Name = "starRole";
+            this.starRole.Size = new System.Drawing.Size(22, 30);
+            this.starRole.TabIndex = 2;
+            this.starRole.Text = "*";
+            this.starRole.Visible = false;
             // 
             // lblRole
             // 
@@ -198,7 +198,7 @@
             // pnlconfirmPassword
             // 
             this.pnlconfirmPassword.Controls.Add(this.cbxShowPassword2);
-            this.pnlconfirmPassword.Controls.Add(this.lblstarconfirmPassword);
+            this.pnlconfirmPassword.Controls.Add(this.starConfirmPassword);
             this.pnlconfirmPassword.Controls.Add(this.lblconfirmPassword);
             this.pnlconfirmPassword.Controls.Add(this.txtConfirmPassword);
             this.pnlconfirmPassword.Location = new System.Drawing.Point(1059, 245);
@@ -219,18 +219,18 @@
             this.cbxShowPassword2.Text = "แสดงรหัสผ่าน";
             this.cbxShowPassword2.UseVisualStyleBackColor = true;
             // 
-            // lblstarconfirmPassword
+            // starConfirmPassword
             // 
-            this.lblstarconfirmPassword.AutoSize = true;
-            this.lblstarconfirmPassword.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarconfirmPassword.ForeColor = System.Drawing.Color.Red;
-            this.lblstarconfirmPassword.Location = new System.Drawing.Point(130, 3);
-            this.lblstarconfirmPassword.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarconfirmPassword.Name = "lblstarconfirmPassword";
-            this.lblstarconfirmPassword.Size = new System.Drawing.Size(22, 30);
-            this.lblstarconfirmPassword.TabIndex = 2;
-            this.lblstarconfirmPassword.Text = "*";
-            this.lblstarconfirmPassword.Visible = false;
+            this.starConfirmPassword.AutoSize = true;
+            this.starConfirmPassword.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starConfirmPassword.ForeColor = System.Drawing.Color.Red;
+            this.starConfirmPassword.Location = new System.Drawing.Point(130, 3);
+            this.starConfirmPassword.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starConfirmPassword.Name = "starConfirmPassword";
+            this.starConfirmPassword.Size = new System.Drawing.Size(22, 30);
+            this.starConfirmPassword.TabIndex = 2;
+            this.starConfirmPassword.Text = "*";
+            this.starConfirmPassword.Visible = false;
             // 
             // lblconfirmPassword
             // 
@@ -257,7 +257,7 @@
             // 
             // pnlUsername
             // 
-            this.pnlUsername.Controls.Add(this.lblstarUsername);
+            this.pnlUsername.Controls.Add(this.starUsername);
             this.pnlUsername.Controls.Add(this.lblUsername);
             this.pnlUsername.Controls.Add(this.txtUsername);
             this.pnlUsername.Location = new System.Drawing.Point(1059, 65);
@@ -266,18 +266,18 @@
             this.pnlUsername.Size = new System.Drawing.Size(331, 74);
             this.pnlUsername.TabIndex = 9;
             // 
-            // lblstarUsername
+            // starUsername
             // 
-            this.lblstarUsername.AutoSize = true;
-            this.lblstarUsername.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarUsername.ForeColor = System.Drawing.Color.Red;
-            this.lblstarUsername.Location = new System.Drawing.Point(70, 3);
-            this.lblstarUsername.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarUsername.Name = "lblstarUsername";
-            this.lblstarUsername.Size = new System.Drawing.Size(22, 30);
-            this.lblstarUsername.TabIndex = 2;
-            this.lblstarUsername.Text = "*";
-            this.lblstarUsername.Visible = false;
+            this.starUsername.AutoSize = true;
+            this.starUsername.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starUsername.ForeColor = System.Drawing.Color.Red;
+            this.starUsername.Location = new System.Drawing.Point(70, 3);
+            this.starUsername.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starUsername.Name = "starUsername";
+            this.starUsername.Size = new System.Drawing.Size(22, 30);
+            this.starUsername.TabIndex = 2;
+            this.starUsername.Text = "*";
+            this.starUsername.Visible = false;
             // 
             // lblUsername
             // 
@@ -305,7 +305,7 @@
             // pnlPassword
             // 
             this.pnlPassword.Controls.Add(this.cbxShowPassword1);
-            this.pnlPassword.Controls.Add(this.lblstarPassword);
+            this.pnlPassword.Controls.Add(this.starPassword);
             this.pnlPassword.Controls.Add(this.lblPassword);
             this.pnlPassword.Controls.Add(this.txtPassword);
             this.pnlPassword.Location = new System.Drawing.Point(1059, 143);
@@ -326,18 +326,18 @@
             this.cbxShowPassword1.Text = "แสดงรหัสผ่าน";
             this.cbxShowPassword1.UseVisualStyleBackColor = true;
             // 
-            // lblstarPassword
+            // starPassword
             // 
-            this.lblstarPassword.AutoSize = true;
-            this.lblstarPassword.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarPassword.ForeColor = System.Drawing.Color.Red;
-            this.lblstarPassword.Location = new System.Drawing.Point(80, 3);
-            this.lblstarPassword.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarPassword.Name = "lblstarPassword";
-            this.lblstarPassword.Size = new System.Drawing.Size(22, 30);
-            this.lblstarPassword.TabIndex = 2;
-            this.lblstarPassword.Text = "*";
-            this.lblstarPassword.Visible = false;
+            this.starPassword.AutoSize = true;
+            this.starPassword.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starPassword.ForeColor = System.Drawing.Color.Red;
+            this.starPassword.Location = new System.Drawing.Point(80, 3);
+            this.starPassword.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starPassword.Name = "starPassword";
+            this.starPassword.Size = new System.Drawing.Size(22, 30);
+            this.starPassword.TabIndex = 2;
+            this.starPassword.Text = "*";
+            this.starPassword.Visible = false;
             // 
             // lblPassword
             // 
@@ -373,7 +373,7 @@
             // 
             // pnlEmail
             // 
-            this.pnlEmail.Controls.Add(this.lblstarEmail);
+            this.pnlEmail.Controls.Add(this.starEmail);
             this.pnlEmail.Controls.Add(this.lblEmail);
             this.pnlEmail.Controls.Add(this.txtEmail);
             this.pnlEmail.Location = new System.Drawing.Point(22, 364);
@@ -382,18 +382,18 @@
             this.pnlEmail.Size = new System.Drawing.Size(331, 74);
             this.pnlEmail.TabIndex = 2;
             // 
-            // lblstarEmail
+            // starEmail
             // 
-            this.lblstarEmail.AutoSize = true;
-            this.lblstarEmail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarEmail.ForeColor = System.Drawing.Color.Red;
-            this.lblstarEmail.Location = new System.Drawing.Point(50, 3);
-            this.lblstarEmail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarEmail.Name = "lblstarEmail";
-            this.lblstarEmail.Size = new System.Drawing.Size(22, 30);
-            this.lblstarEmail.TabIndex = 2;
-            this.lblstarEmail.Text = "*";
-            this.lblstarEmail.Visible = false;
+            this.starEmail.AutoSize = true;
+            this.starEmail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starEmail.ForeColor = System.Drawing.Color.Red;
+            this.starEmail.Location = new System.Drawing.Point(50, 3);
+            this.starEmail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starEmail.Name = "starEmail";
+            this.starEmail.Size = new System.Drawing.Size(22, 30);
+            this.starEmail.TabIndex = 2;
+            this.starEmail.Text = "*";
+            this.starEmail.Visible = false;
             // 
             // lblEmail
             // 
@@ -420,7 +420,7 @@
             // 
             // pnlPhone
             // 
-            this.pnlPhone.Controls.Add(this.lblstarPhone);
+            this.pnlPhone.Controls.Add(this.starPhone);
             this.pnlPhone.Controls.Add(this.lblPhone);
             this.pnlPhone.Controls.Add(this.txtPhone);
             this.pnlPhone.Location = new System.Drawing.Point(22, 286);
@@ -429,18 +429,18 @@
             this.pnlPhone.Size = new System.Drawing.Size(331, 74);
             this.pnlPhone.TabIndex = 3;
             // 
-            // lblstarPhone
+            // starPhone
             // 
-            this.lblstarPhone.AutoSize = true;
-            this.lblstarPhone.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarPhone.ForeColor = System.Drawing.Color.Red;
-            this.lblstarPhone.Location = new System.Drawing.Point(124, 3);
-            this.lblstarPhone.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarPhone.Name = "lblstarPhone";
-            this.lblstarPhone.Size = new System.Drawing.Size(22, 30);
-            this.lblstarPhone.TabIndex = 2;
-            this.lblstarPhone.Text = "*";
-            this.lblstarPhone.Visible = false;
+            this.starPhone.AutoSize = true;
+            this.starPhone.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starPhone.ForeColor = System.Drawing.Color.Red;
+            this.starPhone.Location = new System.Drawing.Point(124, 3);
+            this.starPhone.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starPhone.Name = "starPhone";
+            this.starPhone.Size = new System.Drawing.Size(22, 30);
+            this.starPhone.TabIndex = 2;
+            this.starPhone.Text = "*";
+            this.starPhone.Visible = false;
             // 
             // lblPhone
             // 
@@ -467,7 +467,7 @@
             // 
             // pnlIdcard
             // 
-            this.pnlIdcard.Controls.Add(this.lblstarIdcard);
+            this.pnlIdcard.Controls.Add(this.starIdcard);
             this.pnlIdcard.Controls.Add(this.lblIdcard);
             this.pnlIdcard.Controls.Add(this.txtIdcard);
             this.pnlIdcard.Location = new System.Drawing.Point(22, 208);
@@ -476,18 +476,18 @@
             this.pnlIdcard.Size = new System.Drawing.Size(331, 74);
             this.pnlIdcard.TabIndex = 4;
             // 
-            // lblstarIdcard
+            // starIdcard
             // 
-            this.lblstarIdcard.AutoSize = true;
-            this.lblstarIdcard.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarIdcard.ForeColor = System.Drawing.Color.Red;
-            this.lblstarIdcard.Location = new System.Drawing.Point(229, 3);
-            this.lblstarIdcard.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarIdcard.Name = "lblstarIdcard";
-            this.lblstarIdcard.Size = new System.Drawing.Size(22, 30);
-            this.lblstarIdcard.TabIndex = 2;
-            this.lblstarIdcard.Text = "*";
-            this.lblstarIdcard.Visible = false;
+            this.starIdcard.AutoSize = true;
+            this.starIdcard.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starIdcard.ForeColor = System.Drawing.Color.Red;
+            this.starIdcard.Location = new System.Drawing.Point(229, 3);
+            this.starIdcard.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starIdcard.Name = "starIdcard";
+            this.starIdcard.Size = new System.Drawing.Size(22, 30);
+            this.starIdcard.TabIndex = 2;
+            this.starIdcard.Text = "*";
+            this.starIdcard.Visible = false;
             // 
             // lblIdcard
             // 
@@ -514,7 +514,7 @@
             // 
             // pnlLastname
             // 
-            this.pnlLastname.Controls.Add(this.lblstarLastname);
+            this.pnlLastname.Controls.Add(this.starLastname);
             this.pnlLastname.Controls.Add(this.lblLastname);
             this.pnlLastname.Controls.Add(this.txtLastname);
             this.pnlLastname.Location = new System.Drawing.Point(22, 130);
@@ -523,18 +523,18 @@
             this.pnlLastname.Size = new System.Drawing.Size(331, 74);
             this.pnlLastname.TabIndex = 5;
             // 
-            // lblstarLastname
+            // starLastname
             // 
-            this.lblstarLastname.AutoSize = true;
-            this.lblstarLastname.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarLastname.ForeColor = System.Drawing.Color.Red;
-            this.lblstarLastname.Location = new System.Drawing.Point(80, 3);
-            this.lblstarLastname.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarLastname.Name = "lblstarLastname";
-            this.lblstarLastname.Size = new System.Drawing.Size(22, 30);
-            this.lblstarLastname.TabIndex = 2;
-            this.lblstarLastname.Text = "*";
-            this.lblstarLastname.Visible = false;
+            this.starLastname.AutoSize = true;
+            this.starLastname.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starLastname.ForeColor = System.Drawing.Color.Red;
+            this.starLastname.Location = new System.Drawing.Point(80, 3);
+            this.starLastname.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starLastname.Name = "starLastname";
+            this.starLastname.Size = new System.Drawing.Size(22, 30);
+            this.starLastname.TabIndex = 2;
+            this.starLastname.Text = "*";
+            this.starLastname.Visible = false;
             // 
             // lblLastname
             // 
@@ -561,7 +561,7 @@
             // 
             // pnlAddress
             // 
-            this.pnlAddress.Controls.Add(this.lblstarAddress);
+            this.pnlAddress.Controls.Add(this.starAddress);
             this.pnlAddress.Controls.Add(this.lblAddress);
             this.pnlAddress.Controls.Add(this.txtAddress);
             this.pnlAddress.Location = new System.Drawing.Point(402, 52);
@@ -570,18 +570,18 @@
             this.pnlAddress.Size = new System.Drawing.Size(443, 254);
             this.pnlAddress.TabIndex = 6;
             // 
-            // lblstarAddress
+            // starAddress
             // 
-            this.lblstarAddress.AutoSize = true;
-            this.lblstarAddress.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarAddress.ForeColor = System.Drawing.Color.Red;
-            this.lblstarAddress.Location = new System.Drawing.Point(47, 3);
-            this.lblstarAddress.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarAddress.Name = "lblstarAddress";
-            this.lblstarAddress.Size = new System.Drawing.Size(22, 30);
-            this.lblstarAddress.TabIndex = 2;
-            this.lblstarAddress.Text = "*";
-            this.lblstarAddress.Visible = false;
+            this.starAddress.AutoSize = true;
+            this.starAddress.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starAddress.ForeColor = System.Drawing.Color.Red;
+            this.starAddress.Location = new System.Drawing.Point(47, 3);
+            this.starAddress.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starAddress.Name = "starAddress";
+            this.starAddress.Size = new System.Drawing.Size(22, 30);
+            this.starAddress.TabIndex = 2;
+            this.starAddress.Text = "*";
+            this.starAddress.Visible = false;
             // 
             // lblAddress
             // 
@@ -609,7 +609,7 @@
             // 
             // pnlName
             // 
-            this.pnlName.Controls.Add(this.lblstarName);
+            this.pnlName.Controls.Add(this.starName);
             this.pnlName.Controls.Add(this.lblName);
             this.pnlName.Controls.Add(this.txtName);
             this.pnlName.Location = new System.Drawing.Point(22, 52);
@@ -618,18 +618,18 @@
             this.pnlName.Size = new System.Drawing.Size(331, 74);
             this.pnlName.TabIndex = 7;
             // 
-            // lblstarName
+            // starName
             // 
-            this.lblstarName.AutoSize = true;
-            this.lblstarName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarName.ForeColor = System.Drawing.Color.Red;
-            this.lblstarName.Location = new System.Drawing.Point(32, 3);
-            this.lblstarName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarName.Name = "lblstarName";
-            this.lblstarName.Size = new System.Drawing.Size(22, 30);
-            this.lblstarName.TabIndex = 2;
-            this.lblstarName.Text = "*";
-            this.lblstarName.Visible = false;
+            this.starName.AutoSize = true;
+            this.starName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starName.ForeColor = System.Drawing.Color.Red;
+            this.starName.Location = new System.Drawing.Point(32, 3);
+            this.starName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starName.Name = "starName";
+            this.starName.Size = new System.Drawing.Size(22, 30);
+            this.starName.TabIndex = 2;
+            this.starName.Text = "*";
+            this.starName.Visible = false;
             // 
             // lblName
             // 
@@ -839,47 +839,47 @@
         private System.Windows.Forms.Panel subInfo;
         private System.Windows.Forms.Label lblToppic1;
         private System.Windows.Forms.Panel pnlEmail;
-        private System.Windows.Forms.Label lblstarEmail;
+        private System.Windows.Forms.Label starEmail;
         private System.Windows.Forms.Label lblEmail;
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.Panel pnlPhone;
-        private System.Windows.Forms.Label lblstarPhone;
+        private System.Windows.Forms.Label starPhone;
         private System.Windows.Forms.Label lblPhone;
         private System.Windows.Forms.TextBox txtPhone;
         private System.Windows.Forms.Panel pnlIdcard;
-        private System.Windows.Forms.Label lblstarIdcard;
+        private System.Windows.Forms.Label starIdcard;
         private System.Windows.Forms.Label lblIdcard;
         private System.Windows.Forms.TextBox txtIdcard;
         private System.Windows.Forms.Panel pnlLastname;
-        private System.Windows.Forms.Label lblstarLastname;
+        private System.Windows.Forms.Label starLastname;
         private System.Windows.Forms.Label lblLastname;
         private System.Windows.Forms.TextBox txtLastname;
         private System.Windows.Forms.Panel pnlAddress;
-        private System.Windows.Forms.Label lblstarAddress;
+        private System.Windows.Forms.Label starAddress;
         private System.Windows.Forms.Label lblAddress;
         private System.Windows.Forms.TextBox txtAddress;
         private System.Windows.Forms.Panel pnlName;
-        private System.Windows.Forms.Label lblstarName;
+        private System.Windows.Forms.Label starName;
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Panel pnlStep1;
         private System.Windows.Forms.Label lblToppic2;
         private System.Windows.Forms.Panel pnlRole;
         private System.Windows.Forms.ComboBox cmbRole;
-        private System.Windows.Forms.Label lblstarRole;
+        private System.Windows.Forms.Label starRole;
         private System.Windows.Forms.Label lblRole;
         private System.Windows.Forms.Panel pnlconfirmPassword;
         private System.Windows.Forms.CheckBox cbxShowPassword2;
-        private System.Windows.Forms.Label lblstarconfirmPassword;
+        private System.Windows.Forms.Label starConfirmPassword;
         private System.Windows.Forms.Label lblconfirmPassword;
         private System.Windows.Forms.TextBox txtConfirmPassword;
         private System.Windows.Forms.Panel pnlUsername;
-        private System.Windows.Forms.Label lblstarUsername;
+        private System.Windows.Forms.Label starUsername;
         private System.Windows.Forms.Label lblUsername;
         private System.Windows.Forms.TextBox txtUsername;
         private System.Windows.Forms.Panel pnlPassword;
         private System.Windows.Forms.CheckBox cbxShowPassword1;
-        private System.Windows.Forms.Label lblstarPassword;
+        private System.Windows.Forms.Label starPassword;
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.TextBox txtPassword;
     }

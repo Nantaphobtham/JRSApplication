@@ -107,6 +107,70 @@ namespace JRSApplication.Components
             }
             return isSuccess;
         }
+        public bool UpdateEmployee(Employee emp)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string sql = "UPDATE employee SET emp_name = @FirstName, emp_lname = @LastName, " +
+                             "emp_username = @Username, emp_password = @Password, emp_tel = @Phone, " +
+                             "emp_email = @Email, emp_pos = @Role WHERE emp_id = @EmployeeID";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@EmployeeID", emp.EmployeeID);
+                    cmd.Parameters.AddWithValue("@FirstName", emp.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", emp.LastName);
+                    cmd.Parameters.AddWithValue("@Username", emp.Username);
+                    cmd.Parameters.AddWithValue("@Password", emp.Password);
+                    cmd.Parameters.AddWithValue("@Phone", emp.Phone);
+                    cmd.Parameters.AddWithValue("@Email", emp.Email);
+                    cmd.Parameters.AddWithValue("@Role", emp.Role);
+
+                    conn.Open();
+                    int rows = cmd.ExecuteNonQuery();
+                    return rows > 0;
+                }
+            }
+        }
+
+        public bool DeleteEmployee(string employeeID)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string sql = "DELETE FROM employee WHERE emp_id = @EmployeeID";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
+                    conn.Open();
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+        }
+
+        public DataTable GetEmployeeByID(string employeeID)
+        {
+            DataTable dt = new DataTable();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string sql = "SELECT emp_id, emp_name AS 'ชื่อ', emp_lname AS 'นามสกุล', emp_username AS 'ชื่อผู้ใช้', " +
+                             "emp_tel AS 'เบอร์โทร', emp_email AS 'อีเมล', emp_pos AS 'ตำแหน่ง', emp_identification AS 'เลขบัตรประชาชน', " +
+                             "emp_address AS 'ที่อยู่' FROM employee WHERE emp_id = @EmployeeID";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
+                    conn.Open();
+
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(dt);
+                    }
+                }
+            }
+            return dt;
+        }
+
 
         public DataTable GetAllEmployees()
         {

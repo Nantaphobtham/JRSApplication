@@ -13,6 +13,49 @@ namespace JRSApplication.Data_Access_Layer
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
+        public List<Project> GetAllProjects()
+        {
+            List<Project> projects = new List<Project>();
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string sql = @"
+            SELECT 
+                p.pro_id, p.pro_name, p.pro_detail, p.pro_address, p.pro_budget, 
+                p.pro_start, p.pro_end, p.pro_currentphasenumber, 
+                c.cus_name AS CustomerName, e.emp_name AS EmployeeName
+            FROM project p
+            LEFT JOIN customer c ON p.cus_id = c.cus_id
+            LEFT JOIN employee e ON p.emp_id = e.emp_id";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    conn.Open();
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            projects.Add(new Project
+                            {
+                                ProjectID = reader.GetInt32("pro_id"),
+                                ProjectName = reader.GetString("pro_name"),
+                                ProjectDetail = reader.IsDBNull(reader.GetOrdinal("pro_detail")) ? "" : reader.GetString("pro_detail"),
+                                ProjectAddress = reader.IsDBNull(reader.GetOrdinal("pro_address")) ? "" : reader.GetString("pro_address"),
+                                ProjectBudget = reader.IsDBNull(reader.GetOrdinal("pro_budget")) ? 0 : reader.GetDecimal("pro_budget"),
+                                ProjectStart = reader.GetDateTime("pro_start"),
+                                ProjectEnd = reader.GetDateTime("pro_end"),
+                                CurrentPhaseNumber = reader.IsDBNull(reader.GetOrdinal("pro_currentphasenumber")) ? 0 : reader.GetInt32("pro_currentphasenumber"),
+                                CustomerName = reader.IsDBNull(reader.GetOrdinal("CustomerName")) ? "ไม่ระบุ" : reader.GetString("CustomerName"),
+                                EmployeeName = reader.IsDBNull(reader.GetOrdinal("EmployeeName")) ? "ไม่ระบุ" : reader.GetString("EmployeeName")
+                            });
+                        }
+                    }
+                }
+            }
+            return projects;
+        }
+
+
+
         public int GenerateProjectID()
         {
             int newID = int.Parse(DateTime.Now.ToString("yyMM") + "000"); // เริ่มที่ 2503000

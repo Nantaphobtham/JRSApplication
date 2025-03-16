@@ -33,10 +33,122 @@ namespace JRSApplication
             LoadPhaseNumberDropdown();
             LoadProjectData();
             InitializePhaseDataGridView(); //ของ phase
+            InitializeDataGridViewProject(); // ✅ กำหนดโครงสร้าง DataGridView
+            LoadProjectData(); // ✅ โหลดข้อมูลจากฐานข้อมูล
         }
+
+        private void CustomizeDataGridViewProject()
+        {
+            dtgvProject.BorderStyle = BorderStyle.None;
+            dtgvProject.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dtgvProject.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dtgvProject.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
+            dtgvProject.DefaultCellStyle.SelectionForeColor = Color.White;
+            dtgvProject.BackgroundColor = Color.White;
+
+            dtgvProject.EnableHeadersVisualStyles = false;
+            dtgvProject.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dtgvProject.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            dtgvProject.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dtgvProject.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            dtgvProject.ColumnHeadersHeight = 30;
+
+            dtgvProject.DefaultCellStyle.Font = new Font("Segoe UI", 12);
+            dtgvProject.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvProject.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvProject.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
+
+            dtgvProject.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgvProject.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dtgvProject.RowTemplate.Height = 30;
+
+            dtgvProject.GridColor = Color.LightGray;
+            dtgvProject.RowHeadersVisible = false;
+
+            dtgvProject.ReadOnly = true;
+            dtgvProject.AllowUserToAddRows = false;
+            dtgvProject.AllowUserToResizeRows = false;
+        }
+        private void InitializeDataGridViewProject()
+        {
+            // ✅ ป้องกันการเพิ่มคอลัมน์ซ้ำ
+            if (dtgvProject.Columns.Count == 0)
+            {
+                dtgvProject.AllowUserToAddRows = false;
+
+                // ✅ เพิ่มคอลัมน์
+                dtgvProject.Columns.Add("ProjectID", "รหัสโครงการ");
+                dtgvProject.Columns.Add("ProjectName", "ชื่อโครงการ");
+                dtgvProject.Columns.Add("ProjectStart", "วันที่เริ่มโครงการ");
+                dtgvProject.Columns.Add("ProjectEnd", "วันที่สิ้นสุดโครงการ");
+                dtgvProject.Columns.Add("ProjectBudget", "งบประมาณ (บาท)");
+                dtgvProject.Columns.Add("CurrentPhaseNumber", "จำนวนเฟสงาน");
+                dtgvProject.Columns.Add("CustomerName", "ชื่อลูกค้า");
+                dtgvProject.Columns.Add("EmployeeName", "ชื่อผู้ดูแลโครงการ");
+
+                // ✅ ปรับแต่งคอลัมน์
+                dtgvProject.Columns["ProjectID"].Width = 80;
+                dtgvProject.Columns["ProjectID"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dtgvProject.Columns["ProjectID"].ReadOnly = true;
+
+                dtgvProject.Columns["ProjectName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dtgvProject.Columns["ProjectName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dtgvProject.Columns["ProjectName"].ReadOnly = true;
+
+                dtgvProject.Columns["ProjectStart"].Width = 120;
+                dtgvProject.Columns["ProjectStart"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dtgvProject.Columns["ProjectStart"].DefaultCellStyle.Format = "dd/MM/yyyy";
+                dtgvProject.Columns["ProjectStart"].ReadOnly = true;
+
+                dtgvProject.Columns["ProjectEnd"].Width = 120;
+                dtgvProject.Columns["ProjectEnd"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dtgvProject.Columns["ProjectEnd"].DefaultCellStyle.Format = "dd/MM/yyyy";
+                dtgvProject.Columns["ProjectEnd"].ReadOnly = true;
+
+                dtgvProject.Columns["ProjectBudget"].Width = 150;
+                dtgvProject.Columns["ProjectBudget"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dtgvProject.Columns["ProjectBudget"].DefaultCellStyle.Format = "N2"; // แสดงเป็น 1,200.00
+                dtgvProject.Columns["ProjectBudget"].ReadOnly = true;
+
+                dtgvProject.Columns["CurrentPhaseNumber"].Width = 120;
+                dtgvProject.Columns["CurrentPhaseNumber"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dtgvProject.Columns["CurrentPhaseNumber"].ReadOnly = true;
+
+                dtgvProject.Columns["CustomerName"].Width = 150;
+                dtgvProject.Columns["CustomerName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dtgvProject.Columns["CustomerName"].ReadOnly = true;
+
+                dtgvProject.Columns["EmployeeName"].Width = 150;
+                dtgvProject.Columns["EmployeeName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dtgvProject.Columns["EmployeeName"].ReadOnly = true;
+
+                // ✅ ใช้ฟังก์ชันตกแต่ง
+                CustomizeDataGridViewProject();
+            }
+        }
+
+
         private void LoadProjectData()
         {
-            //รอ
+            InitializeDataGridViewProject(); // ✅ ตรวจสอบตารางก่อนโหลดข้อมูล
+
+            ProjectDAL dal = new ProjectDAL();
+            List<Project> projects = dal.GetAllProjects();
+
+            dtgvProject.Rows.Clear();
+            foreach (var project in projects)
+            {
+                dtgvProject.Rows.Add(
+                    project.ProjectID,
+                    project.ProjectName,
+                    project.ProjectStart.ToString("dd/MM/yyyy"),
+                    project.ProjectEnd.ToString("dd/MM/yyyy"),
+                    project.ProjectBudget.ToString("N2"),
+                    project.CurrentPhaseNumber,  // ✅ จำนวนเฟส
+                    project.CustomerName,  // ✅ ชื่อลูกค้า
+                    project.EmployeeName   // ✅ ชื่อผู้ดูแลโครงการ
+                );
+            }
         }
 
         //กำหนดค่าลงใน cmbCurrentPhaseNumber
@@ -149,47 +261,129 @@ namespace JRSApplication
             {
                 MessageBox.Show("กรุณากรอกชื่อโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtProjectName.Focus();
+                starProjectName.Visible = true;
                 return false;
+            }
+            else
+            {
+                starProjectName.Visible = false;
             }
 
             if (string.IsNullOrWhiteSpace(txtNumber.Text))
             {
                 MessageBox.Show("กรุณากรอกเลขที่สัญญา", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtNumber.Focus();
+                starNumber.Visible = true;
                 return false;
+            }
+            else
+            {
+
             }
 
             if (cmbCurrentPhaseNumber.SelectedItem == null)
             {
                 MessageBox.Show("กรุณาระบุจำนวนเฟส", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cmbCurrentPhaseNumber.Focus();
+                starPhase.Visible = true;
                 return false;
+            }
+            else
+            {
+
             }
 
             if (dtpkStartDate.Value > dtpkEndDate.Value)
             {
                 MessageBox.Show("วันที่สิ้นสุดโครงการต้องไม่น้อยกว่าวันที่เริ่มต้น", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 dtpkEndDate.Focus();
+                starStartDate.Visible = true;
+                starEndDate.Visible = true;
                 return false;
+            }
+            else
+            {
+
             }
 
             if (string.IsNullOrWhiteSpace(txtBudget.Text) || !decimal.TryParse(txtBudget.Text.Replace(",", ""), out _))
             {
                 MessageBox.Show("กรุณากรอกจำนวนเงินจ้างที่ถูกต้อง", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtBudget.Focus();
+                starBudget.Visible = true;
                 return false;
+            }
+            else
+            {
+                starBudget.Visible = false;
             }
 
             if (string.IsNullOrWhiteSpace(selectedCustomerID))
             {
                 MessageBox.Show("กรุณาเลือกข้อมูลลูกค้า", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                starCustomer.Visible = true;
                 return false;
+            }
+            else
+            {
+                starCustomer.Visible = false;
             }
 
             if (string.IsNullOrWhiteSpace(selectedEmployeeID))
             {
                 MessageBox.Show("กรุณาเลือกข้อมูลผู้ดูแลโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                starProjectManager.Visible = true;
                 return false;
+            }
+            else
+            {
+                starProjectManager.Visible = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtProjectDetail.Text))
+            {
+                MessageBox.Show("กรุณากรอกข้อมูลโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtProjectDetail.Focus();
+                starProjectDetail.Visible = true;
+                return false;
+            }
+            else
+            {
+                starProjectDetail.Visible = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtProjectAddress.Text))
+            {
+                MessageBox.Show("กรุณากรอกที่อยู่โครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtProjectAddress.Focus();
+                starProjectAddress.Visible = true;
+                return false;
+            }
+            else 
+            {
+                starProjectAddress.Visible = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtRemark.Text))
+            {
+                MessageBox.Show("", "" , MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtRemark.Focus();
+                starRemark.Visible = true;
+                return false;
+            }
+            else
+            {
+                starRemark.Visible = false;
+            }
+            if (string.IsNullOrWhiteSpace(btnInsertBlueprintFile.Text) || btnInsertBlueprintFile.Text == "เลือกไฟล์")
+            {
+                MessageBox.Show("กรุณาเลือกไฟล์แบบก่อสร้าง", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                starBlueprint.Visible = true; 
+                return false;
+            }
+            else
+            {
+                starBlueprint.Visible = false; 
             }
 
             // ✅ ตรวจสอบเปอร์เซ็นต์รวมของเฟส (ต้องเท่ากับ 100%)
@@ -197,6 +391,7 @@ namespace JRSApplication
             if (totalPercent != 100)
             {
                 MessageBox.Show("เปอร์เซ็นต์รวมของเฟสต้องเท่ากับ 100%", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
                 return false;
             }
 
@@ -259,9 +454,6 @@ namespace JRSApplication
             EnableControls_close();
 
         }
-
-
-
         private void btnAdd_Click(object sender, EventArgs e)
         {
             //เพิ่ม เปิดการทำงาน

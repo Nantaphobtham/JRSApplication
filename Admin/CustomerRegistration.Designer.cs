@@ -495,6 +495,7 @@
             this.dtgvCustomer.Name = "dtgvCustomer";
             this.dtgvCustomer.Size = new System.Drawing.Size(1525, 270);
             this.dtgvCustomer.TabIndex = 4;
+            this.dtgvCustomer.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvCustomer_CellClick);
             // 
             // searchboxCustomer
             // 
