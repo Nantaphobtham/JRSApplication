@@ -30,7 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectData));
             this.pnlProjectdata = new System.Windows.Forms.Panel();
-            this.dtgvProject = new System.Windows.Forms.DataGridView();
+            this.dtgvProjectData = new System.Windows.Forms.DataGridView();
+            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.txtHeaderSearch = new System.Windows.Forms.Label();
             this.pnlStep = new System.Windows.Forms.Panel();
             this.txtNormalData = new System.Windows.Forms.Label();
@@ -41,8 +42,8 @@
             this.txtBlueprint = new System.Windows.Forms.Label();
             this.pnlBuleprint = new System.Windows.Forms.Panel();
             this.pdfBlueprint = new AxAcroPDFLib.AxAcroPDF();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.pnlPhaseDetail = new System.Windows.Forms.Panel();
+            this.dtgvPhaseDetail = new System.Windows.Forms.DataGridView();
             this.txtSumpercent = new System.Windows.Forms.TextBox();
             this.lbPercent = new System.Windows.Forms.Label();
             this.lbSumpercent = new System.Windows.Forms.Label();
@@ -65,43 +66,52 @@
             this.lbProjectManager = new System.Windows.Forms.Label();
             this.lbContractnumber = new System.Windows.Forms.Label();
             this.lbProjectID = new System.Windows.Forms.Label();
-            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.pnlProjectdata.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvProject)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).BeginInit();
             this.pnlStep.SuspendLayout();
             this.pnlInfomationview.SuspendLayout();
             this.pnlDemolition.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pdfDemolition)).BeginInit();
             this.pnlBuleprint.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pdfBlueprint)).BeginInit();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.pnlPhaseDetail.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvPhaseDetail)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlProjectdata
             // 
-            this.pnlProjectdata.Controls.Add(this.dtgvProject);
+            this.pnlProjectdata.Controls.Add(this.dtgvProjectData);
             this.pnlProjectdata.Controls.Add(this.searchboxControl1);
             this.pnlProjectdata.Controls.Add(this.txtHeaderSearch);
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 0);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1516, 274);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1465, 274);
             this.pnlProjectdata.TabIndex = 0;
             // 
-            // dtgvProject
+            // dtgvProjectData
             // 
-            this.dtgvProject.AllowUserToAddRows = false;
-            this.dtgvProject.AllowUserToDeleteRows = false;
-            this.dtgvProject.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvProject.Location = new System.Drawing.Point(27, 80);
-            this.dtgvProject.Margin = new System.Windows.Forms.Padding(2);
-            this.dtgvProject.Name = "dtgvProject";
-            this.dtgvProject.ReadOnly = true;
-            this.dtgvProject.RowHeadersWidth = 51;
-            this.dtgvProject.RowTemplate.Height = 24;
-            this.dtgvProject.Size = new System.Drawing.Size(1529, 187);
-            this.dtgvProject.TabIndex = 3;
+            this.dtgvProjectData.AllowUserToAddRows = false;
+            this.dtgvProjectData.AllowUserToDeleteRows = false;
+            this.dtgvProjectData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvProjectData.Location = new System.Drawing.Point(27, 80);
+            this.dtgvProjectData.Margin = new System.Windows.Forms.Padding(2);
+            this.dtgvProjectData.Name = "dtgvProjectData";
+            this.dtgvProjectData.ReadOnly = true;
+            this.dtgvProjectData.RowHeadersWidth = 51;
+            this.dtgvProjectData.RowTemplate.Height = 24;
+            this.dtgvProjectData.Size = new System.Drawing.Size(1529, 187);
+            this.dtgvProjectData.TabIndex = 3;
+            this.dtgvProjectData.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvProjectData_CellClick);
+            // 
+            // searchboxControl1
+            // 
+            this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.Location = new System.Drawing.Point(906, 17);
+            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl1.Name = "searchboxControl1";
+            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl1.TabIndex = 2;
             // 
             // txtHeaderSearch
             // 
@@ -120,7 +130,7 @@
             this.pnlStep.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep.Location = new System.Drawing.Point(0, 274);
             this.pnlStep.Name = "pnlStep";
-            this.pnlStep.Size = new System.Drawing.Size(1516, 46);
+            this.pnlStep.Size = new System.Drawing.Size(1465, 46);
             this.pnlStep.TabIndex = 1;
             // 
             // txtNormalData
@@ -140,7 +150,7 @@
             this.pnlInfomationview.Controls.Add(this.pnlDemolition);
             this.pnlInfomationview.Controls.Add(this.txtBlueprint);
             this.pnlInfomationview.Controls.Add(this.pnlBuleprint);
-            this.pnlInfomationview.Controls.Add(this.panel1);
+            this.pnlInfomationview.Controls.Add(this.pnlPhaseDetail);
             this.pnlInfomationview.Controls.Add(this.txtSumpercent);
             this.pnlInfomationview.Controls.Add(this.lbPercent);
             this.pnlInfomationview.Controls.Add(this.lbSumpercent);
@@ -166,7 +176,7 @@
             this.pnlInfomationview.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlInfomationview.Location = new System.Drawing.Point(0, 320);
             this.pnlInfomationview.Name = "pnlInfomationview";
-            this.pnlInfomationview.Size = new System.Drawing.Size(1516, 2756);
+            this.pnlInfomationview.Size = new System.Drawing.Size(1465, 2756);
             this.pnlInfomationview.TabIndex = 2;
             // 
             // txtDemolition
@@ -227,28 +237,28 @@
             this.pdfBlueprint.Size = new System.Drawing.Size(1467, 954);
             this.pdfBlueprint.TabIndex = 6;
             // 
-            // panel1
+            // pnlPhaseDetail
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(215)))), ((int)(((byte)(215)))));
-            this.panel1.Controls.Add(this.dataGridView1);
-            this.panel1.Location = new System.Drawing.Point(27, 212);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1496, 375);
-            this.panel1.TabIndex = 26;
+            this.pnlPhaseDetail.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(215)))), ((int)(((byte)(215)))));
+            this.pnlPhaseDetail.Controls.Add(this.dtgvPhaseDetail);
+            this.pnlPhaseDetail.Location = new System.Drawing.Point(27, 212);
+            this.pnlPhaseDetail.Name = "pnlPhaseDetail";
+            this.pnlPhaseDetail.Size = new System.Drawing.Size(1496, 375);
+            this.pnlPhaseDetail.TabIndex = 26;
             // 
-            // dataGridView1
+            // dtgvPhaseDetail
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 15);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1473, 345);
-            this.dataGridView1.TabIndex = 4;
+            this.dtgvPhaseDetail.AllowUserToAddRows = false;
+            this.dtgvPhaseDetail.AllowUserToDeleteRows = false;
+            this.dtgvPhaseDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvPhaseDetail.Location = new System.Drawing.Point(12, 15);
+            this.dtgvPhaseDetail.Margin = new System.Windows.Forms.Padding(2);
+            this.dtgvPhaseDetail.Name = "dtgvPhaseDetail";
+            this.dtgvPhaseDetail.ReadOnly = true;
+            this.dtgvPhaseDetail.RowHeadersWidth = 51;
+            this.dtgvPhaseDetail.RowTemplate.Height = 24;
+            this.dtgvPhaseDetail.Size = new System.Drawing.Size(1473, 345);
+            this.dtgvPhaseDetail.TabIndex = 4;
             // 
             // txtSumpercent
             // 
@@ -512,15 +522,6 @@
             this.lbProjectID.TabIndex = 4;
             this.lbProjectID.Text = "รหัสโครงการ";
             // 
-            // searchboxControl1
-            // 
-            this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.Location = new System.Drawing.Point(906, 17);
-            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxControl1.Name = "searchboxControl1";
-            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl1.TabIndex = 2;
-            // 
             // ProjectData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -530,10 +531,10 @@
             this.Controls.Add(this.pnlStep);
             this.Controls.Add(this.pnlProjectdata);
             this.Name = "ProjectData";
-            this.Size = new System.Drawing.Size(1516, 954);
+            this.Size = new System.Drawing.Size(1465, 954);
             this.pnlProjectdata.ResumeLayout(false);
             this.pnlProjectdata.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvProject)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).EndInit();
             this.pnlStep.ResumeLayout(false);
             this.pnlStep.PerformLayout();
             this.pnlInfomationview.ResumeLayout(false);
@@ -542,8 +543,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pdfDemolition)).EndInit();
             this.pnlBuleprint.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pdfBlueprint)).EndInit();
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.pnlPhaseDetail.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvPhaseDetail)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -553,7 +554,7 @@
         private System.Windows.Forms.Panel pnlProjectdata;
         private System.Windows.Forms.Label txtHeaderSearch;
         private SearchboxControl searchboxControl1;
-        private System.Windows.Forms.DataGridView dtgvProject;
+        private System.Windows.Forms.DataGridView dtgvProjectData;
         private System.Windows.Forms.Panel pnlStep;
         private System.Windows.Forms.Label txtNormalData;
         private System.Windows.Forms.Panel pnlInfomationview;
@@ -580,8 +581,8 @@
         private System.Windows.Forms.TextBox txtStatus;
         private System.Windows.Forms.Label lbStatus;
         private System.Windows.Forms.Panel pnlBuleprint;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Panel pnlPhaseDetail;
+        private System.Windows.Forms.DataGridView dtgvPhaseDetail;
         private System.Windows.Forms.Label txtBlueprint;
         private AxAcroPDFLib.AxAcroPDF pdfBlueprint;
         private System.Windows.Forms.Label txtDemolition;

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using JRSApplication.Components;
+using JRSApplication.Data_Access_Layer;
+using Mysqlx.Crud;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,7 +18,223 @@ namespace JRSApplication
         public ProjectData()
         {
             InitializeComponent();
+            InitializeDataGridViewProject();  
+            InitializeDataGridViewPhase();
+            LoadProjectData();
+
         }
 
+        private void LoadProjectData()
+        {
+            InitializeDataGridViewProject(); // ✅ ตรวจสอบตารางก่อนโหลดข้อมูล
+
+            ProjectDAL dal = new ProjectDAL();
+            List<Project> projects = dal.GetAllProjects();
+
+            dtgvProjectData.Rows.Clear();
+            foreach (var project in projects)
+            {
+                dtgvProjectData.Rows.Add(
+                    project.ProjectID,
+                    project.ProjectName,
+                    project.ProjectStart.ToString("dd/MM/yyyy"),
+                    project.ProjectEnd.ToString("dd/MM/yyyy"),
+                    project.ProjectBudget.ToString("N2"),
+                    project.CurrentPhaseNumber,  // ✅ จำนวนเฟส
+                    project.CustomerName,  // ✅ ชื่อลูกค้า
+                    project.EmployeeName   // ✅ ชื่อผู้ดูแลโครงการ
+                );
+            }
+        }
+        private void CustomizeDataGridViewProject()
+        {
+
+            dtgvProjectData.BorderStyle = BorderStyle.None;
+            dtgvProjectData.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dtgvProjectData.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dtgvProjectData.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
+            dtgvProjectData.DefaultCellStyle.SelectionForeColor = Color.White;
+            dtgvProjectData.BackgroundColor = Color.White;
+
+            dtgvProjectData.EnableHeadersVisualStyles = false;
+            dtgvProjectData.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dtgvProjectData.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            dtgvProjectData.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dtgvProjectData.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            dtgvProjectData.ColumnHeadersHeight = 30;
+
+            dtgvProjectData.DefaultCellStyle.Font = new Font("Segoe UI", 12);
+            dtgvProjectData.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvProjectData.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvProjectData.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
+
+            dtgvProjectData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgvProjectData.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dtgvProjectData.RowTemplate.Height = 30;
+
+            dtgvProjectData.GridColor = Color.LightGray;
+            dtgvProjectData.RowHeadersVisible = false;
+
+            dtgvProjectData.ReadOnly = true;
+            dtgvProjectData.AllowUserToAddRows = false;
+            dtgvProjectData.AllowUserToResizeRows = false;
+        }
+        private void InitializeDataGridViewProject()
+        {
+            // ✅ ป้องกันการเพิ่มคอลัมน์ซ้ำ
+            if (dtgvProjectData.Columns.Count == 0)
+            {
+                dtgvProjectData.SelectionMode = DataGridViewSelectionMode.FullRowSelect; 
+                dtgvProjectData.MultiSelect = false; // ✅ เลือกได้ทีละแถวเท่านั้น
+
+                dtgvProjectData.AllowUserToAddRows = false;
+                // ✅ เพิ่มคอลัมน์
+                dtgvProjectData.Columns.Add("ProjectID", "รหัสโครงการ");
+                dtgvProjectData.Columns.Add("ProjectName", "ชื่อโครงการ");
+                dtgvProjectData.Columns.Add("ProjectStart", "วันที่เริ่มโครงการ");
+                dtgvProjectData.Columns.Add("ProjectEnd", "วันที่สิ้นสุดโครงการ");
+                dtgvProjectData.Columns.Add("ProjectBudget", "งบประมาณ (บาท)");
+                dtgvProjectData.Columns.Add("CurrentPhaseNumber", "จำนวนเฟสงาน");
+                dtgvProjectData.Columns.Add("CustomerName", "ชื่อลูกค้า");
+                dtgvProjectData.Columns.Add("EmployeeName", "ชื่อผู้ดูแลโครงการ");
+
+                // ✅ ปรับแต่งคอลัมน์
+                dtgvProjectData.Columns["ProjectID"].Width = 80;
+                dtgvProjectData.Columns["ProjectID"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dtgvProjectData.Columns["ProjectID"].ReadOnly = true;
+
+                dtgvProjectData.Columns["ProjectName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dtgvProjectData.Columns["ProjectName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dtgvProjectData.Columns["ProjectName"].ReadOnly = true;
+
+                dtgvProjectData.Columns["ProjectStart"].Width = 120;
+                dtgvProjectData.Columns["ProjectStart"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dtgvProjectData.Columns["ProjectStart"].DefaultCellStyle.Format = "dd/MM/yyyy";
+                dtgvProjectData.Columns["ProjectStart"].ReadOnly = true;
+
+                dtgvProjectData.Columns["ProjectEnd"].Width = 120;
+                dtgvProjectData.Columns["ProjectEnd"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dtgvProjectData.Columns["ProjectEnd"].DefaultCellStyle.Format = "dd/MM/yyyy";
+                dtgvProjectData.Columns["ProjectEnd"].ReadOnly = true;
+
+                dtgvProjectData.Columns["ProjectBudget"].Width = 150;
+                dtgvProjectData.Columns["ProjectBudget"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dtgvProjectData.Columns["ProjectBudget"].DefaultCellStyle.Format = "N2"; // แสดงเป็น 1,200.00
+                dtgvProjectData.Columns["ProjectBudget"].ReadOnly = true;
+
+                dtgvProjectData.Columns["CurrentPhaseNumber"].Width = 120;
+                dtgvProjectData.Columns["CurrentPhaseNumber"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dtgvProjectData.Columns["CurrentPhaseNumber"].ReadOnly = true;
+
+                dtgvProjectData.Columns["CustomerName"].Width = 150;
+                dtgvProjectData.Columns["CustomerName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dtgvProjectData.Columns["CustomerName"].ReadOnly = true;
+
+                dtgvProjectData.Columns["EmployeeName"].Width = 150;
+                dtgvProjectData.Columns["EmployeeName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dtgvProjectData.Columns["EmployeeName"].ReadOnly = true;
+
+                // ✅ ใช้ฟังก์ชันตกแต่ง
+                CustomizeDataGridViewProject();
+            }
+        }
+        private void dtgvProjectData_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+
+        }
+
+        private void LoadPhaseData(int projectId)
+        {
+            InitializeDataGridViewPhase();
+
+            PhaseDAL phaseDAL = new PhaseDAL();
+            List<ProjectPhase> phases = phaseDAL.GetAllPhasesByPrjectID(projectId);
+
+            dtgvPhaseDetail.Rows.Clear();
+            foreach (var phase in phases)
+            {
+                dtgvPhaseDetail.Rows.Add(
+                    phase.PhaseNumber, // เฟสที่
+                    phase.PhaseDetail, // รายละเอียดการดำเนินงาน
+                    phase.PhaseBudget.ToString("N2"), // จำนวนเงิน (บาท) -> แสดงเป็น 1,200.00
+                    phase.PhasePercent.ToString("N2") + " %" // เปอร์เซ็นต์ (%)
+                );
+            }
+        }
+        private void CustomizeDataGridViewPhase()
+        {
+            dtgvPhaseDetail.BorderStyle = BorderStyle.None;
+            dtgvPhaseDetail.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dtgvPhaseDetail.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dtgvPhaseDetail.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
+            dtgvPhaseDetail.DefaultCellStyle.SelectionForeColor = Color.White;
+            dtgvPhaseDetail.BackgroundColor = Color.White;
+
+            dtgvPhaseDetail.EnableHeadersVisualStyles = false;
+            dtgvPhaseDetail.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dtgvPhaseDetail.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            dtgvPhaseDetail.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dtgvPhaseDetail.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            dtgvPhaseDetail.ColumnHeadersHeight = 30;
+
+            dtgvPhaseDetail.DefaultCellStyle.Font = new Font("Segoe UI", 12);
+            dtgvPhaseDetail.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvPhaseDetail.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvPhaseDetail.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
+
+            dtgvPhaseDetail.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgvPhaseDetail.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dtgvPhaseDetail.RowTemplate.Height = 30;
+
+            dtgvPhaseDetail.GridColor = Color.LightGray;
+            dtgvPhaseDetail.RowHeadersVisible = false;
+
+            dtgvPhaseDetail.ReadOnly = true;
+            dtgvPhaseDetail.AllowUserToAddRows = false;
+            dtgvPhaseDetail.AllowUserToResizeRows = false;
+        }
+
+        private void InitializeDataGridViewPhase()
+        {
+            // ✅ ป้องกันการเพิ่มคอลัมน์ซ้ำ
+            if (dtgvPhaseDetail.Columns.Count == 0)
+            {
+                dtgvPhaseDetail.AllowUserToAddRows = false;
+
+                // ✅ เพิ่มคอลัมน์
+                dtgvPhaseDetail.Columns.Add("PhaseNumber", "เฟสที่");
+                dtgvPhaseDetail.Columns.Add("PhaseDetail", "รายละเอียดการดำเนินงาน");
+                dtgvPhaseDetail.Columns.Add("PhaseBudget", "จำนวนเงิน (บาท)");
+                dtgvPhaseDetail.Columns.Add("PhasePercent", "เปอร์เซ็นต์ (%)");
+
+                // ✅ ปรับแต่งคอลัมน์
+                dtgvPhaseDetail.Columns["PhaseNumber"].Width = 80;
+                dtgvPhaseDetail.Columns["PhaseNumber"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dtgvPhaseDetail.Columns["PhaseNumber"].ReadOnly = true;
+
+                dtgvPhaseDetail.Columns["PhaseDetail"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dtgvPhaseDetail.Columns["PhaseDetail"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dtgvPhaseDetail.Columns["PhaseDetail"].ReadOnly = true;
+
+                dtgvPhaseDetail.Columns["PhaseBudget"].Width = 150;
+                dtgvPhaseDetail.Columns["PhaseBudget"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dtgvPhaseDetail.Columns["PhaseBudget"].DefaultCellStyle.Format = "N2"; // แสดงเป็น 1,200.00
+                dtgvPhaseDetail.Columns["PhaseBudget"].ReadOnly = true;
+
+                dtgvPhaseDetail.Columns["PhasePercent"].Width = 120;
+                dtgvPhaseDetail.Columns["PhasePercent"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dtgvPhaseDetail.Columns["PhasePercent"].DefaultCellStyle.Format = "N2"; // แสดงเป็น 15.00%
+                dtgvPhaseDetail.Columns["PhasePercent"].ReadOnly = true;
+
+                // ✅ ใช้ฟังก์ชันตกแต่ง
+                CustomizeDataGridViewPhase();
+            }
+        }
+
+
+        
+
     }
+
 }

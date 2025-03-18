@@ -1,5 +1,4 @@
-﻿using JRSApplication.Components;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -9,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace JRSApplication.Data_Access_Layer
 {
-    public class ProjectPhaseDAL
+    public class PhaseWorkDAL
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
 
 
     }
+
 }

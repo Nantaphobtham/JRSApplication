@@ -55,7 +55,6 @@ namespace JRSApplication.Data_Access_Layer
         }
 
 
-
         public int GenerateProjectID()
         {
             int newID = int.Parse(DateTime.Now.ToString("yyMM") + "000"); // เริ่มที่ 2503000

@@ -147,8 +147,8 @@ namespace JRSApplication.Components
                 }
             }
         }
-
-        public DataTable GetEmployeeByID(string employeeID)
+        //GetEmployeeByIDtoUsermanagementForm
+        public DataTable GetEmployeeByIDtoUMNGT(string employeeID)
         {
             DataTable dt = new DataTable();
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -170,6 +170,36 @@ namespace JRSApplication.Components
             }
             return dt;
         }
+        public Employee GetEmployeeByIdtoProjectdata(int employeeId)
+        {
+            Employee employee = null;
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string sql = "SELECT * FROM employee WHERE emp_id = @EmployeeID";
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
+                    conn.Open();
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            employee = new Employee
+                            {
+                                EmployeeID = reader["emp_id"].ToString(),  // ✅ ใช้ ToString() เนื่องจาก EmployeeID เป็น string
+                                FirstName = reader["emp_name"].ToString(),
+                                LastName = reader["emp_lname"].ToString(),
+                                Email = reader["emp_email"].ToString(),
+                                Phone = reader["emp_tel"].ToString(),
+                                Role = reader["emp_pos"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return employee;
+        }
+
 
 
         public DataTable GetAllEmployees()

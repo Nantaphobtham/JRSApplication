@@ -76,37 +76,90 @@ namespace JRSApplication
         {
             bool hasError = false;
 
-            if (string.IsNullOrWhiteSpace(txtName.Text)) { starName.Visible = true; hasError = true; }
-            else { starName.Visible = false; }
+            if (string.IsNullOrWhiteSpace(txtName.Text)) 
+            { 
+                starName.Visible = true; hasError = true; 
+            }
+            else 
+            { 
+                starName.Visible = false; 
+            }
 
-            if (string.IsNullOrWhiteSpace(txtLastname.Text)) { starLastname.Visible = true; hasError = true; }
-            else { starLastname.Visible = false; }
+            if (string.IsNullOrWhiteSpace(txtLastname.Text)) 
+            { 
+                starLastname.Visible = true; hasError = true; 
+            }
+            else 
+            { 
+                starLastname.Visible = false; 
+            }
 
-            if (string.IsNullOrWhiteSpace(txtUsername.Text)) { starUsername.Visible = true; hasError = true; }
-            else { starUsername.Visible = false; }
+            if (string.IsNullOrWhiteSpace(txtUsername.Text)) 
+            { 
+                starUsername.Visible = true; hasError = true; 
+            }
+            else 
+            { 
+                starUsername.Visible = false; 
+            }
 
-            if (string.IsNullOrWhiteSpace(txtPassword.Text)) { starPassword.Visible = true; hasError = true; }
-            else { starPassword.Visible = false; }
+            if (string.IsNullOrWhiteSpace(txtPassword.Text)) 
+            { 
+                starPassword.Visible = true; hasError = true; 
+            }
+            else 
+            { 
+                starPassword.Visible = false; 
+            }
 
-            if (string.IsNullOrWhiteSpace(txtConfirmPassword.Text)) { starConfirmPassword.Visible = true; hasError = true; }
-            else { starConfirmPassword.Visible = false; }
+            if (string.IsNullOrWhiteSpace(txtConfirmPassword.Text)) 
+            { 
+                starConfirmPassword.Visible = true; hasError = true; 
+            }
+            else 
+            { 
+                starConfirmPassword.Visible = false; 
+            }
 
-            if (string.IsNullOrWhiteSpace(txtPhone.Text)) { starPhone.Visible = true; hasError = true; }
-            else { starPhone.Visible = false; }
+            if (string.IsNullOrWhiteSpace(txtPhone.Text)) 
+            { 
+                starPhone.Visible = true; hasError = true; 
+            }
+            else 
+            { 
+                starPhone.Visible = false; 
+            }
 
-            if (string.IsNullOrWhiteSpace(txtEmail.Text)) { starEmail.Visible = true; hasError = true; }
-            else { starEmail.Visible = false; }
+            if (string.IsNullOrWhiteSpace(txtEmail.Text)) 
+            {
+                starEmail.Visible = true; hasError = true; 
+            }
+            else 
+            {
+                starEmail.Visible = false; 
+            }
 
-            if (cmbRole.SelectedIndex == -1) { starRole.Visible = true; hasError = true; }
+            if (string.IsNullOrWhiteSpace(txtAddress.Text))
+            {
+                MessageBox.Show("กรุณากรอกที่อยู่ก่อนบันทึก!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false; // ❌ หยุดการทำงานถ้าไม่ได้กรอกที่อยู่
+            }
+
+            if (cmbRole.SelectedIndex == -1) 
+            {
+                starRole.Visible = true; hasError = true; 
+            }
             else { starRole.Visible = false; }
 
             return !hasError;
         }
 
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             EnableControlsOn();
             ReadOnlyControlsOn();
+            txtName.Focus();
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -123,6 +176,8 @@ namespace JRSApplication
                 Password = hashedPassword,
                 Phone = txtPhone.Text.Trim(),
                 Email = txtEmail.Text.Trim(),
+                Address = txtAddress.Text.Trim(),
+                IDCard = txtIdcard.Text.Trim(),
                 Role = cmbRole.SelectedItem.ToString()
             };
 
@@ -141,12 +196,15 @@ namespace JRSApplication
             {
                 MessageBox.Show("บันทึกข้อมูลสำเร็จ!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadEmployeeData();
+                ReadOnlyControlsOff();
+                EnableControlsOff();
                 ClearForm();
             }
             else
             {
                 MessageBox.Show("เกิดข้อผิดพลาดในการบันทึกข้อมูล!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -167,6 +225,8 @@ namespace JRSApplication
             {
                 MessageBox.Show("ลบข้อมูลสำเร็จ!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadEmployeeData();
+                ReadOnlyControlsOff();
+                EnableControlsOff();
                 ClearForm();
             }
             else
@@ -199,7 +259,7 @@ namespace JRSApplication
 
             // ✅ โหลดข้อมูลพนักงานที่เลือกมาใส่ในฟอร์ม
             EmployeeDAL dal = new EmployeeDAL();
-            DataTable dt = dal.GetEmployeeByID(selectedEmployeeID);
+            DataTable dt = dal.GetEmployeeByIDtoUMNGT(selectedEmployeeID);
 
             if (dt.Rows.Count > 0)
             {

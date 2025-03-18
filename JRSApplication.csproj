@@ -110,14 +110,20 @@
     <Compile Include="Components\Customer.cs" />
     <Compile Include="Components\Employee.cs" />
     <Compile Include="Components\EmployeeAssignment.cs" />
+    <Compile Include="Components\Invoice.cs" />
+    <Compile Include="Components\InvoiceDetail.cs" />
+    <Compile Include="Components\PhaseWorking.cs" />
     <Compile Include="Components\Project.cs" />
     <Compile Include="Components\ProjectPhase.cs" />
     <Compile Include="Components\Supplier.cs" />
+    <Compile Include="Components\WorkingPicture.cs" />
     <Compile Include="Data Access Layer\CustomerDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeAssignmentDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeDAL.cs" />
+    <Compile Include="Data Access Layer\PaymentDAL.cs" />
+    <Compile Include="Data Access Layer\PhaseWorkDAL.cs" />
     <Compile Include="Data Access Layer\ProjectDAL.cs" />
-    <Compile Include="Data Access Layer\ProjectPhaseDAL.cs" />
+    <Compile Include="Data Access Layer\PhaseDAL.cs" />
     <Compile Include="Data Access Layer\SupplierDAL.cs" />
     <Compile Include="ProjectManager\AllocatePersonnel.cs">
       <SubType>UserControl</SubType>
