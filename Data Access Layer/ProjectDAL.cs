@@ -53,6 +53,53 @@ namespace JRSApplication.Data_Access_Layer
             }
             return projects;
         }
+        public Project GetProjectDetailsById(int projectId)
+        {
+            Project project = null;
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string sql = @"
+            SELECT 
+                p.pro_id AS ProjectID,
+                p.pro_name AS ProjectName,
+                p.pro_start AS ProjectStart,
+                p.pro_end AS ProjectEnd,
+                p.pro_number AS ContractNumber,
+                p.pro_budget AS ProjectBudget,
+                p.pro_currentphasenumber AS CurrentPhaseNumber,
+                c.cus_name AS CustomerName,
+                e.emp_name AS ProjectManager
+            FROM project p
+            LEFT JOIN customer c ON p.cus_id = c.cus_id
+            LEFT JOIN employee e ON p.emp_id = e.emp_id
+            WHERE p.pro_id = @ProjectID";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ProjectID", projectId);
+                    conn.Open();
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            project = new Project
+                            {
+                                ProjectID = reader.GetInt32("ProjectID"),
+                                ProjectName = reader.GetString("ProjectName"),
+                                ProjectStart = reader.GetDateTime("ProjectStart"),
+                                ProjectEnd = reader.GetDateTime("ProjectEnd"),
+                                ProjectNumber = reader.GetString("ContractNumber"),
+                                CustomerName = reader.IsDBNull(reader.GetOrdinal("CustomerName")) ? "ไม่มีข้อมูล" : reader.GetString("CustomerName"),
+                                EmployeeName = reader.IsDBNull(reader.GetOrdinal("ProjectManager")) ? "ไม่มีข้อมูล" : reader.GetString("ProjectManager")
+                            };
+                        }
+                    }
+                }
+            }
+
+            return project;
+        }
 
 
         public int GenerateProjectID()
@@ -103,8 +150,10 @@ namespace JRSApplication.Data_Access_Layer
                             cmd.Parameters.AddWithValue("@CurrentPhaseNumber", project.CurrentPhaseNumber);
                             cmd.Parameters.AddWithValue("@Remark", project.Remark);
                             cmd.Parameters.AddWithValue("@ProjectNumber", project.ProjectNumber);
-                            cmd.Parameters.AddWithValue("@ConstructionBlueprint", project.ConstructionBlueprint);
-                            cmd.Parameters.AddWithValue("@DemolitionModel", project.DemolitionModel);
+                            cmd.Parameters.AddWithValue("@ConstructionBlueprint", project.ConstructionBlueprint); // ✅ ห้าม null
+                            cmd.Parameters.AddWithValue("@DemolitionModel",
+                                project.DemolitionModel != null ? (object)project.DemolitionModel : DBNull.Value); // ✅ อนุญาตให้เป็น null
+
                             cmd.Parameters.AddWithValue("@EmployeeID", project.EmployeeID);
                             cmd.Parameters.AddWithValue("@CustomerID", project.CustomerID);
 

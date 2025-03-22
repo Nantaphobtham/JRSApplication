@@ -18,8 +18,8 @@ namespace JRSApplication.Components
         public int CurrentPhaseNumber { get; set; }  // pro_currentphasenumber
         public string Remark { get; set; }  // pro_remark
         public string ProjectNumber { get; set; }  // pro_number
-        public string ConstructionBlueprint { get; set; }  // pro_con_blueprint
-        public string DemolitionModel { get; set; }  // pro_demolition_model
+        public byte[] ConstructionBlueprint { get; set; }  // pro_con_blueprint
+        public byte[] DemolitionModel { get; set; }  // pro_demolition_model
         public int EmployeeID { get; set; }  // emp_id (FK)
         public int CustomerID { get; set; }  // cus_id (FK)
 

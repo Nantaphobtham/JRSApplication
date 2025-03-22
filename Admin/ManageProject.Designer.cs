@@ -163,7 +163,7 @@
             this.pnlInfomation.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInfomation.Location = new System.Drawing.Point(0, 0);
             this.pnlInfomation.Name = "pnlInfomation";
-            this.pnlInfomation.Size = new System.Drawing.Size(1468, 738);
+            this.pnlInfomation.Size = new System.Drawing.Size(1451, 738);
             this.pnlInfomation.TabIndex = 0;
             // 
             // subInfo
@@ -610,6 +610,7 @@
             this.txtEmployeeRole.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEmployeeRole.Enabled = false;
             this.txtEmployeeRole.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtEmployeeRole.ForeColor = System.Drawing.Color.Black;
             this.txtEmployeeRole.Location = new System.Drawing.Point(156, 177);
             this.txtEmployeeRole.Margin = new System.Windows.Forms.Padding(2);
             this.txtEmployeeRole.Name = "txtEmployeeRole";
@@ -649,6 +650,7 @@
             this.txtEmployeeLastName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEmployeeLastName.Enabled = false;
             this.txtEmployeeLastName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtEmployeeLastName.ForeColor = System.Drawing.Color.Black;
             this.txtEmployeeLastName.Location = new System.Drawing.Point(156, 107);
             this.txtEmployeeLastName.Margin = new System.Windows.Forms.Padding(2);
             this.txtEmployeeLastName.Name = "txtEmployeeLastName";
@@ -686,6 +688,7 @@
             this.txtEmployeeName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEmployeeName.Enabled = false;
             this.txtEmployeeName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtEmployeeName.ForeColor = System.Drawing.Color.Black;
             this.txtEmployeeName.Location = new System.Drawing.Point(156, 37);
             this.txtEmployeeName.Margin = new System.Windows.Forms.Padding(2);
             this.txtEmployeeName.Name = "txtEmployeeName";
@@ -827,6 +830,7 @@
             this.txtCustomerEmail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCustomerEmail.Enabled = false;
             this.txtCustomerEmail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCustomerEmail.ForeColor = System.Drawing.Color.Black;
             this.txtCustomerEmail.Location = new System.Drawing.Point(707, 111);
             this.txtCustomerEmail.Margin = new System.Windows.Forms.Padding(2);
             this.txtCustomerEmail.Name = "txtCustomerEmail";
@@ -851,6 +855,7 @@
             this.txtCustomerPhone.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCustomerPhone.Enabled = false;
             this.txtCustomerPhone.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCustomerPhone.ForeColor = System.Drawing.Color.Black;
             this.txtCustomerPhone.Location = new System.Drawing.Point(438, 111);
             this.txtCustomerPhone.Margin = new System.Windows.Forms.Padding(2);
             this.txtCustomerPhone.Name = "txtCustomerPhone";
@@ -875,6 +880,7 @@
             this.txtCustomerLastName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCustomerLastName.Enabled = false;
             this.txtCustomerLastName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCustomerLastName.ForeColor = System.Drawing.Color.Black;
             this.txtCustomerLastName.Location = new System.Drawing.Point(438, 37);
             this.txtCustomerLastName.Margin = new System.Windows.Forms.Padding(2);
             this.txtCustomerLastName.Name = "txtCustomerLastName";
@@ -925,6 +931,7 @@
             this.txtCustomerIDCard.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCustomerIDCard.Enabled = false;
             this.txtCustomerIDCard.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCustomerIDCard.ForeColor = System.Drawing.Color.Black;
             this.txtCustomerIDCard.Location = new System.Drawing.Point(156, 111);
             this.txtCustomerIDCard.Margin = new System.Windows.Forms.Padding(2);
             this.txtCustomerIDCard.Name = "txtCustomerIDCard";
@@ -962,6 +969,7 @@
             this.txtCustomerName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCustomerName.Enabled = false;
             this.txtCustomerName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCustomerName.ForeColor = System.Drawing.Color.Black;
             this.txtCustomerName.Location = new System.Drawing.Point(156, 37);
             this.txtCustomerName.Margin = new System.Windows.Forms.Padding(2);
             this.txtCustomerName.Name = "txtCustomerName";
@@ -1302,7 +1310,7 @@
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 738);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1468, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1451, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDelete
@@ -1367,7 +1375,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 832);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1468, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1451, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // pnlProjectdata
@@ -1378,7 +1386,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 842);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1468, 371);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1451, 371);
             this.pnlProjectdata.TabIndex = 3;
             // 
             // dtgvProject
@@ -1419,7 +1427,7 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.pnlInfomation);
             this.Name = "ManageProject";
-            this.Size = new System.Drawing.Size(1468, 954);
+            this.Size = new System.Drawing.Size(1451, 954);
             this.pnlInfomation.ResumeLayout(false);
             this.subInfo.ResumeLayout(false);
             this.pnlPhaseData.ResumeLayout(false);

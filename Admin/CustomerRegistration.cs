@@ -16,21 +16,42 @@ namespace JRSApplication
     {
         private bool isEditMode = false;  // ตรวจสอบโหมด เพิ่ม/แก้ไข
         private string selectedCustomerID = "";  // เก็บรหัสลูกค้าที่เลือก
+        private string originalEmail = "";
+        private string originalPhone = "";
+        private string originalAddress = "";
+        private string originalName = "";
+
 
         public CustomerRegistration()
         {
             InitializeComponent();
             CustomizeDataGridView(); // ✅ ปรับแต่ง DataGridView
             LoadCustomerData(); // ✅ โหลดข้อมูลเมื่อฟอร์มเปิด
+            searchboxCustomer.SetRoleAndFunction("Admin", "ทะเบียนลูกค้า");
+            searchboxCustomer.SearchTriggered += searchboxCustomer_SearchTriggered;
+        }
+        private void searchboxCustomer_SearchTriggered(object sender, SearchEventArgs e)
+        {
+            LoadCustomerData(e.SearchBy, e.Keyword);
         }
 
-
-        private void LoadCustomerData()
+        private void LoadCustomerData(string searchBy = "", string keyword = "")
         {
             CustomerDAL dal = new CustomerDAL();
-            DataTable dt = dal.GetAllCustomers(); // ✅ ดึงข้อมูลจาก MySQL
-            dtgvCustomer.DataSource = dt; // ✅ แสดงข้อมูลใน DataGridView
+            DataTable dt = (!string.IsNullOrEmpty(searchBy) && !string.IsNullOrEmpty(keyword))
+                ? dal.SearchCustomer(searchBy, keyword)
+                : dal.GetAllCustomers();
+
+            dtgvCustomer.DataSource = dt;
         }
+
+
+        //private void LoadCustomerData()
+        //{
+        //    CustomerDAL dal = new CustomerDAL();
+        //    DataTable dt = dal.GetAllCustomers(); // ✅ ดึงข้อมูลจาก MySQL
+        //    dtgvCustomer.DataSource = dt; // ✅ แสดงข้อมูลใน DataGridView
+        //}
 
         private void CustomizeDataGridView()
         {
@@ -84,8 +105,27 @@ namespace JRSApplication
                 txtEmail.Text = row.Cells["อีเมล"].Value?.ToString();
                 txtAddress.Text = row.Cells["ที่อยู่"].Value?.ToString();
             }
+            EnableControlsOff();
+            ReadOnlyControlsOff();
         }
 
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private bool IsValidPhoneNumber(string phone)
+        {
+            return phone.All(char.IsDigit) && phone.Length >= 9 && phone.Length <= 15;
+        }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -97,7 +137,48 @@ namespace JRSApplication
             string email = txtEmail.Text.Trim();
             string address = txtAddress.Text.Trim();
 
-            // ✅ ตรวจสอบว่ากรอกข้อมูลครบหรือไม่
+            bool hasError = false;
+
+            if (string.IsNullOrWhiteSpace(firstName))
+            {
+                starName.Visible = true;
+                hasError = true;
+            }
+            else
+            {
+                starName.Visible = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(phone) || !IsValidPhoneNumber(phone))
+            {
+                starPhone.Visible = true;
+                hasError = true;
+            }
+            else
+            {
+                starPhone.Visible = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(email) || !IsValidEmail(email))
+            {
+                starEmail.Visible = true;
+                hasError = true;
+            }
+            else
+            {
+                starEmail.Visible = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                starAddress.Visible = true;
+                hasError = true;
+            }
+            else
+            {
+                starAddress.Visible = false;
+            }
+
             if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) ||
                 string.IsNullOrEmpty(idCard) || string.IsNullOrEmpty(phone) ||
                 string.IsNullOrEmpty(email) || string.IsNullOrEmpty(address))
@@ -106,12 +187,13 @@ namespace JRSApplication
                 return;
             }
 
-            // ✅ ตรวจสอบอีเมล และ เลขบัตรประชาชนซ้ำ
             if (dal.CheckDuplicateCustomer(selectedCustomerID, email, idCard))
             {
                 MessageBox.Show("อีเมลหรือเลขบัตรประชาชนนี้มีอยู่แล้ว!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+
 
             Customer cus = new Customer
             {
@@ -123,16 +205,22 @@ namespace JRSApplication
                 Email = email
             };
 
-            bool success;
+            bool success = false;
             if (isEditMode)
             {
-                // ✅ ถ้าเป็นโหมดแก้ไข ให้ Update
-                cus.CustomerID = int.Parse(selectedCustomerID);
-                success = dal.UpdateCustomer(cus);
+                if (int.TryParse(selectedCustomerID, out int customerId))
+                {
+                    cus.CustomerID = customerId;
+                    success = dal.UpdateCustomer(cus);
+                }
+                else
+                {
+                    MessageBox.Show("รหัสลูกค้าไม่ถูกต้อง", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
             else
             {
-                // ✅ ถ้าเป็นโหมดเพิ่มข้อมูลใหม่
                 success = dal.InsertCustomer(cus);
             }
 
@@ -152,11 +240,13 @@ namespace JRSApplication
             }
         }
 
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             //เพิ่ม
             ReadOnlyControlsOn();
             EnableControlsOn();
+            ClearForm();
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -251,6 +341,33 @@ namespace JRSApplication
             txtAddress.Clear();
         }
 
+        private void txtName_TextChanged(object sender, EventArgs e)
+        {
+            starName.Visible = string.IsNullOrWhiteSpace(txtName.Text);
+        }
+        private void txtLastname_TextChanged(object sender, EventArgs e)
+        {
+            starLastname.Visible = string.IsNullOrEmpty(txtLastname.Text);
+        }
+        private void txtIdcard_TextChanged(object sender, EventArgs e)
+        {
+            starIdcard.Visible = string.IsNullOrEmpty(txtIdcard.Text);
+        }
+
+        private void txtPhone_TextChanged(object sender, EventArgs e)
+        {
+            starPhone.Visible = string.IsNullOrWhiteSpace(txtPhone.Text);
+        }
+
+        private void txtEmail_TextChanged(object sender, EventArgs e)
+        {
+            starEmail.Visible = string.IsNullOrWhiteSpace(txtEmail.Text);
+        }
+
+        private void txtAddress_TextChanged(object sender, EventArgs e)
+        {
+            starAddress.Visible = string.IsNullOrWhiteSpace(txtAddress.Text);
+        }
 
     }
 }

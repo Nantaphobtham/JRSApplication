@@ -375,6 +375,19 @@ namespace JRSApplication
             {
                 starRemark.Visible = false;
             }
+            // ✅ ตรวจสอบว่ามีไฟล์ blueprint หรือไม่
+            if (projectFile == null || projectFile.ConstructionBlueprint == null)
+            {
+                MessageBox.Show("กรุณาเลือกไฟล์แบบแปลนโครงการ (Blueprint) ก่อนบันทึก!",
+                    "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            else
+            {
+
+            }
+            // งง 
             if (string.IsNullOrWhiteSpace(btnInsertBlueprintFile.Text) || btnInsertBlueprintFile.Text == "เลือกไฟล์")
             {
                 MessageBox.Show("กรุณาเลือกไฟล์แบบก่อสร้าง", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -426,11 +439,14 @@ namespace JRSApplication
                     CurrentPhaseNumber = int.Parse(cmbCurrentPhaseNumber.SelectedItem.ToString()),
                     Remark = txtRemark.Text.Trim(),
                     ProjectNumber = txtNumber.Text.Trim(),
-                    ConstructionBlueprint = btnInsertBlueprintFile.Text.Trim(),
-                    DemolitionModel = btnInsertDemolitionFile.Text.Trim(),
+
+                    ConstructionBlueprint = projectFile.ConstructionBlueprint, // ✅ ต้องมี
+                    DemolitionModel = projectFile.DemolitionModel,              // ✅ ไม่มีก็ได้
+
                     EmployeeID = int.Parse(selectedEmployeeID),
                     CustomerID = int.Parse(selectedCustomerID)
                 };
+
 
                 bool success = dal.InsertProjectWithPhases(project, projectPhases);
 
@@ -596,27 +612,29 @@ namespace JRSApplication
             selectedEmployeeID = "";
         }
 
-    
+
 
         //นำเข้าไฟล์ PDF
-        private void SelectFileAndSetButtonText(Button button)
+        private byte[] SelectFileAndSetButtonText(Button button)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Title = "เลือกไฟล์ PDF";
-                openFileDialog.Filter = "PDF Files|*.pdf"; // จำกัดให้เลือกเฉพาะ PDF
-                openFileDialog.Multiselect = false; // เลือกได้ทีละไฟล์
+                openFileDialog.Filter = "PDF Files|*.pdf";
+                openFileDialog.Multiselect = false;
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string selectedFile = openFileDialog.FileName;
 
-                    // ✅ ตรวจสอบว่าเป็น PDF หรือไม่
+                    // ✅ ตรวจสอบไฟล์ PDF หรือไม่
                     if (Path.GetExtension(selectedFile).ToLower() == ".pdf")
                     {
-                        string fileName = Path.GetFileName(selectedFile); // ดึงแค่ชื่อไฟล์ เช่น "โครงการ.pdf"
-                        button.Text = fileName; // แสดงชื่อไฟล์บนปุ่ม
-                        button.Tag = selectedFile; // เก็บพาธไฟล์ใน `Tag`
+                        string fileName = Path.GetFileName(selectedFile);
+                        button.Text = fileName;
+                        Console.WriteLine("ไฟล์ที่เลือก: " + fileName);  // ✅ Debug Log
+
+                        return File.ReadAllBytes(selectedFile); // ✅ แปลงไฟล์เป็น byte[]
                     }
                     else
                     {
@@ -624,15 +642,32 @@ namespace JRSApplication
                     }
                 }
             }
+
+            return null; // ❌ ไม่มีไฟล์ถูกเลือก
         }
+
+
+        private Project projectFile = new Project(); // ✅ กำหนดค่าเริ่มต้น
+
         private void btnInsertBlueprintFile_Click(object sender, EventArgs e)
         {
-            SelectFileAndSetButtonText(btnInsertBlueprintFile);
+            if (projectFile == null)
+                projectFile = new Project();  // ✅ ป้องกัน null
+
+            byte[] fileData = SelectFileAndSetButtonText(btnInsertBlueprintFile);
+            if (fileData != null)
+                projectFile.ConstructionBlueprint = fileData;  // ✅ ต้องมี
         }
+
         private void btnInsertDemolitionFile_Click(object sender, EventArgs e)
         {
-            SelectFileAndSetButtonText(btnInsertDemolitionFile);
+            if (projectFile == null)
+                projectFile = new Project();  // ✅ ป้องกัน null
+
+            byte[] fileData = SelectFileAndSetButtonText(btnInsertDemolitionFile);
+            projectFile.DemolitionModel = fileData;  // ✅ จะ null ก็ได้
         }
+
 
         //ฟังก์ชันสำหรับ txtBudget ที่รองรับจุดทศนิยม
         private void txtBudget_KeyPress(object sender, KeyPressEventArgs e)

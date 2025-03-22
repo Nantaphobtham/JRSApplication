@@ -13,34 +13,6 @@ namespace JRSApplication.Data_Access_Layer
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
-        //public List<ProjectPhase> GetPhasesByProjectId(int projectId)
-        //{
-        //    List<ProjectPhase> phases = new List<ProjectPhase>();
-        //    using (MySqlConnection conn = new MySqlConnection(connectionString))
-        //    {
-        //        string sql = "SELECT * FROM project_phase WHERE pro_id = @ProjectID";
-        //        using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-        //        {
-        //            cmd.Parameters.AddWithValue("@ProjectID", projectId);
-        //            conn.Open();
-        //            using (MySqlDataReader reader = cmd.ExecuteReader())
-        //            {
-        //                while (reader.Read())
-        //                {
-        //                    phases.Add(new ProjectPhase
-        //                    {
-        //                        PhaseNumber = reader.GetInt32("phase_no"),
-        //                        PhaseDetail = reader.GetString("phase_detail"),
-        //                        PhaseBudget = reader.GetDecimal("phase_budget"),
-        //                        PhasePercent = reader.GetDecimal("phase_percent")
-        //                    });
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return phases;
-        //}
-
         public List<ProjectPhase> GetAllPhasesByPrjectID(int projectId)
         {
             List<ProjectPhase> phases = new List<ProjectPhase>();

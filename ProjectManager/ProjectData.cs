@@ -23,6 +23,27 @@ namespace JRSApplication
             LoadProjectData();
 
         }
+        //ฟังก์ชันโหลดต่างๆ
+        private void LoadProjectDetails(int projectId)
+        {
+            ProjectDAL projectDAL = new ProjectDAL();
+            Project project = projectDAL.GetProjectDetailsById(projectId);
+
+            if (project != null)
+            {
+                txtProjectID.Text = project.ProjectID.ToString();
+                txtProjectname.Text = project.ProjectName;
+                txtStartdate.Text = project.ProjectStart.ToString("dd/MM/yyyy");
+                txtEnddate.Text = project.ProjectEnd.ToString("dd/MM/yyyy");
+                txtContractnumber.Text = project.ProjectNumber;
+                txtCustomername.Text = project.CustomerName;
+                txtProjectManager.Text = project.EmployeeName;
+
+                // ✅ คำนวณจำนวนวัน
+                TimeSpan duration = project.ProjectEnd - project.ProjectStart;
+                txtSumdate.Text = duration.TotalDays.ToString();
+            }
+        }
 
         private void LoadProjectData()
         {
@@ -140,8 +161,17 @@ namespace JRSApplication
         }
         private void dtgvProjectData_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex >= 0)
+            {
+                // ✅ ดึงค่า `ProjectID` จากตาราง
+                int projectId = Convert.ToInt32(dtgvProjectData.Rows[e.RowIndex].Cells["ProjectID"].Value);
 
+                // ✅ โหลดข้อมูลโครงการไปยัง TextBox ต่างๆ
+                LoadProjectDetails(projectId);
 
+                // ✅ โหลดข้อมูล Phase ที่เกี่ยวข้อง
+                LoadPhaseData(projectId);
+            }
         }
 
         private void LoadPhaseData(int projectId)
@@ -175,17 +205,17 @@ namespace JRSApplication
             dtgvPhaseDetail.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dtgvPhaseDetail.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dtgvPhaseDetail.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dtgvPhaseDetail.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
-            dtgvPhaseDetail.ColumnHeadersHeight = 30;
+            dtgvPhaseDetail.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 20, FontStyle.Bold); // ✅ ปรับหัวข้อใหญ่ขึ้น
+            dtgvPhaseDetail.ColumnHeadersHeight = 50; // ✅ ปรับความสูงของหัวข้อ
 
-            dtgvPhaseDetail.DefaultCellStyle.Font = new Font("Segoe UI", 12);
+            dtgvPhaseDetail.DefaultCellStyle.Font = new Font("Segoe UI", 22); // ✅ ปรับตัวหนังสือใหญ่ขึ้น
             dtgvPhaseDetail.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dtgvPhaseDetail.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dtgvPhaseDetail.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
+            dtgvPhaseDetail.DefaultCellStyle.Padding = new Padding(5, 5, 5, 5);
 
             dtgvPhaseDetail.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dtgvPhaseDetail.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dtgvPhaseDetail.RowTemplate.Height = 30;
+            dtgvPhaseDetail.RowTemplate.Height = 50; // ✅ ปรับความสูงของแถวให้เหมาะสมกับฟอนต์ 22px
 
             dtgvPhaseDetail.GridColor = Color.LightGray;
             dtgvPhaseDetail.RowHeadersVisible = false;

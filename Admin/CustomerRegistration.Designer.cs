@@ -31,27 +31,27 @@
             this.pnlInfomation = new System.Windows.Forms.Panel();
             this.subInfo = new System.Windows.Forms.Panel();
             this.pnlEmail = new System.Windows.Forms.Panel();
-            this.lblstarEmail = new System.Windows.Forms.Label();
+            this.starEmail = new System.Windows.Forms.Label();
             this.lblEmail = new System.Windows.Forms.Label();
             this.txtEmail = new System.Windows.Forms.TextBox();
             this.pnlPhone = new System.Windows.Forms.Panel();
-            this.lblstarPhone = new System.Windows.Forms.Label();
+            this.starPhone = new System.Windows.Forms.Label();
             this.lblPhone = new System.Windows.Forms.Label();
             this.txtPhone = new System.Windows.Forms.TextBox();
             this.pnlIdcard = new System.Windows.Forms.Panel();
-            this.lblstarIdcard = new System.Windows.Forms.Label();
+            this.starIdcard = new System.Windows.Forms.Label();
             this.lblIdcard = new System.Windows.Forms.Label();
             this.txtIdcard = new System.Windows.Forms.TextBox();
             this.pnlLastname = new System.Windows.Forms.Panel();
-            this.lblstarLastname = new System.Windows.Forms.Label();
+            this.starLastname = new System.Windows.Forms.Label();
             this.lblLastname = new System.Windows.Forms.Label();
             this.txtLastname = new System.Windows.Forms.TextBox();
             this.pnlAddress = new System.Windows.Forms.Panel();
-            this.lblstarAddress = new System.Windows.Forms.Label();
+            this.starAddress = new System.Windows.Forms.Label();
             this.lblAddress = new System.Windows.Forms.Label();
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.pnlName = new System.Windows.Forms.Panel();
-            this.lblstarName = new System.Windows.Forms.Label();
+            this.starName = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.lblToppic1 = new System.Windows.Forms.Label();
@@ -105,7 +105,7 @@
             // 
             // pnlEmail
             // 
-            this.pnlEmail.Controls.Add(this.lblstarEmail);
+            this.pnlEmail.Controls.Add(this.starEmail);
             this.pnlEmail.Controls.Add(this.lblEmail);
             this.pnlEmail.Controls.Add(this.txtEmail);
             this.pnlEmail.Location = new System.Drawing.Point(387, 359);
@@ -114,18 +114,18 @@
             this.pnlEmail.Size = new System.Drawing.Size(331, 74);
             this.pnlEmail.TabIndex = 2;
             // 
-            // lblstarEmail
+            // starEmail
             // 
-            this.lblstarEmail.AutoSize = true;
-            this.lblstarEmail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarEmail.ForeColor = System.Drawing.Color.Red;
-            this.lblstarEmail.Location = new System.Drawing.Point(50, 3);
-            this.lblstarEmail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarEmail.Name = "lblstarEmail";
-            this.lblstarEmail.Size = new System.Drawing.Size(22, 30);
-            this.lblstarEmail.TabIndex = 2;
-            this.lblstarEmail.Text = "*";
-            this.lblstarEmail.Visible = false;
+            this.starEmail.AutoSize = true;
+            this.starEmail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starEmail.ForeColor = System.Drawing.Color.Red;
+            this.starEmail.Location = new System.Drawing.Point(50, 3);
+            this.starEmail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starEmail.Name = "starEmail";
+            this.starEmail.Size = new System.Drawing.Size(22, 30);
+            this.starEmail.TabIndex = 2;
+            this.starEmail.Text = "*";
+            this.starEmail.Visible = false;
             // 
             // lblEmail
             // 
@@ -149,10 +149,11 @@
             this.txtEmail.ReadOnly = true;
             this.txtEmail.Size = new System.Drawing.Size(329, 36);
             this.txtEmail.TabIndex = 2;
+            this.txtEmail.TextChanged += new System.EventHandler(this.txtEmail_TextChanged);
             // 
             // pnlPhone
             // 
-            this.pnlPhone.Controls.Add(this.lblstarPhone);
+            this.pnlPhone.Controls.Add(this.starPhone);
             this.pnlPhone.Controls.Add(this.lblPhone);
             this.pnlPhone.Controls.Add(this.txtPhone);
             this.pnlPhone.Location = new System.Drawing.Point(387, 281);
@@ -161,18 +162,18 @@
             this.pnlPhone.Size = new System.Drawing.Size(331, 74);
             this.pnlPhone.TabIndex = 3;
             // 
-            // lblstarPhone
+            // starPhone
             // 
-            this.lblstarPhone.AutoSize = true;
-            this.lblstarPhone.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarPhone.ForeColor = System.Drawing.Color.Red;
-            this.lblstarPhone.Location = new System.Drawing.Point(124, 3);
-            this.lblstarPhone.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarPhone.Name = "lblstarPhone";
-            this.lblstarPhone.Size = new System.Drawing.Size(22, 30);
-            this.lblstarPhone.TabIndex = 2;
-            this.lblstarPhone.Text = "*";
-            this.lblstarPhone.Visible = false;
+            this.starPhone.AutoSize = true;
+            this.starPhone.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starPhone.ForeColor = System.Drawing.Color.Red;
+            this.starPhone.Location = new System.Drawing.Point(124, 3);
+            this.starPhone.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starPhone.Name = "starPhone";
+            this.starPhone.Size = new System.Drawing.Size(22, 30);
+            this.starPhone.TabIndex = 2;
+            this.starPhone.Text = "*";
+            this.starPhone.Visible = false;
             // 
             // lblPhone
             // 
@@ -196,10 +197,11 @@
             this.txtPhone.ReadOnly = true;
             this.txtPhone.Size = new System.Drawing.Size(329, 36);
             this.txtPhone.TabIndex = 2;
+            this.txtPhone.TextChanged += new System.EventHandler(this.txtPhone_TextChanged);
             // 
             // pnlIdcard
             // 
-            this.pnlIdcard.Controls.Add(this.lblstarIdcard);
+            this.pnlIdcard.Controls.Add(this.starIdcard);
             this.pnlIdcard.Controls.Add(this.lblIdcard);
             this.pnlIdcard.Controls.Add(this.txtIdcard);
             this.pnlIdcard.Location = new System.Drawing.Point(387, 203);
@@ -208,18 +210,18 @@
             this.pnlIdcard.Size = new System.Drawing.Size(331, 74);
             this.pnlIdcard.TabIndex = 4;
             // 
-            // lblstarIdcard
+            // starIdcard
             // 
-            this.lblstarIdcard.AutoSize = true;
-            this.lblstarIdcard.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarIdcard.ForeColor = System.Drawing.Color.Red;
-            this.lblstarIdcard.Location = new System.Drawing.Point(229, 3);
-            this.lblstarIdcard.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarIdcard.Name = "lblstarIdcard";
-            this.lblstarIdcard.Size = new System.Drawing.Size(22, 30);
-            this.lblstarIdcard.TabIndex = 2;
-            this.lblstarIdcard.Text = "*";
-            this.lblstarIdcard.Visible = false;
+            this.starIdcard.AutoSize = true;
+            this.starIdcard.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starIdcard.ForeColor = System.Drawing.Color.Red;
+            this.starIdcard.Location = new System.Drawing.Point(229, 3);
+            this.starIdcard.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starIdcard.Name = "starIdcard";
+            this.starIdcard.Size = new System.Drawing.Size(22, 30);
+            this.starIdcard.TabIndex = 2;
+            this.starIdcard.Text = "*";
+            this.starIdcard.Visible = false;
             // 
             // lblIdcard
             // 
@@ -243,10 +245,11 @@
             this.txtIdcard.ReadOnly = true;
             this.txtIdcard.Size = new System.Drawing.Size(329, 36);
             this.txtIdcard.TabIndex = 2;
+            this.txtIdcard.TextChanged += new System.EventHandler(this.txtIdcard_TextChanged);
             // 
             // pnlLastname
             // 
-            this.pnlLastname.Controls.Add(this.lblstarLastname);
+            this.pnlLastname.Controls.Add(this.starLastname);
             this.pnlLastname.Controls.Add(this.lblLastname);
             this.pnlLastname.Controls.Add(this.txtLastname);
             this.pnlLastname.Location = new System.Drawing.Point(387, 125);
@@ -255,18 +258,18 @@
             this.pnlLastname.Size = new System.Drawing.Size(331, 74);
             this.pnlLastname.TabIndex = 5;
             // 
-            // lblstarLastname
+            // starLastname
             // 
-            this.lblstarLastname.AutoSize = true;
-            this.lblstarLastname.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarLastname.ForeColor = System.Drawing.Color.Red;
-            this.lblstarLastname.Location = new System.Drawing.Point(80, 3);
-            this.lblstarLastname.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarLastname.Name = "lblstarLastname";
-            this.lblstarLastname.Size = new System.Drawing.Size(22, 30);
-            this.lblstarLastname.TabIndex = 2;
-            this.lblstarLastname.Text = "*";
-            this.lblstarLastname.Visible = false;
+            this.starLastname.AutoSize = true;
+            this.starLastname.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starLastname.ForeColor = System.Drawing.Color.Red;
+            this.starLastname.Location = new System.Drawing.Point(80, 3);
+            this.starLastname.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starLastname.Name = "starLastname";
+            this.starLastname.Size = new System.Drawing.Size(22, 30);
+            this.starLastname.TabIndex = 2;
+            this.starLastname.Text = "*";
+            this.starLastname.Visible = false;
             // 
             // lblLastname
             // 
@@ -290,10 +293,11 @@
             this.txtLastname.ReadOnly = true;
             this.txtLastname.Size = new System.Drawing.Size(329, 36);
             this.txtLastname.TabIndex = 2;
+            this.txtLastname.TextChanged += new System.EventHandler(this.txtLastname_TextChanged);
             // 
             // pnlAddress
             // 
-            this.pnlAddress.Controls.Add(this.lblstarAddress);
+            this.pnlAddress.Controls.Add(this.starAddress);
             this.pnlAddress.Controls.Add(this.lblAddress);
             this.pnlAddress.Controls.Add(this.txtAddress);
             this.pnlAddress.Location = new System.Drawing.Point(767, 47);
@@ -302,18 +306,18 @@
             this.pnlAddress.Size = new System.Drawing.Size(443, 254);
             this.pnlAddress.TabIndex = 6;
             // 
-            // lblstarAddress
+            // starAddress
             // 
-            this.lblstarAddress.AutoSize = true;
-            this.lblstarAddress.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarAddress.ForeColor = System.Drawing.Color.Red;
-            this.lblstarAddress.Location = new System.Drawing.Point(47, 3);
-            this.lblstarAddress.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarAddress.Name = "lblstarAddress";
-            this.lblstarAddress.Size = new System.Drawing.Size(22, 30);
-            this.lblstarAddress.TabIndex = 2;
-            this.lblstarAddress.Text = "*";
-            this.lblstarAddress.Visible = false;
+            this.starAddress.AutoSize = true;
+            this.starAddress.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starAddress.ForeColor = System.Drawing.Color.Red;
+            this.starAddress.Location = new System.Drawing.Point(47, 3);
+            this.starAddress.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starAddress.Name = "starAddress";
+            this.starAddress.Size = new System.Drawing.Size(22, 30);
+            this.starAddress.TabIndex = 2;
+            this.starAddress.Text = "*";
+            this.starAddress.Visible = false;
             // 
             // lblAddress
             // 
@@ -338,10 +342,11 @@
             this.txtAddress.ReadOnly = true;
             this.txtAddress.Size = new System.Drawing.Size(441, 215);
             this.txtAddress.TabIndex = 2;
+            this.txtAddress.TextChanged += new System.EventHandler(this.txtAddress_TextChanged);
             // 
             // pnlName
             // 
-            this.pnlName.Controls.Add(this.lblstarName);
+            this.pnlName.Controls.Add(this.starName);
             this.pnlName.Controls.Add(this.lblName);
             this.pnlName.Controls.Add(this.txtName);
             this.pnlName.Location = new System.Drawing.Point(387, 47);
@@ -350,18 +355,18 @@
             this.pnlName.Size = new System.Drawing.Size(331, 74);
             this.pnlName.TabIndex = 7;
             // 
-            // lblstarName
+            // starName
             // 
-            this.lblstarName.AutoSize = true;
-            this.lblstarName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstarName.ForeColor = System.Drawing.Color.Red;
-            this.lblstarName.Location = new System.Drawing.Point(32, 3);
-            this.lblstarName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblstarName.Name = "lblstarName";
-            this.lblstarName.Size = new System.Drawing.Size(22, 30);
-            this.lblstarName.TabIndex = 2;
-            this.lblstarName.Text = "*";
-            this.lblstarName.Visible = false;
+            this.starName.AutoSize = true;
+            this.starName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starName.ForeColor = System.Drawing.Color.Red;
+            this.starName.Location = new System.Drawing.Point(32, 3);
+            this.starName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starName.Name = "starName";
+            this.starName.Size = new System.Drawing.Size(22, 30);
+            this.starName.TabIndex = 2;
+            this.starName.Text = "*";
+            this.starName.Visible = false;
             // 
             // lblName
             // 
@@ -385,6 +390,7 @@
             this.txtName.ReadOnly = true;
             this.txtName.Size = new System.Drawing.Size(329, 36);
             this.txtName.TabIndex = 2;
+            this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
             // 
             // lblToppic1
             // 
@@ -564,27 +570,27 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Panel subInfo;
         private System.Windows.Forms.Panel pnlEmail;
-        private System.Windows.Forms.Label lblstarEmail;
+        private System.Windows.Forms.Label starEmail;
         private System.Windows.Forms.Label lblEmail;
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.Panel pnlPhone;
-        private System.Windows.Forms.Label lblstarPhone;
+        private System.Windows.Forms.Label starPhone;
         private System.Windows.Forms.Label lblPhone;
         private System.Windows.Forms.TextBox txtPhone;
         private System.Windows.Forms.Panel pnlIdcard;
-        private System.Windows.Forms.Label lblstarIdcard;
+        private System.Windows.Forms.Label starIdcard;
         private System.Windows.Forms.Label lblIdcard;
         private System.Windows.Forms.TextBox txtIdcard;
         private System.Windows.Forms.Panel pnlLastname;
-        private System.Windows.Forms.Label lblstarLastname;
+        private System.Windows.Forms.Label starLastname;
         private System.Windows.Forms.Label lblLastname;
         private System.Windows.Forms.TextBox txtLastname;
         private System.Windows.Forms.Panel pnlAddress;
-        private System.Windows.Forms.Label lblstarAddress;
+        private System.Windows.Forms.Label starAddress;
         private System.Windows.Forms.Label lblAddress;
         private System.Windows.Forms.TextBox txtAddress;
         private System.Windows.Forms.Panel pnlName;
-        private System.Windows.Forms.Label lblstarName;
+        private System.Windows.Forms.Label starName;
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Label lblToppic1;

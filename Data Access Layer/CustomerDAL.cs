@@ -45,6 +45,7 @@ namespace JRSApplication.Data_Access_Layer
             }
             return dt;
         }
+        //รอเรียก
         public Customer GetCustomerByIdtoProjectdata(int customerId)
         {
             Customer customer = null;
@@ -114,6 +115,39 @@ namespace JRSApplication.Data_Access_Layer
             return exists;
         }
 
+        // ✅ 3️⃣ ตรวจสอบว่า ID, Email ซ้ำหรือไม่
+        public bool CheckDuplicateCustomer(string email, string phone, string name, string customerID)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+
+                string query = "SELECT COUNT(*) FROM customer WHERE "
+                             + "(cus_email = @Email OR cus_tel = @Phone OR cus_name = @Name) ";
+
+                // ✅ ถ้ามี `supplierID` แสดงว่าเป็นการอัปเดต ไม่ต้องเช็คตัวเอง
+                if (!string.IsNullOrEmpty(customerID))
+                {
+                    query += " AND cus_id != @CustomerID";
+                }
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@Phone", phone);
+                    cmd.Parameters.AddWithValue("@Name", name);
+
+                    if (!string.IsNullOrEmpty(customerID))
+                    {
+                        cmd.Parameters.AddWithValue("@SupplierID", customerID);
+                    }
+
+                    int count = Convert.ToInt32(cmd.ExecuteScalar());
+                    return count > 0; // ✅ คืนค่า true ถ้าข้อมูลซ้ำ
+                }
+            }
+        }
+
 
         // ✅  เพิ่มลูกค้าใหม่
         public bool InsertCustomer(Customer cus)
@@ -152,7 +186,7 @@ namespace JRSApplication.Data_Access_Layer
         }
 
 
-        // ✅  แก้ไขข้อมูลลูกค้า ยังไม่ถูกเรียกใช้งาน
+        // ✅  แก้ไขข้อมูลลูกค้า 
         public bool UpdateCustomer(Customer cus)
         {
             bool isSuccess = false;
@@ -180,7 +214,7 @@ namespace JRSApplication.Data_Access_Layer
             return isSuccess;
         }
 
-        // ✅  ลบลูกค้า  ยังไม่ถูกเรียกใช้งาน
+        // ✅  ลบลูกค้า  
         public bool DeleteCustomer(int customerID)
         {
             bool isSuccess = false;
@@ -199,5 +233,42 @@ namespace JRSApplication.Data_Access_Layer
             }
             return isSuccess;
         }
+        public DataTable SearchCustomer(string searchBy, string keyword)
+        {
+            DataTable dt = new DataTable();
+            string query = "SELECT * FROM customer WHERE ";
+
+            // ตรวจสอบตัวเลือกที่ใช้ค้นหา
+            switch (searchBy)
+            {
+                case "ชื่อบริษัท":
+                    query += "customer_name LIKE @Keyword";
+                    break;
+                case "เลขทะเบียนนิติบุคคล":
+                    query += "customer_idcard LIKE @Keyword";
+                    break;
+                case "อีเมล":
+                    query += "customer_email LIKE @Keyword";
+                    break;
+                default:
+                    query = "SELECT * FROM customer"; // ถ้าไม่มีตัวเลือกให้ดึงข้อมูลทั้งหมด
+                    break;
+            }
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Keyword", "%" + keyword + "%");
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(dt);
+                    }
+                }
+            }
+            return dt;
+        }
+
     }
 }

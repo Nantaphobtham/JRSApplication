@@ -28,20 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectData));
             this.pnlProjectdata = new System.Windows.Forms.Panel();
             this.dtgvProjectData = new System.Windows.Forms.DataGridView();
-            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.txtHeaderSearch = new System.Windows.Forms.Label();
             this.pnlStep = new System.Windows.Forms.Panel();
             this.txtNormalData = new System.Windows.Forms.Label();
             this.pnlInfomationview = new System.Windows.Forms.Panel();
             this.txtDemolition = new System.Windows.Forms.Label();
             this.pnlDemolition = new System.Windows.Forms.Panel();
-            this.pdfDemolition = new AxAcroPDFLib.AxAcroPDF();
             this.txtBlueprint = new System.Windows.Forms.Label();
             this.pnlBuleprint = new System.Windows.Forms.Panel();
-            this.pdfBlueprint = new AxAcroPDFLib.AxAcroPDF();
             this.pnlPhaseDetail = new System.Windows.Forms.Panel();
             this.dtgvPhaseDetail = new System.Windows.Forms.DataGridView();
             this.txtSumpercent = new System.Windows.Forms.TextBox();
@@ -66,14 +62,11 @@
             this.lbProjectManager = new System.Windows.Forms.Label();
             this.lbContractnumber = new System.Windows.Forms.Label();
             this.lbProjectID = new System.Windows.Forms.Label();
+            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.pnlProjectdata.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).BeginInit();
             this.pnlStep.SuspendLayout();
             this.pnlInfomationview.SuspendLayout();
-            this.pnlDemolition.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pdfDemolition)).BeginInit();
-            this.pnlBuleprint.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pdfBlueprint)).BeginInit();
             this.pnlPhaseDetail.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPhaseDetail)).BeginInit();
             this.SuspendLayout();
@@ -86,7 +79,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 0);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1465, 274);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1431, 274);
             this.pnlProjectdata.TabIndex = 0;
             // 
             // dtgvProjectData
@@ -103,15 +96,6 @@
             this.dtgvProjectData.Size = new System.Drawing.Size(1529, 187);
             this.dtgvProjectData.TabIndex = 3;
             this.dtgvProjectData.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvProjectData_CellClick);
-            // 
-            // searchboxControl1
-            // 
-            this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.Location = new System.Drawing.Point(906, 17);
-            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxControl1.Name = "searchboxControl1";
-            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl1.TabIndex = 2;
             // 
             // txtHeaderSearch
             // 
@@ -130,7 +114,7 @@
             this.pnlStep.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep.Location = new System.Drawing.Point(0, 274);
             this.pnlStep.Name = "pnlStep";
-            this.pnlStep.Size = new System.Drawing.Size(1465, 46);
+            this.pnlStep.Size = new System.Drawing.Size(1431, 46);
             this.pnlStep.TabIndex = 1;
             // 
             // txtNormalData
@@ -176,7 +160,7 @@
             this.pnlInfomationview.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlInfomationview.Location = new System.Drawing.Point(0, 320);
             this.pnlInfomationview.Name = "pnlInfomationview";
-            this.pnlInfomationview.Size = new System.Drawing.Size(1465, 2756);
+            this.pnlInfomationview.Size = new System.Drawing.Size(1431, 2756);
             this.pnlInfomationview.TabIndex = 2;
             // 
             // txtDemolition
@@ -192,21 +176,10 @@
             // 
             // pnlDemolition
             // 
-            this.pnlDemolition.Controls.Add(this.pdfDemolition);
             this.pnlDemolition.Location = new System.Drawing.Point(27, 1691);
             this.pnlDemolition.Name = "pnlDemolition";
             this.pnlDemolition.Size = new System.Drawing.Size(1496, 985);
             this.pnlDemolition.TabIndex = 29;
-            // 
-            // pdfDemolition
-            // 
-            this.pdfDemolition.Enabled = true;
-            this.pdfDemolition.Location = new System.Drawing.Point(15, 15);
-            this.pdfDemolition.Margin = new System.Windows.Forms.Padding(2);
-            this.pdfDemolition.Name = "pdfDemolition";
-            this.pdfDemolition.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("pdfDemolition.OcxState")));
-            this.pdfDemolition.Size = new System.Drawing.Size(1467, 954);
-            this.pdfDemolition.TabIndex = 6;
             // 
             // txtBlueprint
             // 
@@ -221,21 +194,10 @@
             // 
             // pnlBuleprint
             // 
-            this.pnlBuleprint.Controls.Add(this.pdfBlueprint);
             this.pnlBuleprint.Location = new System.Drawing.Point(27, 652);
             this.pnlBuleprint.Name = "pnlBuleprint";
             this.pnlBuleprint.Size = new System.Drawing.Size(1496, 985);
             this.pnlBuleprint.TabIndex = 27;
-            // 
-            // pdfBlueprint
-            // 
-            this.pdfBlueprint.Enabled = true;
-            this.pdfBlueprint.Location = new System.Drawing.Point(15, 15);
-            this.pdfBlueprint.Margin = new System.Windows.Forms.Padding(2);
-            this.pdfBlueprint.Name = "pdfBlueprint";
-            this.pdfBlueprint.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("pdfBlueprint.OcxState")));
-            this.pdfBlueprint.Size = new System.Drawing.Size(1467, 954);
-            this.pdfBlueprint.TabIndex = 6;
             // 
             // pnlPhaseDetail
             // 
@@ -522,6 +484,15 @@
             this.lbProjectID.TabIndex = 4;
             this.lbProjectID.Text = "รหัสโครงการ";
             // 
+            // searchboxControl1
+            // 
+            this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.Location = new System.Drawing.Point(906, 17);
+            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl1.Name = "searchboxControl1";
+            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl1.TabIndex = 2;
+            // 
             // ProjectData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -531,7 +502,7 @@
             this.Controls.Add(this.pnlStep);
             this.Controls.Add(this.pnlProjectdata);
             this.Name = "ProjectData";
-            this.Size = new System.Drawing.Size(1465, 954);
+            this.Size = new System.Drawing.Size(1431, 954);
             this.pnlProjectdata.ResumeLayout(false);
             this.pnlProjectdata.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).EndInit();
@@ -539,10 +510,6 @@
             this.pnlStep.PerformLayout();
             this.pnlInfomationview.ResumeLayout(false);
             this.pnlInfomationview.PerformLayout();
-            this.pnlDemolition.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pdfDemolition)).EndInit();
-            this.pnlBuleprint.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pdfBlueprint)).EndInit();
             this.pnlPhaseDetail.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPhaseDetail)).EndInit();
             this.ResumeLayout(false);
@@ -584,9 +551,7 @@
         private System.Windows.Forms.Panel pnlPhaseDetail;
         private System.Windows.Forms.DataGridView dtgvPhaseDetail;
         private System.Windows.Forms.Label txtBlueprint;
-        private AxAcroPDFLib.AxAcroPDF pdfBlueprint;
         private System.Windows.Forms.Label txtDemolition;
         private System.Windows.Forms.Panel pnlDemolition;
-        private AxAcroPDFLib.AxAcroPDF pdfDemolition;
     }
 }

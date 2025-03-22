@@ -22,7 +22,7 @@ namespace JRSApplication
             InitializeComponent();
             CustomizeDataGridView(); // ✅ ปรับแต่ง DataGridView
             LoadSupplierData(); // ✅ โหลดข้อมูลเมื่อฟอร์มเปิด
-            searchboxSuppiler.SetRoleAndFunction("Admin", "ทะเบียนลูกค้า");
+            searchboxSuppiler.SetRoleAndFunction("Admin", "ทะเบียนลูกค้า"); 
             searchboxSuppiler.SearchTriggered += searchboxSuppiler_SearchTriggered;
         }
 
