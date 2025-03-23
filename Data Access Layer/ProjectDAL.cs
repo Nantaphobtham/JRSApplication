@@ -68,6 +68,8 @@ namespace JRSApplication.Data_Access_Layer
                 p.pro_number AS ContractNumber,
                 p.pro_budget AS ProjectBudget,
                 p.pro_currentphasenumber AS CurrentPhaseNumber,
+                p.pro_con_blueprint AS ConstructionBlueprint,
+                p.pro_demolition_model AS DemolitionModel,
                 c.cus_name AS CustomerName,
                 e.emp_name AS ProjectManager
             FROM project p
@@ -91,7 +93,12 @@ namespace JRSApplication.Data_Access_Layer
                                 ProjectEnd = reader.GetDateTime("ProjectEnd"),
                                 ProjectNumber = reader.GetString("ContractNumber"),
                                 CustomerName = reader.IsDBNull(reader.GetOrdinal("CustomerName")) ? "ไม่มีข้อมูล" : reader.GetString("CustomerName"),
-                                EmployeeName = reader.IsDBNull(reader.GetOrdinal("ProjectManager")) ? "ไม่มีข้อมูล" : reader.GetString("ProjectManager")
+                                EmployeeName = reader.IsDBNull(reader.GetOrdinal("ProjectManager")) ? "ไม่มีข้อมูล" : reader.GetString("ProjectManager"),
+
+                                ConstructionBlueprint = reader["ConstructionBlueprint"] != DBNull.Value ? (byte[])reader["ConstructionBlueprint"] : null,
+                                DemolitionModel = reader["DemolitionModel"] != DBNull.Value ? (byte[])reader["DemolitionModel"] : null,
+
+
                             };
                         }
                     }
@@ -191,6 +198,52 @@ namespace JRSApplication.Data_Access_Layer
             }
             return isSuccess;
         }
+
+        public bool DeleteProjectWithPhases(int projectID)
+        {
+            bool isSuccess = false;
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+
+                using (MySqlTransaction transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // 🧹 1️ ลบข้อมูลใน project_phase ก่อน (FK)
+                        string deletePhasesSql = "DELETE FROM project_phase WHERE pro_id = @ProjectID";
+
+                        using (MySqlCommand cmdDeletePhase = new MySqlCommand(deletePhasesSql, conn, transaction))
+                        {
+                            cmdDeletePhase.Parameters.AddWithValue("@ProjectID", projectID);
+                            cmdDeletePhase.ExecuteNonQuery();
+                        }
+
+                        // 🧨 2️ ลบข้อมูล project
+                        string deleteProjectSql = "DELETE FROM project WHERE pro_id = @ProjectID";
+
+                        using (MySqlCommand cmdDeleteProject = new MySqlCommand(deleteProjectSql, conn, transaction))
+                        {
+                            cmdDeleteProject.Parameters.AddWithValue("@ProjectID", projectID);
+                            cmdDeleteProject.ExecuteNonQuery();
+                        }
+
+                        // ✅ 3️ Commit การลบ
+                        transaction.Commit();
+                        isSuccess = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        throw new Exception("Error deleting project: " + ex.Message);
+                    }
+                }
+            }
+
+            return isSuccess;
+        }
+
 
 
     }

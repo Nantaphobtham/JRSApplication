@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectData));
             this.pnlProjectdata = new System.Windows.Forms.Panel();
             this.dtgvProjectData = new System.Windows.Forms.DataGridView();
             this.txtHeaderSearch = new System.Windows.Forms.Label();
@@ -37,7 +38,7 @@
             this.txtDemolition = new System.Windows.Forms.Label();
             this.pnlDemolition = new System.Windows.Forms.Panel();
             this.txtBlueprint = new System.Windows.Forms.Label();
-            this.pnlBuleprint = new System.Windows.Forms.Panel();
+            this.pnlBlueprint = new System.Windows.Forms.Panel();
             this.pnlPhaseDetail = new System.Windows.Forms.Panel();
             this.dtgvPhaseDetail = new System.Windows.Forms.DataGridView();
             this.txtSumpercent = new System.Windows.Forms.TextBox();
@@ -62,13 +63,21 @@
             this.lbProjectManager = new System.Windows.Forms.Label();
             this.lbContractnumber = new System.Windows.Forms.Label();
             this.lbProjectID = new System.Windows.Forms.Label();
+            this.axPdfBlueprint = new AxAcroPDFLib.AxAcroPDF();
+            this.axPdfDemolition = new AxAcroPDFLib.AxAcroPDF();
             this.searchboxControl1 = new JRSApplication.SearchboxControl();
+            this.lblDemolitionNA = new System.Windows.Forms.Label();
+            this.lblBlueprintNA = new System.Windows.Forms.Label();
             this.pnlProjectdata.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).BeginInit();
             this.pnlStep.SuspendLayout();
             this.pnlInfomationview.SuspendLayout();
+            this.pnlDemolition.SuspendLayout();
+            this.pnlBlueprint.SuspendLayout();
             this.pnlPhaseDetail.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPhaseDetail)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axPdfBlueprint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axPdfDemolition)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlProjectdata
@@ -79,7 +88,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 0);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1431, 274);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1380, 274);
             this.pnlProjectdata.TabIndex = 0;
             // 
             // dtgvProjectData
@@ -114,7 +123,7 @@
             this.pnlStep.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep.Location = new System.Drawing.Point(0, 274);
             this.pnlStep.Name = "pnlStep";
-            this.pnlStep.Size = new System.Drawing.Size(1431, 46);
+            this.pnlStep.Size = new System.Drawing.Size(1380, 46);
             this.pnlStep.TabIndex = 1;
             // 
             // txtNormalData
@@ -133,7 +142,7 @@
             this.pnlInfomationview.Controls.Add(this.txtDemolition);
             this.pnlInfomationview.Controls.Add(this.pnlDemolition);
             this.pnlInfomationview.Controls.Add(this.txtBlueprint);
-            this.pnlInfomationview.Controls.Add(this.pnlBuleprint);
+            this.pnlInfomationview.Controls.Add(this.pnlBlueprint);
             this.pnlInfomationview.Controls.Add(this.pnlPhaseDetail);
             this.pnlInfomationview.Controls.Add(this.txtSumpercent);
             this.pnlInfomationview.Controls.Add(this.lbPercent);
@@ -160,7 +169,7 @@
             this.pnlInfomationview.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlInfomationview.Location = new System.Drawing.Point(0, 320);
             this.pnlInfomationview.Name = "pnlInfomationview";
-            this.pnlInfomationview.Size = new System.Drawing.Size(1431, 2756);
+            this.pnlInfomationview.Size = new System.Drawing.Size(1380, 2756);
             this.pnlInfomationview.TabIndex = 2;
             // 
             // txtDemolition
@@ -176,6 +185,8 @@
             // 
             // pnlDemolition
             // 
+            this.pnlDemolition.Controls.Add(this.lblDemolitionNA);
+            this.pnlDemolition.Controls.Add(this.axPdfDemolition);
             this.pnlDemolition.Location = new System.Drawing.Point(27, 1691);
             this.pnlDemolition.Name = "pnlDemolition";
             this.pnlDemolition.Size = new System.Drawing.Size(1496, 985);
@@ -192,12 +203,14 @@
             this.txtBlueprint.TabIndex = 28;
             this.txtBlueprint.Text = "แบบก่อสร้าง";
             // 
-            // pnlBuleprint
+            // pnlBlueprint
             // 
-            this.pnlBuleprint.Location = new System.Drawing.Point(27, 652);
-            this.pnlBuleprint.Name = "pnlBuleprint";
-            this.pnlBuleprint.Size = new System.Drawing.Size(1496, 985);
-            this.pnlBuleprint.TabIndex = 27;
+            this.pnlBlueprint.Controls.Add(this.lblBlueprintNA);
+            this.pnlBlueprint.Controls.Add(this.axPdfBlueprint);
+            this.pnlBlueprint.Location = new System.Drawing.Point(27, 652);
+            this.pnlBlueprint.Name = "pnlBlueprint";
+            this.pnlBlueprint.Size = new System.Drawing.Size(1496, 985);
+            this.pnlBlueprint.TabIndex = 27;
             // 
             // pnlPhaseDetail
             // 
@@ -484,6 +497,26 @@
             this.lbProjectID.TabIndex = 4;
             this.lbProjectID.Text = "รหัสโครงการ";
             // 
+            // axPdfBlueprint
+            // 
+            this.axPdfBlueprint.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.axPdfBlueprint.Enabled = true;
+            this.axPdfBlueprint.Location = new System.Drawing.Point(0, 0);
+            this.axPdfBlueprint.Name = "axPdfBlueprint";
+            this.axPdfBlueprint.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axPdfBlueprint.OcxState")));
+            this.axPdfBlueprint.Size = new System.Drawing.Size(1496, 985);
+            this.axPdfBlueprint.TabIndex = 0;
+            // 
+            // axPdfDemolition
+            // 
+            this.axPdfDemolition.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.axPdfDemolition.Enabled = true;
+            this.axPdfDemolition.Location = new System.Drawing.Point(0, 0);
+            this.axPdfDemolition.Name = "axPdfDemolition";
+            this.axPdfDemolition.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axPdfDemolition.OcxState")));
+            this.axPdfDemolition.Size = new System.Drawing.Size(1496, 985);
+            this.axPdfDemolition.TabIndex = 0;
+            // 
             // searchboxControl1
             // 
             this.searchboxControl1.BackColor = System.Drawing.Color.White;
@@ -492,6 +525,24 @@
             this.searchboxControl1.Name = "searchboxControl1";
             this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
             this.searchboxControl1.TabIndex = 2;
+            // 
+            // lblDemolitionNA
+            // 
+            this.lblDemolitionNA.AutoSize = true;
+            this.lblDemolitionNA.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDemolitionNA.Location = new System.Drawing.Point(199, 71);
+            this.lblDemolitionNA.Name = "lblDemolitionNA";
+            this.lblDemolitionNA.Size = new System.Drawing.Size(0, 37);
+            this.lblDemolitionNA.TabIndex = 1;
+            // 
+            // lblBlueprintNA
+            // 
+            this.lblBlueprintNA.AutoSize = true;
+            this.lblBlueprintNA.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBlueprintNA.Location = new System.Drawing.Point(164, 52);
+            this.lblBlueprintNA.Name = "lblBlueprintNA";
+            this.lblBlueprintNA.Size = new System.Drawing.Size(0, 37);
+            this.lblBlueprintNA.TabIndex = 1;
             // 
             // ProjectData
             // 
@@ -502,7 +553,7 @@
             this.Controls.Add(this.pnlStep);
             this.Controls.Add(this.pnlProjectdata);
             this.Name = "ProjectData";
-            this.Size = new System.Drawing.Size(1431, 954);
+            this.Size = new System.Drawing.Size(1380, 954);
             this.pnlProjectdata.ResumeLayout(false);
             this.pnlProjectdata.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).EndInit();
@@ -510,8 +561,14 @@
             this.pnlStep.PerformLayout();
             this.pnlInfomationview.ResumeLayout(false);
             this.pnlInfomationview.PerformLayout();
+            this.pnlDemolition.ResumeLayout(false);
+            this.pnlDemolition.PerformLayout();
+            this.pnlBlueprint.ResumeLayout(false);
+            this.pnlBlueprint.PerformLayout();
             this.pnlPhaseDetail.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPhaseDetail)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axPdfBlueprint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axPdfDemolition)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -547,11 +604,15 @@
         private System.Windows.Forms.Label lbSumpercent;
         private System.Windows.Forms.TextBox txtStatus;
         private System.Windows.Forms.Label lbStatus;
-        private System.Windows.Forms.Panel pnlBuleprint;
+        private System.Windows.Forms.Panel pnlBlueprint;
         private System.Windows.Forms.Panel pnlPhaseDetail;
         private System.Windows.Forms.DataGridView dtgvPhaseDetail;
         private System.Windows.Forms.Label txtBlueprint;
         private System.Windows.Forms.Label txtDemolition;
         private System.Windows.Forms.Panel pnlDemolition;
+        private AxAcroPDFLib.AxAcroPDF axPdfBlueprint;
+        private AxAcroPDFLib.AxAcroPDF axPdfDemolition;
+        private System.Windows.Forms.Label lblDemolitionNA;
+        private System.Windows.Forms.Label lblBlueprintNA;
     }
 }

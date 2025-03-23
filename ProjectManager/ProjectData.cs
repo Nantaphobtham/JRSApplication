@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,6 +43,13 @@ namespace JRSApplication
                 // ✅ คำนวณจำนวนวัน
                 TimeSpan duration = project.ProjectEnd - project.ProjectStart;
                 txtSumdate.Text = duration.TotalDays.ToString();
+
+                // 🟢 แสดง PDF แบบแปลน (จำเป็นต้องมี)
+                ShowPdfFromByteArray(project.ConstructionBlueprint, axPdfBlueprint, pnlBlueprint, lblBlueprintNA);
+
+                // 🟡 แสดง PDF รื้อถอน (ถ้ามี)
+                ShowPdfFromByteArray(project.DemolitionModel, axPdfDemolition, pnlDemolition, lblDemolitionNA);
+
             }
         }
 
@@ -262,8 +270,43 @@ namespace JRSApplication
             }
         }
 
+        //สร้างฟังก์ชัน DisplayPDF
+        private void ShowPdfFromByteArray(byte[] pdfBytes, AxAcroPDFLib.AxAcroPDF viewerControl, Panel panelToShow, Label labelIfNotAvailable)
+        {
+            // ✅ ซ่อน Label ว่า "ไม่มีไฟล์"
+            labelIfNotAvailable.Visible = false;
 
-        
+            if (pdfBytes == null || pdfBytes.Length == 0)
+            {
+                // ❌ ไม่มีไฟล์ → แสดง Label "N/A"
+                viewerControl.Visible = false;
+                labelIfNotAvailable.Text = "N/A";
+                labelIfNotAvailable.TextAlign = ContentAlignment.MiddleCenter;
+                labelIfNotAvailable.Dock = DockStyle.Fill;
+                labelIfNotAvailable.Visible = true;
+                return;
+            }
+
+            try
+            {
+                // ✅ สร้างไฟล์ชั่วคราว
+                string tempFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".pdf");
+                File.WriteAllBytes(tempFile, pdfBytes);
+
+                // ✅ โหลดไฟล์เข้า Viewer
+                viewerControl.LoadFile(tempFile);
+                viewerControl.setView("Fit");
+                viewerControl.setShowToolbar(false);
+                viewerControl.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("เกิดข้อผิดพลาดในการโหลด PDF: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+
 
     }
 
