@@ -67,6 +67,7 @@ namespace JRSApplication.Data_Access_Layer
                 p.pro_end AS ProjectEnd,
                 p.pro_number AS ContractNumber,
                 p.pro_budget AS ProjectBudget,
+                p.pro_detail AS ProjectDetail,
                 p.pro_currentphasenumber AS CurrentPhaseNumber,
                 p.pro_con_blueprint AS ConstructionBlueprint,
                 p.pro_demolition_model AS DemolitionModel,
@@ -92,6 +93,7 @@ namespace JRSApplication.Data_Access_Layer
                                 ProjectStart = reader.GetDateTime("ProjectStart"),
                                 ProjectEnd = reader.GetDateTime("ProjectEnd"),
                                 ProjectNumber = reader.GetString("ContractNumber"),
+                                ProjectDetail = reader.GetString("ProjectDetail"),
                                 CustomerName = reader.IsDBNull(reader.GetOrdinal("CustomerName")) ? "ไม่มีข้อมูล" : reader.GetString("CustomerName"),
                                 EmployeeName = reader.IsDBNull(reader.GetOrdinal("ProjectManager")) ? "ไม่มีข้อมูล" : reader.GetString("ProjectManager"),
 

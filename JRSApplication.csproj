@@ -114,11 +114,13 @@
     <Compile Include="Components\EmployeeAssignment.cs" />
     <Compile Include="Components\Invoice.cs" />
     <Compile Include="Components\InvoiceDetail.cs" />
+    <Compile Include="Components\PhaseWithStatus.cs" />
     <Compile Include="Components\PhaseWorking.cs" />
     <Compile Include="Components\Project.cs" />
     <Compile Include="Components\ProjectPhase.cs" />
     <Compile Include="Components\Supplier.cs" />
     <Compile Include="Components\WorkingPicture.cs" />
+    <Compile Include="Components\WorkStatus.cs" />
     <Compile Include="Data Access Layer\CustomerDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeAssignmentDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeDAL.cs" />

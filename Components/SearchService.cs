@@ -34,8 +34,12 @@ namespace JRSApplication
                             "emp_pos AS 'ตำแหน่ง' FROM employee " +
                             "WHERE emp_name LIKE @Keyword OR emp_lname LIKE @Keyword";
                 }
+                else if (searchType == "Supplier") //รอเพิ่ม
+                {
+                    query = "";
+                }
 
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Keyword", "%" + keyword + "%");
                     using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))

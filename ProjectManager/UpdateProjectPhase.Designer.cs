@@ -29,87 +29,87 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdateProjectPhase));
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.dtgvProject = new System.Windows.Forms.DataGridView();
+            this.pnlProjectdata = new System.Windows.Forms.Panel();
+            this.dtgvProjectData = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label7 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.pnlMain = new System.Windows.Forms.Panel();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.txtStatus = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtProjectDetail = new System.Windows.Forms.TextBox();
+            this.StarSeclectPhase = new System.Windows.Forms.Label();
+            this.cmbSelectPhase = new System.Windows.Forms.ComboBox();
+            this.txtProjectID = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.txtProjectName = new System.Windows.Forms.TextBox();
+            this.lblSeclectPhase = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.label22 = new System.Windows.Forms.Label();
+            this.pnlWorkflow = new System.Windows.Forms.Panel();
+            this.dtgvWorkHistory = new System.Windows.Forms.DataGridView();
+            this.lblWorkHistory = new System.Windows.Forms.Label();
             this.pnlStep = new System.Windows.Forms.Panel();
             this.pnlUploadpic = new System.Windows.Forms.Panel();
             this.pnlUploadImages = new System.Windows.Forms.Panel();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.starAmountPictureUpload = new System.Windows.Forms.Label();
+            this.lblAmountPictureUpload = new System.Windows.Forms.Label();
+            this.cmbAmountPictureUpload = new System.Windows.Forms.ComboBox();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
+            this.cmbPhaseStatus = new System.Windows.Forms.ComboBox();
+            this.dtpDateDone = new System.Windows.Forms.DateTimePicker();
+            this.txtSupplierJuristic = new System.Windows.Forms.TextBox();
+            this.txtIssues = new System.Windows.Forms.TextBox();
+            this.txtDetailWorkFlow = new System.Windows.Forms.TextBox();
+            this.txtSupplierName = new System.Windows.Forms.TextBox();
+            this.starPhaseStatus = new System.Windows.Forms.Label();
+            this.starDateDone = new System.Windows.Forms.Label();
+            this.lblPhaseStatus = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
+            this.lblIssues = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label17 = new System.Windows.Forms.Label();
+            this.btnSearchSupplier = new System.Windows.Forms.Button();
+            this.starDetailWorkFlow = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.lblWorkFlow = new System.Windows.Forms.Label();
             this.searchboxControl2 = new JRSApplication.SearchboxControl();
             this.searchboxControl1 = new JRSApplication.SearchboxControl();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.cmbAmountPictureUpload = new System.Windows.Forms.ComboBox();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvProject)).BeginInit();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.pnlProjectdata.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).BeginInit();
+            this.pnlMain.SuspendLayout();
+            this.pnlWorkflow.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvWorkHistory)).BeginInit();
             this.pnlUploadpic.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // pnlProjectdata
             // 
-            this.panel1.Controls.Add(this.dtgvProject);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.searchboxControl1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1499, 360);
-            this.panel1.TabIndex = 0;
+            this.pnlProjectdata.Controls.Add(this.dtgvProjectData);
+            this.pnlProjectdata.Controls.Add(this.label1);
+            this.pnlProjectdata.Controls.Add(this.searchboxControl1);
+            this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlProjectdata.Location = new System.Drawing.Point(0, 0);
+            this.pnlProjectdata.Name = "pnlProjectdata";
+            this.pnlProjectdata.Size = new System.Drawing.Size(1519, 360);
+            this.pnlProjectdata.TabIndex = 0;
             // 
-            // dtgvProject
+            // dtgvProjectData
             // 
-            this.dtgvProject.AllowUserToAddRows = false;
-            this.dtgvProject.AllowUserToDeleteRows = false;
-            this.dtgvProject.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvProject.Location = new System.Drawing.Point(27, 89);
-            this.dtgvProject.Margin = new System.Windows.Forms.Padding(2);
-            this.dtgvProject.Name = "dtgvProject";
-            this.dtgvProject.ReadOnly = true;
-            this.dtgvProject.RowHeadersWidth = 51;
-            this.dtgvProject.RowTemplate.Height = 24;
-            this.dtgvProject.Size = new System.Drawing.Size(1512, 253);
-            this.dtgvProject.TabIndex = 12;
+            this.dtgvProjectData.AllowUserToAddRows = false;
+            this.dtgvProjectData.AllowUserToDeleteRows = false;
+            this.dtgvProjectData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvProjectData.Location = new System.Drawing.Point(27, 89);
+            this.dtgvProjectData.Margin = new System.Windows.Forms.Padding(2);
+            this.dtgvProjectData.Name = "dtgvProjectData";
+            this.dtgvProjectData.ReadOnly = true;
+            this.dtgvProjectData.RowHeadersWidth = 51;
+            this.dtgvProjectData.RowTemplate.Height = 24;
+            this.dtgvProjectData.Size = new System.Drawing.Size(1512, 253);
+            this.dtgvProjectData.TabIndex = 12;
+            this.dtgvProjectData.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvProjectData_CellClick);
             // 
             // label1
             // 
@@ -122,45 +122,47 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "ค้นหาโครงการ";
             // 
-            // panel2
+            // pnlMain
             // 
-            this.panel2.Controls.Add(this.label7);
-            this.panel2.Controls.Add(this.textBox4);
-            this.panel2.Controls.Add(this.label6);
-            this.panel2.Controls.Add(this.textBox3);
-            this.panel2.Controls.Add(this.label5);
-            this.panel2.Controls.Add(this.comboBox1);
-            this.panel2.Controls.Add(this.textBox2);
-            this.panel2.Controls.Add(this.label3);
-            this.panel2.Controls.Add(this.textBox1);
-            this.panel2.Controls.Add(this.label4);
-            this.panel2.Controls.Add(this.label2);
-            this.panel2.Controls.Add(this.panel3);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 360);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1499, 1731);
-            this.panel2.TabIndex = 1;
+            this.pnlMain.Controls.Add(this.lblStatus);
+            this.pnlMain.Controls.Add(this.txtStatus);
+            this.pnlMain.Controls.Add(this.label6);
+            this.pnlMain.Controls.Add(this.txtProjectDetail);
+            this.pnlMain.Controls.Add(this.StarSeclectPhase);
+            this.pnlMain.Controls.Add(this.cmbSelectPhase);
+            this.pnlMain.Controls.Add(this.txtProjectID);
+            this.pnlMain.Controls.Add(this.label3);
+            this.pnlMain.Controls.Add(this.txtProjectName);
+            this.pnlMain.Controls.Add(this.lblSeclectPhase);
+            this.pnlMain.Controls.Add(this.label2);
+            this.pnlMain.Controls.Add(this.pnlWorkflow);
+            this.pnlMain.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlMain.Location = new System.Drawing.Point(0, 360);
+            this.pnlMain.Name = "pnlMain";
+            this.pnlMain.Size = new System.Drawing.Size(1519, 1731);
+            this.pnlMain.TabIndex = 1;
             // 
-            // label7
+            // lblStatus
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(1328, 8);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(115, 25);
-            this.label7.TabIndex = 11;
-            this.label7.Text = "สถานะเฟสงาน";
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.Location = new System.Drawing.Point(1328, 8);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(115, 25);
+            this.lblStatus.TabIndex = 11;
+            this.lblStatus.Text = "สถานะเฟสงาน";
             // 
-            // textBox4
+            // txtStatus
             // 
-            this.textBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(0)))));
-            this.textBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox4.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox4.Location = new System.Drawing.Point(1235, 43);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(289, 35);
-            this.textBox4.TabIndex = 10;
+            this.txtStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(0)))));
+            this.txtStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtStatus.Enabled = false;
+            this.txtStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStatus.Location = new System.Drawing.Point(1235, 43);
+            this.txtStatus.Name = "txtStatus";
+            this.txtStatus.ReadOnly = true;
+            this.txtStatus.Size = new System.Drawing.Size(289, 35);
+            this.txtStatus.TabIndex = 10;
             // 
             // label6
             // 
@@ -172,43 +174,48 @@
             this.label6.TabIndex = 9;
             this.label6.Text = "รายละเอียด";
             // 
-            // textBox3
+            // txtProjectDetail
             // 
-            this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox3.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox3.Location = new System.Drawing.Point(550, 90);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(975, 35);
-            this.textBox3.TabIndex = 8;
+            this.txtProjectDetail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtProjectDetail.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtProjectDetail.Location = new System.Drawing.Point(550, 84);
+            this.txtProjectDetail.Multiline = true;
+            this.txtProjectDetail.Name = "txtProjectDetail";
+            this.txtProjectDetail.ReadOnly = true;
+            this.txtProjectDetail.Size = new System.Drawing.Size(975, 52);
+            this.txtProjectDetail.TabIndex = 8;
             // 
-            // label5
+            // StarSeclectPhase
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.Red;
-            this.label5.Location = new System.Drawing.Point(688, 8);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(20, 25);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "*";
+            this.StarSeclectPhase.AutoSize = true;
+            this.StarSeclectPhase.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StarSeclectPhase.ForeColor = System.Drawing.Color.Red;
+            this.StarSeclectPhase.Location = new System.Drawing.Point(688, 8);
+            this.StarSeclectPhase.Name = "StarSeclectPhase";
+            this.StarSeclectPhase.Size = new System.Drawing.Size(20, 25);
+            this.StarSeclectPhase.TabIndex = 7;
+            this.StarSeclectPhase.Text = "*";
+            this.StarSeclectPhase.Visible = false;
             // 
-            // comboBox1
+            // cmbSelectPhase
             // 
-            this.comboBox1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(446, 41);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(262, 38);
-            this.comboBox1.TabIndex = 6;
+            this.cmbSelectPhase.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbSelectPhase.FormattingEnabled = true;
+            this.cmbSelectPhase.Location = new System.Drawing.Point(446, 41);
+            this.cmbSelectPhase.Name = "cmbSelectPhase";
+            this.cmbSelectPhase.Size = new System.Drawing.Size(262, 38);
+            this.cmbSelectPhase.TabIndex = 6;
             // 
-            // textBox2
+            // txtProjectID
             // 
-            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(130, 90);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(289, 35);
-            this.textBox2.TabIndex = 5;
+            this.txtProjectID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtProjectID.Enabled = false;
+            this.txtProjectID.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtProjectID.Location = new System.Drawing.Point(132, 90);
+            this.txtProjectID.Name = "txtProjectID";
+            this.txtProjectID.ReadOnly = true;
+            this.txtProjectID.Size = new System.Drawing.Size(289, 35);
+            this.txtProjectID.TabIndex = 5;
             // 
             // label3
             // 
@@ -216,28 +223,31 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(21, 92);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(103, 30);
+            this.label3.Size = new System.Drawing.Size(111, 30);
             this.label3.TabIndex = 4;
-            this.label3.Text = "ชื่อโครงการ";
+            this.label3.Text = "รหัสโครงการ";
             // 
-            // textBox1
+            // txtProjectName
             // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(130, 36);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(289, 35);
-            this.textBox1.TabIndex = 3;
+            this.txtProjectName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtProjectName.Enabled = false;
+            this.txtProjectName.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtProjectName.ForeColor = System.Drawing.Color.Black;
+            this.txtProjectName.Location = new System.Drawing.Point(132, 36);
+            this.txtProjectName.Name = "txtProjectName";
+            this.txtProjectName.ReadOnly = true;
+            this.txtProjectName.Size = new System.Drawing.Size(289, 35);
+            this.txtProjectName.TabIndex = 3;
             // 
-            // label4
+            // lblSeclectPhase
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(441, 8);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(241, 25);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "เลือกเฟสที่ต้องการปรับปรุงข้อมูล";
+            this.lblSeclectPhase.AutoSize = true;
+            this.lblSeclectPhase.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSeclectPhase.Location = new System.Drawing.Point(441, 8);
+            this.lblSeclectPhase.Name = "lblSeclectPhase";
+            this.lblSeclectPhase.Size = new System.Drawing.Size(241, 25);
+            this.lblSeclectPhase.TabIndex = 1;
+            this.lblSeclectPhase.Text = "เลือกเฟสที่ต้องการปรับปรุงข้อมูล";
             // 
             // label2
             // 
@@ -249,63 +259,62 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "ชื่อโครงการ";
             // 
-            // panel3
+            // pnlWorkflow
             // 
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
-            this.panel3.Controls.Add(this.dataGridView1);
-            this.panel3.Controls.Add(this.searchboxControl2);
-            this.panel3.Controls.Add(this.label22);
-            this.panel3.Controls.Add(this.pnlStep);
-            this.panel3.Controls.Add(this.pnlUploadpic);
-            this.panel3.Controls.Add(this.button3);
-            this.panel3.Controls.Add(this.button2);
-            this.panel3.Controls.Add(this.comboBox2);
-            this.panel3.Controls.Add(this.dateTimePicker1);
-            this.panel3.Controls.Add(this.textBox6);
-            this.panel3.Controls.Add(this.textBox8);
-            this.panel3.Controls.Add(this.textBox7);
-            this.panel3.Controls.Add(this.textBox5);
-            this.panel3.Controls.Add(this.label15);
-            this.panel3.Controls.Add(this.label13);
-            this.panel3.Controls.Add(this.label14);
-            this.panel3.Controls.Add(this.label12);
-            this.panel3.Controls.Add(this.label11);
-            this.panel3.Controls.Add(this.label19);
-            this.panel3.Controls.Add(this.label16);
-            this.panel3.Controls.Add(this.label18);
-            this.panel3.Controls.Add(this.button1);
-            this.panel3.Controls.Add(this.label17);
-            this.panel3.Controls.Add(this.label10);
-            this.panel3.Controls.Add(this.label9);
-            this.panel3.Controls.Add(this.label8);
-            this.panel3.Location = new System.Drawing.Point(27, 142);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1512, 1573);
-            this.panel3.TabIndex = 0;
+            this.pnlWorkflow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.pnlWorkflow.Controls.Add(this.dtgvWorkHistory);
+            this.pnlWorkflow.Controls.Add(this.searchboxControl2);
+            this.pnlWorkflow.Controls.Add(this.lblWorkHistory);
+            this.pnlWorkflow.Controls.Add(this.pnlStep);
+            this.pnlWorkflow.Controls.Add(this.pnlUploadpic);
+            this.pnlWorkflow.Controls.Add(this.btnSave);
+            this.pnlWorkflow.Controls.Add(this.btnEdit);
+            this.pnlWorkflow.Controls.Add(this.cmbPhaseStatus);
+            this.pnlWorkflow.Controls.Add(this.dtpDateDone);
+            this.pnlWorkflow.Controls.Add(this.txtSupplierJuristic);
+            this.pnlWorkflow.Controls.Add(this.txtIssues);
+            this.pnlWorkflow.Controls.Add(this.txtDetailWorkFlow);
+            this.pnlWorkflow.Controls.Add(this.txtSupplierName);
+            this.pnlWorkflow.Controls.Add(this.starPhaseStatus);
+            this.pnlWorkflow.Controls.Add(this.starDateDone);
+            this.pnlWorkflow.Controls.Add(this.lblPhaseStatus);
+            this.pnlWorkflow.Controls.Add(this.label12);
+            this.pnlWorkflow.Controls.Add(this.label11);
+            this.pnlWorkflow.Controls.Add(this.lblIssues);
+            this.pnlWorkflow.Controls.Add(this.label16);
+            this.pnlWorkflow.Controls.Add(this.btnSearchSupplier);
+            this.pnlWorkflow.Controls.Add(this.starDetailWorkFlow);
+            this.pnlWorkflow.Controls.Add(this.label10);
+            this.pnlWorkflow.Controls.Add(this.label9);
+            this.pnlWorkflow.Controls.Add(this.lblWorkFlow);
+            this.pnlWorkflow.Location = new System.Drawing.Point(27, 142);
+            this.pnlWorkflow.Name = "pnlWorkflow";
+            this.pnlWorkflow.Size = new System.Drawing.Size(1512, 1573);
+            this.pnlWorkflow.TabIndex = 0;
             // 
-            // dataGridView1
+            // dtgvWorkHistory
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(53, 1237);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1406, 310);
-            this.dataGridView1.TabIndex = 12;
+            this.dtgvWorkHistory.AllowUserToAddRows = false;
+            this.dtgvWorkHistory.AllowUserToDeleteRows = false;
+            this.dtgvWorkHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvWorkHistory.Location = new System.Drawing.Point(53, 1237);
+            this.dtgvWorkHistory.Margin = new System.Windows.Forms.Padding(2);
+            this.dtgvWorkHistory.Name = "dtgvWorkHistory";
+            this.dtgvWorkHistory.ReadOnly = true;
+            this.dtgvWorkHistory.RowHeadersWidth = 51;
+            this.dtgvWorkHistory.RowTemplate.Height = 24;
+            this.dtgvWorkHistory.Size = new System.Drawing.Size(1406, 310);
+            this.dtgvWorkHistory.TabIndex = 12;
             // 
-            // label22
+            // lblWorkHistory
             // 
-            this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(61, 1187);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(200, 30);
-            this.label22.TabIndex = 10;
-            this.label22.Text = "ประวัติการดำเนินงาน";
+            this.lblWorkHistory.AutoSize = true;
+            this.lblWorkHistory.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWorkHistory.Location = new System.Drawing.Point(61, 1187);
+            this.lblWorkHistory.Name = "lblWorkHistory";
+            this.lblWorkHistory.Size = new System.Drawing.Size(200, 30);
+            this.lblWorkHistory.TabIndex = 10;
+            this.lblWorkHistory.Text = "ประวัติการดำเนินงาน";
             // 
             // pnlStep
             // 
@@ -328,124 +337,188 @@
             // pnlUploadImages
             // 
             this.pnlUploadImages.AutoScroll = true;
+            this.pnlUploadImages.CausesValidation = false;
             this.pnlUploadImages.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlUploadImages.Location = new System.Drawing.Point(0, 100);
             this.pnlUploadImages.Name = "pnlUploadImages";
             this.pnlUploadImages.Size = new System.Drawing.Size(1406, 730);
             this.pnlUploadImages.TabIndex = 1;
             // 
-            // button3
+            // panel4
             // 
-            this.button3.BackColor = System.Drawing.Color.White;
-            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(1293, 232);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(180, 58);
-            this.button3.TabIndex = 7;
-            this.button3.Text = "บันทึกข้อมูล";
-            this.button3.UseVisualStyleBackColor = false;
+            this.panel4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel4.BackgroundImage")));
+            this.panel4.Controls.Add(this.starAmountPictureUpload);
+            this.panel4.Controls.Add(this.lblAmountPictureUpload);
+            this.panel4.Controls.Add(this.cmbAmountPictureUpload);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel4.Location = new System.Drawing.Point(0, 0);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(1406, 100);
+            this.panel4.TabIndex = 0;
             // 
-            // button2
+            // starAmountPictureUpload
             // 
-            this.button2.BackColor = System.Drawing.Color.White;
-            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(153)))), ((int)(((byte)(0)))));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(1098, 232);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(180, 58);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "แก้ไขข้อมูล";
-            this.button2.UseVisualStyleBackColor = false;
+            this.starAmountPictureUpload.AutoSize = true;
+            this.starAmountPictureUpload.BackColor = System.Drawing.Color.Transparent;
+            this.starAmountPictureUpload.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starAmountPictureUpload.ForeColor = System.Drawing.Color.Red;
+            this.starAmountPictureUpload.Location = new System.Drawing.Point(168, 15);
+            this.starAmountPictureUpload.Name = "starAmountPictureUpload";
+            this.starAmountPictureUpload.Size = new System.Drawing.Size(22, 30);
+            this.starAmountPictureUpload.TabIndex = 1;
+            this.starAmountPictureUpload.Text = "*";
+            this.starAmountPictureUpload.Visible = false;
             // 
-            // comboBox2
+            // lblAmountPictureUpload
             // 
-            this.comboBox2.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(1273, 113);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(200, 38);
-            this.comboBox2.TabIndex = 6;
+            this.lblAmountPictureUpload.AutoSize = true;
+            this.lblAmountPictureUpload.BackColor = System.Drawing.Color.Transparent;
+            this.lblAmountPictureUpload.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAmountPictureUpload.Location = new System.Drawing.Point(43, 15);
+            this.lblAmountPictureUpload.Name = "lblAmountPictureUpload";
+            this.lblAmountPictureUpload.Size = new System.Drawing.Size(117, 30);
+            this.lblAmountPictureUpload.TabIndex = 1;
+            this.lblAmountPictureUpload.Text = "ระบุจำนวนรูป";
             // 
-            // dateTimePicker1
+            // cmbAmountPictureUpload
             // 
-            this.dateTimePicker1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker1.Location = new System.Drawing.Point(1008, 114);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(229, 35);
-            this.dateTimePicker1.TabIndex = 5;
+            this.cmbAmountPictureUpload.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbAmountPictureUpload.FormattingEnabled = true;
+            this.cmbAmountPictureUpload.Items.AddRange(new object[] {
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"});
+            this.cmbAmountPictureUpload.Location = new System.Drawing.Point(39, 48);
+            this.cmbAmountPictureUpload.Name = "cmbAmountPictureUpload";
+            this.cmbAmountPictureUpload.Size = new System.Drawing.Size(147, 38);
+            this.cmbAmountPictureUpload.TabIndex = 0;
+            this.cmbAmountPictureUpload.SelectedIndexChanged += new System.EventHandler(this.cmbAmountPictureUpload_SelectedIndexChanged);
             // 
-            // textBox6
+            // btnSave
             // 
-            this.textBox6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox6.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox6.Location = new System.Drawing.Point(615, 114);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(355, 35);
-            this.textBox6.TabIndex = 4;
+            this.btnSave.BackColor = System.Drawing.Color.White;
+            this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSave.Location = new System.Drawing.Point(1293, 232);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(180, 58);
+            this.btnSave.TabIndex = 7;
+            this.btnSave.Text = "บันทึกข้อมูล";
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // textBox8
+            // btnEdit
             // 
-            this.textBox8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox8.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox8.Location = new System.Drawing.Point(615, 198);
-            this.textBox8.Multiline = true;
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(468, 92);
-            this.textBox8.TabIndex = 4;
+            this.btnEdit.BackColor = System.Drawing.Color.White;
+            this.btnEdit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(153)))), ((int)(((byte)(0)))));
+            this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEdit.Location = new System.Drawing.Point(1098, 232);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(180, 58);
+            this.btnEdit.TabIndex = 7;
+            this.btnEdit.Text = "แก้ไขข้อมูล";
+            this.btnEdit.UseVisualStyleBackColor = false;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
-            // textBox7
+            // cmbPhaseStatus
             // 
-            this.textBox7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox7.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox7.Location = new System.Drawing.Point(47, 198);
-            this.textBox7.Multiline = true;
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(554, 92);
-            this.textBox7.TabIndex = 4;
+            this.cmbPhaseStatus.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbPhaseStatus.FormattingEnabled = true;
+            this.cmbPhaseStatus.Location = new System.Drawing.Point(1273, 113);
+            this.cmbPhaseStatus.Name = "cmbPhaseStatus";
+            this.cmbPhaseStatus.Size = new System.Drawing.Size(200, 38);
+            this.cmbPhaseStatus.TabIndex = 6;
             // 
-            // textBox5
+            // dtpDateDone
             // 
-            this.textBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox5.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox5.Location = new System.Drawing.Point(246, 114);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(355, 35);
-            this.textBox5.TabIndex = 4;
+            this.dtpDateDone.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpDateDone.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpDateDone.Location = new System.Drawing.Point(1008, 114);
+            this.dtpDateDone.Name = "dtpDateDone";
+            this.dtpDateDone.Size = new System.Drawing.Size(229, 35);
+            this.dtpDateDone.TabIndex = 5;
             // 
-            // label15
+            // txtSupplierJuristic
             // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.ForeColor = System.Drawing.Color.Red;
-            this.label15.Location = new System.Drawing.Point(1375, 81);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(22, 30);
-            this.label15.TabIndex = 2;
-            this.label15.Text = "*";
+            this.txtSupplierJuristic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtSupplierJuristic.Enabled = false;
+            this.txtSupplierJuristic.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSupplierJuristic.Location = new System.Drawing.Point(615, 114);
+            this.txtSupplierJuristic.Name = "txtSupplierJuristic";
+            this.txtSupplierJuristic.ReadOnly = true;
+            this.txtSupplierJuristic.Size = new System.Drawing.Size(355, 35);
+            this.txtSupplierJuristic.TabIndex = 4;
             // 
-            // label13
+            // txtIssues
             // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.ForeColor = System.Drawing.Color.Red;
-            this.label13.Location = new System.Drawing.Point(1061, 81);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(22, 30);
-            this.label13.TabIndex = 2;
-            this.label13.Text = "*";
+            this.txtIssues.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtIssues.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtIssues.Location = new System.Drawing.Point(615, 198);
+            this.txtIssues.Multiline = true;
+            this.txtIssues.Name = "txtIssues";
+            this.txtIssues.Size = new System.Drawing.Size(468, 92);
+            this.txtIssues.TabIndex = 4;
             // 
-            // label14
+            // txtDetailWorkFlow
             // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(1273, 81);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(96, 30);
-            this.label14.TabIndex = 2;
-            this.label14.Text = "สถานะเฟส";
+            this.txtDetailWorkFlow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtDetailWorkFlow.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDetailWorkFlow.Location = new System.Drawing.Point(47, 198);
+            this.txtDetailWorkFlow.Multiline = true;
+            this.txtDetailWorkFlow.Name = "txtDetailWorkFlow";
+            this.txtDetailWorkFlow.Size = new System.Drawing.Size(554, 92);
+            this.txtDetailWorkFlow.TabIndex = 4;
+            // 
+            // txtSupplierName
+            // 
+            this.txtSupplierName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtSupplierName.Enabled = false;
+            this.txtSupplierName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSupplierName.Location = new System.Drawing.Point(246, 114);
+            this.txtSupplierName.Name = "txtSupplierName";
+            this.txtSupplierName.ReadOnly = true;
+            this.txtSupplierName.Size = new System.Drawing.Size(355, 35);
+            this.txtSupplierName.TabIndex = 4;
+            // 
+            // starPhaseStatus
+            // 
+            this.starPhaseStatus.AutoSize = true;
+            this.starPhaseStatus.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starPhaseStatus.ForeColor = System.Drawing.Color.Red;
+            this.starPhaseStatus.Location = new System.Drawing.Point(1375, 81);
+            this.starPhaseStatus.Name = "starPhaseStatus";
+            this.starPhaseStatus.Size = new System.Drawing.Size(22, 30);
+            this.starPhaseStatus.TabIndex = 2;
+            this.starPhaseStatus.Text = "*";
+            this.starPhaseStatus.Visible = false;
+            // 
+            // starDateDone
+            // 
+            this.starDateDone.AutoSize = true;
+            this.starDateDone.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starDateDone.ForeColor = System.Drawing.Color.Red;
+            this.starDateDone.Location = new System.Drawing.Point(1061, 81);
+            this.starDateDone.Name = "starDateDone";
+            this.starDateDone.Size = new System.Drawing.Size(22, 30);
+            this.starDateDone.TabIndex = 2;
+            this.starDateDone.Text = "*";
+            this.starDateDone.Visible = false;
+            // 
+            // lblPhaseStatus
+            // 
+            this.lblPhaseStatus.AutoSize = true;
+            this.lblPhaseStatus.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPhaseStatus.Location = new System.Drawing.Point(1273, 81);
+            this.lblPhaseStatus.Name = "lblPhaseStatus";
+            this.lblPhaseStatus.Size = new System.Drawing.Size(96, 30);
+            this.lblPhaseStatus.TabIndex = 2;
+            this.lblPhaseStatus.Text = "สถานะเฟส";
             // 
             // label12
             // 
@@ -467,15 +540,15 @@
             this.label11.TabIndex = 2;
             this.label11.Text = "เลขทะเบียนนิติบุคคล";
             // 
-            // label19
+            // lblIssues
             // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(615, 165);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(177, 30);
-            this.label19.TabIndex = 2;
-            this.label19.Text = "ปัญหาการดำเนินงาน";
+            this.lblIssues.AutoSize = true;
+            this.lblIssues.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblIssues.Location = new System.Drawing.Point(615, 165);
+            this.lblIssues.Name = "lblIssues";
+            this.lblIssues.Size = new System.Drawing.Size(177, 30);
+            this.lblIssues.TabIndex = 2;
+            this.lblIssues.Text = "ปัญหาการดำเนินงาน";
             // 
             // label16
             // 
@@ -487,39 +560,30 @@
             this.label16.TabIndex = 2;
             this.label16.Text = "รายละเอียดการดำเนินงาน";
             // 
-            // label18
+            // btnSearchSupplier
             // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.ForeColor = System.Drawing.Color.Red;
-            this.label18.Location = new System.Drawing.Point(798, 165);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(22, 30);
-            this.label18.TabIndex = 2;
-            this.label18.Text = "*";
+            this.btnSearchSupplier.BackColor = System.Drawing.Color.White;
+            this.btnSearchSupplier.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchSupplier.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.btnSearchSupplier.Location = new System.Drawing.Point(47, 109);
+            this.btnSearchSupplier.Name = "btnSearchSupplier";
+            this.btnSearchSupplier.Size = new System.Drawing.Size(184, 46);
+            this.btnSearchSupplier.TabIndex = 3;
+            this.btnSearchSupplier.Text = "ค้นหาซัพพลายเออร์";
+            this.btnSearchSupplier.UseVisualStyleBackColor = false;
+            this.btnSearchSupplier.Click += new System.EventHandler(this.btnSearchSupplier_Click);
             // 
-            // button1
+            // starDetailWorkFlow
             // 
-            this.button1.BackColor = System.Drawing.Color.White;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.button1.Location = new System.Drawing.Point(47, 109);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(184, 46);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "ค้นหาซัพพลายเออร์";
-            this.button1.UseVisualStyleBackColor = false;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.ForeColor = System.Drawing.Color.Red;
-            this.label17.Location = new System.Drawing.Point(267, 165);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(22, 30);
-            this.label17.TabIndex = 2;
-            this.label17.Text = "*";
+            this.starDetailWorkFlow.AutoSize = true;
+            this.starDetailWorkFlow.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starDetailWorkFlow.ForeColor = System.Drawing.Color.Red;
+            this.starDetailWorkFlow.Location = new System.Drawing.Point(267, 165);
+            this.starDetailWorkFlow.Name = "starDetailWorkFlow";
+            this.starDetailWorkFlow.Size = new System.Drawing.Size(22, 30);
+            this.starDetailWorkFlow.TabIndex = 2;
+            this.starDetailWorkFlow.Text = "*";
+            this.starDetailWorkFlow.Visible = false;
             // 
             // label10
             // 
@@ -541,15 +605,15 @@
             this.label9.TabIndex = 2;
             this.label9.Text = "ระบุบซัพลายเออร์";
             // 
-            // label8
+            // lblWorkFlow
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(42, 27);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(197, 30);
-            this.label8.TabIndex = 2;
-            this.label8.Text = "ข้อมูลการดำเนินการ";
+            this.lblWorkFlow.AutoSize = true;
+            this.lblWorkFlow.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWorkFlow.Location = new System.Drawing.Point(42, 27);
+            this.lblWorkFlow.Name = "lblWorkFlow";
+            this.lblWorkFlow.Size = new System.Drawing.Size(197, 30);
+            this.lblWorkFlow.TabIndex = 2;
+            this.lblWorkFlow.Text = "ข้อมูลการดำเนินการ";
             // 
             // searchboxControl2
             // 
@@ -569,76 +633,23 @@
             this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
             this.searchboxControl1.TabIndex = 0;
             // 
-            // panel4
-            // 
-            this.panel4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel4.BackgroundImage")));
-            this.panel4.Controls.Add(this.label21);
-            this.panel4.Controls.Add(this.label20);
-            this.panel4.Controls.Add(this.cmbAmountPictureUpload);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel4.Location = new System.Drawing.Point(0, 0);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1406, 100);
-            this.panel4.TabIndex = 0;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.BackColor = System.Drawing.Color.Transparent;
-            this.label21.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.ForeColor = System.Drawing.Color.Red;
-            this.label21.Location = new System.Drawing.Point(168, 15);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(22, 30);
-            this.label21.TabIndex = 1;
-            this.label21.Text = "*";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.BackColor = System.Drawing.Color.Transparent;
-            this.label20.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(43, 15);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(117, 30);
-            this.label20.TabIndex = 1;
-            this.label20.Text = "ระบุจำนวนรูป";
-            // 
-            // cmbAmountPictureUpload
-            // 
-            this.cmbAmountPictureUpload.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbAmountPictureUpload.FormattingEnabled = true;
-            this.cmbAmountPictureUpload.Items.AddRange(new object[] {
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10"});
-            this.cmbAmountPictureUpload.Location = new System.Drawing.Point(39, 48);
-            this.cmbAmountPictureUpload.Name = "cmbAmountPictureUpload";
-            this.cmbAmountPictureUpload.Size = new System.Drawing.Size(147, 38);
-            this.cmbAmountPictureUpload.TabIndex = 0;
-            this.cmbAmountPictureUpload.SelectedIndexChanged += new System.EventHandler(this.cmbAmountPictureUpload_SelectedIndexChanged);
-            // 
             // UpdateProjectPhase
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
+            this.CausesValidation = false;
+            this.Controls.Add(this.pnlMain);
+            this.Controls.Add(this.pnlProjectdata);
             this.Name = "UpdateProjectPhase";
-            this.Size = new System.Drawing.Size(1499, 954);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvProject)).EndInit();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Size = new System.Drawing.Size(1519, 954);
+            this.pnlProjectdata.ResumeLayout(false);
+            this.pnlProjectdata.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).EndInit();
+            this.pnlMain.ResumeLayout(false);
+            this.pnlMain.PerformLayout();
+            this.pnlWorkflow.ResumeLayout(false);
+            this.pnlWorkflow.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvWorkHistory)).EndInit();
             this.pnlUploadpic.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -648,53 +659,52 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel pnlProjectdata;
+        private System.Windows.Forms.Panel pnlMain;
         private SearchboxControl searchboxControl1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridView dtgvProject;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.DataGridView dtgvProjectData;
+        private System.Windows.Forms.ComboBox cmbSelectPhase;
+        private System.Windows.Forms.TextBox txtProjectID;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtProjectName;
+        private System.Windows.Forms.Label lblSeclectPhase;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Panel pnlWorkflow;
+        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.TextBox txtStatus;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox txtProjectDetail;
+        private System.Windows.Forms.Label StarSeclectPhase;
+        private System.Windows.Forms.Button btnSearchSupplier;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.Label lblWorkFlow;
+        private System.Windows.Forms.DateTimePicker dtpDateDone;
+        private System.Windows.Forms.TextBox txtSupplierJuristic;
+        private System.Windows.Forms.TextBox txtSupplierName;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ComboBox cmbPhaseStatus;
+        private System.Windows.Forms.TextBox txtDetailWorkFlow;
+        private System.Windows.Forms.Label starPhaseStatus;
+        private System.Windows.Forms.Label starDateDone;
+        private System.Windows.Forms.Label lblPhaseStatus;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label starDetailWorkFlow;
         private System.Windows.Forms.Panel pnlUploadpic;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnEdit;
+        private System.Windows.Forms.TextBox txtIssues;
+        private System.Windows.Forms.Label lblIssues;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label lblAmountPictureUpload;
         private System.Windows.Forms.ComboBox cmbAmountPictureUpload;
         private System.Windows.Forms.Panel pnlUploadImages;
-        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label starAmountPictureUpload;
         private SearchboxControl searchboxControl2;
-        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label lblWorkHistory;
         private System.Windows.Forms.Panel pnlStep;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dtgvWorkHistory;
     }
 }

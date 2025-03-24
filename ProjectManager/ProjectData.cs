@@ -187,16 +187,17 @@ namespace JRSApplication
             InitializeDataGridViewPhase();
 
             PhaseDAL phaseDAL = new PhaseDAL();
-            List<ProjectPhase> phases = phaseDAL.GetAllPhasesByPrjectID(projectId);
+            List<PhaseWithStatus> phases = phaseDAL.GetPhasesWithStatus(projectId);
 
             dtgvPhaseDetail.Rows.Clear();
             foreach (var phase in phases)
             {
                 dtgvPhaseDetail.Rows.Add(
-                    phase.PhaseNumber, // เฟสที่
-                    phase.PhaseDetail, // รายละเอียดการดำเนินงาน
-                    phase.PhaseBudget.ToString("N2"), // จำนวนเงิน (บาท) -> แสดงเป็น 1,200.00
-                    phase.PhasePercent.ToString("N2") + " %" // เปอร์เซ็นต์ (%)
+                    phase.PhaseNumber,
+                    phase.PhaseDetail,
+                    phase.PhaseBudget.ToString("N2"),
+                    phase.PhasePercent.ToString("N2") + " %",
+                    WorkStatus.GetDisplayName(phase.PhaseStatus) // แสดงเป็นภาษาไทย
                 );
             }
         }
@@ -245,6 +246,8 @@ namespace JRSApplication
                 dtgvPhaseDetail.Columns.Add("PhaseDetail", "รายละเอียดการดำเนินงาน");
                 dtgvPhaseDetail.Columns.Add("PhaseBudget", "จำนวนเงิน (บาท)");
                 dtgvPhaseDetail.Columns.Add("PhasePercent", "เปอร์เซ็นต์ (%)");
+                dtgvPhaseDetail.Columns.Add("PhaseStatus", "สถานะเฟส");
+                
 
                 // ✅ ปรับแต่งคอลัมน์
                 dtgvPhaseDetail.Columns["PhaseNumber"].Width = 80;
@@ -264,6 +267,10 @@ namespace JRSApplication
                 dtgvPhaseDetail.Columns["PhasePercent"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dtgvPhaseDetail.Columns["PhasePercent"].DefaultCellStyle.Format = "N2"; // แสดงเป็น 15.00%
                 dtgvPhaseDetail.Columns["PhasePercent"].ReadOnly = true;
+
+                dtgvPhaseDetail.Columns["PhaseStatus"].Width = 150;
+                dtgvPhaseDetail.Columns["PhaseStatus"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dtgvPhaseDetail.Columns["PhaseStatus"].ReadOnly = true;
 
                 // ✅ ใช้ฟังก์ชันตกแต่ง
                 CustomizeDataGridViewPhase();

@@ -51,26 +51,68 @@ namespace JRSApplication.Data_Access_Layer
 
             return phases;
         }
-
-        public decimal GetTotalPhaseBudget(int projectId)
+        public List<PhaseWithStatus> GetPhasesWithStatus(int projectId)
         {
-            decimal totalBudget = 0;
+            List<PhaseWithStatus> phases = new List<PhaseWithStatus>();
+
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                string sql = "SELECT SUM(phase_budget) FROM project_phase WHERE pro_id = @ProjectID";
+                string sql = @"
+            SELECT 
+                pp.phase_no,
+                pp.phase_detail,
+                pp.phase_budget,
+                pp.phase_percent,
+                pw.work_status
+            FROM project_phase pp
+            LEFT JOIN phase_working pw 
+                ON pp.phase_no = pw.phase_no AND pw.pro_id = pp.pro_id
+            WHERE pp.pro_id = @ProjectID";
+
                 using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@ProjectID", projectId);
                     conn.Open();
-                    var result = cmd.ExecuteScalar();
-                    if (result != DBNull.Value && result != null)
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        totalBudget = Convert.ToDecimal(result);
+                        while (reader.Read())
+                        {
+                            phases.Add(new PhaseWithStatus
+                            {
+                                PhaseNumber = reader.GetInt32("phase_no"),
+                                PhaseDetail = reader.GetString("phase_detail"),
+                                PhaseBudget = reader.GetDecimal("phase_budget"),
+                                PhasePercent = reader.GetDecimal("phase_percent"),
+
+                                PhaseStatus = reader.IsDBNull(reader.GetOrdinal("work_status"))
+                                    ? WorkStatus.NotStarted
+                                    : reader.GetString("work_status")
+                            });
+                        }
                     }
                 }
             }
-            return totalBudget;
+
+            return phases;
         }
+        public int GetPhaseCountByProjectID(int projectId)
+        {
+            int count = 0;
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string sql = "SELECT COUNT(*) FROM project_phase WHERE pro_id = @ProjectID";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ProjectID", projectId);
+                    conn.Open();
+                    count = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+            }
+            return count;
+        }
+
 
 
     }
