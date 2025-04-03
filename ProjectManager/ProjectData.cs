@@ -22,6 +22,7 @@ namespace JRSApplication
             InitializeDataGridViewProject();  
             InitializeDataGridViewPhase();
             LoadProjectData();
+            
 
         }
         //ฟังก์ชันโหลดต่างๆ
@@ -51,6 +52,17 @@ namespace JRSApplication
                 ShowPdfFromByteArray(project.DemolitionModel, axPdfDemolition, pnlDemolition, lblDemolitionNA);
 
             }
+        }
+        //ทำไมไม่ถูกเรียก
+        private void LoadProjectStatus(int projectID, int totalPhaseNumber)
+        {
+            PhaseWorkDAL dal = new PhaseWorkDAL();
+            List<PhaseWorking> phaseWorkings = dal.GetPhaseWorkingsByProjectID(projectID);
+
+            string status = ProjectStatusEvaluator.GetProjectStatus(phaseWorkings, totalPhaseNumber);
+
+            txtStatus.Text = WorkStatus.GetDisplayName(status);
+            txtStatus.BackColor = WorkStatus.GetStatusColor(status); // ✅ เพิ่มสีพื้นหลังตามสถานะ
         }
 
         private void LoadProjectData()
@@ -127,6 +139,7 @@ namespace JRSApplication
                 dtgvProjectData.Columns.Add("CustomerName", "ชื่อลูกค้า");
                 dtgvProjectData.Columns.Add("EmployeeName", "ชื่อผู้ดูแลโครงการ");
 
+
                 // ✅ ปรับแต่งคอลัมน์
                 dtgvProjectData.Columns["ProjectID"].Width = 80;
                 dtgvProjectData.Columns["ProjectID"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -171,7 +184,7 @@ namespace JRSApplication
         {
             if (e.RowIndex >= 0)
             {
-                // ✅ ดึงค่า `ProjectID` จากตาราง
+                // ✅ ดึง ProjectID จากตาราง
                 int projectId = Convert.ToInt32(dtgvProjectData.Rows[e.RowIndex].Cells["ProjectID"].Value);
 
                 // ✅ โหลดข้อมูลโครงการไปยัง TextBox ต่างๆ
@@ -179,6 +192,13 @@ namespace JRSApplication
 
                 // ✅ โหลดข้อมูล Phase ที่เกี่ยวข้อง
                 LoadPhaseData(projectId);
+
+                // ✅ ดึงข้อมูลสำหรับสถานะโครงการ
+                DataGridViewRow row = dtgvProjectData.Rows[e.RowIndex];
+                int totalPhaseNumber = Convert.ToInt32(row.Cells["CurrentPhaseNumber"].Value);
+
+                // ✅ โหลดสถานะโครงการ
+                LoadProjectStatus(projectId, totalPhaseNumber);
             }
         }
 
