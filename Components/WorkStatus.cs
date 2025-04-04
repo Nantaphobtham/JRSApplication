@@ -10,7 +10,7 @@ namespace JRSApplication.Components
     public static class WorkStatus
     {
         public const string NotStarted = "NotStarted";          // ใช้เป็น Default ในอนาคตถ้าต้องการ
-        public const string InProgress = "InProgress";          // ฝ่าย PM
+        public const string InProgress = "InProgress";          // ฝ่าย PM / site suppervisor 
         public const string Completed = "Completed";            // ฝ่าย PM
 
         public const string WaitingForInvoice = "WaitingForInvoice";  // ฝ่าย AC

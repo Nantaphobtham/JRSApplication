@@ -14,12 +14,32 @@ namespace JRSApplication
 {
     public partial class UpdateProjectPhase : UserControl
     {
+
+
         public UpdateProjectPhase()
         {
             InitializeComponent();
             LoadProjectData();
+            LoadWorkStatuses();
         }
-        
+
+        private void LoadWorkStatuses()
+        {
+            var items = WorkStatus.AllStatuses
+                .Select(status => new
+                {
+                    Display = WorkStatus.GetDisplayName(status), // ภาษาไทย
+                    Value = status                                // ค่าจริง (อังกฤษ)
+                })
+                .ToList();
+
+            cmbPhaseStatus.DataSource = items;
+            cmbPhaseStatus.DisplayMember = "Display"; // แสดงเป็นภาษาไทย
+            cmbPhaseStatus.ValueMember = "Value";     // ค่าเก็บจริงเป็นอังกฤษ
+
+            cmbPhaseStatus.SelectedIndex = 0; // เลือกอันแรกไว้ก่อน
+        }
+
         //ข้อมูลโปรเจค
         private void LoadProjectData()
         {
@@ -75,6 +95,7 @@ namespace JRSApplication
             if (cmbSelectPhase.Items.Count > 0)
                 cmbSelectPhase.SelectedIndex = 0;
         }
+        
 
 
 
@@ -306,7 +327,10 @@ namespace JRSApplication
         //button action
         private void btnSave_Click(object sender, EventArgs e)
         {
-
+            //ตรวจสอบความถูกต้องของการกรอกข้อมูล
+            ValidateProjectData();
+            // ✅ เรียกค่า status ที่เลือกใน ComboBox หลังจากโหลด Component แล้ว
+            string selectedStatus = cmbPhaseStatus.SelectedValue?.ToString();
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -318,5 +342,23 @@ namespace JRSApplication
         {
 
         }
+
+        // vaสid check 
+        private bool ValidateProjectData()
+        {
+            if (string.IsNullOrWhiteSpace(txtDetailWorkFlow.Text))
+            {
+                MessageBox.Show("กรุณากรอกชื่อโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                starDetailWorkFlow.Visible = true;
+                return false;
+            }
+            else
+            {
+                starDetailWorkFlow.Visible = false;
+                return true;
+            }
+        }
+            
+        
     }
 }
