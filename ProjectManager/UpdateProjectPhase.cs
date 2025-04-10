@@ -23,21 +23,43 @@ namespace JRSApplication
             LoadWorkStatuses();
         }
 
+        private void LoadPhaseStatus(int projectId, int phaseNo)
+        {
+            PhaseWorkDAL dal = new PhaseWorkDAL();
+            var phase = dal.GetPhaseWorking(projectId, phaseNo); // ✅ ฟังก์ชันนี้คุณต้องมีใน DAL (จะเขียนให้ด้านล่าง)
+
+            if (phase != null)
+            {
+                txtPhaseStatus.Text = WorkStatus.GetDisplayName(phase.WorkStatus);
+                txtPhaseStatus.BackColor = WorkStatus.GetStatusColor(phase.WorkStatus);
+            }
+            else
+            {
+                txtPhaseStatus.Text = "รอเริ่มดำเนินการ";
+                txtPhaseStatus.BackColor = Color.LightGray;
+            }
+        }
+
+
         private void LoadWorkStatuses()
         {
-            var items = WorkStatus.AllStatuses
+            var allowedStatuses = new List<string>
+            {
+                WorkStatus.InProgress,
+                WorkStatus.Completed
+            };
+
+            var items = allowedStatuses
                 .Select(status => new
                 {
-                    Display = WorkStatus.GetDisplayName(status), // ภาษาไทย
-                    Value = status                                // ค่าจริง (อังกฤษ)
-                })
-                .ToList();
+                    Display = WorkStatus.GetDisplayName(status), // แสดงชื่อภาษาไทย
+                    Value = status                                // ใช้ค่าจริงเก็บในฐานข้อมูล
+                }).ToList();
 
             cmbPhaseStatus.DataSource = items;
-            cmbPhaseStatus.DisplayMember = "Display"; // แสดงเป็นภาษาไทย
-            cmbPhaseStatus.ValueMember = "Value";     // ค่าเก็บจริงเป็นอังกฤษ
-
-            cmbPhaseStatus.SelectedIndex = 0; // เลือกอันแรกไว้ก่อน
+            cmbPhaseStatus.DisplayMember = "Display";
+            cmbPhaseStatus.ValueMember = "Value";
+            cmbPhaseStatus.SelectedIndex = 0;
         }
 
         //ข้อมูลโปรเจค
@@ -95,9 +117,6 @@ namespace JRSApplication
             if (cmbSelectPhase.Items.Count > 0)
                 cmbSelectPhase.SelectedIndex = 0;
         }
-        
-
-
 
         private void CustomizeDataGridViewProject()
         {
@@ -197,6 +216,8 @@ namespace JRSApplication
             {
                 int projectId = Convert.ToInt32(dtgvProjectData.Rows[e.RowIndex].Cells["ProjectID"].Value);
                 LoadProjectDetailData(projectId);
+                LoadPhaseStatus(projectId, 1); // เริ่มต้นด้วยเฟส 1 เสมอ
+
             }
         }
 
@@ -220,6 +241,8 @@ namespace JRSApplication
             int marginY = 20;
             int columns = 2;
 
+            Font defaultFont = new Font("Segoe UI", 16); // ✅ ฟอนต์หลักที่ใช้ทั้งระบบ
+
             for (int i = 0; i < count; i++)
             {
                 int x = (i % columns) * (panelWidth + marginX);
@@ -237,7 +260,8 @@ namespace JRSApplication
                     Text = $"รูปที่ {i + 1} *",
                     ForeColor = Color.Red,
                     Font = new Font("Segoe UI", 16, FontStyle.Bold),
-                    Location = new Point(10, 5)
+                    Location = new Point(10, 5),
+                    AutoSize = true
                 };
 
                 PictureBox pictureBox = new PictureBox
@@ -252,25 +276,27 @@ namespace JRSApplication
                 Button btnUpload = new Button
                 {
                     Text = "อัพโหลดรูปภาพ",
-                    Size = new Size(120, 30),
-                    Location = new Point(10, 310)
+                    Size = new Size(200, 45), // ✅ ปรับขนาดปุ่มให้เหมาะกับฟอนต์ 16
+                    Location = new Point(10, 310),
+                    Font = defaultFont // ✅ ฟอนต์เดียวกัน
                 };
                 btnUpload.Click += (s, e) => UploadImage(pictureBox);
 
                 TextBox txtDescription = CreatePlaceholderTextBox($"คำอธิบายรูปที่ {i + 1}");
-                txtDescription.Size = new Size(642, 100);  // ✅ ขนาดใหญ่ขึ้น
-                txtDescription.Multiline = true;           // ✅ รองรับหลายบรรทัด
-                txtDescription.Location = new Point(10, 350);
+                txtDescription.Size = new Size(642, 100);   // ✅ รองรับข้อความยาว
+                txtDescription.Multiline = true;            // ✅ หลายบรรทัด
+                txtDescription.Location = new Point(10, 360);
                 txtDescription.ScrollBars = ScrollBars.Vertical;
+                txtDescription.Font = defaultFont;          // ✅ ฟอนต์หลัก
+                txtDescription.ForeColor = Color.Gray;
 
-                // ป้องกัน scroll กระโดด (Optional)
+                // ป้องกัน scroll กระโดดเมื่อคลิก
                 txtDescription.Enter += (s, e) =>
                 {
-                    // Scroll กลับมาให้เห็น textbox หลังคลิก
                     pnlUploadImages.ScrollControlIntoView(txtDescription);
                 };
 
-                // เพิ่ม Controls ลง Panel
+                // เพิ่มทุก control ลง Panel
                 imagePanel.Controls.Add(lblTitle);
                 imagePanel.Controls.Add(pictureBox);
                 imagePanel.Controls.Add(btnUpload);
@@ -279,6 +305,7 @@ namespace JRSApplication
                 pnlUploadImages.Controls.Add(imagePanel);
             }
         }
+
 
 
 
@@ -295,7 +322,7 @@ namespace JRSApplication
             }
         }
 
-        // ✅ ฟังก์ชันเลียนแบบ PlaceholderText สำหรับ .NET Framework 4.x
+        // ✅ ฟังก์ชันเลียนแบบ PlaceholderText
         private TextBox CreatePlaceholderTextBox(string placeholder)
         {
             TextBox txt = new TextBox();
@@ -323,12 +350,11 @@ namespace JRSApplication
             return txt;
         }
 
-
         //button action
         private void btnSave_Click(object sender, EventArgs e)
         {
             //ตรวจสอบความถูกต้องของการกรอกข้อมูล
-            ValidateProjectData();
+            //ValidateProjectData();
             // ✅ เรียกค่า status ที่เลือกใน ComboBox หลังจากโหลด Component แล้ว
             string selectedStatus = cmbPhaseStatus.SelectedValue?.ToString();
         }
@@ -340,7 +366,31 @@ namespace JRSApplication
 
         private void btnSearchSupplier_Click(object sender, EventArgs e)
         {
+            OpenSearchForm("Supplier", txtSupplierName, new TextBox(), txtJuristicNumber);
+        }
+        private string selectedSupplierID = "";
+        private void OpenSearchForm(string searchType, TextBox nameTextBox, TextBox lastNameTextBox, TextBox idCardOrRoleTextBox, TextBox phoneTextBox = null, TextBox emailTextBox = null)
+        {
+            using (SearchForm searchForm = new SearchForm(searchType))
+            {
+                if (searchForm.ShowDialog() == DialogResult.OK)
+                {
+                    // ✅ เก็บค่า ID ของลูกค้าหรือพนักงาน (แต่ไม่แสดงใน UI)
+                    
+                    if (searchType == "Supplier")
+                    {
+                        selectedSupplierID = searchForm.SelectedID;
+                    }
 
+                    // ✅ แสดงเฉพาะข้อมูลที่ต้องการใน TextBox
+                    nameTextBox.Text = searchForm.SelectedName;
+                    lastNameTextBox.Text = searchForm.SelectedLastName;
+                    idCardOrRoleTextBox.Text = searchForm.SelectedIDCardOrRole;
+
+                    if (phoneTextBox != null) phoneTextBox.Text = searchForm.SelectedPhone;
+                    if (emailTextBox != null) emailTextBox.Text = searchForm.SelectedEmail;
+                }
+            }
         }
 
         // vaสid check 
@@ -358,7 +408,17 @@ namespace JRSApplication
                 return true;
             }
         }
-            
-        
+
+        private void cmbSelectPhase_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbSelectPhase.SelectedItem != null && int.TryParse(cmbSelectPhase.SelectedItem.ToString(), out int selectedPhaseNo))
+            {
+                int projectId = Convert.ToInt32(txtProjectID.Text); // หรือเก็บไว้เป็น field ก็ได้
+                LoadPhaseStatus(projectId, selectedPhaseNo);
+            }
+        }
+
+        //private void 
+
     }
 }

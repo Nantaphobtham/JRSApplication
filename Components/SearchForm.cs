@@ -13,7 +13,7 @@ namespace JRSApplication
     public partial class SearchForm : Form
     {
         private SearchService searchService = new SearchService();
-        public string SearchMode { get; set; }  // "Customer" หรือ "Employee"
+        public string SearchMode { get; set; }  // "Customer" หรือ "Employee" หรือ "Supplier"
         public string SelectedID { get; private set; } = "";
         public string SelectedName { get; private set; } = "";
         public string SelectedLastName { get; private set; } = "";
@@ -25,7 +25,14 @@ namespace JRSApplication
         {
             InitializeComponent();
             SearchMode = mode;
-            lblTitle.Text = SearchMode == "Customer" ? "ค้นหาลูกค้า" : "ค้นหาพนักงาน"; // ✅ เปลี่ยนชื่อหัวข้อ
+            if (SearchMode == "Customer")
+                lblTitle.Text = "ค้นหาลูกค้า";
+            else if (SearchMode == "Employee")
+                lblTitle.Text = "ค้นหาพนักงาน";
+            else if (SearchMode == "Supplier")
+                lblTitle.Text = "ค้นหาซัพพลายเออร์";
+            else
+                lblTitle.Text = "ค้นหา";
             LoadSearchData(""); // ✅ โหลดข้อมูลเริ่มต้น
             CustomizeDataGridViewAlldata(); // ✅ ปรับแต่ง DataGridView
         }
@@ -47,22 +54,32 @@ namespace JRSApplication
         {
             if (dtgvAlldata.SelectedRows.Count > 0) // ✅ ตรวจสอบว่ามีการเลือกแถว
             {
-                DataGridViewRow selectedRow = dtgvAlldata.SelectedRows[0]; // ✅ ดึงแถวที่เลือก
+                // ✅ ดึงค่าร่วมทั้งหมดก่อน (เฉพาะ ID, ชื่อ, นามสกุล - แล้วแต่ Mode)
+                DataGridViewRow selectedRow = dtgvAlldata.SelectedRows[0];
 
                 SelectedID = selectedRow.Cells["ID"].Value?.ToString() ?? "";
-                SelectedName = selectedRow.Cells["ชื่อ"].Value?.ToString() ?? "";
-                SelectedLastName = selectedRow.Cells["นามสกุล"].Value?.ToString() ?? "";
 
                 if (SearchMode == "Customer")
                 {
+                    SelectedName = selectedRow.Cells["ชื่อ"].Value?.ToString() ?? "";
+                    SelectedLastName = selectedRow.Cells["นามสกุล"].Value?.ToString() ?? "";
                     SelectedIDCardOrRole = selectedRow.Cells["เลขบัตรประชาชน"].Value?.ToString() ?? "";
                     SelectedPhone = selectedRow.Cells["เบอร์โทร"].Value?.ToString() ?? "";
                     SelectedEmail = selectedRow.Cells["อีเมล"].Value?.ToString() ?? "";
                 }
                 else if (SearchMode == "Employee")
                 {
+                    SelectedName = selectedRow.Cells["ชื่อ"].Value?.ToString() ?? "";
+                    SelectedLastName = selectedRow.Cells["นามสกุล"].Value?.ToString() ?? "";
                     SelectedIDCardOrRole = selectedRow.Cells["ตำแหน่ง"].Value?.ToString() ?? "";
                 }
+                else if (SearchMode == "Supplier")
+                {
+                    SelectedName = selectedRow.Cells["ชื่อบริษัท"].Value?.ToString() ?? "";
+                    SelectedIDCardOrRole = selectedRow.Cells["เลขทะเบียนนิติบุคคล"].Value?.ToString() ?? "";
+                }
+
+
 
                 this.DialogResult = DialogResult.OK; // ✅ ส่งผลลัพธ์กลับ
                 this.Close(); // ✅ ปิดฟอร์ม

@@ -34,12 +34,15 @@ namespace JRSApplication
                             "emp_pos AS 'ตำแหน่ง' FROM employee " +
                             "WHERE emp_name LIKE @Keyword OR emp_lname LIKE @Keyword";
                 }
-                else if (searchType == "Supplier") //รอเพิ่ม
+                else if (searchType == "Supplier")
                 {
-                    query = "";
+                    query = @"SELECT sup_id AS 'ID', sup_name AS 'ชื่อบริษัท', sup_juristic AS 'เลขทะเบียนนิติบุคคล',
+                      sup_tel AS 'เบอร์โทร', sup_address AS 'ที่อยู่', sup_email AS 'อีเมล'
+                      FROM supplier
+                      WHERE sup_name LIKE @Keyword OR sup_juristic LIKE @Keyword";
                 }
 
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Keyword", "%" + keyword + "%");
                     using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
