@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -353,15 +354,77 @@ namespace JRSApplication
         //button action
         private void btnSave_Click(object sender, EventArgs e)
         {
-            //ตรวจสอบความถูกต้องของการกรอกข้อมูล
-            //ValidateProjectData();
-            // ✅ เรียกค่า status ที่เลือกใน ComboBox หลังจากโหลด Component แล้ว
+            if (!ValidateProjectData())
+                return;
+
+            int projectId = int.Parse(txtProjectID.Text);
+            int selectedPhaseNo = cmbSelectPhase.SelectedIndex + 1;
             string selectedStatus = cmbPhaseStatus.SelectedValue?.ToString();
+            string detail = txtDetailWorkFlow.Text.Trim();
+            string remark = txtWorkRemark.Text.Trim();
+
+            // ✅ สร้างอ็อบเจกต์สำหรับตาราง phase_working
+            PhaseWorking phase = new PhaseWorking
+            {
+                ProjectID = projectId,             // ✅ แก้จาก ProId → ProjectID
+                PhaseNo = selectedPhaseNo,
+                WorkStatus = selectedStatus,
+                WorkDetail = detail,
+                WorkDate = dtpWorkDate.Value,
+                EndDate = selectedStatus == WorkStatus.Completed ? dtpWorkDate.Value : (DateTime?)null,
+                UpdateDate = DateTime.Now,
+                Remark = remark,
+                // ✅ กรณีเลือก Supplier
+                SupplierID = !string.IsNullOrWhiteSpace(selectedSupplierID) ? selectedSupplierID : null
+            };
+
+            // ✅ บันทึกลงตาราง phase_working
+            PhaseWorkDAL phaseDal = new PhaseWorkDAL();
+            bool result = phaseDal.InsertPhaseWorking(phase);
+
+            if (!result)
+            {
+                MessageBox.Show("ไม่สามารถบันทึกข้อมูลงานได้", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // ✅ วนลูปเพื่อบันทึกรูปใน panel
+            foreach (Panel imagePanel in pnlUploadImages.Controls.OfType<Panel>())
+            {
+                PictureBox pictureBox = imagePanel.Controls.OfType<PictureBox>().FirstOrDefault();
+                TextBox txtDescription = imagePanel.Controls.OfType<TextBox>().FirstOrDefault();
+
+                if (pictureBox?.Image != null)
+                {
+                    byte[] imageData = ImageToByteArray(pictureBox.Image);
+                    string description = txtDescription.Text.Trim();
+
+                    WorkingPictureDAL picDAL = new WorkingPictureDAL();
+                    picDAL.InsertPicture(new WorkingPicture
+                    {
+                        PhaseNo = selectedPhaseNo,
+                        PictureData = imageData,           
+                        PictureDetail = description        
+                    });
+                }
+            }
+
+            MessageBox.Show("บันทึกข้อมูลเรียบร้อยแล้ว", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private byte[] ImageToByteArray(Image image)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                image.Save(ms, image.RawFormat);
+                return ms.ToArray();
+            }
         }
 
         private void btnSearchSupplier_Click(object sender, EventArgs e)
@@ -393,7 +456,7 @@ namespace JRSApplication
             }
         }
 
-        // vaสid check 
+        // valid check 
         private bool ValidateProjectData()
         {
             if (string.IsNullOrWhiteSpace(txtDetailWorkFlow.Text))

@@ -80,6 +80,36 @@ namespace JRSApplication.Data_Access_Layer
             return list;
         }
 
+        public bool InsertPhaseWorking(PhaseWorking phase)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string sql = @"INSERT INTO phase_working
+                      (phase_no, work_detail, work_status, work_date, work_end_date, work_update_date, work_remark, pro_id, sup_id)
+                      VALUES
+                      (@PhaseNo, @WorkDetail, @WorkStatus, @WorkDate, @EndDate, @UpdateDate, @Remark, @ProjectID, @SupplierID)";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@PhaseNo", phase.PhaseNo);
+                    cmd.Parameters.AddWithValue("@WorkDetail", phase.WorkDetail);
+                    cmd.Parameters.AddWithValue("@WorkStatus", phase.WorkStatus);
+                    cmd.Parameters.AddWithValue("@WorkDate", phase.WorkDate);
+                    cmd.Parameters.AddWithValue("@EndDate", phase.EndDate);
+                    cmd.Parameters.AddWithValue("@UpdateDate", phase.UpdateDate);
+                    cmd.Parameters.AddWithValue("@Remark", phase.Remark);
+                    cmd.Parameters.AddWithValue("@ProjectID", phase.ProjectID);
+                    // 💡 เพิ่ม SupplierID เฉพาะกรณีที่มีการเลือก (หรือใส่ null)
+                    cmd.Parameters.AddWithValue("@SupplierID", string.IsNullOrEmpty(phase.SupplierID) ? DBNull.Value : (object)phase.SupplierID);
+
+                    conn.Open();
+                    int result = cmd.ExecuteNonQuery();
+                    return result > 0;
+                }
+            }
+        }
+
+
 
     }
 

@@ -17,9 +17,9 @@ namespace JRSApplication.Components
         public const string Paid = "Paid";                      // ฝ่าย AC
 
         public static List<string> AllStatuses => new List<string>
-    {
+        {
         InProgress, Completed, WaitingForInvoice, Paid
-    };
+        };
 
         // ✅ ฟังก์ชันแปลงชื่อภาษาไทย
         public static string GetDisplayName(string status)

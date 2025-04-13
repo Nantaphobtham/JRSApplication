@@ -32,6 +32,7 @@
             this.pnlProjectdata = new System.Windows.Forms.Panel();
             this.dtgvProjectData = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
+            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.pnlMain = new System.Windows.Forms.Panel();
             this.lblStatus = new System.Windows.Forms.Label();
             this.txtPhaseStatus = new System.Windows.Forms.TextBox();
@@ -46,6 +47,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.pnlWorkflow = new System.Windows.Forms.Panel();
             this.dtgvWorkHistory = new System.Windows.Forms.DataGridView();
+            this.searchboxControl2 = new JRSApplication.SearchboxControl();
             this.lblWorkHistory = new System.Windows.Forms.Label();
             this.pnlStep = new System.Windows.Forms.Panel();
             this.pnlUploadpic = new System.Windows.Forms.Panel();
@@ -57,9 +59,9 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.cmbPhaseStatus = new System.Windows.Forms.ComboBox();
-            this.dtpDateDone = new System.Windows.Forms.DateTimePicker();
+            this.dtpWorkDate = new System.Windows.Forms.DateTimePicker();
             this.txtJuristicNumber = new System.Windows.Forms.TextBox();
-            this.txtIssues = new System.Windows.Forms.TextBox();
+            this.txtWorkRemark = new System.Windows.Forms.TextBox();
             this.txtDetailWorkFlow = new System.Windows.Forms.TextBox();
             this.txtSupplierName = new System.Windows.Forms.TextBox();
             this.starPhaseStatus = new System.Windows.Forms.Label();
@@ -74,8 +76,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.lblWorkFlow = new System.Windows.Forms.Label();
-            this.searchboxControl2 = new JRSApplication.SearchboxControl();
-            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.pnlProjectdata.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).BeginInit();
             this.pnlMain.SuspendLayout();
@@ -93,7 +93,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 0);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1479, 360);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1462, 360);
             this.pnlProjectdata.TabIndex = 0;
             // 
             // dtgvProjectData
@@ -122,6 +122,15 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "ค้นหาโครงการ";
             // 
+            // searchboxControl1
+            // 
+            this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.Location = new System.Drawing.Point(874, 22);
+            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl1.Name = "searchboxControl1";
+            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl1.TabIndex = 0;
+            // 
             // pnlMain
             // 
             this.pnlMain.Controls.Add(this.lblStatus);
@@ -139,7 +148,7 @@
             this.pnlMain.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlMain.Location = new System.Drawing.Point(0, 360);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(1479, 1731);
+            this.pnlMain.Size = new System.Drawing.Size(1462, 1731);
             this.pnlMain.TabIndex = 1;
             // 
             // lblStatus
@@ -271,9 +280,9 @@
             this.pnlWorkflow.Controls.Add(this.btnSave);
             this.pnlWorkflow.Controls.Add(this.btnEdit);
             this.pnlWorkflow.Controls.Add(this.cmbPhaseStatus);
-            this.pnlWorkflow.Controls.Add(this.dtpDateDone);
+            this.pnlWorkflow.Controls.Add(this.dtpWorkDate);
             this.pnlWorkflow.Controls.Add(this.txtJuristicNumber);
-            this.pnlWorkflow.Controls.Add(this.txtIssues);
+            this.pnlWorkflow.Controls.Add(this.txtWorkRemark);
             this.pnlWorkflow.Controls.Add(this.txtDetailWorkFlow);
             this.pnlWorkflow.Controls.Add(this.txtSupplierName);
             this.pnlWorkflow.Controls.Add(this.starPhaseStatus);
@@ -306,6 +315,15 @@
             this.dtgvWorkHistory.RowTemplate.Height = 24;
             this.dtgvWorkHistory.Size = new System.Drawing.Size(1406, 310);
             this.dtgvWorkHistory.TabIndex = 12;
+            // 
+            // searchboxControl2
+            // 
+            this.searchboxControl2.BackColor = System.Drawing.Color.White;
+            this.searchboxControl2.Location = new System.Drawing.Point(809, 1177);
+            this.searchboxControl2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl2.Name = "searchboxControl2";
+            this.searchboxControl2.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl2.TabIndex = 11;
             // 
             // lblWorkHistory
             // 
@@ -438,14 +456,14 @@
             this.cmbPhaseStatus.Size = new System.Drawing.Size(200, 38);
             this.cmbPhaseStatus.TabIndex = 6;
             // 
-            // dtpDateDone
+            // dtpWorkDate
             // 
-            this.dtpDateDone.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtpDateDone.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDateDone.Location = new System.Drawing.Point(1008, 114);
-            this.dtpDateDone.Name = "dtpDateDone";
-            this.dtpDateDone.Size = new System.Drawing.Size(229, 35);
-            this.dtpDateDone.TabIndex = 5;
+            this.dtpWorkDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpWorkDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpWorkDate.Location = new System.Drawing.Point(1008, 114);
+            this.dtpWorkDate.Name = "dtpWorkDate";
+            this.dtpWorkDate.Size = new System.Drawing.Size(229, 35);
+            this.dtpWorkDate.TabIndex = 5;
             // 
             // txtJuristicNumber
             // 
@@ -458,15 +476,15 @@
             this.txtJuristicNumber.Size = new System.Drawing.Size(355, 35);
             this.txtJuristicNumber.TabIndex = 4;
             // 
-            // txtIssues
+            // txtWorkRemark
             // 
-            this.txtIssues.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtIssues.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtIssues.Location = new System.Drawing.Point(615, 198);
-            this.txtIssues.Multiline = true;
-            this.txtIssues.Name = "txtIssues";
-            this.txtIssues.Size = new System.Drawing.Size(468, 92);
-            this.txtIssues.TabIndex = 4;
+            this.txtWorkRemark.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtWorkRemark.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtWorkRemark.Location = new System.Drawing.Point(615, 198);
+            this.txtWorkRemark.Multiline = true;
+            this.txtWorkRemark.Name = "txtWorkRemark";
+            this.txtWorkRemark.Size = new System.Drawing.Size(468, 92);
+            this.txtWorkRemark.TabIndex = 4;
             // 
             // txtDetailWorkFlow
             // 
@@ -618,24 +636,6 @@
             this.lblWorkFlow.TabIndex = 2;
             this.lblWorkFlow.Text = "ข้อมูลการดำเนินการ";
             // 
-            // searchboxControl2
-            // 
-            this.searchboxControl2.BackColor = System.Drawing.Color.White;
-            this.searchboxControl2.Location = new System.Drawing.Point(809, 1177);
-            this.searchboxControl2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxControl2.Name = "searchboxControl2";
-            this.searchboxControl2.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl2.TabIndex = 11;
-            // 
-            // searchboxControl1
-            // 
-            this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.Location = new System.Drawing.Point(874, 22);
-            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxControl1.Name = "searchboxControl1";
-            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl1.TabIndex = 0;
-            // 
             // UpdateProjectPhase
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -643,7 +643,7 @@
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.pnlProjectdata);
             this.Name = "UpdateProjectPhase";
-            this.Size = new System.Drawing.Size(1479, 954);
+            this.Size = new System.Drawing.Size(1462, 954);
             this.pnlProjectdata.ResumeLayout(false);
             this.pnlProjectdata.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).EndInit();
@@ -681,7 +681,7 @@
         private System.Windows.Forms.Button btnSearchSupplier;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label lblWorkFlow;
-        private System.Windows.Forms.DateTimePicker dtpDateDone;
+        private System.Windows.Forms.DateTimePicker dtpWorkDate;
         private System.Windows.Forms.TextBox txtJuristicNumber;
         private System.Windows.Forms.TextBox txtSupplierName;
         private System.Windows.Forms.Label label12;
@@ -697,7 +697,7 @@
         private System.Windows.Forms.Panel pnlUploadpic;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnEdit;
-        private System.Windows.Forms.TextBox txtIssues;
+        private System.Windows.Forms.TextBox txtWorkRemark;
         private System.Windows.Forms.Label lblIssues;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label lblAmountPictureUpload;
