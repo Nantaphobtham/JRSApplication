@@ -15,10 +15,11 @@ namespace JRSApplication.Components
 
             foreach (var work in phaseWorkings)
             {
-                if (!phaseStatusMap.ContainsKey(work.PhaseNo))
-                    phaseStatusMap[work.PhaseNo] = new List<string>();
+                if (!phaseStatusMap.ContainsKey(work.PhaseID))
+                    phaseStatusMap[work.PhaseID] = new List<string>();
 
-                phaseStatusMap[work.PhaseNo].Add(work.WorkStatus);
+                phaseStatusMap[work.PhaseID].Add(work.WorkStatus);
+
             }
 
             // 👇 ตัดสินสถานะของแต่ละเฟส

@@ -58,16 +58,22 @@ namespace JRSApplication.Data_Access_Layer
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 string sql = @"
-            SELECT 
-                pp.phase_no,
-                pp.phase_detail,
-                pp.phase_budget,
-                pp.phase_percent,
-                pw.work_status
-            FROM project_phase pp
-            LEFT JOIN phase_working pw 
-                ON pp.phase_no = pw.phase_no AND pw.pro_id = pp.pro_id
-            WHERE pp.pro_id = @ProjectID";
+                    SELECT 
+                        pp.phase_id,
+                        pp.phase_no,
+                        pp.phase_detail,
+                        pp.phase_budget,
+                        pp.phase_percent,
+                        pw.work_status
+                    FROM project_phase pp
+                    LEFT JOIN phase_working pw 
+                        ON pw.phase_id = pp.phase_id
+                        AND pw.work_date = (
+                            SELECT MAX(w2.work_date)
+                            FROM phase_working w2
+                            WHERE w2.phase_id = pw.phase_id
+                        )
+                    WHERE pp.pro_id = @ProjectID";
 
                 using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                 {
@@ -84,7 +90,6 @@ namespace JRSApplication.Data_Access_Layer
                                 PhaseDetail = reader.GetString("phase_detail"),
                                 PhaseBudget = reader.GetDecimal("phase_budget"),
                                 PhasePercent = reader.GetDecimal("phase_percent"),
-
                                 PhaseStatus = reader.IsDBNull(reader.GetOrdinal("work_status"))
                                     ? WorkStatus.NotStarted
                                     : reader.GetString("work_status")
@@ -96,6 +101,8 @@ namespace JRSApplication.Data_Access_Layer
 
             return phases;
         }
+
+        //ไม่ถูกใช้งานค่อยลลบ 
         public int GetPhaseCountByProjectID(int projectId)
         {
             int count = 0;
@@ -112,6 +119,38 @@ namespace JRSApplication.Data_Access_Layer
             }
             return count;
         }
+
+        public List<ProjectPhase> GetPhasesByProjectID(int projectId)
+        {
+            List<ProjectPhase> phases = new List<ProjectPhase>();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string sql = @"SELECT phase_id, phase_no, phase_detail FROM project_phase WHERE pro_id = @ProjectID";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ProjectID", projectId);
+                    conn.Open();
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            phases.Add(new ProjectPhase
+                            {
+                                PhaseID = reader.GetInt32("phase_id"),
+                                PhaseNumber = reader.GetInt32("phase_no"),
+                                PhaseDetail = reader.GetString("phase_detail")
+                            });
+                        }
+                    }
+                }
+            }
+
+            return phases;
+        }
+
 
 
 

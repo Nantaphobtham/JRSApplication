@@ -15,7 +15,8 @@ namespace JRSApplication
 {
     public partial class UpdateProjectPhase : UserControl
     {
-
+        //เก็บรูปภาพ 
+        private List<WorkingPicture> uploadedPictures = new List<WorkingPicture>();
 
         public UpdateProjectPhase()
         {
@@ -24,10 +25,10 @@ namespace JRSApplication
             LoadWorkStatuses();
         }
 
-        private void LoadPhaseStatus(int projectId, int phaseNo)
+        private void LoadPhaseStatus(int projectId, int phaseId)
         {
             PhaseWorkDAL dal = new PhaseWorkDAL();
-            var phase = dal.GetPhaseWorking(projectId, phaseNo); // ✅ ฟังก์ชันนี้คุณต้องมีใน DAL (จะเขียนให้ด้านล่าง)
+            var phase = dal.GetPhaseWorkingByPhaseID(projectId, phaseId); // ✅ เปลี่ยนชื่อฟังก์ชันและ parameter
 
             if (phase != null)
             {
@@ -40,6 +41,7 @@ namespace JRSApplication
                 txtPhaseStatus.BackColor = Color.LightGray;
             }
         }
+
 
 
         private void LoadWorkStatuses()
@@ -105,19 +107,29 @@ namespace JRSApplication
         private void LoadPhasesToComboBox(int projectId)
         {
             PhaseDAL phaseDAL = new PhaseDAL();
-            int phaseCount = phaseDAL.GetPhaseCountByProjectID(projectId);
+            var phaseList = phaseDAL.GetPhasesByProjectID(projectId);
 
             cmbSelectPhase.Items.Clear();
 
-            for (int i = 1; i <= phaseCount; i++)
+            cmbSelectPhase.Items.Add(new ComboBoxItem
             {
-                cmbSelectPhase.Items.Add("เฟสที่  " + i.ToString());
+                Text = "กรุณาเลือกเฟสงาน",
+                Value = -1 // 🔴 phase_id ที่เป็นค่าพิเศษ (ไม่ใช่ค่าจริง)
+            });
+
+            foreach (var phase in phaseList)
+            {
+                cmbSelectPhase.Items.Add(new ComboBoxItem
+                {
+                    Text = $"เฟสที่ {phase.PhaseNumber}",
+                    Value = phase.PhaseID
+                });
             }
 
-            // ตั้งค่า Default เลือกอันแรก
-            if (cmbSelectPhase.Items.Count > 0)
-                cmbSelectPhase.SelectedIndex = 0;
+            cmbSelectPhase.SelectedIndex = 0; // ✅ ชี้ที่ "กรุณาเลือกเฟสงาน"
         }
+
+
 
         private void CustomizeDataGridViewProject()
         {
@@ -317,11 +329,29 @@ namespace JRSApplication
                 openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    pictureBox.Image = Image.FromFile(openFileDialog.FileName);
-                    pictureBox.Tag = openFileDialog.FileName; // เก็บ Path รูปไว้ใน Tag
+                    Image img = Image.FromFile(openFileDialog.FileName);
+                    pictureBox.Image = img;
+                    pictureBox.Tag = openFileDialog.FileName; // สำหรับ UI (optional)
+
+                    // 👉 แปลงรูปเป็น byte[]
+                    byte[] imageData = ImageToByteArray(img);
+
+                    // 👀 หา TextBox ภายใน Panel เดียวกันกับ PictureBox
+                    var imagePanel = pictureBox.Parent;
+                    TextBox txtDescription = imagePanel.Controls.OfType<TextBox>().FirstOrDefault();
+                    string description = txtDescription?.Text?.Trim() ?? "";
+
+                    // 🔁 เก็บไว้ใน List
+                    uploadedPictures.Add(new WorkingPicture
+                    {
+                        PictureData = imageData,
+                        PictureDetail = description,
+                        // ✅ PhaseID จะใส่ตอน Save จริง (ตอนนี้ยังไม่รู้ว่าเลือกเฟสไหน)
+                    });
                 }
             }
         }
+
 
         // ✅ ฟังก์ชันเลียนแบบ PlaceholderText
         private TextBox CreatePlaceholderTextBox(string placeholder)
@@ -357,8 +387,16 @@ namespace JRSApplication
             if (!ValidateProjectData())
                 return;
 
+            var selectedItem = cmbSelectPhase.SelectedItem as ComboBoxItem;
+            if (selectedItem == null)
+            {
+                MessageBox.Show("กรุณาเลือกเฟสงาน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int phaseId = selectedItem.Value; // ✅ ตอนนี้คือ phase_id แล้ว
+
             int projectId = int.Parse(txtProjectID.Text);
-            int selectedPhaseNo = cmbSelectPhase.SelectedIndex + 1;
             string selectedStatus = cmbPhaseStatus.SelectedValue?.ToString();
             string detail = txtDetailWorkFlow.Text.Trim();
             string remark = txtWorkRemark.Text.Trim();
@@ -366,19 +404,18 @@ namespace JRSApplication
             // ✅ สร้างอ็อบเจกต์สำหรับตาราง phase_working
             PhaseWorking phase = new PhaseWorking
             {
-                ProjectID = projectId,             // ✅ แก้จาก ProId → ProjectID
-                PhaseNo = selectedPhaseNo,
+                ProjectID = projectId,
+                PhaseID = phaseId,                        // ✅ ใช้ phase_id แทน
                 WorkStatus = selectedStatus,
                 WorkDetail = detail,
                 WorkDate = dtpWorkDate.Value,
                 EndDate = selectedStatus == WorkStatus.Completed ? dtpWorkDate.Value : (DateTime?)null,
                 UpdateDate = DateTime.Now,
                 Remark = remark,
-                // ✅ กรณีเลือก Supplier
                 SupplierID = !string.IsNullOrWhiteSpace(selectedSupplierID) ? selectedSupplierID : null
             };
 
-            // ✅ บันทึกลงตาราง phase_working
+            // ✅ บันทึกลง phase_working
             PhaseWorkDAL phaseDal = new PhaseWorkDAL();
             bool result = phaseDal.InsertPhaseWorking(phase);
 
@@ -388,29 +425,19 @@ namespace JRSApplication
                 return;
             }
 
-            // ✅ วนลูปเพื่อบันทึกรูปใน panel
-            foreach (Panel imagePanel in pnlUploadImages.Controls.OfType<Panel>())
+            // ✅ บันทึกรูปภาพลง working_picture 
+            foreach (var pic in uploadedPictures)
             {
-                PictureBox pictureBox = imagePanel.Controls.OfType<PictureBox>().FirstOrDefault();
-                TextBox txtDescription = imagePanel.Controls.OfType<TextBox>().FirstOrDefault();
-
-                if (pictureBox?.Image != null)
-                {
-                    byte[] imageData = ImageToByteArray(pictureBox.Image);
-                    string description = txtDescription.Text.Trim();
-
-                    WorkingPictureDAL picDAL = new WorkingPictureDAL();
-                    picDAL.InsertPicture(new WorkingPicture
-                    {
-                        PhaseNo = selectedPhaseNo,
-                        PictureData = imageData,           
-                        PictureDetail = description        
-                    });
-                }
+                pic.PhaseID = phaseId; // ✅ ใส่ phase_id 
+                WorkingPictureDAL picDAL = new WorkingPictureDAL();
+                picDAL.InsertPicture(pic);
             }
+
+            uploadedPictures.Clear();
 
             MessageBox.Show("บันทึกข้อมูลเรียบร้อยแล้ว", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
 
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -474,14 +501,28 @@ namespace JRSApplication
 
         private void cmbSelectPhase_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbSelectPhase.SelectedItem != null && int.TryParse(cmbSelectPhase.SelectedItem.ToString(), out int selectedPhaseNo))
+            if (cmbSelectPhase.SelectedItem is ComboBoxItem selectedItem)
             {
-                int projectId = Convert.ToInt32(txtProjectID.Text); // หรือเก็บไว้เป็น field ก็ได้
-                LoadPhaseStatus(projectId, selectedPhaseNo);
+                int phaseId = selectedItem.Value; // ✅ นี่คือ phase_id จริง ๆ
+                int projectId = Convert.ToInt32(txtProjectID.Text);
+
+                LoadPhaseStatus(projectId, phaseId); // ✅ ส่ง phase_id แทน phase_no
             }
         }
 
+
         //private void 
+        public class ComboBoxItem
+        {
+            public string Text { get; set; }  // เช่น "เฟสที่ 1"
+            public int Value { get; set; }    // เป็น phase_id จริง ๆ
+
+            public override string ToString()
+            {
+                return Text;
+            }
+        }
+
 
     }
 }

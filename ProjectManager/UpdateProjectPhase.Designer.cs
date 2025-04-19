@@ -32,7 +32,6 @@
             this.pnlProjectdata = new System.Windows.Forms.Panel();
             this.dtgvProjectData = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
-            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.pnlMain = new System.Windows.Forms.Panel();
             this.lblStatus = new System.Windows.Forms.Label();
             this.txtPhaseStatus = new System.Windows.Forms.TextBox();
@@ -47,7 +46,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.pnlWorkflow = new System.Windows.Forms.Panel();
             this.dtgvWorkHistory = new System.Windows.Forms.DataGridView();
-            this.searchboxControl2 = new JRSApplication.SearchboxControl();
             this.lblWorkHistory = new System.Windows.Forms.Label();
             this.pnlStep = new System.Windows.Forms.Panel();
             this.pnlUploadpic = new System.Windows.Forms.Panel();
@@ -76,6 +74,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.lblWorkFlow = new System.Windows.Forms.Label();
+            this.searchboxControl2 = new JRSApplication.SearchboxControl();
+            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.pnlProjectdata.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).BeginInit();
             this.pnlMain.SuspendLayout();
@@ -93,7 +93,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 0);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1462, 360);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1411, 360);
             this.pnlProjectdata.TabIndex = 0;
             // 
             // dtgvProjectData
@@ -122,15 +122,6 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "ค้นหาโครงการ";
             // 
-            // searchboxControl1
-            // 
-            this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.Location = new System.Drawing.Point(874, 22);
-            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxControl1.Name = "searchboxControl1";
-            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl1.TabIndex = 0;
-            // 
             // pnlMain
             // 
             this.pnlMain.Controls.Add(this.lblStatus);
@@ -148,7 +139,7 @@
             this.pnlMain.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlMain.Location = new System.Drawing.Point(0, 360);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(1462, 1731);
+            this.pnlMain.Size = new System.Drawing.Size(1411, 1731);
             this.pnlMain.TabIndex = 1;
             // 
             // lblStatus
@@ -191,6 +182,7 @@
             this.txtProjectDetail.Multiline = true;
             this.txtProjectDetail.Name = "txtProjectDetail";
             this.txtProjectDetail.ReadOnly = true;
+            this.txtProjectDetail.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtProjectDetail.Size = new System.Drawing.Size(975, 52);
             this.txtProjectDetail.TabIndex = 8;
             // 
@@ -315,15 +307,6 @@
             this.dtgvWorkHistory.RowTemplate.Height = 24;
             this.dtgvWorkHistory.Size = new System.Drawing.Size(1406, 310);
             this.dtgvWorkHistory.TabIndex = 12;
-            // 
-            // searchboxControl2
-            // 
-            this.searchboxControl2.BackColor = System.Drawing.Color.White;
-            this.searchboxControl2.Location = new System.Drawing.Point(809, 1177);
-            this.searchboxControl2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxControl2.Name = "searchboxControl2";
-            this.searchboxControl2.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl2.TabIndex = 11;
             // 
             // lblWorkHistory
             // 
@@ -636,6 +619,24 @@
             this.lblWorkFlow.TabIndex = 2;
             this.lblWorkFlow.Text = "ข้อมูลการดำเนินการ";
             // 
+            // searchboxControl2
+            // 
+            this.searchboxControl2.BackColor = System.Drawing.Color.White;
+            this.searchboxControl2.Location = new System.Drawing.Point(809, 1177);
+            this.searchboxControl2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl2.Name = "searchboxControl2";
+            this.searchboxControl2.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl2.TabIndex = 11;
+            // 
+            // searchboxControl1
+            // 
+            this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.Location = new System.Drawing.Point(874, 22);
+            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl1.Name = "searchboxControl1";
+            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl1.TabIndex = 0;
+            // 
             // UpdateProjectPhase
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -643,7 +644,7 @@
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.pnlProjectdata);
             this.Name = "UpdateProjectPhase";
-            this.Size = new System.Drawing.Size(1462, 954);
+            this.Size = new System.Drawing.Size(1411, 954);
             this.pnlProjectdata.ResumeLayout(false);
             this.pnlProjectdata.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).EndInit();

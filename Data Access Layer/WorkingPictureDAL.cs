@@ -17,12 +17,12 @@ namespace JRSApplication.Data_Access_Layer
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                string sql = @"INSERT INTO working_picture (phase_no, pic_data, pic_detail)
-                           VALUES (@PhaseNo, @PictureData, @PictureDetail)";
+                string sql = @"INSERT INTO working_picture (phase_id, pic_data, pic_detail)
+                           VALUES (@PhaseID, @PictureData, @PictureDetail)";
 
                 using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@PhaseNo", pic.PhaseNo);
+                    cmd.Parameters.AddWithValue("@PhaseID", pic.PhaseID);
                     cmd.Parameters.AddWithValue("@PictureData", pic.PictureData);
                     cmd.Parameters.AddWithValue("@PictureDetail", pic.PictureDetail);
 
@@ -33,4 +33,5 @@ namespace JRSApplication.Data_Access_Layer
             }
         }
     }
+
 }

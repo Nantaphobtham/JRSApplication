@@ -32,7 +32,7 @@ namespace JRSApplication.Components
                 //case Invoiced: return "ออกใบแจ้งหนี้แล้ว";
                 case Paid: return "ชำระเงินแล้ว";
                 case Completed: return "เสร็จสมบูรณ์";
-                default: return "ไม่ทราบสถานะ";
+                default: return "รอการดำเนินการ";
             }
         }
 
@@ -43,11 +43,11 @@ namespace JRSApplication.Components
             {
                 case NotStarted: return Color.LightGray;
                 case InProgress: return Color.Orange;
-                case WaitingForInvoice: return Color.Gold;
+                case WaitingForInvoice: return Color.Orange;
                 //case Invoiced: return Color.CornflowerBlue;
                 case Paid: return Color.MediumSeaGreen;
-                case Completed: return Color.Gray;
-                default: return Color.Black;
+                case Completed: return Color.MediumSeaGreen;
+                default: return Color.Yellow;
             }
         }
     }

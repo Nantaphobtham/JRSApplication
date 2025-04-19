@@ -53,7 +53,7 @@ namespace JRSApplication
 
             }
         }
-        //ทำไมไม่ถูกเรียก
+        
         private void LoadProjectStatus(int projectID, int totalPhaseNumber)
         {
             PhaseWorkDAL dal = new PhaseWorkDAL();

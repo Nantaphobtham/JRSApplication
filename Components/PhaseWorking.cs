@@ -8,9 +8,8 @@ namespace JRSApplication.Components
 {
     public class PhaseWorking
     {
+        public int WorkID { get; set; }        
         public int PhaseID { get; set; }
-        public int PhaseNo { get; set; }
-        public int LineNo { get; set; } // ค่อยลบ
         public string WorkDetail { get; set; }
         public string WorkStatus { get; set; }
         public DateTime WorkDate { get; set; }
