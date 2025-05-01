@@ -13,6 +13,7 @@ namespace JRSApplication.Data_Access_Layer
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
+        //ไม่ถูกใช้งานค่อยลบ
         public bool InsertPicture(WorkingPicture pic)
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))

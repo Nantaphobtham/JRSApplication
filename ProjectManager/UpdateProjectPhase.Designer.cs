@@ -32,6 +32,7 @@
             this.pnlProjectdata = new System.Windows.Forms.Panel();
             this.dtgvProjectData = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
+            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.pnlMain = new System.Windows.Forms.Panel();
             this.lblStatus = new System.Windows.Forms.Label();
             this.txtPhaseStatus = new System.Windows.Forms.TextBox();
@@ -46,14 +47,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.pnlWorkflow = new System.Windows.Forms.Panel();
             this.dtgvWorkHistory = new System.Windows.Forms.DataGridView();
+            this.searchboxControl2 = new JRSApplication.SearchboxControl();
             this.lblWorkHistory = new System.Windows.Forms.Label();
             this.pnlStep = new System.Windows.Forms.Panel();
             this.pnlUploadpic = new System.Windows.Forms.Panel();
             this.pnlUploadImages = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.starAmountPictureUpload = new System.Windows.Forms.Label();
-            this.lblAmountPictureUpload = new System.Windows.Forms.Label();
-            this.cmbAmountPictureUpload = new System.Windows.Forms.ComboBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.cmbPhaseStatus = new System.Windows.Forms.ComboBox();
@@ -74,8 +72,10 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.lblWorkFlow = new System.Windows.Forms.Label();
-            this.searchboxControl2 = new JRSApplication.SearchboxControl();
-            this.searchboxControl1 = new JRSApplication.SearchboxControl();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.starAmountPictureUpload = new System.Windows.Forms.Label();
+            this.lblAmountPictureUpload = new System.Windows.Forms.Label();
+            this.cmbAmountPictureUpload = new System.Windows.Forms.ComboBox();
             this.pnlProjectdata.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).BeginInit();
             this.pnlMain.SuspendLayout();
@@ -93,7 +93,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 0);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1411, 360);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1377, 360);
             this.pnlProjectdata.TabIndex = 0;
             // 
             // dtgvProjectData
@@ -122,6 +122,15 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "ค้นหาโครงการ";
             // 
+            // searchboxControl1
+            // 
+            this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.Location = new System.Drawing.Point(874, 22);
+            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl1.Name = "searchboxControl1";
+            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl1.TabIndex = 0;
+            // 
             // pnlMain
             // 
             this.pnlMain.Controls.Add(this.lblStatus);
@@ -139,7 +148,7 @@
             this.pnlMain.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlMain.Location = new System.Drawing.Point(0, 360);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(1411, 1731);
+            this.pnlMain.Size = new System.Drawing.Size(1377, 1731);
             this.pnlMain.TabIndex = 1;
             // 
             // lblStatus
@@ -156,7 +165,6 @@
             // 
             this.txtPhaseStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(0)))));
             this.txtPhaseStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPhaseStatus.Enabled = false;
             this.txtPhaseStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPhaseStatus.Location = new System.Drawing.Point(1235, 43);
             this.txtPhaseStatus.Name = "txtPhaseStatus";
@@ -308,6 +316,15 @@
             this.dtgvWorkHistory.Size = new System.Drawing.Size(1406, 310);
             this.dtgvWorkHistory.TabIndex = 12;
             // 
+            // searchboxControl2
+            // 
+            this.searchboxControl2.BackColor = System.Drawing.Color.White;
+            this.searchboxControl2.Location = new System.Drawing.Point(809, 1177);
+            this.searchboxControl2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl2.Name = "searchboxControl2";
+            this.searchboxControl2.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl2.TabIndex = 11;
+            // 
             // lblWorkHistory
             // 
             this.lblWorkHistory.AutoSize = true;
@@ -344,63 +361,6 @@
             this.pnlUploadImages.Name = "pnlUploadImages";
             this.pnlUploadImages.Size = new System.Drawing.Size(1406, 730);
             this.pnlUploadImages.TabIndex = 1;
-            // 
-            // panel4
-            // 
-            this.panel4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel4.BackgroundImage")));
-            this.panel4.Controls.Add(this.starAmountPictureUpload);
-            this.panel4.Controls.Add(this.lblAmountPictureUpload);
-            this.panel4.Controls.Add(this.cmbAmountPictureUpload);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel4.Location = new System.Drawing.Point(0, 0);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1406, 100);
-            this.panel4.TabIndex = 0;
-            // 
-            // starAmountPictureUpload
-            // 
-            this.starAmountPictureUpload.AutoSize = true;
-            this.starAmountPictureUpload.BackColor = System.Drawing.Color.Transparent;
-            this.starAmountPictureUpload.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starAmountPictureUpload.ForeColor = System.Drawing.Color.Red;
-            this.starAmountPictureUpload.Location = new System.Drawing.Point(168, 15);
-            this.starAmountPictureUpload.Name = "starAmountPictureUpload";
-            this.starAmountPictureUpload.Size = new System.Drawing.Size(22, 30);
-            this.starAmountPictureUpload.TabIndex = 1;
-            this.starAmountPictureUpload.Text = "*";
-            this.starAmountPictureUpload.Visible = false;
-            // 
-            // lblAmountPictureUpload
-            // 
-            this.lblAmountPictureUpload.AutoSize = true;
-            this.lblAmountPictureUpload.BackColor = System.Drawing.Color.Transparent;
-            this.lblAmountPictureUpload.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAmountPictureUpload.Location = new System.Drawing.Point(43, 15);
-            this.lblAmountPictureUpload.Name = "lblAmountPictureUpload";
-            this.lblAmountPictureUpload.Size = new System.Drawing.Size(117, 30);
-            this.lblAmountPictureUpload.TabIndex = 1;
-            this.lblAmountPictureUpload.Text = "ระบุจำนวนรูป";
-            // 
-            // cmbAmountPictureUpload
-            // 
-            this.cmbAmountPictureUpload.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbAmountPictureUpload.FormattingEnabled = true;
-            this.cmbAmountPictureUpload.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10"});
-            this.cmbAmountPictureUpload.Location = new System.Drawing.Point(39, 48);
-            this.cmbAmountPictureUpload.Name = "cmbAmountPictureUpload";
-            this.cmbAmountPictureUpload.Size = new System.Drawing.Size(147, 38);
-            this.cmbAmountPictureUpload.TabIndex = 0;
-            this.cmbAmountPictureUpload.SelectedIndexChanged += new System.EventHandler(this.cmbAmountPictureUpload_SelectedIndexChanged);
             // 
             // btnSave
             // 
@@ -619,23 +579,62 @@
             this.lblWorkFlow.TabIndex = 2;
             this.lblWorkFlow.Text = "ข้อมูลการดำเนินการ";
             // 
-            // searchboxControl2
+            // panel4
             // 
-            this.searchboxControl2.BackColor = System.Drawing.Color.White;
-            this.searchboxControl2.Location = new System.Drawing.Point(809, 1177);
-            this.searchboxControl2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxControl2.Name = "searchboxControl2";
-            this.searchboxControl2.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl2.TabIndex = 11;
+            this.panel4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel4.BackgroundImage")));
+            this.panel4.Controls.Add(this.starAmountPictureUpload);
+            this.panel4.Controls.Add(this.lblAmountPictureUpload);
+            this.panel4.Controls.Add(this.cmbAmountPictureUpload);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel4.Location = new System.Drawing.Point(0, 0);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(1406, 100);
+            this.panel4.TabIndex = 0;
             // 
-            // searchboxControl1
+            // starAmountPictureUpload
             // 
-            this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.Location = new System.Drawing.Point(874, 22);
-            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxControl1.Name = "searchboxControl1";
-            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl1.TabIndex = 0;
+            this.starAmountPictureUpload.AutoSize = true;
+            this.starAmountPictureUpload.BackColor = System.Drawing.Color.Transparent;
+            this.starAmountPictureUpload.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starAmountPictureUpload.ForeColor = System.Drawing.Color.Red;
+            this.starAmountPictureUpload.Location = new System.Drawing.Point(168, 15);
+            this.starAmountPictureUpload.Name = "starAmountPictureUpload";
+            this.starAmountPictureUpload.Size = new System.Drawing.Size(22, 30);
+            this.starAmountPictureUpload.TabIndex = 1;
+            this.starAmountPictureUpload.Text = "*";
+            this.starAmountPictureUpload.Visible = false;
+            // 
+            // lblAmountPictureUpload
+            // 
+            this.lblAmountPictureUpload.AutoSize = true;
+            this.lblAmountPictureUpload.BackColor = System.Drawing.Color.Transparent;
+            this.lblAmountPictureUpload.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAmountPictureUpload.Location = new System.Drawing.Point(43, 15);
+            this.lblAmountPictureUpload.Name = "lblAmountPictureUpload";
+            this.lblAmountPictureUpload.Size = new System.Drawing.Size(117, 30);
+            this.lblAmountPictureUpload.TabIndex = 1;
+            this.lblAmountPictureUpload.Text = "ระบุจำนวนรูป";
+            // 
+            // cmbAmountPictureUpload
+            // 
+            this.cmbAmountPictureUpload.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbAmountPictureUpload.FormattingEnabled = true;
+            this.cmbAmountPictureUpload.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"});
+            this.cmbAmountPictureUpload.Location = new System.Drawing.Point(39, 48);
+            this.cmbAmountPictureUpload.Name = "cmbAmountPictureUpload";
+            this.cmbAmountPictureUpload.Size = new System.Drawing.Size(147, 38);
+            this.cmbAmountPictureUpload.TabIndex = 0;
+            this.cmbAmountPictureUpload.SelectedIndexChanged += new System.EventHandler(this.cmbAmountPictureUpload_SelectedIndexChanged);
             // 
             // UpdateProjectPhase
             // 
@@ -644,7 +643,7 @@
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.pnlProjectdata);
             this.Name = "UpdateProjectPhase";
-            this.Size = new System.Drawing.Size(1411, 954);
+            this.Size = new System.Drawing.Size(1377, 954);
             this.pnlProjectdata.ResumeLayout(false);
             this.pnlProjectdata.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).EndInit();

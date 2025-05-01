@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace JRSApplication.Data_Access_Layer
 {
@@ -87,34 +88,67 @@ namespace JRSApplication.Data_Access_Layer
 
             return list;
         }
-        //มีปัญหา insert data : error  Insert phase_id ที่ไม่มีอยู่ในตาราง project_phase ผิด Foreign Key constraint ที่ผูกไว้
-        public bool InsertPhaseWorking(PhaseWorking phase)
+        // InsertPhaseWithPictures
+        public bool InsertPhaseWithPictures(PhaseWorking phase, List<WorkingPicture> pictures)
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                string sql = @"INSERT INTO phase_working
-                      (phase_id, work_detail, work_status, work_date, work_end_date, work_update_date, work_remark, pro_id, sup_id)
-                      VALUES
-                      (@PhaseID, @WorkDetail, @WorkStatus, @WorkDate, @EndDate, @UpdateDate, @Remark, @ProjectID, @SupplierID)";
-
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                conn.Open();
+                using (MySqlTransaction trans = conn.BeginTransaction())
                 {
-                    cmd.Parameters.AddWithValue("@PhaseID", phase.PhaseID);
-                    cmd.Parameters.AddWithValue("@WorkDetail", phase.WorkDetail);
-                    cmd.Parameters.AddWithValue("@WorkStatus", phase.WorkStatus);
-                    cmd.Parameters.AddWithValue("@WorkDate", phase.WorkDate);
-                    cmd.Parameters.AddWithValue("@EndDate", phase.EndDate);
-                    cmd.Parameters.AddWithValue("@UpdateDate", phase.UpdateDate);
-                    cmd.Parameters.AddWithValue("@Remark", phase.Remark);
-                    cmd.Parameters.AddWithValue("@ProjectID", phase.ProjectID);
-                    cmd.Parameters.AddWithValue("@SupplierID", string.IsNullOrEmpty(phase.SupplierID) ? DBNull.Value : (object)phase.SupplierID);
+                    try
+                    {
+                        // 👉 INSERT phase_working
+                        string sql = @"
+                    INSERT INTO phase_working
+                    (phase_id, work_detail, work_status, work_date, work_end_date, work_update_date, work_remark, pro_id, sup_id)
+                    VALUES
+                    (@PhaseID, @WorkDetail, @WorkStatus, @WorkDate, @EndDate, @UpdateDate, @Remark, @ProjectID, @SupplierID)";
 
-                    conn.Open();
-                    int result = cmd.ExecuteNonQuery();
-                    return result > 0;
+                        using (MySqlCommand cmd = new MySqlCommand(sql, conn, trans))
+                        {
+                            cmd.Parameters.AddWithValue("@PhaseID", phase.PhaseID);
+                            cmd.Parameters.AddWithValue("@WorkDetail", phase.WorkDetail);
+                            cmd.Parameters.AddWithValue("@WorkStatus", phase.WorkStatus);
+                            cmd.Parameters.AddWithValue("@WorkDate", phase.WorkDate);
+                            cmd.Parameters.AddWithValue("@EndDate", phase.EndDate.HasValue ? (object)phase.EndDate.Value : DBNull.Value);
+                            cmd.Parameters.AddWithValue("@UpdateDate", phase.UpdateDate);
+                            cmd.Parameters.AddWithValue("@Remark", phase.Remark);
+                            cmd.Parameters.AddWithValue("@ProjectID", phase.ProjectID);
+                            cmd.Parameters.AddWithValue("@SupplierID", string.IsNullOrEmpty(phase.SupplierID) ? DBNull.Value : (object)phase.SupplierID);
+
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // 👉 INSERT working_picture (loop)
+                        foreach (var pic in pictures)
+                        {
+                            string picSql = @"
+                        INSERT INTO working_picture (phase_id, pic_data, pic_detail)
+                        VALUES (@PhaseID, @PictureData, @PictureDetail)";
+
+                            using (MySqlCommand cmd = new MySqlCommand(picSql, conn, trans))
+                            {
+                                cmd.Parameters.AddWithValue("@PhaseID", pic.PhaseID);
+                                cmd.Parameters.AddWithValue("@PictureData", pic.PictureData);
+                                cmd.Parameters.AddWithValue("@PictureDetail", pic.PictureDetail);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        trans.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();
+                        MessageBox.Show("❌ เกิดข้อผิดพลาด: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
                 }
             }
         }
+
 
         public PhaseWorking GetPhaseWorkingByPhaseID(int projectId, int phaseId)
         {

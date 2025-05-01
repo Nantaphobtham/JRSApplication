@@ -103,6 +103,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accountant\Invoice.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Accountant\Invoice.Designer.cs">
+      <DependentUpon>Invoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Accountant\InvoicePrint.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Accountant\InvoicePrint.Designer.cs">
+      <DependentUpon>InvoicePrint.cs</DependentUpon>
+    </Compile>
     <Compile Include="Admin\CustomerRegistration.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -247,6 +259,12 @@
     <Compile Include="Sitesupervisor\PurchaseOrder.Designer.cs">
       <DependentUpon>PurchaseOrder.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Accountant\Invoice.resx">
+      <DependentUpon>Invoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accountant\InvoicePrint.resx">
+      <DependentUpon>InvoicePrint.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Admin\CustomerRegistration.resx">
       <DependentUpon>CustomerRegistration.cs</DependentUpon>
     </EmbeddedResource>
@@ -344,9 +362,7 @@
   <ItemGroup>
     <None Include="Resources\Profile.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Accountant\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <COMReference Include="AcroPDFLib">
       <Guid>{05BFD3F1-6319-4F30-B752-C7A22889BCC4}</Guid>

@@ -387,6 +387,7 @@ namespace JRSApplication
             if (!ValidateProjectData())
                 return;
 
+            // ✅ ดึงค่า Phase ที่เลือก
             var selectedItem = cmbSelectPhase.SelectedItem as ComboBoxItem;
             if (selectedItem == null)
             {
@@ -394,18 +395,18 @@ namespace JRSApplication
                 return;
             }
 
-            int phaseId = selectedItem.Value; // ✅ ตอนนี้คือ phase_id แล้ว
-
+            // ✅ ค่าเบื้องต้น
+            int phaseId = selectedItem.Value; // PhaseID ที่ถูกต้อง (FK)
             int projectId = int.Parse(txtProjectID.Text);
             string selectedStatus = cmbPhaseStatus.SelectedValue?.ToString();
             string detail = txtDetailWorkFlow.Text.Trim();
             string remark = txtWorkRemark.Text.Trim();
 
-            // ✅ สร้างอ็อบเจกต์สำหรับตาราง phase_working
+            // ✅ เตรียมข้อมูล phase_working
             PhaseWorking phase = new PhaseWorking
             {
                 ProjectID = projectId,
-                PhaseID = phaseId,                        // ✅ ใช้ phase_id แทน
+                PhaseID = phaseId,
                 WorkStatus = selectedStatus,
                 WorkDetail = detail,
                 WorkDate = dtpWorkDate.Value,
@@ -415,9 +416,15 @@ namespace JRSApplication
                 SupplierID = !string.IsNullOrWhiteSpace(selectedSupplierID) ? selectedSupplierID : null
             };
 
-            // ✅ บันทึกลง phase_working
+            // ✅ ใส่ phase_id ให้กับรูปทุกภาพที่อัปโหลดไว้
+            foreach (var pic in uploadedPictures)
+            {
+                pic.PhaseID = phaseId;
+            }
+
+            // ✅ เรียกใช้ฟังก์ชันรวมที่ DAL
             PhaseWorkDAL phaseDal = new PhaseWorkDAL();
-            bool result = phaseDal.InsertPhaseWorking(phase);
+            bool result = phaseDal.InsertPhaseWithPictures(phase, uploadedPictures);
 
             if (!result)
             {
@@ -425,18 +432,12 @@ namespace JRSApplication
                 return;
             }
 
-            // ✅ บันทึกรูปภาพลง working_picture 
-            foreach (var pic in uploadedPictures)
-            {
-                pic.PhaseID = phaseId; // ✅ ใส่ phase_id 
-                WorkingPictureDAL picDAL = new WorkingPictureDAL();
-                picDAL.InsertPicture(pic);
-            }
-
+            // ✅ ล้าง list หลังบันทึกสำเร็จ ป้องกันซ้ำ
             uploadedPictures.Clear();
 
             MessageBox.Show("บันทึกข้อมูลเรียบร้อยแล้ว", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
 
 
 
