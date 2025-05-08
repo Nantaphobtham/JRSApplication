@@ -1,6 +1,6 @@
 ﻿namespace JRSApplication.Accountant
 {
-    partial class InvoicePrint
+    partial class ReceiptPrint
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,53 +28,51 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.button2 = new System.Windows.Forms.Button();
             this.label19 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(659, 872);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(263, 64);
+            this.button2.TabIndex = 54;
+            this.button2.Text = "พิมพ์ใบเสร็จรับเงิน";
+            this.button2.UseVisualStyleBackColor = true;
             // 
             // label19
             // 
             this.label19.AutoSize = true;
             this.label19.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.label19.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(671, 29);
+            this.label19.Location = new System.Drawing.Point(677, 27);
             this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(243, 30);
-            this.label19.TabIndex = 49;
-            this.label19.Text = "ใบแจ้งหนี้ / ใบกับกำภาษี";
+            this.label19.Size = new System.Drawing.Size(138, 30);
+            this.label19.TabIndex = 52;
+            this.label19.Text = "ใบเสร็จรับเงิน";
             // 
             // dataGridView1
             // 
             this.dataGridView1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(195, 0);
+            this.dataGridView1.Location = new System.Drawing.Point(192, 0);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1200, 951);
-            this.dataGridView1.TabIndex = 50;
+            this.dataGridView1.Size = new System.Drawing.Size(1200, 954);
+            this.dataGridView1.TabIndex = 53;
             // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(676, 872);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(218, 64);
-            this.button2.TabIndex = 51;
-            this.button2.Text = "พิมพ์ใบแจ้งหนี้";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // InvoicePrint
+            // ReceiptPrint
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = true;
-            this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.dataGridView1);
-            this.Name = "InvoicePrint";
+            this.Name = "ReceiptPrint";
             this.Size = new System.Drawing.Size(1584, 954);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
@@ -84,8 +82,8 @@
 
         #endregion
 
+        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button button2;
     }
 }
