@@ -103,6 +103,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accountant\ConfirmInvoice.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Accountant\ConfirmInvoice.Designer.cs">
+      <DependentUpon>ConfirmInvoice.cs</DependentUpon>
+    </Compile>
     <Compile Include="Accountant\Invoice.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -114,6 +120,18 @@
     </Compile>
     <Compile Include="Accountant\InvoicePrint.Designer.cs">
       <DependentUpon>InvoicePrint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Accountant\Receipt.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Accountant\Receipt.Designer.cs">
+      <DependentUpon>Receipt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Accountant\ReceiptPrint.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Accountant\ReceiptPrint.Designer.cs">
+      <DependentUpon>ReceiptPrint.cs</DependentUpon>
     </Compile>
     <Compile Include="Admin\CustomerRegistration.cs">
       <SubType>UserControl</SubType>
@@ -259,11 +277,20 @@
     <Compile Include="Sitesupervisor\PurchaseOrder.Designer.cs">
       <DependentUpon>PurchaseOrder.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Accountant\ConfirmInvoice.resx">
+      <DependentUpon>ConfirmInvoice.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Accountant\Invoice.resx">
       <DependentUpon>Invoice.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Accountant\InvoicePrint.resx">
       <DependentUpon>InvoicePrint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accountant\Receipt.resx">
+      <DependentUpon>Receipt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accountant\ReceiptPrint.resx">
+      <DependentUpon>ReceiptPrint.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Admin\CustomerRegistration.resx">
       <DependentUpon>CustomerRegistration.cs</DependentUpon>
