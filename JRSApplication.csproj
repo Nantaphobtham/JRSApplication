@@ -149,6 +149,7 @@
     <Compile Include="Components\Project.cs" />
     <Compile Include="Components\ProjectPhase.cs" />
     <Compile Include="Components\ProjectStatusEvaluator.cs" />
+    <Compile Include="Components\project_files.cs" />
     <Compile Include="Components\Supplier.cs" />
     <Compile Include="Components\WorkingPicture.cs" />
     <Compile Include="Components\WorkStatus.cs" />

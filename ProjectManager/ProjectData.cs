@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace JRSApplication
 {
-    public partial class ProjectData : UserControl
+    public partial class ProjectData : UserControl 
     {
         public ProjectData()
         {
@@ -22,8 +22,6 @@ namespace JRSApplication
             InitializeDataGridViewProject();  
             InitializeDataGridViewPhase();
             LoadProjectData();
-            
-
         }
         //ฟังก์ชันโหลดต่างๆ
         private void LoadProjectDetails(int projectId)
@@ -33,6 +31,7 @@ namespace JRSApplication
 
             if (project != null)
             {
+                // 🔢 ข้อมูลทั่วไป
                 txtProjectID.Text = project.ProjectID.ToString();
                 txtProjectname.Text = project.ProjectName;
                 txtStartdate.Text = project.ProjectStart.ToString("dd/MM/yyyy");
@@ -41,19 +40,21 @@ namespace JRSApplication
                 txtCustomername.Text = project.CustomerName;
                 txtProjectManager.Text = project.EmployeeName;
 
-                // ✅ คำนวณจำนวนวัน
+                // 🗓️ คำนวณจำนวนวันทั้งหมด
                 TimeSpan duration = project.ProjectEnd - project.ProjectStart;
                 txtSumdate.Text = duration.TotalDays.ToString();
 
-                // 🟢 แสดง PDF แบบแปลน (จำเป็นต้องมี)
-                ShowPdfFromByteArray(project.ConstructionBlueprint, axPdfBlueprint, pnlBlueprint, lblBlueprintNA);
+                // 🧾 แสดงไฟล์ Blueprint (จำเป็นต้องมี)
+                byte[] blueprintBytes = project.ProjectFile?.ConstructionBlueprint;
+                ShowPdfFromByteArray(blueprintBytes, axPdfBlueprint, pnlBlueprint, lblBlueprintNA);
 
-                // 🟡 แสดง PDF รื้อถอน (ถ้ามี)
-                ShowPdfFromByteArray(project.DemolitionModel, axPdfDemolition, pnlDemolition, lblDemolitionNA);
-
+                // 🧨 แสดงไฟล์ Demolition (อาจไม่มี)
+                byte[] demolitionBytes = project.ProjectFile?.DemolitionModel;
+                ShowPdfFromByteArray(demolitionBytes, axPdfDemolition, pnlDemolition, lblDemolitionNA);
             }
         }
-        
+
+
         private void LoadProjectStatus(int projectID, int totalPhaseNumber)
         {
             PhaseWorkDAL dal = new PhaseWorkDAL();

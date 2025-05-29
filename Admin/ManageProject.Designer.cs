@@ -55,9 +55,11 @@
             this.lblRemark = new System.Windows.Forms.Label();
             this.txtRemark = new System.Windows.Forms.TextBox();
             this.pnlDemolition = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.btnInsertDemolitionFile = new System.Windows.Forms.Button();
             this.lblDemolition = new System.Windows.Forms.Label();
             this.pnlBlueprint = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnInsertBlueprintFile = new System.Windows.Forms.Button();
             this.starBlueprint = new System.Windows.Forms.Label();
             this.lblBlueprint = new System.Windows.Forms.Label();
@@ -103,11 +105,11 @@
             this.lblBudget = new System.Windows.Forms.Label();
             this.txtBudget = new System.Windows.Forms.TextBox();
             this.pnlSumDate = new System.Windows.Forms.Panel();
-            this.lblSumDate = new System.Windows.Forms.Label();
-            this.txtSumDate = new System.Windows.Forms.TextBox();
+            this.lblWorkingDate = new System.Windows.Forms.Label();
+            this.starWorkingDate = new System.Windows.Forms.Label();
+            this.txtWorkingDate = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dtpkEndDate = new System.Windows.Forms.DateTimePicker();
-            this.starEndDate = new System.Windows.Forms.Label();
             this.lblEndDate = new System.Windows.Forms.Label();
             this.pnlStartDate = new System.Windows.Forms.Panel();
             this.dtpkStartDate = new System.Windows.Forms.DateTimePicker();
@@ -163,7 +165,7 @@
             this.pnlInfomation.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInfomation.Location = new System.Drawing.Point(0, 0);
             this.pnlInfomation.Name = "pnlInfomation";
-            this.pnlInfomation.Size = new System.Drawing.Size(1553, 738);
+            this.pnlInfomation.Size = new System.Drawing.Size(1499, 738);
             this.pnlInfomation.TabIndex = 0;
             // 
             // subInfo
@@ -439,10 +441,10 @@
             this.pnlRemark.Controls.Add(this.starRemark);
             this.pnlRemark.Controls.Add(this.lblRemark);
             this.pnlRemark.Controls.Add(this.txtRemark);
-            this.pnlRemark.Location = new System.Drawing.Point(11, 635);
+            this.pnlRemark.Location = new System.Drawing.Point(473, 405);
             this.pnlRemark.Margin = new System.Windows.Forms.Padding(2);
             this.pnlRemark.Name = "pnlRemark";
-            this.pnlRemark.Size = new System.Drawing.Size(947, 84);
+            this.pnlRemark.Size = new System.Drawing.Size(485, 111);
             this.pnlRemark.TabIndex = 23;
             // 
             // starRemark
@@ -476,20 +478,33 @@
             this.txtRemark.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtRemark.Location = new System.Drawing.Point(6, 37);
             this.txtRemark.Margin = new System.Windows.Forms.Padding(2);
+            this.txtRemark.Multiline = true;
             this.txtRemark.Name = "txtRemark";
             this.txtRemark.ReadOnly = true;
-            this.txtRemark.Size = new System.Drawing.Size(935, 36);
+            this.txtRemark.Size = new System.Drawing.Size(473, 72);
             this.txtRemark.TabIndex = 2;
             // 
             // pnlDemolition
             // 
+            this.pnlDemolition.Controls.Add(this.label2);
             this.pnlDemolition.Controls.Add(this.btnInsertDemolitionFile);
             this.pnlDemolition.Controls.Add(this.lblDemolition);
             this.pnlDemolition.Location = new System.Drawing.Point(243, 547);
             this.pnlDemolition.Margin = new System.Windows.Forms.Padding(2);
             this.pnlDemolition.Name = "pnlDemolition";
-            this.pnlDemolition.Size = new System.Drawing.Size(226, 84);
+            this.pnlDemolition.Size = new System.Drawing.Size(226, 114);
             this.pnlDemolition.TabIndex = 22;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.label2.ForeColor = System.Drawing.Color.Blue;
+            this.label2.Location = new System.Drawing.Point(37, 84);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(186, 21);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "อัปโหลดไฟล์ (ไม่เกิน 50 MB)";
             // 
             // btnInsertDemolitionFile
             // 
@@ -518,14 +533,26 @@
             // 
             // pnlBlueprint
             // 
+            this.pnlBlueprint.Controls.Add(this.label1);
             this.pnlBlueprint.Controls.Add(this.btnInsertBlueprintFile);
             this.pnlBlueprint.Controls.Add(this.starBlueprint);
             this.pnlBlueprint.Controls.Add(this.lblBlueprint);
             this.pnlBlueprint.Location = new System.Drawing.Point(11, 547);
             this.pnlBlueprint.Margin = new System.Windows.Forms.Padding(2);
             this.pnlBlueprint.Name = "pnlBlueprint";
-            this.pnlBlueprint.Size = new System.Drawing.Size(226, 84);
+            this.pnlBlueprint.Size = new System.Drawing.Size(226, 114);
             this.pnlBlueprint.TabIndex = 20;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Blue;
+            this.label1.Location = new System.Drawing.Point(37, 84);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(186, 21);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "อัปโหลดไฟล์ (ไม่เกิน 50 MB)";
             // 
             // btnInsertBlueprintFile
             // 
@@ -634,7 +661,7 @@
             this.btnSearchEmployee.BackColor = System.Drawing.Color.White;
             this.btnSearchEmployee.Enabled = false;
             this.btnSearchEmployee.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.btnSearchEmployee.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchEmployee.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnSearchEmployee.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchEmployee.Location = new System.Drawing.Point(7, 54);
             this.btnSearchEmployee.Name = "btnSearchEmployee";
@@ -701,10 +728,10 @@
             this.pnlProjectAddress.Controls.Add(this.starProjectAddress);
             this.pnlProjectAddress.Controls.Add(this.lblProjectAddress);
             this.pnlProjectAddress.Controls.Add(this.txtProjectAddress);
-            this.pnlProjectAddress.Location = new System.Drawing.Point(473, 474);
+            this.pnlProjectAddress.Location = new System.Drawing.Point(473, 327);
             this.pnlProjectAddress.Margin = new System.Windows.Forms.Padding(2);
             this.pnlProjectAddress.Name = "pnlProjectAddress";
-            this.pnlProjectAddress.Size = new System.Drawing.Size(485, 157);
+            this.pnlProjectAddress.Size = new System.Drawing.Size(485, 74);
             this.pnlProjectAddress.TabIndex = 18;
             // 
             // starProjectAddress
@@ -738,10 +765,9 @@
             this.txtProjectAddress.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProjectAddress.Location = new System.Drawing.Point(2, 34);
             this.txtProjectAddress.Margin = new System.Windows.Forms.Padding(2);
-            this.txtProjectAddress.Multiline = true;
             this.txtProjectAddress.Name = "txtProjectAddress";
             this.txtProjectAddress.ReadOnly = true;
-            this.txtProjectAddress.Size = new System.Drawing.Size(477, 122);
+            this.txtProjectAddress.Size = new System.Drawing.Size(477, 36);
             this.txtProjectAddress.TabIndex = 2;
             // 
             // pnlProjetDetail
@@ -749,7 +775,7 @@
             this.pnlProjetDetail.Controls.Add(this.starProjectDetail);
             this.pnlProjetDetail.Controls.Add(this.lblProjectDetail);
             this.pnlProjetDetail.Controls.Add(this.txtProjectDetail);
-            this.pnlProjetDetail.Location = new System.Drawing.Point(473, 327);
+            this.pnlProjetDetail.Location = new System.Drawing.Point(473, 520);
             this.pnlProjetDetail.Margin = new System.Windows.Forms.Padding(2);
             this.pnlProjetDetail.Name = "pnlProjetDetail";
             this.pnlProjetDetail.Size = new System.Drawing.Size(485, 143);
@@ -915,7 +941,7 @@
             this.btnSearchCustomer.BackColor = System.Drawing.Color.White;
             this.btnSearchCustomer.Enabled = false;
             this.btnSearchCustomer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.btnSearchCustomer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchCustomer.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnSearchCustomer.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchCustomer.Location = new System.Drawing.Point(7, 36);
             this.btnSearchCustomer.Name = "btnSearchCustomer";
@@ -1036,10 +1062,10 @@
             this.pnlBudget.Controls.Add(this.starBudget);
             this.pnlBudget.Controls.Add(this.lblBudget);
             this.pnlBudget.Controls.Add(this.txtBudget);
-            this.pnlBudget.Location = new System.Drawing.Point(698, 90);
+            this.pnlBudget.Location = new System.Drawing.Point(633, 90);
             this.pnlBudget.Margin = new System.Windows.Forms.Padding(2);
             this.pnlBudget.Name = "pnlBudget";
-            this.pnlBudget.Size = new System.Drawing.Size(260, 74);
+            this.pnlBudget.Size = new System.Drawing.Size(325, 74);
             this.pnlBudget.TabIndex = 13;
             // 
             // starBudget
@@ -1075,7 +1101,7 @@
             this.txtBudget.Margin = new System.Windows.Forms.Padding(2);
             this.txtBudget.Name = "txtBudget";
             this.txtBudget.ReadOnly = true;
-            this.txtBudget.Size = new System.Drawing.Size(254, 36);
+            this.txtBudget.Size = new System.Drawing.Size(319, 36);
             this.txtBudget.TabIndex = 2;
             this.txtBudget.Enter += new System.EventHandler(this.txtBudget_Enter);
             this.txtBudget.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBudget_KeyPress);
@@ -1083,48 +1109,62 @@
             // 
             // pnlSumDate
             // 
-            this.pnlSumDate.Controls.Add(this.lblSumDate);
-            this.pnlSumDate.Controls.Add(this.txtSumDate);
-            this.pnlSumDate.Location = new System.Drawing.Point(449, 90);
+            this.pnlSumDate.Controls.Add(this.lblWorkingDate);
+            this.pnlSumDate.Controls.Add(this.starWorkingDate);
+            this.pnlSumDate.Controls.Add(this.txtWorkingDate);
+            this.pnlSumDate.Location = new System.Drawing.Point(199, 90);
             this.pnlSumDate.Margin = new System.Windows.Forms.Padding(2);
             this.pnlSumDate.Name = "pnlSumDate";
-            this.pnlSumDate.Size = new System.Drawing.Size(245, 74);
+            this.pnlSumDate.Size = new System.Drawing.Size(245, 75);
             this.pnlSumDate.TabIndex = 12;
             // 
-            // lblSumDate
+            // lblWorkingDate
             // 
-            this.lblSumDate.AutoSize = true;
-            this.lblSumDate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSumDate.Location = new System.Drawing.Point(2, 3);
-            this.lblSumDate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblSumDate.Name = "lblSumDate";
-            this.lblSumDate.Size = new System.Drawing.Size(211, 30);
-            this.lblSumDate.TabIndex = 2;
-            this.lblSumDate.Text = "รวมวันกำหนดให้เสร็จสิ้น";
+            this.lblWorkingDate.AutoSize = true;
+            this.lblWorkingDate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWorkingDate.Location = new System.Drawing.Point(2, 3);
+            this.lblWorkingDate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblWorkingDate.Name = "lblWorkingDate";
+            this.lblWorkingDate.Size = new System.Drawing.Size(143, 30);
+            this.lblWorkingDate.TabIndex = 2;
+            this.lblWorkingDate.Text = "ระยะเวลาทำงาน";
             // 
-            // txtSumDate
+            // starWorkingDate
             // 
-            this.txtSumDate.BackColor = System.Drawing.SystemColors.Control;
-            this.txtSumDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtSumDate.Enabled = false;
-            this.txtSumDate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSumDate.Location = new System.Drawing.Point(0, 37);
-            this.txtSumDate.Margin = new System.Windows.Forms.Padding(2);
-            this.txtSumDate.Name = "txtSumDate";
-            this.txtSumDate.ReadOnly = true;
-            this.txtSumDate.Size = new System.Drawing.Size(243, 36);
-            this.txtSumDate.TabIndex = 2;
-            this.txtSumDate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.starWorkingDate.AutoSize = true;
+            this.starWorkingDate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starWorkingDate.ForeColor = System.Drawing.Color.Red;
+            this.starWorkingDate.Location = new System.Drawing.Point(147, 3);
+            this.starWorkingDate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starWorkingDate.Name = "starWorkingDate";
+            this.starWorkingDate.Size = new System.Drawing.Size(22, 30);
+            this.starWorkingDate.TabIndex = 2;
+            this.starWorkingDate.Text = "*";
+            this.starWorkingDate.Visible = false;
+            // 
+            // txtWorkingDate
+            // 
+            this.txtWorkingDate.BackColor = System.Drawing.SystemColors.Control;
+            this.txtWorkingDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtWorkingDate.Enabled = false;
+            this.txtWorkingDate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtWorkingDate.Location = new System.Drawing.Point(1, 37);
+            this.txtWorkingDate.Margin = new System.Windows.Forms.Padding(2);
+            this.txtWorkingDate.Name = "txtWorkingDate";
+            this.txtWorkingDate.ReadOnly = true;
+            this.txtWorkingDate.Size = new System.Drawing.Size(243, 36);
+            this.txtWorkingDate.TabIndex = 2;
+            this.txtWorkingDate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtWorkingDate.TextChanged += new System.EventHandler(this.txtWorkingDate_TextChanged);
             // 
             // panel3
             // 
             this.panel3.Controls.Add(this.dtpkEndDate);
-            this.panel3.Controls.Add(this.starEndDate);
             this.panel3.Controls.Add(this.lblEndDate);
-            this.panel3.Location = new System.Drawing.Point(230, 90);
+            this.panel3.Location = new System.Drawing.Point(446, 90);
             this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(215, 75);
+            this.panel3.Size = new System.Drawing.Size(183, 75);
             this.panel3.TabIndex = 11;
             // 
             // dtpkEndDate
@@ -1134,22 +1174,8 @@
             this.dtpkEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpkEndDate.Location = new System.Drawing.Point(3, 36);
             this.dtpkEndDate.Name = "dtpkEndDate";
-            this.dtpkEndDate.Size = new System.Drawing.Size(209, 35);
+            this.dtpkEndDate.Size = new System.Drawing.Size(177, 35);
             this.dtpkEndDate.TabIndex = 3;
-            this.dtpkEndDate.ValueChanged += new System.EventHandler(this.dtpkEndDate_ValueChanged);
-            // 
-            // starEndDate
-            // 
-            this.starEndDate.AutoSize = true;
-            this.starEndDate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starEndDate.ForeColor = System.Drawing.Color.Red;
-            this.starEndDate.Location = new System.Drawing.Point(174, 3);
-            this.starEndDate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starEndDate.Name = "starEndDate";
-            this.starEndDate.Size = new System.Drawing.Size(22, 30);
-            this.starEndDate.TabIndex = 2;
-            this.starEndDate.Text = "*";
-            this.starEndDate.Visible = false;
             // 
             // lblEndDate
             // 
@@ -1170,7 +1196,7 @@
             this.pnlStartDate.Location = new System.Drawing.Point(11, 90);
             this.pnlStartDate.Margin = new System.Windows.Forms.Padding(2);
             this.pnlStartDate.Name = "pnlStartDate";
-            this.pnlStartDate.Size = new System.Drawing.Size(215, 75);
+            this.pnlStartDate.Size = new System.Drawing.Size(183, 75);
             this.pnlStartDate.TabIndex = 10;
             // 
             // dtpkStartDate
@@ -1180,7 +1206,7 @@
             this.dtpkStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpkStartDate.Location = new System.Drawing.Point(3, 36);
             this.dtpkStartDate.Name = "dtpkStartDate";
-            this.dtpkStartDate.Size = new System.Drawing.Size(209, 35);
+            this.dtpkStartDate.Size = new System.Drawing.Size(177, 35);
             this.dtpkStartDate.TabIndex = 3;
             this.dtpkStartDate.ValueChanged += new System.EventHandler(this.dtpkStartDate_ValueChanged);
             // 
@@ -1310,7 +1336,7 @@
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 738);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1553, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1499, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDelete
@@ -1375,7 +1401,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 832);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1553, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1499, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // pnlProjectdata
@@ -1386,7 +1412,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 842);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1553, 371);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1499, 371);
             this.pnlProjectdata.TabIndex = 3;
             // 
             // dtgvProject
@@ -1428,7 +1454,7 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.pnlInfomation);
             this.Name = "ManageProject";
-            this.Size = new System.Drawing.Size(1553, 954);
+            this.Size = new System.Drawing.Size(1499, 954);
             this.pnlInfomation.ResumeLayout(false);
             this.subInfo.ResumeLayout(false);
             this.pnlPhaseData.ResumeLayout(false);
@@ -1498,11 +1524,11 @@
         private System.Windows.Forms.Label lblProjectName;
         private System.Windows.Forms.TextBox txtProjectName;
         private System.Windows.Forms.Panel pnlSumDate;
-        private System.Windows.Forms.Label lblSumDate;
-        private System.Windows.Forms.TextBox txtSumDate;
+        private System.Windows.Forms.Label lblWorkingDate;
+        private System.Windows.Forms.TextBox txtWorkingDate;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.DateTimePicker dtpkEndDate;
-        private System.Windows.Forms.Label starEndDate;
+        private System.Windows.Forms.Label starWorkingDate;
         private System.Windows.Forms.Label lblEndDate;
         private System.Windows.Forms.Panel pnlStartDate;
         private System.Windows.Forms.DateTimePicker dtpkStartDate;
@@ -1581,5 +1607,7 @@
         private System.Windows.Forms.DataGridView dtgvProject;
         private System.Windows.Forms.Label lblTotalPercentage;
         private System.Windows.Forms.Button btnTurnoffEditing;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }

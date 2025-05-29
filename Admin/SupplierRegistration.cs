@@ -77,6 +77,7 @@ namespace JRSApplication
 
         private void CustomizeDataGridView()
         {
+            dtgvSupplier.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dtgvSupplier.BorderStyle = BorderStyle.None;
             dtgvSupplier.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
             dtgvSupplier.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;

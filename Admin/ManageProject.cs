@@ -31,8 +31,10 @@ namespace JRSApplication
         // 🟢 ใช้เก็บเฟสที่กำลังแก้ไข
         private ProjectPhase currentEditingPhase = null;
 
-        //การจัดการ PDF
-        private Project projectFile = new Project(); // ✅ กำหนดค่าเริ่มต้น
+        //file PDF
+        private byte[] fileConstructionBytes;
+        private byte[] fileDemolitionBytes;
+
 
         public ManageProject()
         {
@@ -59,8 +61,8 @@ namespace JRSApplication
                 dtgvProject.Columns.Add("ProjectEnd", "วันที่สิ้นสุดโครงการ");
                 dtgvProject.Columns.Add("ProjectBudget", "งบประมาณ (บาท)");
                 dtgvProject.Columns.Add("CurrentPhaseNumber", "จำนวนเฟสงาน");
-                dtgvProject.Columns.Add("CustomerName", "ชื่อลูกค้า");
-                dtgvProject.Columns.Add("EmployeeName", "ชื่อผู้ดูแลโครงการ");
+                dtgvProject.Columns.Add("CustomerFullName", "ลูกค้า");
+                dtgvProject.Columns.Add("EmployeeFullName", "ผู้ดูแลโครงการ");
 
                 // ✅ ปรับแต่งคอลัมน์
                 dtgvProject.Columns["ProjectID"].Width = 80;
@@ -90,13 +92,13 @@ namespace JRSApplication
                 dtgvProject.Columns["CurrentPhaseNumber"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dtgvProject.Columns["CurrentPhaseNumber"].ReadOnly = true;
 
-                dtgvProject.Columns["CustomerName"].Width = 150;
-                dtgvProject.Columns["CustomerName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dtgvProject.Columns["CustomerName"].ReadOnly = true;
+                dtgvProject.Columns["CustomerFullName"].Width = 150;
+                dtgvProject.Columns["CustomerFullName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dtgvProject.Columns["CustomerFullName"].ReadOnly = true;
 
-                dtgvProject.Columns["EmployeeName"].Width = 150;
-                dtgvProject.Columns["EmployeeName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dtgvProject.Columns["EmployeeName"].ReadOnly = true;
+                dtgvProject.Columns["EmployeeFullName"].Width = 150;
+                dtgvProject.Columns["EmployeeFullName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dtgvProject.Columns["EmployeeFullName"].ReadOnly = true;
 
                 // ✅ ใช้ฟังก์ชันตกแต่ง
                 CustomizeDataGridViewProject();
@@ -105,6 +107,7 @@ namespace JRSApplication
 
         private void CustomizeDataGridViewProject()
         {
+            dtgvProject.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dtgvProject.BorderStyle = BorderStyle.None;
             dtgvProject.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
             dtgvProject.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
@@ -159,13 +162,13 @@ namespace JRSApplication
         }
         private void LoadProjectDetails(int projectId)
         {
-            ProjectDAL projectDAL = new ProjectDAL();
-            Project project = projectDAL.GetProjectDetailsById(projectId);
+            //ProjectDAL projectDAL = new ProjectDAL();
+            //Project project = projectDAL.GetProjectDetailsById(projectId);
 
-            if (project != null)
-            {
-                //ต้องเรียกอะไรบ้าง
-            }
+            //if (project != null)
+            //{
+            //    //ต้องเรียกอะไรบ้าง
+            //}
         }
         private void dtgvProject_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -339,6 +342,24 @@ namespace JRSApplication
             decimal totalBudget = decimal.Parse(txtBudget.Text.Replace(",", ""));
             decimal phaseBudget = (totalBudget * phasePercent) / 100;
             int phaseNumber = int.Parse(cmbPhaseNumber.SelectedItem.ToString());
+            // ✅ รวมเปอร์เซ็นต์ทั้งหมดก่อนเพิ่ม
+            decimal totalPhasePercent = projectPhases.Sum(p => p.PhasePercent);
+
+            if (btnAddPhase.Text == "บันทึก" && currentEditingPhase != null)
+            {
+                // ถ้าแก้ไขเฟสเดิม ให้นำเปอร์เซ็นต์เดิมออกก่อนรวม
+                totalPhasePercent -= currentEditingPhase.PhasePercent;
+            }
+
+            // ✅ ตรวจสอบว่าไม่เกิน 100%
+            if (totalPhasePercent + phasePercent > 100)
+            {
+                MessageBox.Show($"เปอร์เซ็นต์รวมของเฟสเกิน 100%! ({totalPhasePercent + phasePercent}%)",
+                                "แจ้งเตือน",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
 
             if (btnAddPhase.Text == "บันทึก" && currentEditingPhase != null)
             {
@@ -523,16 +544,19 @@ namespace JRSApplication
                     CurrentPhaseNumber = int.Parse(cmbCurrentPhaseNumber.SelectedItem.ToString()),
                     Remark = txtRemark.Text.Trim(),
                     ProjectNumber = txtNumber.Text.Trim(),
-
-                    ConstructionBlueprint = projectFile.ConstructionBlueprint, // ✅ ต้องมี
-                    DemolitionModel = projectFile.DemolitionModel,              // ✅ ไม่มีก็ได้
-
                     EmployeeID = int.Parse(selectedEmployeeID),
                     CustomerID = int.Parse(selectedCustomerID)
                 };
 
+                // ✅ สร้าง ProjectFile แยกต่างหาก
+                ProjectFile projectFile = new ProjectFile
+                {
+                    ProjectID = projectID,
+                    ConstructionBlueprint = fileConstructionBytes, // สมมุติคุณมีข้อมูลไฟล์ในตัวแปรนี้
+                    DemolitionModel = fileDemolitionBytes         // หรือ null ได้
+                };
 
-                bool success = dal.InsertProjectWithPhases(project, projectPhases);
+                bool success = dal.InsertProjectWithPhases(project, projectPhases, fileConstructionBytes, fileDemolitionBytes);
 
                 if (success)
                 {
@@ -569,31 +593,31 @@ namespace JRSApplication
         private void btnDelete_Click(object sender, EventArgs e)
         {
             //ลบ
-            if (dtgvProject.SelectedRows.Count == 0)
-            {
-                MessageBox.Show("กรุณาเลือกโครงการที่ต้องการลบ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            //if (dtgvProject.SelectedRows.Count == 0)
+            //{
+            //    MessageBox.Show("กรุณาเลือกโครงการที่ต้องการลบ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
 
-            // 🔍 ดึง ProjectID จากแถวที่เลือก
-            int selectedProjectID = Convert.ToInt32(dtgvProject.SelectedRows[0].Cells["ProjectID"].Value);
+            //// 🔍 ดึง ProjectID จากแถวที่เลือก
+            //int selectedProjectID = Convert.ToInt32(dtgvProject.SelectedRows[0].Cells["ProjectID"].Value);
 
-            var confirm = MessageBox.Show("คุณแน่ใจหรือไม่ว่าต้องการลบโครงการนี้?", "ยืนยันการลบ", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (confirm == DialogResult.Yes)
-            {
-                ProjectDAL dal = new ProjectDAL();
-                bool success = dal.DeleteProjectWithPhases(selectedProjectID);
+            //var confirm = MessageBox.Show("คุณแน่ใจหรือไม่ว่าต้องการลบโครงการนี้?", "ยืนยันการลบ", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            //if (confirm == DialogResult.Yes)
+            //{
+            //    ProjectDAL dal = new ProjectDAL();
+            //    bool success = dal.DeleteProjectWithPhases(selectedProjectID);
 
-                if (success)
-                {
-                    MessageBox.Show("ลบโครงการเรียบร้อย", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadProjectData(); // โหลดข้อมูลใหม่
-                }
-                else
-                {
-                    MessageBox.Show("เกิดข้อผิดพลาดในการลบโครงการ", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            //    if (success)
+            //    {
+            //        MessageBox.Show("ลบโครงการเรียบร้อย", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //        LoadProjectData(); // โหลดข้อมูลใหม่
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("เกิดข้อผิดพลาดในการลบโครงการ", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    }
+            //}
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -611,8 +635,9 @@ namespace JRSApplication
             txtPhaseDetail.Enabled = true;
             txtPercentPhase.Enabled = true;
 
+            txtWorkingDate.Enabled = true;
             dtpkStartDate.Enabled = true;
-            dtpkEndDate.Enabled = true;
+            //dtpkEndDate.Enabled = true;
 
             cmbCurrentPhaseNumber.Enabled = true;
             cmbPhaseNumber.Enabled = true;
@@ -637,8 +662,9 @@ namespace JRSApplication
             txtPhaseDetail.Enabled = false;
             txtPercentPhase.Enabled = false;
 
+            txtWorkingDate.Enabled = true;
             dtpkStartDate.Enabled = false;
-            dtpkEndDate.Enabled = false;
+            //dtpkEndDate.Enabled = false;
 
             cmbCurrentPhaseNumber.Enabled = false;
             cmbPhaseNumber.Enabled = false;
@@ -662,6 +688,8 @@ namespace JRSApplication
             txtProjectAddress.ReadOnly = false;
             txtPhaseDetail.ReadOnly = false;
             txtPercentPhase.ReadOnly = false;
+            //แก้ไขใหม่
+            txtWorkingDate.ReadOnly = false;
         }
         private void ReadOnlyControls_close()
         {
@@ -673,6 +701,8 @@ namespace JRSApplication
             txtProjectAddress.ReadOnly = true;
             txtPhaseDetail.ReadOnly = true;
             txtPercentPhase.ReadOnly = true;
+            //แก้ไขใหม่
+            txtWorkingDate.ReadOnly = true;
         }
         private void ClearForm()
         {
@@ -702,10 +732,15 @@ namespace JRSApplication
             txtEmployeeName.Text = "";
             txtEmployeeLastName.Text = "";
             txtEmployeeRole.Text = "";
+            //แก้ไขใหม่
+            txtWorkingDate.Text = "";
+
 
             btnInsertBlueprintFile.Text = "เลือกไฟล์";
             btnInsertDemolitionFile.Text = "เลือกไฟล์";
-            projectFile = new Project(); // รีเซ็ตตัวแปรเก็บไฟล์
+            //projectFile = new ProjectFile(); // รีเซ็ตตัวแปรเก็บไฟล์
+            fileConstructionBytes = null;
+            fileDemolitionBytes = null;
 
             // ✔️ ล้าง phase
             ClearPhaseData();
@@ -814,36 +849,69 @@ namespace JRSApplication
         //-----------------------------------------------------------------------------------------------------------------------------------------
 
 
-        //คำนวณจำนวนวันของโครงการ
-        private void CalculateProjectDuration()
+        //คำนวณจำนวนวันของโครงการ 
+        private void CalculateEndDateFromWorkingDays()
         {
-            // ตรวจสอบว่า วันที่เริ่มต้นและวันที่สิ้นสุดถูกต้องหรือไม่
-            if (dtpkEndDate.Value >= dtpkStartDate.Value)
+            // ตรวจสอบค่าที่ป้อน
+            if (!int.TryParse(txtWorkingDate.Text.Trim(), out int workingDays) || workingDays <= 0)
             {
-                // คำนวณจำนวนวัน
-                int totalDays = (dtpkEndDate.Value - dtpkStartDate.Value).Days;
+                MessageBox.Show("กรุณากรอกจำนวนวันทำงานให้ถูกต้อง");
+                return;
+            }
 
-                // แสดงผลที่ txtSumDate
-                txtSumDate.Text = totalDays + " วัน";
-            }
-            else
+            DateTime startDate = dtpkStartDate.Value;
+            DateTime currentDate = startDate;
+            int countedDays = 0;
+
+            while (countedDays < workingDays)
             {
-                // ถ้าผู้ใช้เลือกวันสิ้นสุดที่น้อยกว่าวันเริ่มต้น
-                txtSumDate.Text = "กรุณาเลือกวันที่ให้ถูกต้อง";
+                currentDate = currentDate.AddDays(1);
+
+                if (currentDate.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    countedDays++;
+                }
             }
+
+            // 🔔 ตรวจสอบว่าตรงกับวันอาทิตย์พอดีไหม
+            if (currentDate.DayOfWeek == DayOfWeek.Sunday)
+            {
+                DialogResult result = MessageBox.Show(
+                    "วันที่สิ้นสุดโครงการตรงกับวันอาทิตย์ คุณต้องการขยายระยะเวลาอีก 1 วันหรือไม่?",
+                    "ยืนยันการเปลี่ยนแปลง",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (result == DialogResult.Yes)
+                {
+                    //  ยืนยัน -> เพิ่มวันทำงานอีก 1 วัน และคำนวณใหม่
+                    txtWorkingDate.Text = (workingDays + 1).ToString();
+                    CalculateEndDateFromWorkingDays(); // รีคำนวณใหม่
+                    return;
+                }
+                else
+                {
+                    // ❌ ไม่ยืนยัน -> ผู้ใช้แก้ไขเอง
+                    MessageBox.Show("กรุณาแก้ไขระยะเวลาทำงานเพื่อหลีกเลี่ยงวันอาทิตย์ก่อนบันทึก", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
+            // ✅ ตั้งค่า EndDate ที่คำนวณได้
+            dtpkEndDate.Value = currentDate;
         }
+
         private void dtpkStartDate_ValueChanged(object sender, EventArgs e)
         {
-            CalculateProjectDuration(); // คำนวณใหม่เมื่อเปลี่ยนวันที่เริ่มต้น
+            CalculateEndDateFromWorkingDays();
         }
-        private void dtpkEndDate_ValueChanged(object sender, EventArgs e)
+        private void txtWorkingDate_TextChanged(object sender, EventArgs e)
         {
-            CalculateProjectDuration(); // คำนวณใหม่เมื่อเปลี่ยนวันที่สิ้นสุด
+            CalculateEndDateFromWorkingDays();
         }
         //-----------------------------------------------------------------------------------------------------------------------------------------
         //-----------------------------------------------------------------------------------------------------------------------------------------
-
-        
 
         private byte[] SelectFileAndSetButtonText(Button button)
         {
@@ -860,38 +928,40 @@ namespace JRSApplication
                     // ✅ ตรวจสอบไฟล์ PDF หรือไม่
                     if (Path.GetExtension(selectedFile).ToLower() == ".pdf")
                     {
-                        string fileName = Path.GetFileName(selectedFile);
-                        button.Text = fileName;
-                        Console.WriteLine("ไฟล์ที่เลือก: " + fileName);  // ✅ Debug Log
+                        FileInfo fileInfo = new FileInfo(selectedFile);
 
-                        return File.ReadAllBytes(selectedFile); // ✅ แปลงไฟล์เป็น byte[]
+                        // ✅ ตรวจสอบขนาดไฟล์ไม่เกิน 50MB
+                        if (fileInfo.Length <= 50 * 1024 * 1024)
+                        {
+                            string fileName = Path.GetFileName(selectedFile);
+                            button.Text = fileName;
+                            Console.WriteLine("ไฟล์ที่เลือก: " + fileName); // ☑️ Debug Log
+
+                            return File.ReadAllBytes(selectedFile); // ☑️ แปลงไฟล์เป็น byte[]
+                        }
+                        else
+                        {
+                            MessageBox.Show("ขนาดไฟล์เกิน 50MB", "ขนาดไฟล์ไม่ถูกต้อง", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("กรุณาเลือกไฟล์ PDF เท่านั้น!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("กรุณาเลือกไฟล์ PDF เท่านั้น!", "ชนิดไฟล์ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
             }
 
-            return null; // ❌ ไม่มีไฟล์ถูกเลือก
+            return null; 
         }
+
         private void btnInsertBlueprintFile_Click(object sender, EventArgs e)
         {
-            if (projectFile == null)
-                projectFile = new Project();  // ✅ ป้องกัน null
-
-            byte[] fileData = SelectFileAndSetButtonText(btnInsertBlueprintFile);
-            if (fileData != null)
-                projectFile.ConstructionBlueprint = fileData;  // ✅ ต้องมี
+            fileConstructionBytes = SelectFileAndSetButtonText(btnInsertBlueprintFile);
         }
 
         private void btnInsertDemolitionFile_Click(object sender, EventArgs e)
         {
-            if (projectFile == null)
-                projectFile = new Project();  // ✅ ป้องกัน null
-
-            byte[] fileData = SelectFileAndSetButtonText(btnInsertDemolitionFile);
-            projectFile.DemolitionModel = fileData;  // ✅ จะ null ก็ได้
+            fileDemolitionBytes = SelectFileAndSetButtonText(btnInsertDemolitionFile);
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -942,7 +1012,7 @@ namespace JRSApplication
                 MessageBox.Show("วันที่สิ้นสุดโครงการต้องไม่น้อยกว่าวันที่เริ่มต้น", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 dtpkEndDate.Focus();
                 starStartDate.Visible = true;
-                starEndDate.Visible = true;
+                starWorkingDate.Visible = true;
                 return false;
             }
             else
@@ -1020,27 +1090,20 @@ namespace JRSApplication
                 starRemark.Visible = false;
             }
             // ✅ ตรวจสอบว่ามีไฟล์ blueprint หรือไม่
-            if (projectFile == null || projectFile.ConstructionBlueprint == null)
+            if (fileConstructionBytes == null)
             {
-                MessageBox.Show("กรุณาเลือกไฟล์แบบแปลนโครงการ (Blueprint) ก่อนบันทึก!",
-                    "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "กรุณาเลือกไฟล์แบบแปลนโครงการ (Blueprint) ก่อนบันทึก!",
+                    "ข้อมูลผิดพลาด",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 return false;
             }
 
             else
             {
-
-            }
-            // งง 
-            if (string.IsNullOrWhiteSpace(btnInsertBlueprintFile.Text) || btnInsertBlueprintFile.Text == "เลือกไฟล์")
-            {
-                MessageBox.Show("กรุณาเลือกไฟล์แบบก่อสร้าง", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                starBlueprint.Visible = true; 
-                return false;
-            }
-            else
-            {
-                starBlueprint.Visible = false; 
+                starBlueprint.Visible = false;
             }
 
             // ✅ ตรวจสอบเปอร์เซ็นต์รวมของเฟส (ต้องเท่ากับ 100%)

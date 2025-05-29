@@ -78,7 +78,7 @@
             this.pnlIdCompany.Controls.Add(this.starIdCompany);
             this.pnlIdCompany.Controls.Add(this.lblIdCompany);
             this.pnlIdCompany.Controls.Add(this.txtJuristic);
-            this.pnlIdCompany.Location = new System.Drawing.Point(387, 149);
+            this.pnlIdCompany.Location = new System.Drawing.Point(420, 54);
             this.pnlIdCompany.Margin = new System.Windows.Forms.Padding(2);
             this.pnlIdCompany.Name = "pnlIdCompany";
             this.pnlIdCompany.Size = new System.Drawing.Size(331, 74);
@@ -126,7 +126,7 @@
             this.pnlName.Controls.Add(this.starCompanyName);
             this.pnlName.Controls.Add(this.lblCompanyName);
             this.pnlName.Controls.Add(this.txtName);
-            this.pnlName.Location = new System.Drawing.Point(387, 47);
+            this.pnlName.Location = new System.Drawing.Point(70, 54);
             this.pnlName.Margin = new System.Windows.Forms.Padding(2);
             this.pnlName.Name = "pnlName";
             this.pnlName.Size = new System.Drawing.Size(331, 74);
@@ -173,7 +173,7 @@
             // 
             this.lblToppic1.AutoSize = true;
             this.lblToppic1.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblToppic1.Location = new System.Drawing.Point(603, 3);
+            this.lblToppic1.Location = new System.Drawing.Point(70, 5);
             this.lblToppic1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblToppic1.Name = "lblToppic1";
             this.lblToppic1.Size = new System.Drawing.Size(318, 37);
@@ -211,10 +211,9 @@
             this.txtAddress.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAddress.Location = new System.Drawing.Point(0, 37);
             this.txtAddress.Margin = new System.Windows.Forms.Padding(2);
-            this.txtAddress.Multiline = true;
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.ReadOnly = true;
-            this.txtAddress.Size = new System.Drawing.Size(441, 215);
+            this.txtAddress.Size = new System.Drawing.Size(441, 36);
             this.txtAddress.TabIndex = 2;
             this.txtAddress.TextChanged += new System.EventHandler(this.txtAddress_TextChanged);
             // 
@@ -223,10 +222,10 @@
             this.pnlAddress.Controls.Add(this.starAddress);
             this.pnlAddress.Controls.Add(this.lblAddress);
             this.pnlAddress.Controls.Add(this.txtAddress);
-            this.pnlAddress.Location = new System.Drawing.Point(767, 47);
+            this.pnlAddress.Location = new System.Drawing.Point(70, 144);
             this.pnlAddress.Margin = new System.Windows.Forms.Padding(2);
             this.pnlAddress.Name = "pnlAddress";
-            this.pnlAddress.Size = new System.Drawing.Size(443, 254);
+            this.pnlAddress.Size = new System.Drawing.Size(443, 74);
             this.pnlAddress.TabIndex = 6;
             // 
             // lblToppic2
@@ -245,7 +244,7 @@
             this.dtgvSupplier.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgvSupplier.Location = new System.Drawing.Point(30, 86);
             this.dtgvSupplier.Name = "dtgvSupplier";
-            this.dtgvSupplier.Size = new System.Drawing.Size(1525, 270);
+            this.dtgvSupplier.Size = new System.Drawing.Size(1525, 522);
             this.dtgvSupplier.TabIndex = 4;
             this.dtgvSupplier.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvSupplier_CellClick);
             // 
@@ -255,10 +254,10 @@
             this.pnlSuppilerdata.Controls.Add(this.searchboxSuppiler);
             this.pnlSuppilerdata.Controls.Add(this.lblToppic2);
             this.pnlSuppilerdata.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlSuppilerdata.Location = new System.Drawing.Point(0, 585);
+            this.pnlSuppilerdata.Location = new System.Drawing.Point(0, 343);
             this.pnlSuppilerdata.Margin = new System.Windows.Forms.Padding(2);
             this.pnlSuppilerdata.Name = "pnlSuppilerdata";
-            this.pnlSuppilerdata.Size = new System.Drawing.Size(1584, 369);
+            this.pnlSuppilerdata.Size = new System.Drawing.Size(1584, 611);
             this.pnlSuppilerdata.TabIndex = 7;
             // 
             // searchboxSuppiler
@@ -274,7 +273,7 @@
             // 
             this.pnlStep.BackColor = System.Drawing.Color.Black;
             this.pnlStep.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlStep.Location = new System.Drawing.Point(0, 575);
+            this.pnlStep.Location = new System.Drawing.Point(0, 333);
             this.pnlStep.Margin = new System.Windows.Forms.Padding(2);
             this.pnlStep.Name = "pnlStep";
             this.pnlStep.Size = new System.Drawing.Size(1584, 10);
@@ -287,7 +286,7 @@
             this.pnlActionMenu.Controls.Add(this.btnAdd);
             this.pnlActionMenu.Controls.Add(this.btnSave);
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlActionMenu.Location = new System.Drawing.Point(0, 481);
+            this.pnlActionMenu.Location = new System.Drawing.Point(0, 239);
             this.pnlActionMenu.Margin = new System.Windows.Forms.Padding(2);
             this.pnlActionMenu.Name = "pnlActionMenu";
             this.pnlActionMenu.Size = new System.Drawing.Size(1584, 94);
@@ -356,7 +355,7 @@
             this.pnlInfomation.Location = new System.Drawing.Point(0, 0);
             this.pnlInfomation.Margin = new System.Windows.Forms.Padding(2);
             this.pnlInfomation.Name = "pnlInfomation";
-            this.pnlInfomation.Size = new System.Drawing.Size(1584, 481);
+            this.pnlInfomation.Size = new System.Drawing.Size(1584, 239);
             this.pnlInfomation.TabIndex = 4;
             // 
             // subInfo
@@ -370,7 +369,7 @@
             this.subInfo.Controls.Add(this.lblToppic1);
             this.subInfo.Location = new System.Drawing.Point(30, 9);
             this.subInfo.Name = "subInfo";
-            this.subInfo.Size = new System.Drawing.Size(1525, 463);
+            this.subInfo.Size = new System.Drawing.Size(1525, 227);
             this.subInfo.TabIndex = 1;
             // 
             // pnlEmail
@@ -378,7 +377,7 @@
             this.pnlEmail.Controls.Add(this.starEmail);
             this.pnlEmail.Controls.Add(this.lblEmail);
             this.pnlEmail.Controls.Add(this.txtEmail);
-            this.pnlEmail.Location = new System.Drawing.Point(387, 353);
+            this.pnlEmail.Location = new System.Drawing.Point(1116, 54);
             this.pnlEmail.Margin = new System.Windows.Forms.Padding(2);
             this.pnlEmail.Name = "pnlEmail";
             this.pnlEmail.Size = new System.Drawing.Size(331, 74);
@@ -426,7 +425,7 @@
             this.pnlPhone.Controls.Add(this.starPhone);
             this.pnlPhone.Controls.Add(this.lblPhone);
             this.pnlPhone.Controls.Add(this.txtPhone);
-            this.pnlPhone.Location = new System.Drawing.Point(387, 251);
+            this.pnlPhone.Location = new System.Drawing.Point(769, 54);
             this.pnlPhone.Margin = new System.Windows.Forms.Padding(2);
             this.pnlPhone.Name = "pnlPhone";
             this.pnlPhone.Size = new System.Drawing.Size(331, 74);

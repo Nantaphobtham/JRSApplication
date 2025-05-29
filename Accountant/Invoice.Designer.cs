@@ -74,7 +74,7 @@
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.searchboxControl2 = new JRSApplication.SearchboxControl();
             this.label20 = new System.Windows.Forms.Label();
-            this.dataGridView3 = new System.Windows.Forms.DataGridView();
+            //this.dataGridView3 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();

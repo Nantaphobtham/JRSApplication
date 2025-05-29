@@ -56,6 +56,8 @@ namespace JRSApplication
         private void CustomizeDataGridView()
         {
             // ✅ ตั้งค่าพื้นฐาน
+            dtgvCustomer.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
             dtgvCustomer.BorderStyle = BorderStyle.None;
             dtgvCustomer.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray; // แถวเว้นแถวสีเทา
             dtgvCustomer.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
