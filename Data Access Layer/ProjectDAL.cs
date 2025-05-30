@@ -20,20 +20,20 @@ namespace JRSApplication.Data_Access_Layer
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 string sql = @"
-            SELECT 
-                p.pro_id, 
-                p.pro_name, 
-                p.pro_detail, 
-                p.pro_address, 
-                p.pro_budget, 
-                p.pro_start, 
-                p.pro_end, 
-                p.pro_currentphasenumber, 
-                CONCAT(c.cus_name, ' ', c.cus_lname) AS CustomerFullName,
-                CONCAT(e.emp_name, ' ', e.emp_lname) AS EmployeeFullName
-            FROM project p
-            LEFT JOIN customer c ON p.cus_id = c.cus_id
-            LEFT JOIN employee e ON p.emp_id = e.emp_id";
+                        SELECT 
+                            p.pro_id, 
+                            p.pro_name, 
+                            p.pro_detail, 
+                            p.pro_address, 
+                            p.pro_budget, 
+                            p.pro_start, 
+                            p.pro_end, 
+                            p.pro_currentphasenumber, 
+                            CONCAT(c.cus_name, ' ', c.cus_lname) AS CustomerFullName,
+                            CONCAT(e.emp_name, ' ', e.emp_lname) AS EmployeeFullName
+                        FROM project p
+                        LEFT JOIN customer c ON p.cus_id = c.cus_id
+                        LEFT JOIN employee e ON p.emp_id = e.emp_id";
 
                 using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                 {
@@ -53,7 +53,7 @@ namespace JRSApplication.Data_Access_Layer
                                 ProjectEnd = reader.GetDateTime("pro_end"),
                                 CurrentPhaseNumber = reader.IsDBNull(reader.GetOrdinal("pro_currentphasenumber")) ? 0 : reader.GetInt32("pro_currentphasenumber"),
 
-                                // ✅ แสดงชื่อ-นามสกุลรวม
+                                //  แสดงชื่อ-นามสกุลรวม
                                 CustomerName = reader.IsDBNull(reader.GetOrdinal("CustomerFullName")) ? "ไม่ระบุ" : reader.GetString("CustomerFullName"),
                                 EmployeeName = reader.IsDBNull(reader.GetOrdinal("EmployeeFullName")) ? "ไม่ระบุ" : reader.GetString("EmployeeFullName")
                             });
@@ -83,8 +83,8 @@ namespace JRSApplication.Data_Access_Layer
                                 p.pro_currentphasenumber AS CurrentPhaseNumber,
 
                                 --  Full name ลูกค้า / พนักงาน
-                                CONCAT(c.cus_name, ' ', c.cus_surname) AS CustomerFullName,
-                                CONCAT(e.emp_name, ' ', e.emp_surname) AS ProjectManagerFullName,
+                                CONCAT(c.cus_name, ' ', c.cus_lname) AS CustomerFullName,
+                                CONCAT(e.emp_name, ' ', e.emp_lname) AS ProjectManagerFullName,
 
                                 --  ดึงไฟล์จาก project_files
                                 pf.con_blueprint AS ConstructionBlueprint,
@@ -144,8 +144,6 @@ namespace JRSApplication.Data_Access_Layer
             return project;
         }
 
-
-
         public int GenerateProjectID()
         {
             int newID = int.Parse(DateTime.Now.ToString("yyMM") + "000"); // เริ่มที่ 2503000 เช่น ถ้าเป็นปี 2025 เดือน 03 = 2503000
@@ -176,7 +174,7 @@ namespace JRSApplication.Data_Access_Layer
                 {
                     try
                     {
-                        // ✅ 1️ Insert into project
+                        //  1️ Insert into project
                         string sqlProject = @"
                                 INSERT INTO project (pro_id, pro_name, pro_detail, pro_address, pro_budget, pro_start, pro_end,
                                                      pro_currentphasenumber, pro_remark, pro_number, emp_id, cus_id)
@@ -201,7 +199,7 @@ namespace JRSApplication.Data_Access_Layer
                             cmd.ExecuteNonQuery();
                         }
 
-                        // ✅ 2️ Insert into project_phase
+                        //  2️ Insert into project_phase
                         foreach (var phase in phases)
                         {
                             string sqlPhase = @"
@@ -220,7 +218,7 @@ namespace JRSApplication.Data_Access_Layer
                             }
                         }
 
-                        // ✅ 3️ Insert into project_files (เฉพาะเมื่อ ConstructionBlueprint มีข้อมูล)
+                        //  3️ Insert into project_files (เฉพาะเมื่อ ConstructionBlueprint มีข้อมูล)
                         if (constructionBlueprint != null)
                         {
                             string sqlFile = @"
@@ -238,7 +236,7 @@ namespace JRSApplication.Data_Access_Layer
                             }
                         }
 
-                        // ✅ 4️ Commit
+                        //  4️ Commit
                         transaction.Commit();
                         isSuccess = true;
                     }

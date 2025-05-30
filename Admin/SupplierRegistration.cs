@@ -77,33 +77,40 @@ namespace JRSApplication
 
         private void CustomizeDataGridView()
         {
+            // ✅ ตั้งค่าพื้นฐาน
             dtgvSupplier.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
             dtgvSupplier.BorderStyle = BorderStyle.None;
-            dtgvSupplier.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dtgvSupplier.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray; // แถวเว้นแถวสีเทา
             dtgvSupplier.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dtgvSupplier.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
-            dtgvSupplier.DefaultCellStyle.SelectionForeColor = Color.White;
+            dtgvSupplier.DefaultCellStyle.SelectionBackColor = Color.DarkBlue; // สีพื้นหลังของแถวที่เลือก
+            dtgvSupplier.DefaultCellStyle.SelectionForeColor = Color.White; // สีตัวอักษรของแถวที่เลือก
             dtgvSupplier.BackgroundColor = Color.White;
 
+            // ✅ ตั้งค่าหัวตาราง (Header)
             dtgvSupplier.EnableHeadersVisualStyles = false;
             dtgvSupplier.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dtgvSupplier.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dtgvSupplier.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dtgvSupplier.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
-            dtgvSupplier.ColumnHeadersHeight = 30;
+            dtgvSupplier.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+            dtgvSupplier.ColumnHeadersHeight = 30; // ความสูงของแถวหัวตาราง
 
-            dtgvSupplier.DefaultCellStyle.Font = new Font("Segoe UI", 12);
-            dtgvSupplier.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dtgvSupplier.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dtgvSupplier.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
+            // ✅ ตั้งค่าแถวข้อมูล
+            dtgvSupplier.DefaultCellStyle.Font = new Font("Segoe UI", 15);
+            dtgvSupplier.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter; // ✅ จัดข้อความให้อยู่กึ่งกลาง
+            dtgvSupplier.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter; // ✅ จัดหัวตารางให้อยู่กึ่งกลาง
+            dtgvSupplier.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3); // ✅ ปรับ Padding
 
-            dtgvSupplier.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dtgvSupplier.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dtgvSupplier.RowTemplate.Height = 30;
+            // ✅ ปรับขนาดคอลัมน์และแถว
+            dtgvSupplier.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // ✅ ปรับให้คอลัมน์ขยายเต็ม
+            dtgvSupplier.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells; // ✅ ปรับขนาดแถวอัตโนมัติ
+            dtgvSupplier.RowTemplate.Height = 30; // ✅ กำหนดความสูงของแถวให้เหมาะสม
 
+            // ✅ ซ่อนเส้นตารางแนวตั้ง
             dtgvSupplier.GridColor = Color.LightGray;
-            dtgvSupplier.RowHeadersVisible = false;
+            dtgvSupplier.RowHeadersVisible = false; // ✅ ซ่อนหมายเลขแถว
 
+            // ✅ ปิดการแก้ไขข้อมูลโดยตรง
             dtgvSupplier.ReadOnly = true;
             dtgvSupplier.AllowUserToAddRows = false;
             dtgvSupplier.AllowUserToResizeRows = false;

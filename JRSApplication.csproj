@@ -139,20 +139,20 @@
     <Compile Include="Admin\CustomerRegistration.Designer.cs">
       <DependentUpon>CustomerRegistration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\Customer.cs" />
-    <Compile Include="Components\Employee.cs" />
-    <Compile Include="Components\EmployeeAssignment.cs" />
-    <Compile Include="Components\Invoice.cs" />
-    <Compile Include="Components\InvoiceDetail.cs" />
-    <Compile Include="Components\PhaseWithStatus.cs" />
-    <Compile Include="Components\PhaseWorking.cs" />
-    <Compile Include="Components\Project.cs" />
-    <Compile Include="Components\ProjectPhase.cs" />
-    <Compile Include="Components\ProjectStatusEvaluator.cs" />
-    <Compile Include="Components\project_files.cs" />
-    <Compile Include="Components\Supplier.cs" />
-    <Compile Include="Components\WorkingPicture.cs" />
-    <Compile Include="Components\WorkStatus.cs" />
+    <Compile Include="Components\Models\Customer.cs" />
+    <Compile Include="Components\Models\Employee.cs" />
+    <Compile Include="Components\Models\EmployeeAssignment.cs" />
+    <Compile Include="Components\Models\Invoice.cs" />
+    <Compile Include="Components\Models\InvoiceDetail.cs" />
+    <Compile Include="Components\Models\PhaseWithStatus.cs" />
+    <Compile Include="Components\Models\PhaseWorking.cs" />
+    <Compile Include="Components\Models\Project.cs" />
+    <Compile Include="Components\Models\ProjectPhase.cs" />
+    <Compile Include="Components\Evaluators\ProjectStatusEvaluator.cs" />
+    <Compile Include="Components\Models\project_files.cs" />
+    <Compile Include="Components\Models\Supplier.cs" />
+    <Compile Include="Components\Models\WorkingPicture.cs" />
+    <Compile Include="Components\Evaluators\WorkStatus.cs" />
     <Compile Include="Data Access Layer\CustomerDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeAssignmentDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeDAL.cs" />
@@ -241,10 +241,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Components\SearchboxControl.cs">
+    <Compile Include="Components\Service\SearchboxControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\SearchboxControl.Designer.cs">
+    <Compile Include="Components\Service\SearchboxControl.Designer.cs">
       <DependentUpon>SearchboxControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Admin\UserManagementForm.cs">
@@ -265,13 +265,13 @@
     <Compile Include="ProjectManager\UpdateProjectPhase.Designer.cs">
       <DependentUpon>UpdateProjectPhase.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\SearchForm.cs">
+    <Compile Include="Components\Service\SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Components\SearchForm.Designer.cs">
+    <Compile Include="Components\Service\SearchForm.Designer.cs">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\SearchService.cs" />
+    <Compile Include="Components\Service\SearchService.cs" />
     <Compile Include="Sitesupervisor\PurchaseOrder.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -337,7 +337,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\SearchboxControl.resx">
+    <EmbeddedResource Include="Components\Service\SearchboxControl.resx">
       <DependentUpon>SearchboxControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Admin\UserManagementForm.resx">
@@ -349,7 +349,7 @@
     <EmbeddedResource Include="ProjectManager\UpdateProjectPhase.resx">
       <DependentUpon>UpdateProjectPhase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\SearchForm.resx">
+    <EmbeddedResource Include="Components\Service\SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sitesupervisor\PurchaseOrder.resx">
