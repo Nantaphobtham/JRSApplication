@@ -18,14 +18,29 @@ namespace JRSApplication
     {
         private bool isEditMode = false; // ✅ เช็คว่ากำลังแก้ไขหรือไม่
         private string selectedEmployeeID = ""; // ✅ เก็บรหัสพนักงานที่ถูกเลือก
+        private string currentHashedPassword = ""; // ✅ เก็บ Hash เดิมของ Password
 
         public UserManagementForm()
         {
             InitializeComponent();
             CustomizeDataGridView();
             LoadEmployeeData();
+            LoadRoles();
 
         }
+
+        private void LoadRoles()
+        {
+            cmbRole.Items.Clear();
+            cmbRole.Items.Add("Admin");
+            cmbRole.Items.Add("Projectmanager");
+            cmbRole.Items.Add("Sitesupervisor");
+            cmbRole.Items.Add("Accountant");
+
+            cmbRole.SelectedIndex = -1;
+        }
+
+
         //ตาราง
         private void LoadEmployeeData()
         {
@@ -33,6 +48,62 @@ namespace JRSApplication
             DataTable dt = dal.GetAllEmployees(); // ✅ ดึงข้อมูลจาก MySQL
             dtgvEmployee.DataSource = dt; // ✅ แสดงข้อมูลใน DataGridView
         }
+
+        private void dtgvEmployee_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dtgvEmployee.Rows[e.RowIndex];
+
+                // ✅ เก็บรหัสพนักงานที่เลือก
+                selectedEmployeeID = row.Cells["รหัสพนักงาน"].Value?.ToString();
+
+                // ✅ โหลดข้อมูลจาก DB เพื่อให้ได้ข้อมูลที่สมบูรณ์
+                EmployeeDAL dal = new EmployeeDAL();
+                DataTable dt = dal.GetEmployeeByIDtoUMNGT(selectedEmployeeID);
+
+                if (dt.Rows.Count > 0)
+                {
+                    DataRow dr = dt.Rows[0];
+
+                    txtName.Text = dr["ชื่อ"].ToString();
+                    txtLastname.Text = dr["นามสกุล"].ToString();
+                    txtUsername.Text = dr["ชื่อผู้ใช้"].ToString();
+                    txtPhone.Text = dr["เบอร์โทร"].ToString();
+                    txtEmail.Text = dr["อีเมล"].ToString();
+                    txtIdcard.Text = dr["เลขบัตรประชาชน"].ToString();
+                    txtAddress.Text = dr["ที่อยู่"].ToString();
+
+                    // ✅ โหลดตำแหน่งแบบปลอดภัย
+                    string role = dr["ตำแหน่ง"].ToString().Trim();
+                    if (cmbRole.Items.Contains(role))
+                    {
+                        cmbRole.SelectedItem = role;
+                    }
+                    else
+                    {
+                        cmbRole.SelectedIndex = -1;
+                    }
+
+                    ReadOnlyControlsOff();
+                    EnableControlsOff();
+
+                    txtPassword.Text = "********";
+                    txtConfirmPassword.Text = "********";
+
+                    originalUsername = txtUsername.Text.Trim();
+                    originalEmail = txtEmail.Text.Trim();
+                    originalIDCard = txtIdcard.Text.Trim();
+                }
+                else
+                {
+                    MessageBox.Show("ไม่สามารถโหลดข้อมูลพนักงานได้", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+
+
         private void CustomizeDataGridView()
         {
             // ✅ ตั้งค่าพื้นฐาน
@@ -72,6 +143,7 @@ namespace JRSApplication
             dtgvEmployee.AllowUserToAddRows = false;
             dtgvEmployee.AllowUserToResizeRows = false;
         }
+
         // ✅ ฟังก์ชันตรวจสอบค่าที่กรอกครบถ้วน
         private bool ValidateEmployeeData()
         {
@@ -161,26 +233,33 @@ namespace JRSApplication
             EnableControlsOn();
             ReadOnlyControlsOn();
             txtName.Focus();
+            ClearForm();
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (!ValidateEmployeeData()) return;
 
             EmployeeDAL dal = new EmployeeDAL();
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(txtPassword.Text);
+            // ✅ ตรวจสอบว่ามีการเปลี่ยน password หรือไม่
+            bool isPasswordChanged = txtPassword.Text != "********";
+            string finalPassword = isPasswordChanged || !isEditMode
+                ? BCrypt.Net.BCrypt.HashPassword(txtPassword.Text)
+                : currentHashedPassword;
+
 
             Employee emp = new Employee
             {
                 FirstName = txtName.Text.Trim(),
                 LastName = txtLastname.Text.Trim(),
                 Username = txtUsername.Text.Trim(),
-                Password = hashedPassword,
+                Password = finalPassword,
                 Phone = txtPhone.Text.Trim(),
                 Email = txtEmail.Text.Trim(),
                 Address = txtAddress.Text.Trim(),
                 IDCard = txtIdcard.Text.Trim(),
                 Role = cmbRole.SelectedItem.ToString()
             };
+
 
             bool success;
             if (isEditMode)
@@ -275,11 +354,18 @@ namespace JRSApplication
                 txtAddress.Text = row["ที่อยู่"].ToString();
                 cmbRole.SelectedItem = row["ตำแหน่ง"].ToString();
 
-                // ✅ เก็บค่า Username & Email เดิมไว้เพื่อตรวจสอบว่ามีการเปลี่ยนแปลงหรือไม่
+                // ✅ แสดง "********" แทน Hash จริง
+                txtPassword.Text = "********";
+                txtConfirmPassword.Text = "********";
+
+                // ✅ เก็บ Hash เดิมไว้ใน memory
+                currentHashedPassword = row["รหัสผ่าน"].ToString();
+
                 originalUsername = txtUsername.Text.Trim();
                 originalEmail = txtEmail.Text.Trim();
                 originalIDCard = txtIdcard.Text.Trim();
             }
+
 
             txtName.Focus(); // ✅ ให้โฟกัสไปที่ช่องชื่อ
         }
@@ -350,6 +436,35 @@ namespace JRSApplication
             txtAddress.Clear();
             cmbRole.SelectedIndex = -1;
         }
+
+        private void cbxShowPassword1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbxShowPassword1.Checked)
+            {
+                txtPassword.PasswordChar = '\0';
+                txtPassword.Text = currentHashedPassword;
+            }
+            else
+            {
+                txtPassword.PasswordChar = '*';
+                txtPassword.Text = "********";
+            }
+        }
+
+        private void cbxShowPassword2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbxShowPassword2.Checked)
+            {
+                txtConfirmPassword.PasswordChar = '\0';
+                txtConfirmPassword.Text = currentHashedPassword;
+            }
+            else
+            {
+                txtConfirmPassword.PasswordChar = '*';
+                txtConfirmPassword.Text = "********";
+            }
+        }
+
 
     }
 }

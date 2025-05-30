@@ -46,35 +46,35 @@ namespace JRSApplication.Data_Access_Layer
             return dt;
         }
         //รอเรียก
-        public Customer GetCustomerByIdtoProjectdata(int customerId)
-        {
-            Customer customer = null;
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                string sql = "SELECT * FROM customer WHERE cus_id = @CustomerID";
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@CustomerID", customerId);
-                    conn.Open();
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            customer = new Customer
-                            {
-                                CustomerID = reader.GetInt32("cus_id"),
-                                FirstName = reader.GetString("cus_name"),
-                                LastName = reader.GetString("cus_lname"),
-                                Email = reader.GetString("cus_email"),
-                                Phone = reader.GetString("cus_tel"),
-                                Address = reader.GetString("cus_address")
-                            };
-                        }
-                    }
-                }
-            }
-            return customer;
-        }
+        //public Customer GetCustomerByIdtoProjectdata(int customerId)
+        //{
+        //    Customer customer = null;
+        //    using (MySqlConnection conn = new MySqlConnection(connectionString))
+        //    {
+        //        string sql = "SELECT * FROM customer WHERE cus_id = @CustomerID";
+        //        using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+        //        {
+        //            cmd.Parameters.AddWithValue("@CustomerID", customerId);
+        //            conn.Open();
+        //            using (MySqlDataReader reader = cmd.ExecuteReader())
+        //            {
+        //                if (reader.Read())
+        //                {
+        //                    customer = new Customer
+        //                    {
+        //                        CustomerID = reader.GetInt32("cus_id"),
+        //                        FirstName = reader.GetString("cus_name"),
+        //                        LastName = reader.GetString("cus_lname"),
+        //                        Email = reader.GetString("cus_email"),
+        //                        Phone = reader.GetString("cus_tel"),
+        //                        Address = reader.GetString("cus_address")
+        //                    };
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return customer;
+        //}
 
         public string GenerateCustomerID()
         {
@@ -100,7 +100,10 @@ namespace JRSApplication.Data_Access_Layer
             bool exists = false;
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                string sql = "SELECT COUNT(*) FROM customer WHERE cus_id = @CustomerID OR cus_email = @Email OR cus_id_card = @IDCard";
+                string sql = @"SELECT COUNT(*) FROM customer 
+                       WHERE (cus_email = @Email OR cus_id_card = @IDCard) 
+                       AND cus_id != @CustomerID";  // ✅ ยกเว้นตัวเอง
+
                 using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@CustomerID", customerID);
@@ -113,39 +116,6 @@ namespace JRSApplication.Data_Access_Layer
                 }
             }
             return exists;
-        }
-
-        // ✅ 3️⃣ ตรวจสอบว่า ID, Email ซ้ำหรือไม่
-        public bool CheckDuplicateCustomer(string email, string phone, string name, string customerID)
-        {
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                conn.Open();
-
-                string query = "SELECT COUNT(*) FROM customer WHERE "
-                             + "(cus_email = @Email OR cus_tel = @Phone OR cus_name = @Name) ";
-
-                // ✅ ถ้ามี `supplierID` แสดงว่าเป็นการอัปเดต ไม่ต้องเช็คตัวเอง
-                if (!string.IsNullOrEmpty(customerID))
-                {
-                    query += " AND cus_id != @CustomerID";
-                }
-
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@Email", email);
-                    cmd.Parameters.AddWithValue("@Phone", phone);
-                    cmd.Parameters.AddWithValue("@Name", name);
-
-                    if (!string.IsNullOrEmpty(customerID))
-                    {
-                        cmd.Parameters.AddWithValue("@SupplierID", customerID);
-                    }
-
-                    int count = Convert.ToInt32(cmd.ExecuteScalar());
-                    return count > 0; // ✅ คืนค่า true ถ้าข้อมูลซ้ำ
-                }
-            }
         }
 
 
@@ -241,17 +211,17 @@ namespace JRSApplication.Data_Access_Layer
             // ตรวจสอบตัวเลือกที่ใช้ค้นหา
             switch (searchBy)
             {
-                case "ชื่อบริษัท":
-                    query += "customer_name LIKE @Keyword";
+                case "ชื่อ":
+                    query += "cus_name LIKE @Keyword";
                     break;
-                case "เลขทะเบียนนิติบุคคล":
-                    query += "customer_idcard LIKE @Keyword";
+                case "เลขบัตรประชาชน":
+                    query += "cus_id_card LIKE @Keyword";
                     break;
                 case "อีเมล":
-                    query += "customer_email LIKE @Keyword";
+                    query += "cus_email LIKE @Keyword";
                     break;
                 default:
-                    query = "SELECT * FROM customer"; // ถ้าไม่มีตัวเลือกให้ดึงข้อมูลทั้งหมด
+                    query = "SELECT * FROM customer";
                     break;
             }
 

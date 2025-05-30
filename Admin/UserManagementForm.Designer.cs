@@ -218,6 +218,7 @@
             this.cbxShowPassword2.TabIndex = 3;
             this.cbxShowPassword2.Text = "แสดงรหัสผ่าน";
             this.cbxShowPassword2.UseVisualStyleBackColor = true;
+            this.cbxShowPassword2.CheckedChanged += new System.EventHandler(this.cbxShowPassword2_CheckedChanged);
             // 
             // starConfirmPassword
             // 
@@ -325,6 +326,7 @@
             this.cbxShowPassword1.TabIndex = 3;
             this.cbxShowPassword1.Text = "แสดงรหัสผ่าน";
             this.cbxShowPassword1.UseVisualStyleBackColor = true;
+            this.cbxShowPassword1.CheckedChanged += new System.EventHandler(this.cbxShowPassword1_CheckedChanged);
             // 
             // starPassword
             // 
@@ -770,6 +772,7 @@
             this.dtgvEmployee.Name = "dtgvEmployee";
             this.dtgvEmployee.Size = new System.Drawing.Size(1525, 462);
             this.dtgvEmployee.TabIndex = 1;
+            this.dtgvEmployee.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvEmployee_CellClick);
             // 
             // searchboxUserData
             // 

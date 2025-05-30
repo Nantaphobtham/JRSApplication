@@ -20,6 +20,7 @@ namespace JRSApplication
         private string originalPhone = "";
         private string originalAddress = "";
         private string originalName = "";
+        private string originalIdCard = "";
 
 
         public CustomerRegistration()
@@ -44,14 +45,6 @@ namespace JRSApplication
 
             dtgvCustomer.DataSource = dt;
         }
-
-
-        //private void LoadCustomerData()
-        //{
-        //    CustomerDAL dal = new CustomerDAL();
-        //    DataTable dt = dal.GetAllCustomers(); // ✅ ดึงข้อมูลจาก MySQL
-        //    dtgvCustomer.DataSource = dt; // ✅ แสดงข้อมูลใน DataGridView
-        //}
 
         private void CustomizeDataGridView()
         {
@@ -93,6 +86,7 @@ namespace JRSApplication
             dtgvCustomer.AllowUserToAddRows = false;
             dtgvCustomer.AllowUserToResizeRows = false;
         }
+
         private void dtgvCustomer_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -111,23 +105,6 @@ namespace JRSApplication
             ReadOnlyControlsOff();
         }
 
-        private bool IsValidEmail(string email)
-        {
-            try
-            {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        private bool IsValidPhoneNumber(string phone)
-        {
-            return phone.All(char.IsDigit) && phone.Length >= 9 && phone.Length <= 15;
-        }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -141,61 +118,17 @@ namespace JRSApplication
 
             bool hasError = false;
 
-            if (string.IsNullOrWhiteSpace(firstName))
-            {
-                starName.Visible = true;
-                hasError = true;
-            }
-            else
-            {
-                starName.Visible = false;
-            }
+            // ✅ ตรวจช่องว่าง
+            if (string.IsNullOrWhiteSpace(firstName)) { starName.Visible = true; hasError = true; } else { starName.Visible = false; }
+            if (string.IsNullOrWhiteSpace(phone) || !IsValidPhoneNumber(phone)) { starPhone.Visible = true; hasError = true; } else { starPhone.Visible = false; }
+            if (string.IsNullOrWhiteSpace(email) || !IsValidEmail(email)) { starEmail.Visible = true; hasError = true; } else { starEmail.Visible = false; }
+            if (string.IsNullOrWhiteSpace(address)) { starAddress.Visible = true; hasError = true; } else { starAddress.Visible = false; }
 
-            if (string.IsNullOrWhiteSpace(phone) || !IsValidPhoneNumber(phone))
-            {
-                starPhone.Visible = true;
-                hasError = true;
-            }
-            else
-            {
-                starPhone.Visible = false;
-            }
-
-            if (string.IsNullOrWhiteSpace(email) || !IsValidEmail(email))
-            {
-                starEmail.Visible = true;
-                hasError = true;
-            }
-            else
-            {
-                starEmail.Visible = false;
-            }
-
-            if (string.IsNullOrWhiteSpace(address))
-            {
-                starAddress.Visible = true;
-                hasError = true;
-            }
-            else
-            {
-                starAddress.Visible = false;
-            }
-
-            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) ||
-                string.IsNullOrEmpty(idCard) || string.IsNullOrEmpty(phone) ||
-                string.IsNullOrEmpty(email) || string.IsNullOrEmpty(address))
+            if (hasError || string.IsNullOrWhiteSpace(lastName) || string.IsNullOrWhiteSpace(idCard))
             {
                 MessageBox.Show("กรุณากรอกข้อมูลให้ครบถ้วน!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            if (dal.CheckDuplicateCustomer(selectedCustomerID, email, idCard))
-            {
-                MessageBox.Show("อีเมลหรือเลขบัตรประชาชนนี้มีอยู่แล้ว!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-
 
             Customer cus = new Customer
             {
@@ -208,8 +141,18 @@ namespace JRSApplication
             };
 
             bool success = false;
+
             if (isEditMode)
             {
+                if (email != originalEmail || idCard != originalIdCard)
+                {
+                    if (dal.CheckDuplicateCustomer(selectedCustomerID, email, idCard))
+                    {
+                        MessageBox.Show("อีเมลหรือเลขบัตรประชาชนนี้มีอยู่แล้ว!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
                 if (int.TryParse(selectedCustomerID, out int customerId))
                 {
                     cus.CustomerID = customerId;
@@ -217,12 +160,18 @@ namespace JRSApplication
                 }
                 else
                 {
-                    MessageBox.Show("รหัสลูกค้าไม่ถูกต้อง", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("รหัสลูกค้าไม่ถูกต้อง!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
             else
             {
+                if (dal.CheckDuplicateCustomer("", email, idCard))
+                {
+                    MessageBox.Show("อีเมลหรือเลขบัตรประชาชนนี้มีอยู่แล้ว!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 success = dal.InsertCustomer(cus);
             }
 
@@ -243,6 +192,7 @@ namespace JRSApplication
         }
 
 
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             //เพิ่ม
@@ -253,18 +203,33 @@ namespace JRSApplication
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            //แก้ไข
             if (string.IsNullOrEmpty(selectedCustomerID))
             {
                 MessageBox.Show("กรุณาเลือกลูกค้าก่อนแก้ไข", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            isEditMode = true; // ✅ เข้าโหมดแก้ไข
-            ReadOnlyControlsOn(); // ✅ เปิดให้แก้ไข
-            EnableControlsOn();
-            txtName.Focus();
+            if (!isEditMode)
+            {
+                // เข้าสู่โหมดแก้ไข
+                isEditMode = true;
+                ReadOnlyControlsOn();
+                EnableControlsOn();
+                txtName.Focus();
+
+                btnEdit.Text = "ยกเลิกแก้ไข"; // เปลี่ยนชื่อปุ่มเป็น "ยกเลิกแก้ไข" 🟢
+            }
+            else
+            {
+                // ออกจากโหมดแก้ไข
+                isEditMode = false;
+                ReadOnlyControlsOff();
+                //DisableControlsOn();
+
+                btnEdit.Text = "แก้ไข"; // เปลี่ยนชื่อปุ่มกลับเป็น "แก้ไข" 🔵
+            }
         }
+
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
@@ -370,6 +335,24 @@ namespace JRSApplication
         {
             starAddress.Visible = string.IsNullOrWhiteSpace(txtAddress.Text);
         }
+
+        private bool IsValidPhoneNumber(string phone)
+        {
+            return phone.All(char.IsDigit) && phone.Length >= 9 && phone.Length <= 15;
+        }
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
 
     }
 }

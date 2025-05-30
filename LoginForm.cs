@@ -58,33 +58,37 @@ namespace JRSApplication
                 {
                     connection.Open();
 
-                    // ✅ ใช้ Parameterized Query เพื่อป้องกัน SQL Injection
                     string query = @"
-                        SELECT emp_name, emp_lname, emp_pos 
-                        FROM employee 
-                        WHERE emp_username = @Username 
-                        AND emp_password = @Password";
+                SELECT emp_password, emp_name, emp_lname, emp_pos 
+                FROM employee 
+                WHERE emp_username = @Username";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Username", username);
-                        command.Parameters.AddWithValue("@Password", password);
 
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
+                                string hashedPassword = reader["emp_password"].ToString();
                                 string fullName = $"{reader["emp_name"]} {reader["emp_lname"]}";
                                 string role = reader["emp_pos"].ToString();
 
-                                MessageBox.Show($"เข้าสู่ระบบสำเร็จ! ตำแหน่ง: {role}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                                // ✅ ส่งค่าชื่อและตำแหน่งไป AdminForm
-                                NavigateToDashboard(role, fullName);
+                                // ✅ ตรวจสอบรหัสผ่านด้วย BCrypt
+                                if (BCrypt.Net.BCrypt.Verify(password, hashedPassword))
+                                {
+                                    MessageBox.Show($"เข้าสู่ระบบสำเร็จ! ตำแหน่ง: {role}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    NavigateToDashboard(role, fullName);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("รหัสผ่านไม่ถูกต้อง", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
                             }
                             else
                             {
-                                MessageBox.Show("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show("ไม่พบบัญชีผู้ใช้ในระบบ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                     }
@@ -95,6 +99,7 @@ namespace JRSApplication
                 MessageBox.Show($"เกิดข้อผิดพลาด: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void NavigateToDashboard(string role, string fullName)
         {

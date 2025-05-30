@@ -22,21 +22,20 @@ namespace JRSApplication.Components
             switch (role)
             {
                 case "Admin":
-                    prefix = "11";
+                    prefix = "A";
                     break;
                 case "Projectmanager":
-                    prefix = "12";
-                    break;
                 case "Sitesupervisor":
-                    prefix = "13";
+                    prefix = "E";
                     break;
                 case "Accountant":
-                    prefix = "14";
+                    prefix = "F";
                     break;
                 default:
-                    prefix = "99"; // ใช้กรณีตำแหน่งใหม่
+                    prefix = "X";
                     break;
             }
+            
 
             // ปีปัจจุบันเป็น 2 หลัก (เช่น 2024 -> 64)
             string year = (DateTime.Now.Year - 2000).ToString();
@@ -111,9 +110,11 @@ namespace JRSApplication.Components
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                string sql = "UPDATE employee SET emp_name = @FirstName, emp_lname = @LastName, " +
-                             "emp_username = @Username, emp_password = @Password, emp_tel = @Phone, " +
-                             "emp_email = @Email, emp_pos = @Role WHERE emp_id = @EmployeeID";
+                string sql = "SELECT emp_id, emp_name AS 'ชื่อ', emp_lname AS 'นามสกุล', emp_username AS 'ชื่อผู้ใช้', " +
+                             "emp_password AS 'รหัสผ่าน', emp_tel AS 'เบอร์โทร', emp_email AS 'อีเมล', emp_pos AS 'ตำแหน่ง', " +
+                             "emp_identification AS 'เลขบัตรประชาชน', emp_address AS 'ที่อยู่' " +
+                             "FROM employee WHERE emp_id = @EmployeeID";
+
 
                 using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                 {
@@ -155,7 +156,8 @@ namespace JRSApplication.Components
             {
                 string sql = "SELECT emp_id, emp_name AS 'ชื่อ', emp_lname AS 'นามสกุล', emp_username AS 'ชื่อผู้ใช้', " +
                              "emp_tel AS 'เบอร์โทร', emp_email AS 'อีเมล', emp_pos AS 'ตำแหน่ง', emp_identification AS 'เลขบัตรประชาชน', " +
-                             "emp_address AS 'ที่อยู่' FROM employee WHERE emp_id = @EmployeeID";
+                             "emp_address AS 'ที่อยู่', emp_password AS 'รหัสผ่าน' " +  
+                             "FROM employee WHERE emp_id = @EmployeeID";
 
                 using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                 {
@@ -170,37 +172,6 @@ namespace JRSApplication.Components
             }
             return dt;
         }
-        public Employee GetEmployeeByIdtoProjectdata(int employeeId)
-        {
-            Employee employee = null;
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                string sql = "SELECT * FROM employee WHERE emp_id = @EmployeeID";
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
-                    conn.Open();
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            employee = new Employee
-                            {
-                                EmployeeID = reader["emp_id"].ToString(),  // ✅ ใช้ ToString() เนื่องจาก EmployeeID เป็น string
-                                FirstName = reader["emp_name"].ToString(),
-                                LastName = reader["emp_lname"].ToString(),
-                                Email = reader["emp_email"].ToString(),
-                                Phone = reader["emp_tel"].ToString(),
-                                Role = reader["emp_pos"].ToString()
-                            };
-                        }
-                    }
-                }
-            }
-            return employee;
-        }
-
-
 
         public DataTable GetAllEmployees()
         {
