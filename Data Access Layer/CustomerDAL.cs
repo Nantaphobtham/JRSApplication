@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -238,6 +239,19 @@ namespace JRSApplication.Data_Access_Layer
                 }
             }
             return dt;
+        }
+
+        public bool IsCustomerReferenced(int customerId)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT COUNT(*) FROM Projects WHERE CustomerID = @CustomerID";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@CustomerID", customerId);
+                conn.Open();
+                int count = (int)cmd.ExecuteScalar();
+                return count > 0;
+            }
         }
 
     }

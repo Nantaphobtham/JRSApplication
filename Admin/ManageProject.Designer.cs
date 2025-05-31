@@ -41,11 +41,10 @@
             this.starPhaseDetail = new System.Windows.Forms.Label();
             this.lblPhaseDetail = new System.Windows.Forms.Label();
             this.txtPhaseDetail = new System.Windows.Forms.TextBox();
-            this.pnlPercentPhase = new System.Windows.Forms.Panel();
-            this.lblRemarkPhase = new System.Windows.Forms.Label();
-            this.starPercentPhase = new System.Windows.Forms.Label();
-            this.lblPercentPhase = new System.Windows.Forms.Label();
-            this.txtPercentPhase = new System.Windows.Forms.TextBox();
+            this.pnlboqPercentage = new System.Windows.Forms.Panel();
+            this.starboqPercentage = new System.Windows.Forms.Label();
+            this.lblboqPercentage = new System.Windows.Forms.Label();
+            this.txtboqPercentage = new System.Windows.Forms.TextBox();
             this.pnlPhaseNumber = new System.Windows.Forms.Panel();
             this.cmbPhaseNumber = new System.Windows.Forms.ComboBox();
             this.starPhaseNumber = new System.Windows.Forms.Label();
@@ -133,12 +132,16 @@
             this.dtgvProject = new System.Windows.Forms.DataGridView();
             this.lblToppic1 = new System.Windows.Forms.Label();
             this.searchboxProject = new JRSApplication.SearchboxControl();
+            this.pnlcompletionPercentage = new System.Windows.Forms.Panel();
+            this.starcompletionPercentage = new System.Windows.Forms.Label();
+            this.lblcompletionPercentage = new System.Windows.Forms.Label();
+            this.txtcompletionPercentage = new System.Windows.Forms.TextBox();
             this.pnlInfomation.SuspendLayout();
             this.subInfo.SuspendLayout();
             this.pnlPhaseData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPhase)).BeginInit();
             this.pnlPhaseDetail.SuspendLayout();
-            this.pnlPercentPhase.SuspendLayout();
+            this.pnlboqPercentage.SuspendLayout();
             this.pnlPhaseNumber.SuspendLayout();
             this.pnlRemark.SuspendLayout();
             this.pnlDemolition.SuspendLayout();
@@ -157,6 +160,7 @@
             this.pnlActionMenu.SuspendLayout();
             this.pnlProjectdata.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProject)).BeginInit();
+            this.pnlcompletionPercentage.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlInfomation
@@ -165,7 +169,7 @@
             this.pnlInfomation.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInfomation.Location = new System.Drawing.Point(0, 0);
             this.pnlInfomation.Name = "pnlInfomation";
-            this.pnlInfomation.Size = new System.Drawing.Size(1499, 738);
+            this.pnlInfomation.Size = new System.Drawing.Size(1552, 738);
             this.pnlInfomation.TabIndex = 0;
             // 
             // subInfo
@@ -176,7 +180,8 @@
             this.subInfo.Controls.Add(this.btnEditPhase);
             this.subInfo.Controls.Add(this.btnAddPhase);
             this.subInfo.Controls.Add(this.pnlPhaseDetail);
-            this.subInfo.Controls.Add(this.pnlPercentPhase);
+            this.subInfo.Controls.Add(this.pnlcompletionPercentage);
+            this.subInfo.Controls.Add(this.pnlboqPercentage);
             this.subInfo.Controls.Add(this.pnlPhaseNumber);
             this.subInfo.Controls.Add(this.pnlRemark);
             this.subInfo.Controls.Add(this.pnlDemolition);
@@ -204,7 +209,7 @@
             this.btnTurnoffEditing.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnTurnoffEditing.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTurnoffEditing.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTurnoffEditing.Location = new System.Drawing.Point(986, 313);
+            this.btnTurnoffEditing.Location = new System.Drawing.Point(985, 252);
             this.btnTurnoffEditing.Name = "btnTurnoffEditing";
             this.btnTurnoffEditing.Size = new System.Drawing.Size(132, 41);
             this.btnTurnoffEditing.TabIndex = 30;
@@ -218,16 +223,16 @@
             this.pnlPhaseData.Controls.Add(this.lblTotalPercentage);
             this.pnlPhaseData.Controls.Add(this.lblPhaseData);
             this.pnlPhaseData.Controls.Add(this.dtgvPhase);
-            this.pnlPhaseData.Location = new System.Drawing.Point(985, 360);
+            this.pnlPhaseData.Location = new System.Drawing.Point(985, 299);
             this.pnlPhaseData.Name = "pnlPhaseData";
-            this.pnlPhaseData.Size = new System.Drawing.Size(535, 358);
+            this.pnlPhaseData.Size = new System.Drawing.Size(535, 419);
             this.pnlPhaseData.TabIndex = 29;
             // 
             // lblTotalPercentage
             // 
             this.lblTotalPercentage.AutoSize = true;
             this.lblTotalPercentage.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalPercentage.Location = new System.Drawing.Point(29, 318);
+            this.lblTotalPercentage.Location = new System.Drawing.Point(30, 300);
             this.lblTotalPercentage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTotalPercentage.Name = "lblTotalPercentage";
             this.lblTotalPercentage.Size = new System.Drawing.Size(0, 30);
@@ -249,7 +254,7 @@
             this.dtgvPhase.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgvPhase.Location = new System.Drawing.Point(6, 43);
             this.dtgvPhase.Name = "dtgvPhase";
-            this.dtgvPhase.Size = new System.Drawing.Size(526, 267);
+            this.dtgvPhase.Size = new System.Drawing.Size(526, 249);
             this.dtgvPhase.TabIndex = 5;
             this.dtgvPhase.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvPhase_CellClick);
             // 
@@ -260,7 +265,7 @@
             this.btnEditPhase.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOrange;
             this.btnEditPhase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEditPhase.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEditPhase.Location = new System.Drawing.Point(1421, 313);
+            this.btnEditPhase.Location = new System.Drawing.Point(1421, 252);
             this.btnEditPhase.Name = "btnEditPhase";
             this.btnEditPhase.Size = new System.Drawing.Size(99, 41);
             this.btnEditPhase.TabIndex = 27;
@@ -275,7 +280,7 @@
             this.btnAddPhase.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnAddPhase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddPhase.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddPhase.Location = new System.Drawing.Point(1316, 313);
+            this.btnAddPhase.Location = new System.Drawing.Point(1316, 252);
             this.btnAddPhase.Name = "btnAddPhase";
             this.btnAddPhase.Size = new System.Drawing.Size(99, 41);
             this.btnAddPhase.TabIndex = 28;
@@ -288,10 +293,10 @@
             this.pnlPhaseDetail.Controls.Add(this.starPhaseDetail);
             this.pnlPhaseDetail.Controls.Add(this.lblPhaseDetail);
             this.pnlPhaseDetail.Controls.Add(this.txtPhaseDetail);
-            this.pnlPhaseDetail.Location = new System.Drawing.Point(985, 139);
+            this.pnlPhaseDetail.Location = new System.Drawing.Point(986, 127);
             this.pnlPhaseDetail.Margin = new System.Windows.Forms.Padding(2);
             this.pnlPhaseDetail.Name = "pnlPhaseDetail";
-            this.pnlPhaseDetail.Size = new System.Drawing.Size(537, 169);
+            this.pnlPhaseDetail.Size = new System.Drawing.Size(537, 120);
             this.pnlPhaseDetail.TabIndex = 26;
             // 
             // starPhaseDetail
@@ -328,68 +333,54 @@
             this.txtPhaseDetail.Multiline = true;
             this.txtPhaseDetail.Name = "txtPhaseDetail";
             this.txtPhaseDetail.ReadOnly = true;
-            this.txtPhaseDetail.Size = new System.Drawing.Size(533, 132);
+            this.txtPhaseDetail.Size = new System.Drawing.Size(533, 80);
             this.txtPhaseDetail.TabIndex = 2;
             // 
-            // pnlPercentPhase
+            // pnlboqPercentage
             // 
-            this.pnlPercentPhase.Controls.Add(this.lblRemarkPhase);
-            this.pnlPercentPhase.Controls.Add(this.starPercentPhase);
-            this.pnlPercentPhase.Controls.Add(this.lblPercentPhase);
-            this.pnlPercentPhase.Controls.Add(this.txtPercentPhase);
-            this.pnlPercentPhase.Location = new System.Drawing.Point(1331, 12);
-            this.pnlPercentPhase.Margin = new System.Windows.Forms.Padding(2);
-            this.pnlPercentPhase.Name = "pnlPercentPhase";
-            this.pnlPercentPhase.Size = new System.Drawing.Size(195, 123);
-            this.pnlPercentPhase.TabIndex = 25;
+            this.pnlboqPercentage.Controls.Add(this.starboqPercentage);
+            this.pnlboqPercentage.Controls.Add(this.lblboqPercentage);
+            this.pnlboqPercentage.Controls.Add(this.txtboqPercentage);
+            this.pnlboqPercentage.Location = new System.Drawing.Point(1351, 12);
+            this.pnlboqPercentage.Margin = new System.Windows.Forms.Padding(2);
+            this.pnlboqPercentage.Name = "pnlboqPercentage";
+            this.pnlboqPercentage.Size = new System.Drawing.Size(171, 114);
+            this.pnlboqPercentage.TabIndex = 25;
             // 
-            // lblRemarkPhase
+            // starboqPercentage
             // 
-            this.lblRemarkPhase.AutoSize = true;
-            this.lblRemarkPhase.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRemarkPhase.ForeColor = System.Drawing.Color.Red;
-            this.lblRemarkPhase.Location = new System.Drawing.Point(12, 73);
-            this.lblRemarkPhase.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblRemarkPhase.Name = "lblRemarkPhase";
-            this.lblRemarkPhase.Size = new System.Drawing.Size(155, 42);
-            this.lblRemarkPhase.TabIndex = 3;
-            this.lblRemarkPhase.Text = "หมายเหตุ : รวมทุกเฟส\nจะต้องได้ 100 เปอร์เซ็นต์";
+            this.starboqPercentage.AutoSize = true;
+            this.starboqPercentage.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starboqPercentage.ForeColor = System.Drawing.Color.Red;
+            this.starboqPercentage.Location = new System.Drawing.Point(138, 23);
+            this.starboqPercentage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starboqPercentage.Name = "starboqPercentage";
+            this.starboqPercentage.Size = new System.Drawing.Size(22, 30);
+            this.starboqPercentage.TabIndex = 2;
+            this.starboqPercentage.Text = "*";
+            this.starboqPercentage.Visible = false;
             // 
-            // starPercentPhase
+            // lblboqPercentage
             // 
-            this.starPercentPhase.AutoSize = true;
-            this.starPercentPhase.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starPercentPhase.ForeColor = System.Drawing.Color.Red;
-            this.starPercentPhase.Location = new System.Drawing.Point(136, 5);
-            this.starPercentPhase.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starPercentPhase.Name = "starPercentPhase";
-            this.starPercentPhase.Size = new System.Drawing.Size(22, 30);
-            this.starPercentPhase.TabIndex = 2;
-            this.starPercentPhase.Text = "*";
-            this.starPercentPhase.Visible = false;
+            this.lblboqPercentage.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblboqPercentage.Location = new System.Drawing.Point(2, 5);
+            this.lblboqPercentage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblboqPercentage.Name = "lblboqPercentage";
+            this.lblboqPercentage.Size = new System.Drawing.Size(130, 66);
+            this.lblboqPercentage.TabIndex = 2;
+            this.lblboqPercentage.Text = "เปอร์เซ็นต์งวดงาน (BOQ) %";
             // 
-            // lblPercentPhase
+            // txtboqPercentage
             // 
-            this.lblPercentPhase.AutoSize = true;
-            this.lblPercentPhase.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPercentPhase.Location = new System.Drawing.Point(2, 3);
-            this.lblPercentPhase.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblPercentPhase.Name = "lblPercentPhase";
-            this.lblPercentPhase.Size = new System.Drawing.Size(130, 30);
-            this.lblPercentPhase.TabIndex = 2;
-            this.lblPercentPhase.Text = "เปอร์เซ็นต์งาน";
-            // 
-            // txtPercentPhase
-            // 
-            this.txtPercentPhase.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPercentPhase.Enabled = false;
-            this.txtPercentPhase.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPercentPhase.Location = new System.Drawing.Point(4, 35);
-            this.txtPercentPhase.Margin = new System.Windows.Forms.Padding(2);
-            this.txtPercentPhase.Name = "txtPercentPhase";
-            this.txtPercentPhase.ReadOnly = true;
-            this.txtPercentPhase.Size = new System.Drawing.Size(176, 36);
-            this.txtPercentPhase.TabIndex = 2;
+            this.txtboqPercentage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtboqPercentage.Enabled = false;
+            this.txtboqPercentage.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtboqPercentage.Location = new System.Drawing.Point(2, 75);
+            this.txtboqPercentage.Margin = new System.Windows.Forms.Padding(2);
+            this.txtboqPercentage.Name = "txtboqPercentage";
+            this.txtboqPercentage.ReadOnly = true;
+            this.txtboqPercentage.Size = new System.Drawing.Size(164, 36);
+            this.txtboqPercentage.TabIndex = 2;
             // 
             // pnlPhaseNumber
             // 
@@ -1336,7 +1327,7 @@
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 738);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1499, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1552, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDelete
@@ -1401,7 +1392,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 832);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1499, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1552, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // pnlProjectdata
@@ -1412,7 +1403,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 842);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1499, 371);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1552, 371);
             this.pnlProjectdata.TabIndex = 3;
             // 
             // dtgvProject
@@ -1444,6 +1435,52 @@
             this.searchboxProject.Size = new System.Drawing.Size(650, 50);
             this.searchboxProject.TabIndex = 0;
             // 
+            // pnlcompletionPercentage
+            // 
+            this.pnlcompletionPercentage.Controls.Add(this.starcompletionPercentage);
+            this.pnlcompletionPercentage.Controls.Add(this.lblcompletionPercentage);
+            this.pnlcompletionPercentage.Controls.Add(this.txtcompletionPercentage);
+            this.pnlcompletionPercentage.Location = new System.Drawing.Point(1164, 12);
+            this.pnlcompletionPercentage.Margin = new System.Windows.Forms.Padding(2);
+            this.pnlcompletionPercentage.Name = "pnlcompletionPercentage";
+            this.pnlcompletionPercentage.Size = new System.Drawing.Size(171, 114);
+            this.pnlcompletionPercentage.TabIndex = 25;
+            // 
+            // starcompletionPercentage
+            // 
+            this.starcompletionPercentage.AutoSize = true;
+            this.starcompletionPercentage.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starcompletionPercentage.ForeColor = System.Drawing.Color.Red;
+            this.starcompletionPercentage.Location = new System.Drawing.Point(147, 23);
+            this.starcompletionPercentage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starcompletionPercentage.Name = "starcompletionPercentage";
+            this.starcompletionPercentage.Size = new System.Drawing.Size(22, 30);
+            this.starcompletionPercentage.TabIndex = 2;
+            this.starcompletionPercentage.Text = "*";
+            this.starcompletionPercentage.Visible = false;
+            // 
+            // lblcompletionPercentage
+            // 
+            this.lblcompletionPercentage.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblcompletionPercentage.Location = new System.Drawing.Point(2, 5);
+            this.lblcompletionPercentage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblcompletionPercentage.Name = "lblcompletionPercentage";
+            this.lblcompletionPercentage.Size = new System.Drawing.Size(141, 69);
+            this.lblcompletionPercentage.TabIndex = 2;
+            this.lblcompletionPercentage.Text = "เปอร์เซ็นต์ความก้าวหน้างาน %";
+            // 
+            // txtcompletionPercentage
+            // 
+            this.txtcompletionPercentage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtcompletionPercentage.Enabled = false;
+            this.txtcompletionPercentage.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtcompletionPercentage.Location = new System.Drawing.Point(2, 75);
+            this.txtcompletionPercentage.Margin = new System.Windows.Forms.Padding(2);
+            this.txtcompletionPercentage.Name = "txtcompletionPercentage";
+            this.txtcompletionPercentage.ReadOnly = true;
+            this.txtcompletionPercentage.Size = new System.Drawing.Size(167, 36);
+            this.txtcompletionPercentage.TabIndex = 2;
+            // 
             // ManageProject
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1454,7 +1491,7 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.pnlInfomation);
             this.Name = "ManageProject";
-            this.Size = new System.Drawing.Size(1499, 954);
+            this.Size = new System.Drawing.Size(1552, 954);
             this.pnlInfomation.ResumeLayout(false);
             this.subInfo.ResumeLayout(false);
             this.pnlPhaseData.ResumeLayout(false);
@@ -1462,8 +1499,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPhase)).EndInit();
             this.pnlPhaseDetail.ResumeLayout(false);
             this.pnlPhaseDetail.PerformLayout();
-            this.pnlPercentPhase.ResumeLayout(false);
-            this.pnlPercentPhase.PerformLayout();
+            this.pnlboqPercentage.ResumeLayout(false);
+            this.pnlboqPercentage.PerformLayout();
             this.pnlPhaseNumber.ResumeLayout(false);
             this.pnlPhaseNumber.PerformLayout();
             this.pnlRemark.ResumeLayout(false);
@@ -1498,6 +1535,8 @@
             this.pnlProjectdata.ResumeLayout(false);
             this.pnlProjectdata.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProject)).EndInit();
+            this.pnlcompletionPercentage.ResumeLayout(false);
+            this.pnlcompletionPercentage.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1596,11 +1635,10 @@
         private System.Windows.Forms.Label starPhaseDetail;
         private System.Windows.Forms.Label lblPhaseDetail;
         private System.Windows.Forms.TextBox txtPhaseDetail;
-        private System.Windows.Forms.Panel pnlPercentPhase;
-        private System.Windows.Forms.Label lblRemarkPhase;
-        private System.Windows.Forms.Label starPercentPhase;
-        private System.Windows.Forms.Label lblPercentPhase;
-        private System.Windows.Forms.TextBox txtPercentPhase;
+        private System.Windows.Forms.Panel pnlboqPercentage;
+        private System.Windows.Forms.Label starboqPercentage;
+        private System.Windows.Forms.Label lblboqPercentage;
+        private System.Windows.Forms.TextBox txtboqPercentage;
         private System.Windows.Forms.Panel pnlPhaseData;
         private System.Windows.Forms.Label lblPhaseData;
         private System.Windows.Forms.DataGridView dtgvPhase;
@@ -1609,5 +1647,9 @@
         private System.Windows.Forms.Button btnTurnoffEditing;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel pnlcompletionPercentage;
+        private System.Windows.Forms.Label starcompletionPercentage;
+        private System.Windows.Forms.Label lblcompletionPercentage;
+        private System.Windows.Forms.TextBox txtcompletionPercentage;
     }
 }

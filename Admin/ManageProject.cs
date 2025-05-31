@@ -200,7 +200,8 @@ namespace JRSApplication
                 dtgvPhase.Columns.Add("PhaseNumber", "เฟสที่");
                 dtgvPhase.Columns.Add("PhaseDetail", "รายละเอียดการดำเนินงาน");
                 dtgvPhase.Columns.Add("PhaseBudget", "งบประมาณเฟส (บาท)");
-                dtgvPhase.Columns.Add("PhasePercent", "เปอร์เซ็นต์งาน (%)"); // 🟢 เพิ่มคอลัมน์
+                dtgvPhase.Columns.Add("PhasePercent", "% ความก้าวหน้า");   // จาก txtcompletionPercentage
+                dtgvPhase.Columns.Add("BoqPercent", "% BOQ");   // ย้อนคำนวณจากงบ
 
                 // ✅ ปรับแต่งคอลัมน์
                 dtgvPhase.Columns["PhaseNumber"].Width = 60;
@@ -221,11 +222,17 @@ namespace JRSApplication
                 dtgvPhase.Columns["PhasePercent"].DefaultCellStyle.Format = "0.00"; // ✅ แสดงเป็น 2 ตำแหน่ง
                 dtgvPhase.Columns["PhasePercent"].ReadOnly = true;
 
+                dtgvPhase.Columns["BoqPercent"].Width = 100;
+                dtgvPhase.Columns["BoqPercent"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dtgvPhase.Columns["BoqPercent"].DefaultCellStyle.Format = "0.00";
+                dtgvPhase.Columns["BoqPercent"].ReadOnly = true;
+
                 CustomizeDataGridViewPhase();
             }
         }
         private void CustomizeDataGridViewPhase()
         {
+            dtgvPhase.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dtgvPhase.BorderStyle = BorderStyle.None;
             dtgvPhase.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
             dtgvPhase.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
@@ -280,16 +287,30 @@ namespace JRSApplication
         {
             dtgvPhase.Rows.Clear();
 
+            decimal totalBudget = 0;
+            decimal.TryParse(txtBudget.Text.Replace(",", ""), out totalBudget);
+
             foreach (var phase in projectPhases)
             {
-                dtgvPhase.Rows.Add(phase.PhaseNumber, phase.PhaseDetail,
-                                   phase.PhaseBudget.ToString("N2"),
-                                   phase.PhasePercent.ToString("0.00"));
+                // 🧮 คำนวณ % BOQ จาก Budget
+                decimal boqPercent = 0;
+                if (totalBudget > 0)
+                {
+                    boqPercent = (phase.PhaseBudget * 100) / totalBudget;
+                }
+
+                dtgvPhase.Rows.Add(
+                    phase.PhaseNumber,
+                    phase.PhaseDetail,
+                    phase.PhaseBudget.ToString("N2"),
+                    phase.PhasePercent.ToString("0.00"),     // % ความก้าวหน้า
+                    boqPercent.ToString("0.00")              // % BOQ
+                );
             }
 
-            // ✅ คำนวณเปอร์เซ็นต์รวม
             CalculateTotalPhasePercentage();
         }
+
         private void dtgvPhase_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0) // ✅ ตรวจสอบว่าคลิกที่แถวที่มีข้อมูล
@@ -304,7 +325,10 @@ namespace JRSApplication
                     // ✅ แสดงค่าลงในช่องป้อนข้อมูล
                     cmbPhaseNumber.SelectedItem = currentEditingPhase.PhaseNumber.ToString();
                     txtPhaseDetail.Text = currentEditingPhase.PhaseDetail;
-                    txtPercentPhase.Text = currentEditingPhase.PhasePercent.ToString("0.00");
+                    txtboqPercentage.Text = currentEditingPhase.PhasePercent.ToString("0.00");
+                    txtcompletionPercentage.Text = currentEditingPhase.PhasePercent.ToString("0.00");
+
+
 
                     // ห้ามแก้ไข
                     PhaseDisableEditing();
@@ -319,110 +343,146 @@ namespace JRSApplication
             // ✅ ตรวจสอบว่ากรอกข้อมูลครบ
             if (cmbPhaseNumber.SelectedItem == null ||
                 string.IsNullOrWhiteSpace(txtPhaseDetail.Text) ||
-                string.IsNullOrWhiteSpace(txtPercentPhase.Text))
+                string.IsNullOrWhiteSpace(txtboqPercentage.Text) ||
+                string.IsNullOrWhiteSpace(txtcompletionPercentage.Text))
             {
                 MessageBox.Show("กรุณากรอกข้อมูลให้ครบถ้วน!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // ✅ แปลงค่าเปอร์เซ็นต์
-            if (!decimal.TryParse(txtPercentPhase.Text, out decimal phasePercent) || phasePercent <= 0)
+            // ✅ แปลงค่า % BOQ และ ความก้าวหน้า
+            if (!decimal.TryParse(txtboqPercentage.Text, out decimal boqPercent) || boqPercent <= 0)
             {
-                MessageBox.Show("กรุณากรอกเปอร์เซ็นต์งานให้ถูกต้อง!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกเปอร์เซ็นต์ BOQ ให้ถูกต้อง!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            if (!decimal.TryParse(txtcompletionPercentage.Text, out decimal completionPercent) ||
+                completionPercent < 0 || completionPercent > 100)
+            {
+                MessageBox.Show("กรุณากรอกเปอร์เซ็นต์ความก้าวหน้าให้ถูกต้อง (0-100%)", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // ✅ ตรวจสอบว่ากรอกงบประมาณแล้ว
             if (string.IsNullOrWhiteSpace(txtBudget.Text))
             {
                 MessageBox.Show("กรุณากรอกงบประมาณก่อนเพิ่มเฟส!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // ✅ คำนวณ phase_budget (budget * phasePercent / 100)
-            decimal totalBudget = decimal.Parse(txtBudget.Text.Replace(",", ""));
-            decimal phaseBudget = (totalBudget * phasePercent) / 100;
-            int phaseNumber = int.Parse(cmbPhaseNumber.SelectedItem.ToString());
-            // ✅ รวมเปอร์เซ็นต์ทั้งหมดก่อนเพิ่ม
-            decimal totalPhasePercent = projectPhases.Sum(p => p.PhasePercent);
+            // ✅ คำนวณงบประมาณจาก BOQ %
+            decimal totalBudget = 0;
+            decimal.TryParse(txtBudget.Text.Replace(",", ""), out totalBudget);
+            decimal phaseBudget = (totalBudget * boqPercent) / 100;
 
-            if (btnAddPhase.Text == "บันทึก" && currentEditingPhase != null)
+            int phaseNumber = int.Parse(cmbPhaseNumber.SelectedItem.ToString());
+
+            // ✅ ตรวจสอบยอดรวมเปอร์เซ็นต์ก่อนเพิ่ม
+            decimal totalCompletionPercent = projectPhases.Sum(p => p.PhasePercent);
+            decimal totalBoqPercent = 0;
+
+            foreach (var p in projectPhases)
             {
-                // ถ้าแก้ไขเฟสเดิม ให้นำเปอร์เซ็นต์เดิมออกก่อนรวม
-                totalPhasePercent -= currentEditingPhase.PhasePercent;
+                totalBoqPercent += (p.PhaseBudget * 100) / totalBudget;
             }
 
-            // ✅ ตรวจสอบว่าไม่เกิน 100%
-            if (totalPhasePercent + phasePercent > 100)
+            // ✅ ถ้าแก้ไขเฟสเดิม ให้นำค่าเดิมออกจากยอดรวมก่อนเช็ค
+            if (btnAddPhase.Text == "บันทึก" && currentEditingPhase != null)
             {
-                MessageBox.Show($"เปอร์เซ็นต์รวมของเฟสเกิน 100%! ({totalPhasePercent + phasePercent}%)",
-                                "แจ้งเตือน",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
+                totalCompletionPercent -= currentEditingPhase.PhasePercent;
+                totalBoqPercent -= (currentEditingPhase.PhaseBudget * 100) / totalBudget;
+            }
+
+            // ✅ เช็คว่าไม่เกิน 100%
+            if (totalCompletionPercent + completionPercent > 100)
+            {
+                MessageBox.Show($"เปอร์เซ็นต์ความก้าวหน้ารวมเกิน 100%! (รวม {totalCompletionPercent + completionPercent:0.00}%)",
+                                "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            if (totalBoqPercent + boqPercent > 100)
+            {
+                MessageBox.Show($"เปอร์เซ็นต์งวดงาน (BOQ) รวมเกิน 100%! (รวม {totalBoqPercent + boqPercent:0.00}%)",
+                                "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // ✅ ดำเนินการเพิ่มหรือบันทึก
             if (btnAddPhase.Text == "บันทึก" && currentEditingPhase != null)
             {
-                // ✅ แก้ไขข้อมูลเดิม
                 currentEditingPhase.PhaseDetail = txtPhaseDetail.Text.Trim();
-                currentEditingPhase.PhasePercent = phasePercent;
+                currentEditingPhase.PhasePercent = completionPercent;
                 currentEditingPhase.PhaseBudget = phaseBudget;
             }
             else
             {
-                // ✅ ตรวจสอบว่ามีเฟสนี้แล้วหรือยัง
                 if (projectPhases.Any(p => p.PhaseNumber == phaseNumber))
                 {
                     MessageBox.Show("เฟสนี้มีอยู่แล้ว กรุณาเลือกเฟสใหม่!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // ✅ เพิ่มข้อมูลใหม่
                 ProjectPhase newPhase = new ProjectPhase
                 {
                     PhaseNumber = phaseNumber,
                     PhaseDetail = txtPhaseDetail.Text.Trim(),
-                    PhasePercent = phasePercent,
+                    PhasePercent = completionPercent,
                     PhaseBudget = phaseBudget
                 };
 
                 projectPhases.Add(newPhase);
             }
 
-            // ✅ โหลดข้อมูลใหม่ลงตาราง
+            // ✅ อัปเดต UI และ Reset
             LoadPhaseToGridView();
-
-            // ✅ ล้างค่าฟอร์ม
             clearPhaseForm();
             PhaseAbleOn();
             btnTurnoffEditing.Visible = false;
-
-            // ✅ เปลี่ยนปุ่มกลับเป็น "เพิ่ม"
             btnAddPhase.Text = "เพิ่ม";
             currentEditingPhase = null;
         }
-        
         //-----------------------------------------------------------------------------------------------------------------------------------------
         //-----------------------------------------------------------------------------------------------------------------------------------------
 
         //การคำนวณและรีเซ็ต Phase
 
-        
+
         private void CalculateTotalPhasePercentage()
         {
-            decimal totalPercent = projectPhases.Sum(p => p.PhasePercent);
+            decimal totalCompletion = projectPhases.Sum(p => p.PhasePercent);
+            decimal totalBoqPercent = 0;
+            decimal totalBoqBudget = 0;
 
-            lblTotalPercentage.Text = $"รวม {totalPercent:0.00}%";
+            decimal totalBudget = 0;
+            decimal.TryParse(txtBudget.Text.Replace(",", ""), out totalBudget);
 
-            // ✅ เปลี่ยนสีตัวเลขถ้าครบ 100%
-            lblTotalPercentage.ForeColor = totalPercent == 100 ? Color.Green : Color.Red;
+            foreach (var phase in projectPhases)
+            {
+                // 🟡 ย้อนคำนวณ boqPercent จาก budget
+                if (totalBudget > 0)
+                {
+                    decimal boqPercent = (phase.PhaseBudget * 100) / totalBudget;
+                    totalBoqPercent += boqPercent;
+                    totalBoqBudget += phase.PhaseBudget;
+                }
+            }
+
+            lblTotalPercentage.Text = $"รวม เปอร์เซ็นต์ความก้าวหน้างาน % : {totalCompletion:0.00}%\n" +
+                                      $"รวม เปอร์เซ็นต์งวดงาน (BOQ) % : {totalBoqPercent:0.00}%\n" +
+                                      $"รวม งบประมาณ: {totalBoqBudget:N2} บาท";
+
+            lblTotalPercentage.ForeColor = totalCompletion == 100 ? Color.Green : Color.Blue;
         }
+
         //เปิดปิด การทำงาน phase
         private void clearPhaseForm()
         {   //ล้างข้อมูล
             txtPhaseDetail.Clear();
-            txtPercentPhase.Clear();
+            txtboqPercentage.Clear();
             cmbPhaseNumber.SelectedIndex = -1;
+            txtcompletionPercentage.Clear();
         }
         private void ClearPhaseData()
         {
@@ -430,24 +490,27 @@ namespace JRSApplication
             dtgvPhase.Rows.Clear();              // เคลียร์แถวใน DataGridView
             cmbPhaseNumber.SelectedIndex = -1;   // รีเซ็ต dropdown
             txtPhaseDetail.Clear();
-            txtPercentPhase.Clear();
+            txtboqPercentage.Clear();
+            txtcompletionPercentage.Clear();
 
         }
         private void PhaseDisableEditing()
         {   //ปิดการทำงาน
             txtPhaseDetail.ReadOnly = true;
-            txtPercentPhase.ReadOnly = true;
+            txtboqPercentage.ReadOnly = true;
             cmbPhaseNumber.Enabled = false;
             txtPhaseDetail.Enabled = false;
-            txtPercentPhase.Enabled = false;
+            txtboqPercentage.Enabled = false;
+            txtcompletionPercentage.Enabled = false;
         }
         private void PhaseAbleOn()
         {//เปิดการทำงาน
             txtPhaseDetail.ReadOnly = false;
-            txtPercentPhase.ReadOnly = false;
+            txtboqPercentage.ReadOnly = false;
             cmbPhaseNumber.Enabled = true;
             txtPhaseDetail.Enabled = true;
-            txtPercentPhase.Enabled = true;
+            txtboqPercentage.Enabled = true;
+            txtcompletionPercentage.Enabled = true;
         }
         private void btnEditPhase_Click(object sender, EventArgs e)
         {
@@ -455,9 +518,9 @@ namespace JRSApplication
             {
                 // ✅ เปิดการแก้ไขเฉพาะรายละเอียดงาน & เปอร์เซ็นต์
                 txtPhaseDetail.ReadOnly = false;
-                txtPercentPhase.ReadOnly = false;
+                txtboqPercentage.ReadOnly = false;
                 txtPhaseDetail.Enabled = true;
-                txtPercentPhase.Enabled = true;
+                txtboqPercentage.Enabled = true;
 
                 // ✅ ปิดการแก้ไขหมายเลขเฟส เพื่อป้องกันการเปลี่ยนหมายเลขเฟส
                 cmbPhaseNumber.Enabled = false;
@@ -633,7 +696,10 @@ namespace JRSApplication
             txtProjectDetail.Enabled = true;
             txtProjectAddress.Enabled = true;
             txtPhaseDetail.Enabled = true;
-            txtPercentPhase.Enabled = true;
+            txtboqPercentage.Enabled = true;
+            //เพิ่มใหม่
+            txtcompletionPercentage.Enabled = true;
+
 
             txtWorkingDate.Enabled = true;
             dtpkStartDate.Enabled = true;
@@ -660,7 +726,9 @@ namespace JRSApplication
             txtProjectDetail.Enabled = false;
             txtProjectAddress.Enabled = false;
             txtPhaseDetail.Enabled = false;
-            txtPercentPhase.Enabled = false;
+            txtboqPercentage.Enabled = false;
+            //
+            txtcompletionPercentage.Enabled= false;
 
             txtWorkingDate.Enabled = true;
             dtpkStartDate.Enabled = false;
@@ -687,9 +755,10 @@ namespace JRSApplication
             txtProjectDetail.ReadOnly = false;
             txtProjectAddress.ReadOnly = false;
             txtPhaseDetail.ReadOnly = false;
-            txtPercentPhase.ReadOnly = false;
+            txtboqPercentage.ReadOnly = false;
             //แก้ไขใหม่
             txtWorkingDate.ReadOnly = false;
+            txtcompletionPercentage.ReadOnly = false;
         }
         private void ReadOnlyControls_close()
         {
@@ -700,9 +769,10 @@ namespace JRSApplication
             txtProjectDetail.ReadOnly = true;
             txtProjectAddress.ReadOnly = true;
             txtPhaseDetail.ReadOnly = true;
-            txtPercentPhase.ReadOnly = true;
+            txtboqPercentage.ReadOnly = true;
             //แก้ไขใหม่
             txtWorkingDate.ReadOnly = true;
+            txtcompletionPercentage.ReadOnly = true;
         }
         private void ClearForm()
         {
@@ -713,7 +783,9 @@ namespace JRSApplication
             txtProjectDetail.Clear();
             txtProjectAddress.Clear();
             txtPhaseDetail.Clear();
-            txtPercentPhase.Clear();
+            txtboqPercentage.Clear();
+            txtWorkingDate.Clear();
+            txtcompletionPercentage.Clear();
 
             dtpkStartDate.Value = DateTime.Now;
             dtpkEndDate.Value = DateTime.Now;
@@ -734,6 +806,7 @@ namespace JRSApplication
             txtEmployeeRole.Text = "";
             //แก้ไขใหม่
             txtWorkingDate.Text = "";
+            txtcompletionPercentage.Text = "";
 
 
             btnInsertBlueprintFile.Text = "เลือกไฟล์";
@@ -1080,7 +1153,7 @@ namespace JRSApplication
 
             if (string.IsNullOrWhiteSpace(txtRemark.Text))
             {
-                MessageBox.Show("", "" , MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกหมายเหตุที่เกี่ยวข้องกับโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtRemark.Focus();
                 starRemark.Visible = true;
                 return false;
@@ -1105,13 +1178,38 @@ namespace JRSApplication
             {
                 starBlueprint.Visible = false;
             }
+            // ✅ ตรวจสอบความถูกต้องของ % และงบประมาณรวมของเฟส
+            decimal totalBudget = 0;
+            decimal.TryParse(txtBudget.Text.Replace(",", ""), out totalBudget);
 
-            // ✅ ตรวจสอบเปอร์เซ็นต์รวมของเฟส (ต้องเท่ากับ 100%)
-            decimal totalPercent = projectPhases.Sum(p => p.PhasePercent);
-            if (totalPercent != 100)
+            decimal totalCompletion = projectPhases.Sum(p => p.PhasePercent);
+            decimal totalBoqBudget = projectPhases.Sum(p => p.PhaseBudget);
+            decimal totalBoqPercent = 0;
+
+            // คำนวณ BOQ % จากงบแต่ละเฟส
+            if (totalBudget > 0)
             {
-                MessageBox.Show("เปอร์เซ็นต์รวมของเฟสต้องเท่ากับ 100%", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                foreach (var phase in projectPhases)
+                {
+                    totalBoqPercent += (phase.PhaseBudget * 100) / totalBudget;
+                }
+            }
 
+            // ตรวจสอบทั้ง 3 เงื่อนไข
+            List<string> errors = new List<string>();
+
+            if (totalCompletion != 100)
+                errors.Add($"เปอร์เซ็นต์ความก้าวหน้ารวมต้องเท่ากับ 100% (ปัจจุบัน: {totalCompletion:0.00}%)");
+
+            if (totalBoqPercent != 100)
+                errors.Add($"เปอร์เซ็นต์ BOQ รวมต้องเท่ากับ 100% (ปัจจุบัน: {totalBoqPercent:0.00}%)");
+
+            if (Math.Round(totalBoqBudget, 2) != Math.Round(totalBudget, 2))
+                errors.Add($"งบประมาณรวมของเฟส ({totalBoqBudget:N2}) ต้องเท่ากับงบประมาณโครงการ ({totalBudget:N2})");
+
+            if (errors.Any())
+            {
+                MessageBox.Show(string.Join("\n", errors), "ข้อผิดพลาดในการตรวจสอบเฟส", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 

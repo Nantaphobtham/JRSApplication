@@ -247,7 +247,18 @@ namespace JRSApplication
             }
 
             CustomerDAL dal = new CustomerDAL();
-            bool success = dal.DeleteCustomer(Convert.ToInt32(selectedCustomerID));
+            int customerId = Convert.ToInt32(selectedCustomerID);
+
+            // ตรวจสอบว่ามีการอ้างอิงอยู่หรือไม่
+            if (dal.IsCustomerReferenced(customerId))
+            {
+                MessageBox.Show("ไม่สามารถลบลูกค้าได้ เพราะยังมีโครงการที่เกี่ยวข้องอยู่", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // ดำเนินการลบถ้าไม่มีการอ้างอิง
+            bool success = dal.DeleteCustomer(customerId);
+
 
             if (success)
             {
@@ -353,6 +364,6 @@ namespace JRSApplication
             }
         }
 
-
+        
     }
 }
