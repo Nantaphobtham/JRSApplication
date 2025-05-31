@@ -71,6 +71,9 @@ namespace JRSApplication.Data_Access_Layer
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
+                conn.Open();
+
+                // ✅ โหลด Project + Customer + Employee + Files
                 string sql = @"
                             SELECT 
                                 p.pro_id AS ProjectID,
@@ -80,13 +83,13 @@ namespace JRSApplication.Data_Access_Layer
                                 p.pro_number AS ContractNumber,
                                 p.pro_budget AS ProjectBudget,
                                 p.pro_detail AS ProjectDetail,
+                                p.pro_address AS ProjectAddress,
                                 p.pro_currentphasenumber AS CurrentPhaseNumber,
+                                p.pro_remark AS Remark,
 
-                                --  Full name ลูกค้า / พนักงาน
                                 CONCAT(c.cus_name, ' ', c.cus_lname) AS CustomerFullName,
                                 CONCAT(e.emp_name, ' ', e.emp_lname) AS ProjectManagerFullName,
 
-                                --  ดึงไฟล์จาก project_files
                                 pf.con_blueprint AS ConstructionBlueprint,
                                 pf.demolition_model AS DemolitionModel
 
@@ -99,7 +102,6 @@ namespace JRSApplication.Data_Access_Layer
                 using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@ProjectID", projectId);
-                    conn.Open();
 
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -113,24 +115,19 @@ namespace JRSApplication.Data_Access_Layer
                                 ProjectEnd = reader.GetDateTime("ProjectEnd"),
                                 ProjectNumber = reader.GetString("ContractNumber"),
                                 ProjectDetail = reader.GetString("ProjectDetail"),
+                                ProjectAddress = reader.IsDBNull(reader.GetOrdinal("ProjectAddress")) ? "" : reader.GetString("ProjectAddress"),
                                 ProjectBudget = reader.GetDecimal("ProjectBudget"),
+                                Remark = reader.IsDBNull(reader.GetOrdinal("Remark")) ? "" : reader.GetString("Remark"),
                                 CurrentPhaseNumber = reader.IsDBNull(reader.GetOrdinal("CurrentPhaseNumber")) ? 0 : reader.GetInt32("CurrentPhaseNumber"),
 
-                                CustomerName = reader.IsDBNull(reader.GetOrdinal("CustomerFullName"))
-                                    ? "ไม่มีข้อมูล"
-                                    : reader.GetString("CustomerFullName"),
+                                CustomerName = reader.IsDBNull(reader.GetOrdinal("CustomerFullName")) ? "ไม่มีข้อมูล" : reader.GetString("CustomerFullName"),
+                                EmployeeName = reader.IsDBNull(reader.GetOrdinal("ProjectManagerFullName")) ? "ไม่มีข้อมูล" : reader.GetString("ProjectManagerFullName"),
 
-                                EmployeeName = reader.IsDBNull(reader.GetOrdinal("ProjectManagerFullName"))
-                                    ? "ไม่มีข้อมูล"
-                                    : reader.GetString("ProjectManagerFullName"),
-
-                                //  แทรก ProjectFile แทน Binary โดยตรง
                                 ProjectFile = new ProjectFile
                                 {
                                     ConstructionBlueprint = reader["ConstructionBlueprint"] != DBNull.Value
                                         ? (byte[])reader["ConstructionBlueprint"]
                                         : null,
-
                                     DemolitionModel = reader["DemolitionModel"] != DBNull.Value
                                         ? (byte[])reader["DemolitionModel"]
                                         : null
@@ -139,10 +136,42 @@ namespace JRSApplication.Data_Access_Layer
                         }
                     }
                 }
+
+                // ✅ โหลดเฟสทั้งหมดที่เกี่ยวกับ ProjectID
+                if (project != null)
+                {
+                    string phaseSql = @"
+                                    SELECT phase_no, phase_detail, phase_budget, phase_percent
+                                    FROM project_phase
+                                    WHERE pro_id = @ProjectID
+                                    ORDER BY phase_no";
+
+                    using (MySqlCommand phaseCmd = new MySqlCommand(phaseSql, conn))
+                    {
+                        phaseCmd.Parameters.AddWithValue("@ProjectID", projectId);
+                        using (MySqlDataReader phaseReader = phaseCmd.ExecuteReader())
+                        {
+                            List<ProjectPhase> phases = new List<ProjectPhase>();
+                            while (phaseReader.Read())
+                            {
+                                phases.Add(new ProjectPhase
+                                {
+                                    PhaseNumber = phaseReader.GetInt32("phase_no"),
+                                    PhaseDetail = phaseReader.GetString("phase_detail"),
+                                    PhaseBudget = phaseReader.GetDecimal("phase_budget"),
+                                    PhasePercent = phaseReader.GetDecimal("phase_percent")
+                                });
+                            }
+
+                            project.Phases = phases;
+                        }
+                    }
+                }
             }
 
             return project;
         }
+
 
         public int GenerateProjectID()
         {

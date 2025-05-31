@@ -1,4 +1,5 @@
 ﻿using JRSApplication.Components;
+using JRSApplication.Components.Service;
 using JRSApplication.Data_Access_Layer;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
@@ -34,16 +35,20 @@ namespace JRSApplication
         //file PDF
         private byte[] fileConstructionBytes;
         private byte[] fileDemolitionBytes;
+        //PDFPreview
+        private FormPDFPreview pdfPreviewForm = null; // ✅ ฟอร์ม Preview
+        private Timer hoverCheckTimer;                // ✅ Timer เช็กเมาส์ออก
+        private bool isPreviewingDemolition = false;  // ✅ Flag บอกว่าปุ่มไหน trigger
 
 
         public ManageProject()
         {
             InitializeComponent();
             LoadPhaseNumberDropdown();
-            LoadProjectData();
+            
             InitializePhaseDataGridView(); //ของ phase
             InitializeDataGridViewProject(); // ✅ กำหนดโครงสร้าง DataGridView
-            LoadProjectData(); // ✅ โหลดข้อมูลจากฐานข้อมูล
+            
         }
 
         //การโหลดและจัดการตาราง Project
@@ -138,14 +143,20 @@ namespace JRSApplication
             dtgvProject.AllowUserToAddRows = false;
             dtgvProject.AllowUserToResizeRows = false;
         }
+
         private void LoadProjectData()
         {
-            InitializeDataGridViewProject(); // ✅ ตรวจสอบตารางก่อนโหลดข้อมูล
+            // ✅ ตรวจสอบว่า DataGridView ถูกตั้งค่าแล้วหรือยัง
+            InitializeDataGridViewProject(); // ป้องกันการเพิ่มคอลัมน์ซ้ำ
 
+            // ✅ ดึงข้อมูลจากฐานข้อมูล
             ProjectDAL dal = new ProjectDAL();
             List<Project> projects = dal.GetAllProjects();
 
+            // ✅ เคลียร์ข้อมูลเก่า
             dtgvProject.Rows.Clear();
+
+            // ✅ เพิ่มข้อมูลใหม่ลง DataGridView
             foreach (var project in projects)
             {
                 dtgvProject.Rows.Add(
@@ -154,34 +165,89 @@ namespace JRSApplication
                     project.ProjectStart.ToString("dd/MM/yyyy"),
                     project.ProjectEnd.ToString("dd/MM/yyyy"),
                     project.ProjectBudget.ToString("N2"),
-                    project.CurrentPhaseNumber,  // ✅ จำนวนเฟส
-                    project.CustomerName,  // ✅ ชื่อลูกค้า
-                    project.EmployeeName   // ✅ ชื่อผู้ดูแลโครงการ
+                    project.CurrentPhaseNumber,
+                    project.CustomerName ?? "ไม่ระบุ",
+                    project.EmployeeName ?? "ไม่ระบุ"
                 );
             }
         }
-        private void LoadProjectDetails(int projectId)
-        {
-            //ProjectDAL projectDAL = new ProjectDAL();
-            //Project project = projectDAL.GetProjectDetailsById(projectId);
 
-            //if (project != null)
-            //{
-            //    //ต้องเรียกอะไรบ้าง
-            //}
+
+        private void LoadFullProjectByID(int projectId)
+        {
+            // 🧠 ดึงข้อมูลเต็มจาก ProjectDAL
+            ProjectDAL dal = new ProjectDAL();
+            Project project = dal.GetProjectDetailsById(projectId);
+
+            if (project == null)
+            {
+                MessageBox.Show("ไม่พบข้อมูลโครงการที่เลือก", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // ✅ แสดงข้อมูล Project ลง TextBox / ComboBox / DatePicker
+            txtProjectName.Text = project.ProjectName;
+            txtProjectDetail.Text = project.ProjectDetail;
+            txtProjectAddress.Text = project.ProjectAddress;
+            txtBudget.Text = project.ProjectBudget.ToString("N2");
+            txtRemark.Text = project.Remark;
+            txtNumber.Text = project.ProjectNumber;
+
+            dtpkStartDate.Value = project.ProjectStart;
+            dtpkEndDate.Value = project.ProjectEnd;
+
+            // ✅ นับวันทำงาน และแสดง
+            int workingDays = CalculateWorkingDays(project.ProjectStart, project.ProjectEnd);
+            txtWorkingDate.Text = workingDays.ToString();
+
+            cmbCurrentPhaseNumber.SelectedItem = project.CurrentPhaseNumber.ToString();
+
+            // ✅ ชื่อลูกค้า/พนักงาน
+            txtCustomerName.Text = project.CustomerName;
+            txtEmployeeName.Text = project.EmployeeName;
+
+            // 🟢 TODO: เก็บ ID ลูกค้า/พนักงาน (ในตัวแปร global ถ้ามี)
+            //selectedCustomerID = project.CustomerID;
+            //selectedEmployeeID = project.EmployeeID;
+
+            // ✅ โหลดไฟล์ (ถ้ามี)
+            fileConstructionBytes = project.ProjectFile?.ConstructionBlueprint;
+            fileDemolitionBytes = project.ProjectFile?.DemolitionModel;
+
+            if (fileConstructionBytes != null)
+                btnInsertBlueprintFile.Text = "ไฟล์แนบแล้ว";
+            else
+                btnInsertBlueprintFile.Text = "เลือกไฟล์";
+
+            if (fileDemolitionBytes != null)
+                btnInsertDemolitionFile.Text = "ไฟล์แนบแล้ว";
+            else
+                btnInsertDemolitionFile.Text = "เลือกไฟล์";
+
+            // ✅ โหลด Phase ลง dtgvPhase และ projectPhases list
+            projectPhases = project.Phases ?? new List<ProjectPhase>();
+            dtgvPhase.Rows.Clear();
+
+            foreach (var phase in projectPhases)
+            {
+                dtgvPhase.Rows.Add(
+                    phase.PhaseNumber,
+                    phase.PhaseDetail,
+                    phase.PhaseBudget.ToString("N2"),
+                    phase.PhasePercent.ToString("0.00") + " %"
+                );
+            }
+
+            // ✅ อัปเดตยอดรวม %
+            CalculateTotalPhasePercentage();
         }
+
         private void dtgvProject_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                // ✅ ดึงค่า `ProjectID` จากตาราง
                 int projectId = Convert.ToInt32(dtgvProject.Rows[e.RowIndex].Cells["ProjectID"].Value);
-
-                // ✅ โหลดข้อมูลโครงการไปยัง TextBox ต่างๆ
-                LoadProjectDetails(projectId);
-
-                // ✅ โหลดข้อมูล Phase ที่เกี่ยวข้อง
-                LoadPhaseData(projectId);
+                LoadFullProjectByID(projectId);
             }
         }
 
@@ -262,25 +328,6 @@ namespace JRSApplication
             dtgvPhase.ReadOnly = true;
             dtgvPhase.AllowUserToAddRows = false;
             dtgvPhase.AllowUserToResizeRows = false;
-        }
-
-        private void LoadPhaseData(int projectId)
-        {
-            InitializePhaseDataGridView();
-
-            PhaseDAL phaseDAL = new PhaseDAL();
-            List<ProjectPhase> phases = phaseDAL.GetAllPhasesByPrjectID(projectId);
-
-            dtgvPhase.Rows.Clear();
-            foreach (var phase in phases)
-            {
-                dtgvPhase.Rows.Add(
-                    phase.PhaseNumber, // เฟสที่
-                    phase.PhaseDetail, // รายละเอียดการดำเนินงาน
-                    phase.PhaseBudget.ToString("N2"), // จำนวนเงิน (บาท) -> แสดงเป็น 1,200.00
-                    phase.PhasePercent.ToString("N2") + " %" // เปอร์เซ็นต์ (%)
-                );
-            }
         }
 
         private void LoadPhaseToGridView()
@@ -983,6 +1030,25 @@ namespace JRSApplication
         {
             CalculateEndDateFromWorkingDays();
         }
+
+        private int CalculateWorkingDays(DateTime startDate, DateTime endDate)
+        {
+            int workingDays = 0;
+            DateTime currentDate = startDate;
+
+            while (currentDate <= endDate)
+            {
+                if (currentDate.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    workingDays++;
+                }
+
+                currentDate = currentDate.AddDays(1);
+            }
+
+            return workingDays;
+        }
+
         //-----------------------------------------------------------------------------------------------------------------------------------------
         //-----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1216,6 +1282,82 @@ namespace JRSApplication
             return true; // ✅ ผ่านทุกเงื่อนไข
         }
 
-        
+        //-----------------------------------------------------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------------
+        //PDFPreview
+
+        //เมธอดเปิดฟอร์ม Preview
+        private void ShowPDFPreviewFromBytes(byte[] pdfBytes, Control targetControl)
+        {
+            if (pdfBytes == null) return;
+
+            // ถ้า Form ยังไม่ได้เปิด
+            if (pdfPreviewForm == null || pdfPreviewForm.IsDisposed)
+            {
+                // ✅ สร้างและเปิด Form ใหม่
+                pdfPreviewForm = new FormPDFPreview(pdfBytes);
+
+                // ✅ วางตำแหน่ง Form ใต้ปุ่ม
+                var location = targetControl.PointToScreen(new Point(0, targetControl.Height));
+                pdfPreviewForm.Location = location;
+
+                pdfPreviewForm.Show();
+            }
+
+            StartHoverTimer(targetControl); // เริ่มเช็กเมื่อเมาส์ออก
+        }
+        //Timer เช็กเมาส์ "ออก" แล้วปิด Form
+        private void StartHoverTimer(Control buttonControl)
+        {
+            if (hoverCheckTimer == null)
+            {
+                hoverCheckTimer = new Timer();
+                hoverCheckTimer.Interval = 300;
+                hoverCheckTimer.Tick += (s, e) =>
+                {
+                    Point mousePos = Cursor.Position;
+
+                    // ✅ เช็กเมาส์อยู่บนปุ่ม
+                    bool overButton = buttonControl.Bounds.Contains(buttonControl.Parent.PointToClient(mousePos));
+
+                    // ✅ เช็กเมาส์อยู่บนฟอร์ม Preview
+                    bool overPreview = pdfPreviewForm != null && !pdfPreviewForm.IsDisposed && pdfPreviewForm.Bounds.Contains(mousePos);
+
+                    // ❌ ถ้าเมาส์อยู่นอกทั้ง 2 จุด ให้ปิดฟอร์ม
+                    if (!overButton && !overPreview)
+                    {
+                        if (pdfPreviewForm != null && !pdfPreviewForm.IsDisposed)
+                        {
+                            pdfPreviewForm.Close();
+                            pdfPreviewForm = null;
+                        }
+
+                        hoverCheckTimer.Stop();
+                    }
+                };
+            }
+
+            hoverCheckTimer.Start();
+        }
+
+        private void btnInsertBlueprintFile_MouseEnter(object sender, EventArgs e)
+        {
+            isPreviewingDemolition = false; // บอกว่าเป็น Blueprint
+            if (fileConstructionBytes != null)
+            {
+                ShowPDFPreviewFromBytes(fileConstructionBytes, btnInsertBlueprintFile);
+            }
+        }
+
+        private void btnInsertDemolitionFile_MouseEnter(object sender, EventArgs e)
+        {
+            isPreviewingDemolition = true; // บอกว่าเป็น Demolition
+            if (fileDemolitionBytes != null)
+            {
+                ShowPDFPreviewFromBytes(fileDemolitionBytes, btnInsertDemolitionFile);
+            }
+        }
+
+
     }
 }

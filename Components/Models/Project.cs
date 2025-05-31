@@ -26,6 +26,8 @@ namespace JRSApplication.Components
 
         // รองรับ ProjectFile
         public ProjectFile ProjectFile { get; set; }
+        // ✅ เพิ่มส่วนนี้
+        public List<ProjectPhase> Phases { get; set; }
     }
 
 }

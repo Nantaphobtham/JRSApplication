@@ -510,6 +510,7 @@
             this.btnInsertDemolitionFile.Text = "เลือกไฟล์";
             this.btnInsertDemolitionFile.UseVisualStyleBackColor = false;
             this.btnInsertDemolitionFile.Click += new System.EventHandler(this.btnInsertDemolitionFile_Click);
+            this.btnInsertDemolitionFile.MouseEnter += new System.EventHandler(this.btnInsertDemolitionFile_MouseEnter);
             // 
             // lblDemolition
             // 
@@ -558,6 +559,7 @@
             this.btnInsertBlueprintFile.Text = "เลือกไฟล์";
             this.btnInsertBlueprintFile.UseVisualStyleBackColor = false;
             this.btnInsertBlueprintFile.Click += new System.EventHandler(this.btnInsertBlueprintFile_Click);
+            this.btnInsertBlueprintFile.MouseEnter += new System.EventHandler(this.btnInsertBlueprintFile_MouseEnter);
             // 
             // starBlueprint
             // 

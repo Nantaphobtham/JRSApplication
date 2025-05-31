@@ -153,6 +153,12 @@
     <Compile Include="Components\Models\Supplier.cs" />
     <Compile Include="Components\Models\WorkingPicture.cs" />
     <Compile Include="Components\Evaluators\WorkStatus.cs" />
+    <Compile Include="Components\Service\FormPDFPreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Service\FormPDFPreview.Designer.cs">
+      <DependentUpon>FormPDFPreview.cs</DependentUpon>
+    </Compile>
     <Compile Include="Data Access Layer\CustomerDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeAssignmentDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeDAL.cs" />
