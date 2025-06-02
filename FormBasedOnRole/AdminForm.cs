@@ -13,7 +13,6 @@ namespace JRSApplication
     public partial class AdminForm : Form
     {
 
-
         //name & role
         private string userFullName;
         private string userRole;
@@ -83,7 +82,7 @@ namespace JRSApplication
 
         private void btnManageProject_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ManageProject());
+            LoadUserControl(new ManageProject(userFullName, userRole));
         }
     }
 }

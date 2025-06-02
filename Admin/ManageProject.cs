@@ -24,6 +24,9 @@ namespace JRSApplication
         private string selectedEmployeeID = "";
         private string loggedInUser = "Admin"; // ✅ เก็บชื่อผู้ใช้ที่ล็อกอินมา
 
+        private string _loggedInUser;
+        private string _loggedInRole;
+
         private List<EmployeeAssignment> assignedEmployees = new List<EmployeeAssignment>(); // ✅ เก็บพนักงานที่เลือกไว้ก่อนบันทึก
 
         // 🟢 เก็บรายการเฟสทั้งหมด
@@ -40,10 +43,17 @@ namespace JRSApplication
         private Timer hoverCheckTimer;                // ✅ Timer เช็กเมาส์ออก
         private bool isPreviewingDemolition = false;  // ✅ Flag บอกว่าปุ่มไหน trigger
 
+        private int? selectedProjectID = null; // null = ยังไม่มีการเลือก
 
-        public ManageProject()
+
+
+        public ManageProject(string fullName, string role)
         {
             InitializeComponent();
+
+            _loggedInUser = fullName;  // ✅ รับค่าชื่อผู้ใช้ที่ล็อกอิน
+            _loggedInRole = role;      // ✅ รับค่าตำแหน่ง
+
             LoadPhaseNumberDropdown();
             
             InitializePhaseDataGridView(); //ของ phase
@@ -175,9 +185,12 @@ namespace JRSApplication
 
         private void LoadFullProjectByID(int projectId)
         {
-            // 🧠 ดึงข้อมูลเต็มจาก ProjectDAL
+            //  ดึงข้อมูลเต็มจาก ProjectDAL
             ProjectDAL dal = new ProjectDAL();
             Project project = dal.GetProjectDetailsById(projectId);
+
+            selectedProjectID = project.ProjectID;
+
 
             if (project == null)
             {
@@ -632,16 +645,28 @@ namespace JRSApplication
         {
             try
             {
-
-                // ✅ ตรวจสอบข้อมูลก่อนบันทึก
+                // ✅ ตรวจสอบความถูกต้องก่อน
                 if (!ValidateProjectData())
-                {
-                    return; // ❌ ถ้าข้อมูลไม่ครบ จะไม่ดำเนินการต่อ
-                }
+                    return;
 
                 ProjectDAL dal = new ProjectDAL();
-                int projectID = dal.GenerateProjectID(); // ✅ สร้าง `pro_id` ก่อน
+                EmployeeAssignmentDAL assignDal = new EmployeeAssignmentDAL();
+                int projectID;
 
+                bool isUpdate = selectedProjectID != null;
+
+                if (isUpdate)
+                {
+                    // ✅ แก้ไขโครงการเดิม
+                    projectID = selectedProjectID.Value;
+                }
+                else
+                {
+                    // ✅ สร้างโครงการใหม่
+                    projectID = dal.GenerateProjectID();
+                }
+
+                // ✅ เตรียมข้อมูล Project
                 Project project = new Project
                 {
                     ProjectID = projectID,
@@ -658,36 +683,65 @@ namespace JRSApplication
                     CustomerID = int.Parse(selectedCustomerID)
                 };
 
-                // ✅ สร้าง ProjectFile แยกต่างหาก
-                ProjectFile projectFile = new ProjectFile
-                {
-                    ProjectID = projectID,
-                    ConstructionBlueprint = fileConstructionBytes, // สมมุติคุณมีข้อมูลไฟล์ในตัวแปรนี้
-                    DemolitionModel = fileDemolitionBytes         // หรือ null ได้
-                };
+                bool success;
 
-                bool success = dal.InsertProjectWithPhases(project, projectPhases, fileConstructionBytes, fileDemolitionBytes);
-
-                if (success)
+                if (isUpdate)
                 {
-                    MessageBox.Show("บันทึกโครงการเรียบร้อย", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadProjectData(); // ✅ โหลดข้อมูลใหม่
+                    // ✅ UPDATE Project + Phases + Files
+                    success = dal.UpdateProjectWithPhases(project, projectPhases, fileConstructionBytes, fileDemolitionBytes);
+
+                    if (success)
+                    {
+                        // ✅ ลบ Assignments เก่า แล้วเพิ่มใหม่
+                        assignDal.DeleteAssignmentsByProjectID(project.ProjectID);
+                        foreach (var assign in assignedEmployees)
+                        {
+                            assign.ProjectID = project.ProjectID;
+                            assignDal.InsertAssignment(assign);
+                        }
+
+                        MessageBox.Show("อัปเดตโครงการเรียบร้อย", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("เกิดข้อผิดพลาดในการบันทึก", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // ✅ INSERT Project + Phases + Files
+                    success = dal.InsertProjectWithPhases(project, projectPhases, fileConstructionBytes, fileDemolitionBytes);
+
+                    if (success)
+                    {
+                        foreach (var assign in assignedEmployees)
+                        {
+                            assign.ProjectID = projectID;
+                            assignDal.InsertAssignment(assign);
+                        }
+
+                        MessageBox.Show("บันทึกโครงการเรียบร้อย", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
+
+                if (!success)
+                {
+                    MessageBox.Show("เกิดข้อผิดพลาดในการบันทึก", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // ✅ รีเซ็ต + โหลดใหม่
+                LoadProjectData();
+                ClearForm();
+                ReadOnlyControls_close();
+                EnableControls_close();
+                selectedProjectID = null; // 🟢 รีเซ็ตโหมดหลังบันทึก
+
+                // ✅ สลับปุ่มกลับเป็นโหมด Save (ถ้าคุณใช้ toggle UI)
+                btnSave.Text = "บันทึก";
             }
             catch (Exception ex)
             {
                 MessageBox.Show("ข้อผิดพลาด: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            //เคลียฟอร์ม
-            ClearForm();
-            ReadOnlyControls_close();
-            EnableControls_close();
-
         }
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
             //เพิ่ม เปิดการทำงาน
@@ -698,7 +752,18 @@ namespace JRSApplication
         private void btnEdit_Click(object sender, EventArgs e)
         {
             //แก้ไข
+            if (selectedProjectID == null)
+            {
+                MessageBox.Show("กรุณาเลือกโครงการก่อนแก้ไข", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            EnableControls_open();     // เปิด control
+            ReadOnlyControls_open();   // เปิดให้พิมพ์ได้
+            //txtProjectName.Focus();    // โฟกัสชื่อ
+
+            // 👉 ถ้ามีการเปลี่ยนปุ่ม Save เป็น "อัปเดต" ก็ทำตรงนี้
+            btnSave.Text = "อัปเดต";
         }
         private void btnDelete_Click(object sender, EventArgs e)
         {
@@ -887,8 +952,8 @@ namespace JRSApplication
                         EmployeeID = int.Parse(selectedEmployeeID),
                         EmployeeName = txtEmployeeName.Text,
                         EmployeeLastName = txtEmployeeLastName.Text,
-                        AssignRole = txtEmployeeRole.Text,
-                        AssignBy = loggedInUser, // ✅ Admin ที่ล็อกอิน
+                        AssignRole = _loggedInRole,         // ✅ ใหม่: มาจากผู้ล็อกอินจริง
+                        AssignBy = _loggedInUser,           // ✅ ใหม่: มาจากผู้ล็อกอินจริง
                         AssignDate = DateTime.Now
                     };
 

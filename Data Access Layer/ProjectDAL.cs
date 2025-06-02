@@ -279,6 +279,159 @@ namespace JRSApplication.Data_Access_Layer
             return isSuccess;
         }
 
+        public bool UpdateProjectWithPhases(Project project, List<ProjectPhase> updatedPhases, byte[] blueprintBytes, byte[] demolitionBytes)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                using (MySqlTransaction tran = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // ✅ 1) UPDATE Project
+                        string updateProjectSql = @"
+                                                UPDATE project SET
+                                                    pro_name = @ProjectName,
+                                                    pro_detail = @ProjectDetail,
+                                                    pro_address = @ProjectAddress,
+                                                    pro_budget = @ProjectBudget,
+                                                    pro_start = @ProjectStart,
+                                                    pro_end = @ProjectEnd,
+                                                    pro_currentphasenumber = @CurrentPhaseNumber,
+                                                    pro_remark = @Remark,
+                                                    pro_number = @ProjectNumber,
+                                                    emp_id = @EmployeeID,
+                                                    cus_id = @CustomerID
+                                                WHERE pro_id = @ProjectID";
+
+                        using (MySqlCommand cmd = new MySqlCommand(updateProjectSql, conn, tran))
+                        {
+                            cmd.Parameters.AddWithValue("@ProjectID", project.ProjectID);
+                            cmd.Parameters.AddWithValue("@ProjectName", project.ProjectName);
+                            cmd.Parameters.AddWithValue("@ProjectDetail", project.ProjectDetail);
+                            cmd.Parameters.AddWithValue("@ProjectAddress", project.ProjectAddress);
+                            cmd.Parameters.AddWithValue("@ProjectBudget", project.ProjectBudget);
+                            cmd.Parameters.AddWithValue("@ProjectStart", project.ProjectStart);
+                            cmd.Parameters.AddWithValue("@ProjectEnd", project.ProjectEnd);
+                            cmd.Parameters.AddWithValue("@CurrentPhaseNumber", project.CurrentPhaseNumber);
+                            cmd.Parameters.AddWithValue("@Remark", project.Remark);
+                            cmd.Parameters.AddWithValue("@ProjectNumber", project.ProjectNumber);
+                            cmd.Parameters.AddWithValue("@EmployeeID", project.EmployeeID);
+                            cmd.Parameters.AddWithValue("@CustomerID", project.CustomerID);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // ✅ 2) ดึง Phase ปัจจุบันจาก DB
+                        List<ProjectPhase> existingPhases = new List<ProjectPhase>();
+                        string selectPhaseSql = "SELECT phase_no, phase_detail, phase_budget, phase_percent FROM project_phase WHERE pro_id = @ProjectID";
+
+                        using (MySqlCommand cmdSelect = new MySqlCommand(selectPhaseSql, conn, tran))
+                        {
+                            cmdSelect.Parameters.AddWithValue("@ProjectID", project.ProjectID);
+                            using (MySqlDataReader reader = cmdSelect.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    existingPhases.Add(new ProjectPhase
+                                    {
+                                        PhaseNumber = Convert.ToInt32(reader["phase_no"]),
+                                        PhaseDetail = reader["phase_detail"].ToString(),
+                                        PhaseBudget = Convert.ToDecimal(reader["phase_budget"]),
+                                        PhasePercent = Convert.ToDecimal(reader["phase_percent"])
+                                    });
+                                }
+                            }
+                        }
+
+                        // ✅ 3) Loop UPDATE หรือ INSERT
+                        foreach (var phase in updatedPhases)
+                        {
+                            var match = existingPhases.FirstOrDefault(p => p.PhaseNumber == phase.PhaseNumber);
+
+                            if (match != null)
+                            {
+                                // ✅ UPDATE
+                                string updatePhaseSql = @"
+                                                UPDATE project_phase
+                                                SET phase_detail = @PhaseDetail,
+                                                    phase_budget = @PhaseBudget,
+                                                    phase_percent = @PhasePercent
+                                                WHERE pro_id = @ProjectID AND phase_no = @PhaseNo";
+
+                                using (MySqlCommand cmdUpdate = new MySqlCommand(updatePhaseSql, conn, tran))
+                                {
+                                    cmdUpdate.Parameters.AddWithValue("@ProjectID", project.ProjectID);
+                                    cmdUpdate.Parameters.AddWithValue("@PhaseNo", phase.PhaseNumber);
+                                    cmdUpdate.Parameters.AddWithValue("@PhaseDetail", phase.PhaseDetail);
+                                    cmdUpdate.Parameters.AddWithValue("@PhaseBudget", phase.PhaseBudget);
+                                    cmdUpdate.Parameters.AddWithValue("@PhasePercent", phase.PhasePercent);
+                                    cmdUpdate.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                            {
+                                // ✅ INSERT
+                                string insertSql = @"
+                            INSERT INTO project_phase (pro_id, phase_no, phase_detail, phase_budget, phase_percent)
+                            VALUES (@ProjectID, @PhaseNo, @PhaseDetail, @PhaseBudget, @PhasePercent)";
+
+                                using (MySqlCommand cmdInsert = new MySqlCommand(insertSql, conn, tran))
+                                {
+                                    cmdInsert.Parameters.AddWithValue("@ProjectID", project.ProjectID);
+                                    cmdInsert.Parameters.AddWithValue("@PhaseNo", phase.PhaseNumber);
+                                    cmdInsert.Parameters.AddWithValue("@PhaseDetail", phase.PhaseDetail);
+                                    cmdInsert.Parameters.AddWithValue("@PhaseBudget", phase.PhaseBudget);
+                                    cmdInsert.Parameters.AddWithValue("@PhasePercent", phase.PhasePercent);
+                                    cmdInsert.ExecuteNonQuery();
+                                }
+                            }
+                        }
+
+                        // ✅ 4) DELETE Phase ที่ไม่อยู่ในรายการใหม่
+                        var toDelete = existingPhases
+                            .Where(old => !updatedPhases.Any(up => up.PhaseNumber == old.PhaseNumber))
+                            .ToList();
+
+                        foreach (var del in toDelete)
+                        {
+                            string deleteSql = "DELETE FROM project_phase WHERE pro_id = @ProjectID AND phase_no = @PhaseNo";
+                            using (MySqlCommand cmdDelete = new MySqlCommand(deleteSql, conn, tran))
+                            {
+                                cmdDelete.Parameters.AddWithValue("@ProjectID", project.ProjectID);
+                                cmdDelete.Parameters.AddWithValue("@PhaseNo", del.PhaseNumber);
+                                cmdDelete.ExecuteNonQuery();
+                            }
+                        }
+
+                        // ✅ 5) UPDATE/INSERT ไฟล์
+                        string upsertFileSql = @"
+                                        INSERT INTO project_files (pro_id, con_blueprint, demolition_model)
+                                        VALUES (@ProjectID, @Blueprint, @Demolition)
+                                        ON DUPLICATE KEY UPDATE
+                                            con_blueprint = @Blueprint,
+                                            demolition_model = @Demolition";
+
+                        using (MySqlCommand cmdFile = new MySqlCommand(upsertFileSql, conn, tran))
+                        {
+                            cmdFile.Parameters.AddWithValue("@ProjectID", project.ProjectID);
+                            cmdFile.Parameters.AddWithValue("@Blueprint", blueprintBytes ?? (object)DBNull.Value);
+                            cmdFile.Parameters.AddWithValue("@Demolition", demolitionBytes ?? (object)DBNull.Value);
+                            cmdFile.ExecuteNonQuery();
+                        }
+
+                        tran.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        tran.Rollback();
+                        throw new Exception("Error updating project and phases: " + ex.Message);
+                    }
+                }
+            }
+        }
+
+
 
 
     }

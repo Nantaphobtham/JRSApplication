@@ -8,7 +8,8 @@ namespace JRSApplication.Components
 {
     public class EmployeeAssignment
     {
-        public int EmployeeID { get; set; }
+        // employee_assignment
+        public int EmployeeID { get; set; }  // emp_id
         public string EmployeeName { get; set; }
         public string EmployeeLastName { get; set; }
         public string AssignRole { get; set; }
