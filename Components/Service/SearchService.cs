@@ -13,6 +13,35 @@ namespace JRSApplication
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
+        public DataTable GetPhasesByProjectId(string projectId)
+        {
+            DataTable dt = new DataTable();
+
+            string query = @"
+                        SELECT 
+                            phase_id,
+                            phase_no
+                        FROM project_phase
+                        WHERE pro_id = @ProjectId
+                        ORDER BY phase_no ASC;
+                    ";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@ProjectId", projectId);
+                conn.Open();
+
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                {
+                    adapter.Fill(dt);
+                }
+            }
+
+            return dt;
+        }
+
+
         public DataTable SearchData(string searchType, string keyword)
         {
             DataTable dt = new DataTable();
@@ -40,6 +69,22 @@ namespace JRSApplication
                       sup_tel AS 'เบอร์โทร', sup_address AS 'ที่อยู่', sup_email AS 'อีเมล'
                       FROM supplier
                       WHERE sup_name LIKE @Keyword OR sup_juristic LIKE @Keyword";
+                }
+                else if (searchType == "Project")
+                {
+                    query = @"
+                                SELECT 
+                                    p.pro_id AS 'รหัสโครงการ',
+                                    p.pro_name AS 'ชื่อโครงการ',
+                                    p.pro_address AS 'สถานที่',
+                                    p.pro_budget AS 'งบประมาณ',
+                                    CONCAT(c.cus_name, ' ', c.cus_lname) AS 'ลูกค้า',
+                                    CONCAT(e.emp_name, ' ', e.emp_lname) AS 'พนักงานดูแล'
+                                FROM project p
+                                LEFT JOIN customer c ON p.cus_id = c.cus_id
+                                LEFT JOIN employee e ON p.emp_id = e.emp_id
+                                WHERE p.pro_name LIKE @Keyword OR p.pro_id LIKE @Keyword
+                            ";
                 }
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))

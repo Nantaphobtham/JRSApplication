@@ -679,7 +679,7 @@ namespace JRSApplication
                     CurrentPhaseNumber = int.Parse(cmbCurrentPhaseNumber.SelectedItem.ToString()),
                     Remark = txtRemark.Text.Trim(),
                     ProjectNumber = txtNumber.Text.Trim(),
-                    EmployeeID = int.Parse(selectedEmployeeID),
+                    EmployeeID = selectedEmployeeID,   // ✅ ใช้ string ตรง ๆ
                     CustomerID = int.Parse(selectedCustomerID)
                 };
 
@@ -934,34 +934,34 @@ namespace JRSApplication
         //-----------------------------------------------------------------------------------------------------------------------------------------
 
         //การเลือกผู้ดูแล/ลูกค้า
+        // การเลือกข้อมูลพนักงาน
         private void btnSearchEmployee_Click(object sender, EventArgs e)
         {
             using (SearchForm searchForm = new SearchForm("Employee"))
             {
                 if (searchForm.ShowDialog() == DialogResult.OK)
                 {
-                    // ✅ เก็บค่าที่ได้จาก SearchForm
                     selectedEmployeeID = searchForm.SelectedID;
                     txtEmployeeName.Text = searchForm.SelectedName;
                     txtEmployeeLastName.Text = searchForm.SelectedLastName;
-                    txtEmployeeRole.Text = searchForm.SelectedIDCardOrRole; // ✅ ใช้ตำแหน่งเป็น Role
+                    txtEmployeeRole.Text = searchForm.SelectedIDCardOrRole;
 
-                    // ✅ เพิ่มพนักงานเข้า List (แต่ยังไม่ลงฐานข้อมูล)
+                    // ✅ สร้างอ็อบเจกต์พนักงานใหม่ (ใช้ string แทน int)
                     EmployeeAssignment newAssign = new EmployeeAssignment
                     {
-                        EmployeeID = int.Parse(selectedEmployeeID),
+                        EmployeeID = selectedEmployeeID,
                         EmployeeName = txtEmployeeName.Text,
                         EmployeeLastName = txtEmployeeLastName.Text,
-                        AssignRole = _loggedInRole,         // ✅ ใหม่: มาจากผู้ล็อกอินจริง
-                        AssignBy = _loggedInUser,           // ✅ ใหม่: มาจากผู้ล็อกอินจริง
+                        AssignRole = _loggedInRole,
+                        AssignBy = _loggedInUser,
                         AssignDate = DateTime.Now
                     };
 
-                    // ✅ ตรวจสอบว่า Employee ถูก Assign ไปแล้วหรือไม่
+                    // ✅ ตรวจสอบว่าถูกเพิ่มไปแล้วหรือยัง
                     if (!assignedEmployees.Any(a => a.EmployeeID == newAssign.EmployeeID))
                     {
                         assignedEmployees.Add(newAssign);
-                        //RefreshAssignedEmployeesGrid(); // ✅ อัปเดต DataGridView
+                        // RefreshAssignedEmployeesGrid(); // ถ้ามี
                     }
                     else
                     {
@@ -970,6 +970,8 @@ namespace JRSApplication
                 }
             }
         }
+
+
         private void btnSearchCustomer_Click(object sender, EventArgs e)
         {
             OpenSearchForm("Customer", txtCustomerName, txtCustomerLastName, txtCustomerIDCard, txtCustomerPhone, txtCustomerEmail);

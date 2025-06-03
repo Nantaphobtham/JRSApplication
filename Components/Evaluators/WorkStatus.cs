@@ -26,7 +26,7 @@ namespace JRSApplication.Components
         {
             switch (status)
             {
-                case NotStarted: return "ยังไม่เริ่ม";
+                case NotStarted: return "ยังไม่เริ่ม"; //รอเปลี่ยนคำให้เหมาะสม
                 case InProgress: return "กำลังดำเนินการ";
                 case WaitingForInvoice: return "รอเรียกเก็บเงิน";
                 //case Invoiced: return "ออกใบแจ้งหนี้แล้ว";

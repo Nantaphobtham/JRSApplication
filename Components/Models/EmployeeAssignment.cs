@@ -9,7 +9,7 @@ namespace JRSApplication.Components
     public class EmployeeAssignment
     {
         // employee_assignment
-        public int EmployeeID { get; set; }  // emp_id
+        public string EmployeeID { get; set; }  // emp_id
         public string EmployeeName { get; set; }
         public string EmployeeLastName { get; set; }
         public string AssignRole { get; set; }

@@ -18,7 +18,7 @@ namespace JRSApplication.Components
         public int CurrentPhaseNumber { get; set; }  // pro_currentphasenumber
         public string Remark { get; set; }  // pro_remark
         public string ProjectNumber { get; set; }  // pro_number
-        public int EmployeeID { get; set; }  // emp_id (FK)
+        public string EmployeeID { get; set; }  // emp_id (FK)
         public int CustomerID { get; set; }  // cus_id (FK)
 
         public string CustomerName { get; set; } // ✅ ชื่อลูกค้า

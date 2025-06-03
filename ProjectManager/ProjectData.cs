@@ -54,16 +54,16 @@ namespace JRSApplication
             }
         }
 
-
+        //รอเรียกทำงานอีกที
         private void LoadProjectStatus(int projectID, int totalPhaseNumber)
         {
-            PhaseWorkDAL dal = new PhaseWorkDAL();
-            List<PhaseWorking> phaseWorkings = dal.GetPhaseWorkingsByProjectID(projectID);
+            //PhaseWorkDAL dal = new PhaseWorkDAL();
+            //List<PhaseWorking> phaseWorkings = dal.GetPhaseWorkingsByProjectID(projectID);
 
-            string status = ProjectStatusEvaluator.GetProjectStatus(phaseWorkings, totalPhaseNumber);
+            //string status = ProjectStatusEvaluator.GetProjectStatus(phaseWorkings, totalPhaseNumber);
 
-            txtStatus.Text = WorkStatus.GetDisplayName(status);
-            txtStatus.BackColor = WorkStatus.GetStatusColor(status); // ✅ เพิ่มสีพื้นหลังตามสถานะ
+            //txtStatus.Text = WorkStatus.GetDisplayName(status);
+            //txtStatus.BackColor = WorkStatus.GetStatusColor(status); // ✅ เพิ่มสีพื้นหลังตามสถานะ
         }
 
         private void LoadProjectData()

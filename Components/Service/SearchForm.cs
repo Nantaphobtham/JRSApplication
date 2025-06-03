@@ -31,6 +31,8 @@ namespace JRSApplication
                 lblTitle.Text = "ค้นหาพนักงาน";
             else if (SearchMode == "Supplier")
                 lblTitle.Text = "ค้นหาซัพพลายเออร์";
+            else if (SearchMode == "Project")
+                lblTitle.Text = "ค้นหาโครงการ";
             else
                 lblTitle.Text = "ค้นหา";
             LoadSearchData(""); // ✅ โหลดข้อมูลเริ่มต้น
@@ -52,15 +54,14 @@ namespace JRSApplication
         // กดปุ่มยืนยัน (btnConfirm) เพื่อนำข้อมูลไปใช้
         private void btnConfirm_Click(object sender, EventArgs e)
         {
-            if (dtgvAlldata.SelectedRows.Count > 0) // ✅ ตรวจสอบว่ามีการเลือกแถว
+            if (dtgvAlldata.SelectedRows.Count > 0)
             {
-                // ✅ ดึงค่าร่วมทั้งหมดก่อน (เฉพาะ ID, ชื่อ, นามสกุล - แล้วแต่ Mode)
                 DataGridViewRow selectedRow = dtgvAlldata.SelectedRows[0];
 
-                SelectedID = selectedRow.Cells["ID"].Value?.ToString() ?? "";
-
+                // ✅ ย้ายเข้าแต่ละ if แทนที่จะเรียกแบบ hard-coded ก่อน if
                 if (SearchMode == "Customer")
                 {
+                    SelectedID = selectedRow.Cells["ID"].Value?.ToString() ?? "";
                     SelectedName = selectedRow.Cells["ชื่อ"].Value?.ToString() ?? "";
                     SelectedLastName = selectedRow.Cells["นามสกุล"].Value?.ToString() ?? "";
                     SelectedIDCardOrRole = selectedRow.Cells["เลขบัตรประชาชน"].Value?.ToString() ?? "";
@@ -69,26 +70,37 @@ namespace JRSApplication
                 }
                 else if (SearchMode == "Employee")
                 {
+                    SelectedID = selectedRow.Cells["ID"].Value?.ToString() ?? "";
                     SelectedName = selectedRow.Cells["ชื่อ"].Value?.ToString() ?? "";
                     SelectedLastName = selectedRow.Cells["นามสกุล"].Value?.ToString() ?? "";
                     SelectedIDCardOrRole = selectedRow.Cells["ตำแหน่ง"].Value?.ToString() ?? "";
                 }
                 else if (SearchMode == "Supplier")
                 {
+                    SelectedID = selectedRow.Cells["ID"].Value?.ToString() ?? "";
                     SelectedName = selectedRow.Cells["ชื่อบริษัท"].Value?.ToString() ?? "";
                     SelectedIDCardOrRole = selectedRow.Cells["เลขทะเบียนนิติบุคคล"].Value?.ToString() ?? "";
+                    SelectedPhone = selectedRow.Cells["เบอร์โทร"].Value?.ToString() ?? "";
+                }
+                else if (SearchMode == "Project")
+                {
+                    SelectedID = selectedRow.Cells["รหัสโครงการ"].Value?.ToString() ?? "";
+                    SelectedName = selectedRow.Cells["ชื่อโครงการ"].Value?.ToString() ?? "";
+                    SelectedLastName = selectedRow.Cells["ลูกค้า"].Value?.ToString() ?? "";
+                    SelectedIDCardOrRole = selectedRow.Cells["พนักงานดูแล"].Value?.ToString() ?? "";
+                    SelectedPhone = selectedRow.Cells["สถานที่"].Value?.ToString() ?? "";
+                    SelectedEmail = selectedRow.Cells["งบประมาณ"].Value?.ToString() ?? "";
                 }
 
-
-
-                this.DialogResult = DialogResult.OK; // ✅ ส่งผลลัพธ์กลับ
-                this.Close(); // ✅ ปิดฟอร์ม
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
             else
             {
                 MessageBox.Show("กรุณาเลือกข้อมูลก่อน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
 
         private void CustomizeDataGridViewAlldata()
         {

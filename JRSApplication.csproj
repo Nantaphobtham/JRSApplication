@@ -151,6 +151,7 @@
     <Compile Include="Components\Evaluators\ProjectStatusEvaluator.cs" />
     <Compile Include="Components\Models\project_files.cs" />
     <Compile Include="Components\Models\Supplier.cs" />
+    <Compile Include="Components\Models\SupplierWorkAssignment.cs" />
     <Compile Include="Components\Models\WorkingPicture.cs" />
     <Compile Include="Components\Evaluators\WorkStatus.cs" />
     <Compile Include="Components\Service\FormPDFPreview.cs">
@@ -167,6 +168,7 @@
     <Compile Include="Data Access Layer\ProjectDAL.cs" />
     <Compile Include="Data Access Layer\PhaseDAL.cs" />
     <Compile Include="Data Access Layer\SupplierDAL.cs" />
+    <Compile Include="Data Access Layer\SupplierWorkAssignmentDAL.cs" />
     <Compile Include="Data Access Layer\WorkingPictureDAL.cs" />
     <Compile Include="ProjectManager\AllocatePersonnel.cs">
       <SubType>UserControl</SubType>
