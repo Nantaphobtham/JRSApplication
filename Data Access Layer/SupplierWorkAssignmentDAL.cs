@@ -44,6 +44,7 @@ namespace JRSApplication.Data_Access_Layer
             string query = @"
                         SELECT
                             swa.supplier_assignment_id AS 'รหัสงาน',
+                            pp.pro_id AS 'รหัสโครงการ',
                             swa.sup_id AS 'รหัสผู้รับเหมา',
                             swa.start_date AS 'วันที่เริ่ม',
                             swa.due_date AS 'วันที่สิ้นสุด',

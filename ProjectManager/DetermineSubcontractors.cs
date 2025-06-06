@@ -316,19 +316,28 @@ namespace JRSApplication
         private void LoadSupplierDetail(string supId)
         {
             SupplierWorkAssignmentDAL dal = new SupplierWorkAssignmentDAL();
-            DataTable dt = dal.GetSupplierInfoFromAssignment(supId); // ✅ เรียกผ่าน DAL
+            DataTable dt = dal.GetSupplierInfoFromAssignment(supId); // ✔️ ดึงข้อมูล DAL
 
             if (dt.Rows.Count > 0)
             {
+                // Set ข้อมูล Supplier
                 txtSupplierName.Text = dt.Rows[0]["Name"].ToString();
                 txtSupplierJuristic.Text = dt.Rows[0]["Juristic"].ToString();
                 txtSupplierPhone.Text = dt.Rows[0]["Phone"].ToString();
-
                 txtPorjectID.Text = dt.Rows[0]["ProjectID"].ToString();
                 txtProjectName.Text = dt.Rows[0]["ProjectName"].ToString();
 
-                cmbSelectPhase.SelectedValue = dt.Rows[0]["PhaseID"];
-                
+                // Load ComboBox Phase
+                string projectId = dt.Rows[0]["ProjectID"].ToString();
+                string phaseId = dt.Rows[0]["PhaseID"].ToString();
+
+                LoadPhasesToComboBox(projectId);
+
+                // ⭐ Trick ใช้ BeginInvoke เพื่อให้ ComboBox Ready ก่อน Set SelectedValue
+                cmbSelectPhase.BeginInvoke((Action)(() =>
+                {
+                    cmbSelectPhase.SelectedValue = phaseId;
+                }));
             }
         }
 
