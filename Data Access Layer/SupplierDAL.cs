@@ -46,6 +46,7 @@ namespace JRSApplication.Data_Access_Layer
             return dt;
         }
 
+
         // ✅ 2️⃣ สร้างรหัสซัพพลายเออร์อัตโนมัติ (10 หลัก)
         public string GenerateSupplierID()
         {
@@ -232,5 +233,9 @@ namespace JRSApplication.Data_Access_Layer
             }
             return dt;
         }
+
+
+       
+
     }
 }

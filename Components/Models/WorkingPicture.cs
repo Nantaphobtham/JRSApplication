@@ -8,9 +8,13 @@ namespace JRSApplication.Components
 {
     public class WorkingPicture
     {
-        public int PhaseID { get; set; }
-        public int PictureID { get; set; }
-        public string PictureDetail { get; set; }
-        public byte[] PictureData { get; set; }
+        public int PictureID { get; set; }         // picture_id
+        public int WorkID { get; set; }            // work_id
+        public string PicNo { get; set; }          // pic_no
+        public string PicName { get; set; }        // pic_name
+        public string Description { get; set; }    // description
+        public byte[] PictureData { get; set; }    // picture_data
+        public DateTime CreatedAt { get; set; }    // created_at
+
     }
 }
