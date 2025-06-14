@@ -147,6 +147,51 @@ namespace JRSApplication.Data_Access_Layer
             return dt;
         }
 
+        public void Update(SupplierWorkAssignment model)
+        {
+            string query = @"
+                        UPDATE supplier_work_assignment 
+                        SET 
+                        sup_id = @SupId,
+                        start_date = @StartDate,
+                        due_date = @DueDate,
+                        assign_description = @AssignDescription,
+                        assign_remark = @AssignRemark,
+                        phase_id = @PhaseId
+                        WHERE supplier_assignment_id = @AssignmentId;
+                    ";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@SupId", model.SupId);
+                cmd.Parameters.AddWithValue("@StartDate", model.StartDate);
+                cmd.Parameters.AddWithValue("@DueDate", model.DueDate);
+                cmd.Parameters.AddWithValue("@AssignDescription", model.AssignDescription);
+                cmd.Parameters.AddWithValue("@AssignRemark", model.AssignRemark);
+                cmd.Parameters.AddWithValue("@PhaseId", model.PhaseId);
+                cmd.Parameters.AddWithValue("@AssignmentId", model.AssignmentId);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void Delete(int assignmentId)
+        {
+            string query = "DELETE FROM supplier_work_assignment WHERE supplier_assignment_id = @AssignmentId";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@AssignmentId", assignmentId);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
 
 
 
