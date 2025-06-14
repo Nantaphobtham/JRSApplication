@@ -12,7 +12,6 @@ namespace JRSApplication.Components.Models
         public string SupId { get; set; }           // VARCHAR(10), Not null
         public DateTime StartDate { get; set; }  // start_date
         public DateTime? DueDate { get; set; }      // due_date
-        public string Status { get; set; }         // status
         public string AssignDescription { get; set; } // assign_description
         public string AssignRemark { get; set; } // assign_remark
         public int PhaseId { get; set; } // phase_id (FK)

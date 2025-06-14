@@ -23,8 +23,7 @@ namespace JRSApplication
         public DetermineSubcontractors()
         {
             InitializeComponent();
-            InitializeDataGridViewAssignment();
-            dtgvAssignment.AutoGenerateColumns = false;  // ➤ ปิด AutoColumns
+            CustomizeDataGridViewAssignment();
             LoadAssignments();
             
         }
@@ -71,64 +70,62 @@ namespace JRSApplication
             }
         }
 
-        private void InitializeDataGridViewAssignment()
-        {
-            if (dtgvAssignment.Columns.Count == 0)
-            {
-                dtgvAssignment.AllowUserToAddRows = false;
+        //private void InitializeDataGridViewAssignment()   ยังไม่จำเป็นในตอนนี้
+        //{
+        //    if (dtgvAssignment.Columns.Count == 0)
+        //    {
+        //        dtgvAssignment.AllowUserToAddRows = false;
 
-                // ✅ เพิ่มคอลัมน์
-                dtgvAssignment.Columns.Add("AssignmentID", "รหัสงาน");
-                dtgvAssignment.Columns.Add("SupplierID", "รหัสผู้รับเหมา");
-                dtgvAssignment.Columns.Add("StartDate", "วันที่เริ่ม");
-                dtgvAssignment.Columns.Add("DueDate", "วันที่สิ้นสุด");
-                dtgvAssignment.Columns.Add("AssignDescription", "รายละเอียดงาน");
-                dtgvAssignment.Columns.Add("AssignRemark", "หมายเหตุ");
-                dtgvAssignment.Columns.Add("PhaseNo", "เฟสที่");
+        //        // ✅ เพิ่มคอลัมน์
+        //        dtgvAssignment.Columns.Add("AssignmentID", "รหัสงาน");
+        //        dtgvAssignment.Columns.Add("SupplierID", "รหัสผู้รับเหมา");
+        //        dtgvAssignment.Columns.Add("StartDate", "วันที่เริ่ม");
+        //        dtgvAssignment.Columns.Add("DueDate", "วันที่สิ้นสุด");
+        //        dtgvAssignment.Columns.Add("AssignDescription", "รายละเอียดงาน");
+        //        dtgvAssignment.Columns.Add("AssignRemark", "หมายเหตุ");
+        //        dtgvAssignment.Columns.Add("PhaseNo", "เฟสที่");
 
-                // ✅ ตั้งค่ารูปแบบ + การจัดชิด
-                dtgvAssignment.Columns["AssignmentID"].Width = 100;
-                dtgvAssignment.Columns["AssignmentID"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dtgvAssignment.Columns["AssignmentID"].ReadOnly = true;
+        //        // ✅ ตั้งค่ารูปแบบ + การจัดชิด
+        //        dtgvAssignment.Columns["AssignmentID"].Width = 100;
+        //        dtgvAssignment.Columns["AssignmentID"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //        dtgvAssignment.Columns["AssignmentID"].ReadOnly = true;
 
-                dtgvAssignment.Columns["SupplierID"].Width = 120;
-                dtgvAssignment.Columns["SupplierID"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dtgvAssignment.Columns["SupplierID"].ReadOnly = true;
+        //        dtgvAssignment.Columns["SupplierID"].Width = 120;
+        //        dtgvAssignment.Columns["SupplierID"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //        dtgvAssignment.Columns["SupplierID"].ReadOnly = true;
 
-                dtgvAssignment.Columns["StartDate"].Width = 120;
-                dtgvAssignment.Columns["StartDate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dtgvAssignment.Columns["StartDate"].DefaultCellStyle.Format = "dd/MM/yyyy";
-                dtgvAssignment.Columns["StartDate"].ReadOnly = true;
+        //        dtgvAssignment.Columns["StartDate"].Width = 120;
+        //        dtgvAssignment.Columns["StartDate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //        dtgvAssignment.Columns["StartDate"].DefaultCellStyle.Format = "dd/MM/yyyy";
+        //        dtgvAssignment.Columns["StartDate"].ReadOnly = true;
 
-                dtgvAssignment.Columns["DueDate"].Width = 120;
-                dtgvAssignment.Columns["DueDate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dtgvAssignment.Columns["DueDate"].DefaultCellStyle.Format = "dd/MM/yyyy";
-                dtgvAssignment.Columns["DueDate"].ReadOnly = true;
+        //        dtgvAssignment.Columns["DueDate"].Width = 120;
+        //        dtgvAssignment.Columns["DueDate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //        dtgvAssignment.Columns["DueDate"].DefaultCellStyle.Format = "dd/MM/yyyy";
+        //        dtgvAssignment.Columns["DueDate"].ReadOnly = true;
 
-                dtgvAssignment.Columns["AssignDescription"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dtgvAssignment.Columns["AssignDescription"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dtgvAssignment.Columns["AssignDescription"].ReadOnly = true;
+        //        dtgvAssignment.Columns["AssignDescription"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        //        dtgvAssignment.Columns["AssignDescription"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        //        dtgvAssignment.Columns["AssignDescription"].ReadOnly = true;
 
-                dtgvAssignment.Columns["AssignRemark"].Width = 200;
-                dtgvAssignment.Columns["AssignRemark"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dtgvAssignment.Columns["AssignRemark"].ReadOnly = true;
+        //        dtgvAssignment.Columns["AssignRemark"].Width = 200;
+        //        dtgvAssignment.Columns["AssignRemark"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+        //        dtgvAssignment.Columns["AssignRemark"].ReadOnly = true;
 
-                dtgvAssignment.Columns["PhaseNo"].Width = 80;
-                dtgvAssignment.Columns["PhaseNo"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dtgvAssignment.Columns["PhaseNo"].ReadOnly = true;
+        //        dtgvAssignment.Columns["PhaseNo"].Width = 80;
+        //        dtgvAssignment.Columns["PhaseNo"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //        dtgvAssignment.Columns["PhaseNo"].ReadOnly = true;
 
-                // ✅ เรียกใช้การตกแต่งรวม
-                CustomizeDataGridViewAssignment();
-            }
-        }
+        //        // ✅ เรียกใช้การตกแต่งรวม
+        //        CustomizeDataGridViewAssignment();
+        //    }
+        //}
 
         private void CustomizeDataGridViewAssignment()
         {
+            // 🔧 ตั้งค่าพื้นฐาน
             dtgvAssignment.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dtgvAssignment.MultiSelect = false;
-            dtgvAssignment.ReadOnly = true;
 
-            // ✅ สีพื้นฐานและการเลือก
             dtgvAssignment.BorderStyle = BorderStyle.None;
             dtgvAssignment.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
             dtgvAssignment.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
@@ -136,27 +133,35 @@ namespace JRSApplication
             dtgvAssignment.DefaultCellStyle.SelectionForeColor = Color.White;
             dtgvAssignment.BackgroundColor = Color.White;
 
-            // ✅ Header
+            // 🔧 ตั้งค่าหัวตาราง (Header)
             dtgvAssignment.EnableHeadersVisualStyles = false;
             dtgvAssignment.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dtgvAssignment.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dtgvAssignment.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dtgvAssignment.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 16, FontStyle.Bold);
-            dtgvAssignment.ColumnHeadersHeight = 45; // ⬆️ เพิ่มความสูงให้เหมาะกับ Font 16
+            dtgvAssignment.ColumnHeadersHeight = 30;
 
-            // ✅ Cell Style
-            dtgvAssignment.DefaultCellStyle.Font = new Font("Segoe UI", 16); // ⬆️ เพิ่มขนาดตัวอักษร
-            dtgvAssignment.DefaultCellStyle.Padding = new Padding(4, 6, 4, 6); // ⬆️ เพิ่มระยะห่าง
-            dtgvAssignment.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            // 🔧 ตั้งค่าข้อมูล
+            dtgvAssignment.DefaultCellStyle.Font = new Font("Segoe UI", 15);
+            dtgvAssignment.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvAssignment.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvAssignment.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
 
-            // ✅ ความสูงของแถว
+            // 🔧 ปรับขนาดอัตโนมัติ
+            dtgvAssignment.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dtgvAssignment.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dtgvAssignment.RowTemplate.Height = 42; // ⬆️ ปรับตาม Font 16 + padding
+            dtgvAssignment.RowTemplate.Height = 30;
 
-            // ✅ ปรับกรอบและความสะอาด
+            // 🔧 ปรับ Grid และแถวหัวตาราง
             dtgvAssignment.GridColor = Color.LightGray;
             dtgvAssignment.RowHeadersVisible = false;
+
+            // 🔒 ปิดการแก้ไขข้อมูลโดยตรง
+            dtgvAssignment.ReadOnly = true;
+            dtgvAssignment.AllowUserToAddRows = false;
+            dtgvAssignment.AllowUserToResizeRows = false;
         }
+
 
 
 
@@ -305,6 +310,75 @@ namespace JRSApplication
             }
 
             return true; // ✅ ผ่านทุกเงื่อนไข
+        }
+
+
+        private void LoadSupplierDetail(string supId)
+        {
+            SupplierWorkAssignmentDAL dal = new SupplierWorkAssignmentDAL();
+            DataTable dt = dal.GetSupplierInfoFromAssignment(supId); // ✔️ ดึงข้อมูล DAL
+
+            if (dt.Rows.Count > 0)
+            {
+                // Set ข้อมูล Supplier
+                txtSupplierName.Text = dt.Rows[0]["Name"].ToString();
+                txtSupplierJuristic.Text = dt.Rows[0]["Juristic"].ToString();
+                txtSupplierPhone.Text = dt.Rows[0]["Phone"].ToString();
+                txtPorjectID.Text = dt.Rows[0]["ProjectID"].ToString();
+                txtProjectName.Text = dt.Rows[0]["ProjectName"].ToString();
+
+                // Load ComboBox Phase
+                string projectId = dt.Rows[0]["ProjectID"].ToString();
+                string phaseId = dt.Rows[0]["PhaseID"].ToString();
+
+                LoadPhasesToComboBox(projectId);
+
+                // ⭐ Trick ใช้ BeginInvoke เพื่อให้ ComboBox Ready ก่อน Set SelectedValue
+                cmbSelectPhase.BeginInvoke((Action)(() =>
+                {
+                    cmbSelectPhase.SelectedValue = phaseId;
+                }));
+            }
+        }
+
+
+        private void dtgvAssignment_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) // ไม่ใช่ header
+            {
+                DataGridViewRow row = dtgvAssignment.Rows[e.RowIndex];
+
+                // 🔁 ดึงค่าแต่ละ column ตามชื่อหัวตารางภาษาไทย
+                string supplierID = row.Cells["รหัสผู้รับเหมา"].Value?.ToString();
+                string startDateStr = row.Cells["วันที่เริ่ม"].Value?.ToString();
+                string dueDateStr = row.Cells["วันที่สิ้นสุด"].Value?.ToString();
+                string assignDesc = row.Cells["รายละเอียดงาน"].Value?.ToString();
+                string assignRemark = row.Cells["หมายเหตุ"].Value?.ToString();
+                string phaseNo = row.Cells["เฟสที่"].Value?.ToString();
+
+                // ✅ ตั้งค่าควบคุมบนฟอร์ม
+                txtAssignDescription.Text = assignDesc;
+                txtRemark.Text = assignRemark;
+
+                if (DateTime.TryParse(startDateStr, out DateTime sDate))
+                    startDate.Value = sDate;
+
+                if (DateTime.TryParse(dueDateStr, out DateTime dDate))
+                    dueDate.Value = dDate;
+
+                // ✅ เลือก combobox โดยเทียบจาก phase_no
+                foreach (DataRowView item in cmbSelectPhase.Items)
+                {
+                    if (item["phase_no"].ToString() == phaseNo)
+                    {
+                        cmbSelectPhase.SelectedValue = item["phase_id"];
+                        break;
+                    }
+                }
+
+                // ✅ ดึงข้อมูล supplier เพิ่มเติม
+                LoadSupplierDetail(supplierID);
+            }
         }
 
     }

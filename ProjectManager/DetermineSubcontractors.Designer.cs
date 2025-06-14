@@ -67,8 +67,8 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dtgvAssignment = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
             this.searchboxControl1 = new JRSApplication.SearchboxControl();
+            this.label1 = new System.Windows.Forms.Label();
             this.pnlInfomation.SuspendLayout();
             this.pnlsubInfo.SuspendLayout();
             this.pnlActionMenu.SuspendLayout();
@@ -531,6 +531,16 @@
             this.dtgvAssignment.RowTemplate.Height = 24;
             this.dtgvAssignment.Size = new System.Drawing.Size(1512, 401);
             this.dtgvAssignment.TabIndex = 11;
+            this.dtgvAssignment.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvAssignment_CellClick);
+            // 
+            // searchboxControl1
+            // 
+            this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.Location = new System.Drawing.Point(894, 26);
+            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl1.Name = "searchboxControl1";
+            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl1.TabIndex = 10;
             // 
             // label1
             // 
@@ -542,15 +552,6 @@
             this.label1.Size = new System.Drawing.Size(231, 30);
             this.label1.TabIndex = 9;
             this.label1.Text = "ข้อมูลการจ้างผู้รับเหมา";
-            // 
-            // searchboxControl1
-            // 
-            this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.Location = new System.Drawing.Point(894, 26);
-            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxControl1.Name = "searchboxControl1";
-            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl1.TabIndex = 10;
             // 
             // DetermineSubcontractors
             // 
