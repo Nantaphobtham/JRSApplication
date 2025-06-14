@@ -15,5 +15,7 @@ namespace JRSApplication.Components.Models
         public string AssignDescription { get; set; } // assign_description
         public string AssignRemark { get; set; } // assign_remark
         public int PhaseId { get; set; } // phase_id (FK)
+        
+
     }
 }
