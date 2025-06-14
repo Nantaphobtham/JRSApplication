@@ -111,6 +111,7 @@
             this.btnSearchProject.TabIndex = 12;
             this.btnSearchProject.Text = "ค้นหาโครงการ";
             this.btnSearchProject.UseVisualStyleBackColor = false;
+            this.btnSearchProject.Click += new System.EventHandler(this.btnSearchProject_Click);
             // 
             // lblStatus
             // 
@@ -288,6 +289,7 @@
             this.btnSave.TabIndex = 10;
             this.btnSave.Text = "บันทึกข้อมูล";
             this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // pnlSupplier
             // 

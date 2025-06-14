@@ -10,6 +10,7 @@ namespace JRSApplication.Components
     {
         public int WorkID { get; set; }        
         public int PhaseID { get; set; }
+        public int ProjectID { get; set; }
         public string WorkDetail { get; set; }
         public string WorkStatus { get; set; }
         public DateTime WorkDate { get; set; }

@@ -65,6 +65,42 @@ namespace JRSApplication.Data_Access_Layer
 
             return dt;
         }
+        public SupplierWorkAssignment GetAssignmentByPhaseId(int phaseId)
+        {
+            SupplierWorkAssignment assignment = null;
+
+            string query = @"
+        SELECT sup_id, start_date, due_date, assign_description, assign_remark, phase_id
+        FROM supplier_work_assignment
+        WHERE phase_id = @PhaseID
+        LIMIT 1;
+    ";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@PhaseID", phaseId);
+                conn.Open();
+
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        assignment = new SupplierWorkAssignment
+                        {
+                            SupId = reader.GetString("sup_id"),
+                            StartDate = reader.GetDateTime("start_date"),
+                            DueDate = reader.GetDateTime("due_date"),
+                            AssignDescription = reader.GetString("assign_description"),
+                            AssignRemark = reader.GetString("assign_remark"),
+                            PhaseId = reader.GetInt32("phase_id")
+                        };
+                    }
+                }
+            }
+
+            return assignment;
+        }
 
 
     }
