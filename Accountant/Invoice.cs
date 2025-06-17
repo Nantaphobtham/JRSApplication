@@ -15,6 +15,7 @@ namespace JRSApplication.Accountant
         public Invoice()
         {
             InitializeComponent();
+                
         }
     }
 }

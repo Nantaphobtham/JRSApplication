@@ -51,4 +51,39 @@ namespace JRSApplication.Components
             }
         }
     }
+
+    // class Purcash order
+    public static class PurchaseOrderStatus
+    {
+        public const string Submitted = "submitted";
+        public const string Approved = "approved";
+        public const string Rejected = "rejected";
+
+        public static List<string> AllStatuses => new List<string>
+        {
+            Submitted, Approved, Rejected
+        };
+
+        public static string GetDisplayName(string status)
+        {
+            switch (status)
+            {
+                case Submitted: return "ส่งใบสั่งซื้อแล้ว";
+                case Approved: return "อนุมัติแล้ว";
+                case Rejected: return "ถูกปฏิเสธ";
+                default: return "ไม่ทราบสถานะ";
+            }
+        }
+
+        public static Color GetStatusColor(string status)
+        {
+            switch (status)
+            {
+                case Submitted: return Color.LightBlue;
+                case Approved: return Color.MediumSeaGreen;
+                case Rejected: return Color.IndianRed;
+                default: return Color.Gray;
+            }
+        }
+    }
 }

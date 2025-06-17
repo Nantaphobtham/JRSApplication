@@ -59,9 +59,9 @@ namespace JRSApplication
                     connection.Open();
 
                     string query = @"
-                SELECT emp_password, emp_name, emp_lname, emp_pos 
-                FROM employee 
-                WHERE emp_username = @Username";
+                                SELECT emp_id, emp_password, emp_name, emp_lname, emp_pos
+                                FROM employee
+                                WHERE emp_username = @Username";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -74,12 +74,13 @@ namespace JRSApplication
                                 string hashedPassword = reader["emp_password"].ToString();
                                 string fullName = $"{reader["emp_name"]} {reader["emp_lname"]}";
                                 string role = reader["emp_pos"].ToString();
+                                string empId = reader["emp_id"].ToString();
 
                                 // ✅ ตรวจสอบรหัสผ่านด้วย BCrypt
                                 if (BCrypt.Net.BCrypt.Verify(password, hashedPassword))
                                 {
                                     MessageBox.Show($"เข้าสู่ระบบสำเร็จ! ตำแหน่ง: {role}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                    NavigateToDashboard(role, fullName);
+                                    NavigateToDashboard(role, fullName, empId);
                                 }
                                 else
                                 {
@@ -101,7 +102,7 @@ namespace JRSApplication
         }
 
 
-        private void NavigateToDashboard(string role, string fullName)
+        private void NavigateToDashboard(string role, string fullName, string empId)
         {
             Form dashboard;
 
@@ -114,7 +115,7 @@ namespace JRSApplication
                     dashboard = new ProjectManagerForm(fullName, role); // ✅ ส่งค่าชื่อและตำแหน่ง
                     break;
                 case "Sitesupervisor":
-                    dashboard = new SiteSupervisorForm(); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role
+                    dashboard = new SiteSupervisorForm(fullName, role, empId); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role
                     break;
                 case "Accountant":
                     dashboard = new AccountantForm(); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role

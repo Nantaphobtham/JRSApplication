@@ -144,12 +144,14 @@
     <Compile Include="Components\Models\EmployeeAssignment.cs" />
     <Compile Include="Components\Models\Invoice.cs" />
     <Compile Include="Components\Models\InvoiceDetail.cs" />
+    <Compile Include="Components\Models\MaterialDetail.cs" />
     <Compile Include="Components\Models\PhaseWithStatus.cs" />
     <Compile Include="Components\Models\PhaseWorking.cs" />
     <Compile Include="Components\Models\Project.cs" />
     <Compile Include="Components\Models\ProjectPhase.cs" />
     <Compile Include="Components\Evaluators\ProjectStatusEvaluator.cs" />
     <Compile Include="Components\Models\project_files.cs" />
+    <Compile Include="Components\Models\PurchaseOrder.cs" />
     <Compile Include="Components\Models\Supplier.cs" />
     <Compile Include="Components\Models\SupplierWorkAssignment.cs" />
     <Compile Include="Components\Models\WorkingPicture.cs" />
@@ -163,10 +165,12 @@
     <Compile Include="Data Access Layer\CustomerDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeAssignmentDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeDAL.cs" />
+    <Compile Include="Data Access Layer\MaterialDetailDAL.cs" />
     <Compile Include="Data Access Layer\PaymentDAL.cs" />
     <Compile Include="Data Access Layer\PhaseWorkDAL.cs" />
     <Compile Include="Data Access Layer\ProjectDAL.cs" />
     <Compile Include="Data Access Layer\PhaseDAL.cs" />
+    <Compile Include="Data Access Layer\PurchaseOrderDAL.cs" />
     <Compile Include="Data Access Layer\SupplierDAL.cs" />
     <Compile Include="Data Access Layer\SupplierWorkAssignmentDAL.cs" />
     <Compile Include="Data Access Layer\WorkingPictureDAL.cs" />
@@ -280,11 +284,11 @@
       <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\Service\SearchService.cs" />
-    <Compile Include="Sitesupervisor\PurchaseOrder.cs">
+    <Compile Include="Sitesupervisor\PurchaseOrderForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Sitesupervisor\PurchaseOrder.Designer.cs">
-      <DependentUpon>PurchaseOrder.cs</DependentUpon>
+    <Compile Include="Sitesupervisor\PurchaseOrderForm.Designer.cs">
+      <DependentUpon>PurchaseOrderForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Accountant\ConfirmInvoice.resx">
       <DependentUpon>ConfirmInvoice.cs</DependentUpon>
@@ -360,8 +364,8 @@
     <EmbeddedResource Include="Components\Service\SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Sitesupervisor\PurchaseOrder.resx">
-      <DependentUpon>PurchaseOrder.cs</DependentUpon>
+    <EmbeddedResource Include="Sitesupervisor\PurchaseOrderForm.resx">
+      <DependentUpon>PurchaseOrderForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

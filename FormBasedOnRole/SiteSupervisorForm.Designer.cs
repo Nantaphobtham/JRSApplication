@@ -43,6 +43,7 @@
             this.btnCheckProjectInformation = new System.Windows.Forms.Button();
             this.Body = new System.Windows.Forms.Panel();
             this.PicLogo = new System.Windows.Forms.PictureBox();
+            this.txtsubFunctionname = new System.Windows.Forms.Label();
             this.Header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Profile)).BeginInit();
             this.Siderbar.SuspendLayout();
@@ -56,6 +57,7 @@
             this.Header.Controls.Add(this.btnClose);
             this.Header.Controls.Add(this.btnMaximize);
             this.Header.Controls.Add(this.btnMinimize);
+            this.Header.Controls.Add(this.txtsubFunctionname);
             this.Header.Controls.Add(this.txtFunctionname);
             this.Header.Controls.Add(this.txtPosition);
             this.Header.Controls.Add(this.txtName);
@@ -63,7 +65,7 @@
             this.Header.Dock = System.Windows.Forms.DockStyle.Top;
             this.Header.Location = new System.Drawing.Point(0, 0);
             this.Header.Name = "Header";
-            this.Header.Size = new System.Drawing.Size(1904, 126);
+            this.Header.Size = new System.Drawing.Size(1920, 126);
             this.Header.TabIndex = 1;
             // 
             // btnClose
@@ -109,7 +111,7 @@
             this.txtFunctionname.AutoSize = true;
             this.txtFunctionname.BackColor = System.Drawing.Color.Transparent;
             this.txtFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFunctionname.Location = new System.Drawing.Point(884, 45);
+            this.txtFunctionname.Location = new System.Drawing.Point(884, 23);
             this.txtFunctionname.Name = "txtFunctionname";
             this.txtFunctionname.Size = new System.Drawing.Size(152, 37);
             this.txtFunctionname.TabIndex = 4;
@@ -157,7 +159,7 @@
             this.Siderbar.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Siderbar.Location = new System.Drawing.Point(0, 126);
             this.Siderbar.Name = "Siderbar";
-            this.Siderbar.Size = new System.Drawing.Size(336, 915);
+            this.Siderbar.Size = new System.Drawing.Size(336, 954);
             this.Siderbar.TabIndex = 2;
             // 
             // btnPurchaseOrder
@@ -173,6 +175,7 @@
             this.btnPurchaseOrder.TabIndex = 3;
             this.btnPurchaseOrder.Text = "ออกใบสั่งซื้อ";
             this.btnPurchaseOrder.UseVisualStyleBackColor = false;
+            this.btnPurchaseOrder.Click += new System.EventHandler(this.btnPurchaseOrder_Click);
             // 
             // btnRegisSupplier
             // 
@@ -217,6 +220,7 @@
             this.btnCheckProjectInformation.TabIndex = 0;
             this.btnCheckProjectInformation.Text = "ตรวจสอบข้อมูลโครงการ";
             this.btnCheckProjectInformation.UseVisualStyleBackColor = false;
+            this.btnCheckProjectInformation.Click += new System.EventHandler(this.btnCheckProjectInformation_Click);
             // 
             // Body
             // 
@@ -224,7 +228,7 @@
             this.Body.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Body.Location = new System.Drawing.Point(336, 126);
             this.Body.Name = "Body";
-            this.Body.Size = new System.Drawing.Size(1568, 915);
+            this.Body.Size = new System.Drawing.Size(1584, 954);
             this.Body.TabIndex = 3;
             // 
             // PicLogo
@@ -237,11 +241,22 @@
             this.PicLogo.TabIndex = 0;
             this.PicLogo.TabStop = false;
             // 
+            // txtsubFunctionname
+            // 
+            this.txtsubFunctionname.AutoSize = true;
+            this.txtsubFunctionname.BackColor = System.Drawing.Color.Transparent;
+            this.txtsubFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtsubFunctionname.Location = new System.Drawing.Point(884, 67);
+            this.txtsubFunctionname.Name = "txtsubFunctionname";
+            this.txtsubFunctionname.Size = new System.Drawing.Size(0, 37);
+            this.txtsubFunctionname.TabIndex = 4;
+            this.txtsubFunctionname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // SiteSupervisorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1904, 1041);
+            this.ClientSize = new System.Drawing.Size(1920, 1080);
             this.Controls.Add(this.Body);
             this.Controls.Add(this.Siderbar);
             this.Controls.Add(this.Header);
@@ -275,5 +290,6 @@
         private System.Windows.Forms.Button btnCheckProjectInformation;
         private System.Windows.Forms.Panel Body;
         private System.Windows.Forms.PictureBox PicLogo;
+        private System.Windows.Forms.Label txtsubFunctionname;
     }
 }
