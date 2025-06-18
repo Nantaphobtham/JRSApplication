@@ -65,13 +65,13 @@
             this.dtpkDate = new System.Windows.Forms.DateTimePicker();
             this.label5 = new System.Windows.Forms.Label();
             this.pnlPictureDescription = new System.Windows.Forms.Panel();
+            this.pictureBoxListDisplay = new System.Windows.Forms.PictureBox();
+            this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.txtPictureDescription = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.pnlPicturePreview = new System.Windows.Forms.Panel();
             this.btnInsertPicture = new System.Windows.Forms.Button();
-            this.dtgvPictureList = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlProjectDetail.SuspendLayout();
             this.pnlWorkHistory.SuspendLayout();
@@ -80,7 +80,8 @@
             this.pnlMailDescription.SuspendLayout();
             this.pnlSupplier.SuspendLayout();
             this.pnlPictureDescription.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvPictureList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxListDisplay)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlProjectDetail
@@ -476,18 +477,38 @@
             // 
             // pnlPictureDescription
             // 
+            this.pnlPictureDescription.Controls.Add(this.pictureBoxListDisplay);
+            this.pnlPictureDescription.Controls.Add(this.pictureBoxPreview);
             this.pnlPictureDescription.Controls.Add(this.button4);
             this.pnlPictureDescription.Controls.Add(this.button3);
             this.pnlPictureDescription.Controls.Add(this.txtPictureDescription);
             this.pnlPictureDescription.Controls.Add(this.label4);
-            this.pnlPictureDescription.Controls.Add(this.pnlPicturePreview);
             this.pnlPictureDescription.Controls.Add(this.btnInsertPicture);
-            this.pnlPictureDescription.Controls.Add(this.dtgvPictureList);
             this.pnlPictureDescription.Controls.Add(this.label1);
             this.pnlPictureDescription.Location = new System.Drawing.Point(3, 250);
             this.pnlPictureDescription.Name = "pnlPictureDescription";
             this.pnlPictureDescription.Size = new System.Drawing.Size(1501, 424);
             this.pnlPictureDescription.TabIndex = 2;
+            // 
+            // pictureBoxListDisplay
+            // 
+            this.pictureBoxListDisplay.BackColor = System.Drawing.Color.Gray;
+            this.pictureBoxListDisplay.Location = new System.Drawing.Point(104, 38);
+            this.pictureBoxListDisplay.Name = "pictureBoxListDisplay";
+            this.pictureBoxListDisplay.Size = new System.Drawing.Size(618, 330);
+            this.pictureBoxListDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxListDisplay.TabIndex = 7;
+            this.pictureBoxListDisplay.TabStop = false;
+            // 
+            // pictureBoxPreview
+            // 
+            this.pictureBoxPreview.BackColor = System.Drawing.Color.Gray;
+            this.pictureBoxPreview.Location = new System.Drawing.Point(829, 38);
+            this.pictureBoxPreview.Name = "pictureBoxPreview";
+            this.pictureBoxPreview.Size = new System.Drawing.Size(558, 203);
+            this.pictureBoxPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxPreview.TabIndex = 6;
+            this.pictureBoxPreview.TabStop = false;
             // 
             // button4
             // 
@@ -512,6 +533,7 @@
             this.button3.TabIndex = 5;
             this.button3.Text = "เพิ่มรูปภาพ";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.btnAddImage_Click);
             // 
             // txtPictureDescription
             // 
@@ -536,14 +558,6 @@
             this.label4.TabIndex = 3;
             this.label4.Text = "ข้อมูลรูปภาพ";
             // 
-            // pnlPicturePreview
-            // 
-            this.pnlPicturePreview.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.pnlPicturePreview.Location = new System.Drawing.Point(829, 38);
-            this.pnlPicturePreview.Name = "pnlPicturePreview";
-            this.pnlPicturePreview.Size = new System.Drawing.Size(558, 203);
-            this.pnlPicturePreview.TabIndex = 1;
-            // 
             // btnInsertPicture
             // 
             this.btnInsertPicture.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
@@ -554,14 +568,7 @@
             this.btnInsertPicture.TabIndex = 0;
             this.btnInsertPicture.Text = "เลือกรูปภาพ";
             this.btnInsertPicture.UseVisualStyleBackColor = false;
-            // 
-            // dtgvPictureList
-            // 
-            this.dtgvPictureList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvPictureList.Location = new System.Drawing.Point(113, 38);
-            this.dtgvPictureList.Name = "dtgvPictureList";
-            this.dtgvPictureList.Size = new System.Drawing.Size(558, 383);
-            this.dtgvPictureList.TabIndex = 0;
+            this.btnInsertPicture.Click += new System.EventHandler(this.btnSelectImage_Click);
             // 
             // label1
             // 
@@ -594,7 +601,8 @@
             this.pnlSupplier.PerformLayout();
             this.pnlPictureDescription.ResumeLayout(false);
             this.pnlPictureDescription.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvPictureList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxListDisplay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -616,10 +624,8 @@
         private System.Windows.Forms.FlowLayoutPanel fpnlDatainfomation;
         private System.Windows.Forms.Panel pnlMailDescription;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridView dtgvPictureList;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel pnlPictureDescription;
-        private System.Windows.Forms.Panel pnlPicturePreview;
         private System.Windows.Forms.Button btnInsertPicture;
         private System.Windows.Forms.TextBox txtPictureDescription;
         private System.Windows.Forms.Label label4;
@@ -645,5 +651,7 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button btnEdit;
+        private System.Windows.Forms.PictureBox pictureBoxPreview;
+        private System.Windows.Forms.PictureBox pictureBoxListDisplay;
     }
 }

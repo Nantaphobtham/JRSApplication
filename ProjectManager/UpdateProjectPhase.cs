@@ -24,9 +24,23 @@ namespace JRSApplication
 
         private string projectID; // ✅ add this line here
 
+        private byte[] selectedImageBytes = null;
+        private string selectedImagePath = null;
+        private WorkingPictureDAL pictureDAL = new WorkingPictureDAL();
+
+
+
         public UpdateProjectPhase()
         {
             InitializeComponent();
+
+            cmbStatus.DataSource = WorkStatus.AllStatuses
+                .Select(status => new { Value = status, Display = WorkStatus.GetDisplayName(status) })
+                .ToList();
+
+            cmbStatus.DisplayMember = "Display";
+            cmbStatus.ValueMember = "Value";
+
         }
 
         private void LoadSupplierAssignment(int phaseId)
@@ -67,22 +81,26 @@ namespace JRSApplication
 
         private void LoadPhaseWorking(int projectId, int phaseId)
         {
-            PhaseWorking phase = phaseWorkDAL.GetPhaseWorkingByPhaseId( phaseId);
+            PhaseWorking phase = phaseWorkDAL.GetPhaseWorkingByPhaseId(phaseId);
 
             if (phase != null)
             {
                 dtpkDate.Value = phase.WorkDate;
-                cmbStatus.Text = phase.WorkStatus;
+                cmbStatus.SelectedValue = phase.WorkStatus;
                 txtWorkingDescription.Text = phase.WorkDetail;
                 txtRemark.Text = phase.Remark;
+
+                // ✅ แสดงสถานะเฟสในกล่องด้านขวาบน (TextBox สีเหลือง)
+                txtPhaseStatus.Text = WorkStatus.GetDisplayName(phase.WorkStatus);
             }
             else
             {
                 // Clear fields
                 dtpkDate.Value = DateTime.Now;
-                cmbStatus.Text = "";
+                cmbStatus.SelectedIndex = -1;
                 txtWorkingDescription.Text = "";
                 txtRemark.Text = "";
+                txtPhaseStatus.Text = "";
             }
         }
 
@@ -112,14 +130,18 @@ namespace JRSApplication
             SearchForm searchForm = new SearchForm("Project");
             if (searchForm.ShowDialog() == DialogResult.OK)
             {
-                projectID = searchForm.SelectedID; // เก็บไว้ใช้ตอนบันทึก
+                projectID = searchForm.SelectedID;
 
                 txtProjectID.Text = searchForm.SelectedID;
                 txtProjectName.Text = searchForm.SelectedName;
 
                 LoadPhasesToComboBox(projectID);
+
+                DataTable workHistory = phaseWorkDAL.GetWorkDetailsByProjectId(projectID);
+                dtgvWhorHistory.DataSource = workHistory;
             }
         }
+
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -130,7 +152,7 @@ namespace JRSApplication
                 {
                     PhaseID = Convert.ToInt32(cmbSelectPhase.SelectedValue),
                     WorkDate = dtpkDate.Value,
-                    WorkStatus = cmbStatus.Text,  // or SelectedValue if you use ValueMember
+                    WorkStatus = cmbStatus.SelectedValue.ToString(),  // or SelectedValue if you use ValueMember
                     WorkDetail = txtWorkingDescription.Text,
                     Remark = txtRemark.Text,
                     UpdateDate = DateTime.Now  // Optional: record update timestamp
@@ -156,5 +178,101 @@ namespace JRSApplication
                 MessageBox.Show("❌ Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void btnSelectImage_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp",
+                Title = "Select an Image"
+            };
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                FileInfo fileInfo = new FileInfo(openFileDialog.FileName);
+                long maxSize = 20 * 1024 * 1024; // 20MB
+
+                if (fileInfo.Length > maxSize)
+                {
+                    MessageBox.Show("ไฟล์รูปภาพต้องไม่เกิน 20MB", "ขนาดใหญ่เกินไป", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                selectedImagePath = openFileDialog.FileName;
+                selectedImageBytes = File.ReadAllBytes(selectedImagePath);
+                pictureBoxPreview.Image = Image.FromFile(selectedImagePath);
+            }
+        }
+
+
+        private void btnAddImage_Click(object sender, EventArgs e)
+        {
+            if (selectedImageBytes == null)
+            {
+                MessageBox.Show("กรุณาเลือกรูปภาพก่อน", "ยังไม่ได้เลือกรูปภาพ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Step 1: Get selected phaseId
+            if (cmbSelectPhase.SelectedValue == null || !int.TryParse(cmbSelectPhase.SelectedValue.ToString(), out int phaseId))
+            {
+                MessageBox.Show("กรุณาเลือกเฟสงานก่อน", "ไม่มีข้อมูลเฟส", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Step 2: Find work_id from phaseId
+            int? workId = phaseWorkDAL.GetWorkIdByPhaseId(phaseId);
+            if (workId == null)
+            {
+                MessageBox.Show("ไม่พบ work_id สำหรับ phase นี้", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Step 3: Create picture object
+            WorkingPicture picture = new WorkingPicture
+            {
+                WorkID = workId.Value,
+                PicNo = 1,
+                PicName = Path.GetFileName(selectedImagePath),
+                Description = txtPictureDescription.Text,
+                PictureData = selectedImageBytes,
+                CreatedAt = DateTime.Now
+            };
+
+            // Step 4: Save to database
+            try
+            {
+                bool success = pictureDAL.InsertPicture(picture);
+
+                if (success)
+                {
+                    MessageBox.Show("✅ บันทึกรูปภาพเรียบร้อย", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Step 5: Show image on the left
+                    using (MemoryStream ms = new MemoryStream(picture.PictureData))
+                    {
+                        pictureBoxListDisplay.Image = Image.FromStream(ms);
+                    }
+
+                    // Step 6: Reset form
+                    pictureBoxPreview.Image = null;
+                    selectedImageBytes = null;
+                    selectedImagePath = null;
+                    txtPictureDescription.Clear();
+                }
+                else
+                {
+                    MessageBox.Show("❌ ไม่สามารถบันทึกรูปภาพได้", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("เกิดข้อผิดพลาด: " + ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+
+
+
     }
 }
