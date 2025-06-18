@@ -165,5 +165,27 @@ namespace JRSApplication.Data_Access_Layer
         }
 
 
+        public void UpdateOrderStatus(int orderId, string status, string remark, string empId)
+        {
+            string query = @"UPDATE purchaseorder
+                         SET order_status = @status,
+                             order_remark = @remark,
+                             approved_by_emp_id = @empId,
+                             approved_date = NOW()
+                         WHERE order_id = @orderId";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@status", status);
+                cmd.Parameters.AddWithValue("@remark", remark ?? "");
+                cmd.Parameters.AddWithValue("@empId", empId);
+                cmd.Parameters.AddWithValue("@orderId", orderId);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
     }
 }

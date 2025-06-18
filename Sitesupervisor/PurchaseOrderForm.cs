@@ -594,7 +594,7 @@ namespace JRSApplication
             {
                 if (e.Value == null || string.IsNullOrWhiteSpace(e.Value.ToString()))
                 {
-                    e.Value = "รอ";
+                    e.Value = "รออนุมัติ";
                     e.CellStyle.ForeColor = Color.Gray;
                 }
             }
@@ -603,7 +603,7 @@ namespace JRSApplication
             {
                 if (e.Value == null || e.Value == DBNull.Value)
                 {
-                    e.Value = "รอ";
+                    e.Value = "รออนุมัติ";
                     e.CellStyle.ForeColor = Color.Gray;
                 }
             }

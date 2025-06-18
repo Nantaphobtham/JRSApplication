@@ -162,6 +162,12 @@
     <Compile Include="Components\Service\FormPDFPreview.Designer.cs">
       <DependentUpon>FormPDFPreview.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\Service\POForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Service\POForm.Designer.cs">
+      <DependentUpon>POForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Data Access Layer\CustomerDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeAssignmentDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeDAL.cs" />
@@ -180,17 +186,17 @@
     <Compile Include="ProjectManager\AllocatePersonnel.Designer.cs">
       <DependentUpon>AllocatePersonnel.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProjectManager\DetermineSubcontractors.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ProjectManager\DetermineSubcontractors.Designer.cs">
-      <DependentUpon>DetermineSubcontractors.cs</DependentUpon>
-    </Compile>
     <Compile Include="ProjectManager\ApprovePurchaseOrder.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ProjectManager\ApprovePurchaseOrder.Designer.cs">
       <DependentUpon>ApprovePurchaseOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectManager\DetermineSubcontractors.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProjectManager\DetermineSubcontractors.Designer.cs">
+      <DependentUpon>DetermineSubcontractors.cs</DependentUpon>
     </Compile>
     <Compile Include="ProjectManager\CheckProjectPayments.cs">
       <SubType>UserControl</SubType>
@@ -308,6 +314,9 @@
     <EmbeddedResource Include="Admin\CustomerRegistration.resx">
       <DependentUpon>CustomerRegistration.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Components\Service\POForm.resx">
+      <DependentUpon>POForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormBasedOnRole\AccountantForm.resx">
       <DependentUpon>AccountantForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -317,11 +326,11 @@
     <EmbeddedResource Include="ProjectManager\AllocatePersonnel.resx">
       <DependentUpon>AllocatePersonnel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProjectManager\DetermineSubcontractors.resx">
-      <DependentUpon>DetermineSubcontractors.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ProjectManager\ApprovePurchaseOrder.resx">
       <DependentUpon>ApprovePurchaseOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectManager\DetermineSubcontractors.resx">
+      <DependentUpon>DetermineSubcontractors.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectManager\CheckProjectPayments.resx">
       <DependentUpon>CheckProjectPayments.cs</DependentUpon>

@@ -112,7 +112,7 @@ namespace JRSApplication
                     dashboard = new AdminForm(fullName, role); // ✅ ส่งค่าชื่อและตำแหน่งไป AdminForm
                     break;
                 case "Projectmanager":
-                    dashboard = new ProjectManagerForm(fullName, role); // ✅ ส่งค่าชื่อและตำแหน่ง
+                    dashboard = new ProjectManagerForm(fullName, role, empId); // ✅ ส่งค่าชื่อและตำแหน่ง
                     break;
                 case "Sitesupervisor":
                     dashboard = new SiteSupervisorForm(fullName, role, empId); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role

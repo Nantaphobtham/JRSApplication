@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JRSApplication.ProjectManager;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,13 +15,15 @@ namespace JRSApplication
     {
         private string userFullName;
         private string userRole;
-        public ProjectManagerForm(string fullName, string role)
+        private string _empID;
+        public ProjectManagerForm(string fullName, string role, string empId)
         {
             InitializeComponent();
 
             // เก็บค่าที่รับมา
             userFullName = fullName;
             userRole = role;
+            _empID = empId;
         }
 
         private void ProjectManagerForm_Load(object sender, EventArgs e)
@@ -68,7 +71,7 @@ namespace JRSApplication
 
         private void btnPurchaseOrder_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ApprovePurchaseOrder());
+            LoadUserControl(new ApprovePurchaseOrder(_empID));
             txtFunctionname.Text = "อนุมัติใบสั่งซื้อ";
             txtsubFunctionname.Visible = false;
         }
