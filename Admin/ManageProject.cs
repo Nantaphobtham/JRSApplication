@@ -768,31 +768,31 @@ namespace JRSApplication
         private void btnDelete_Click(object sender, EventArgs e)
         {
             //ลบ
-            //if (dtgvProject.SelectedRows.Count == 0)
-            //{
-            //    MessageBox.Show("กรุณาเลือกโครงการที่ต้องการลบ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return;
-            //}
+            if (dtgvProject.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("กรุณาเลือกโครงการที่ต้องการลบ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            //// 🔍 ดึง ProjectID จากแถวที่เลือก
-            //int selectedProjectID = Convert.ToInt32(dtgvProject.SelectedRows[0].Cells["ProjectID"].Value);
+            // 🔍 ดึง ProjectID จากแถวที่เลือก
+            int selectedProjectID = Convert.ToInt32(dtgvProject.SelectedRows[0].Cells["ProjectID"].Value);
 
-            //var confirm = MessageBox.Show("คุณแน่ใจหรือไม่ว่าต้องการลบโครงการนี้?", "ยืนยันการลบ", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            //if (confirm == DialogResult.Yes)
-            //{
-            //    ProjectDAL dal = new ProjectDAL();
-            //    bool success = dal.DeleteProjectWithPhases(selectedProjectID);
+            var confirm = MessageBox.Show("คุณแน่ใจหรือไม่ว่าต้องการลบโครงการนี้?", "ยืนยันการลบ", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirm == DialogResult.Yes)
+            {
+                ProjectDAL dal = new ProjectDAL();
+                bool success = dal.DeleteProjectWithPhases(selectedProjectID);
 
-            //    if (success)
-            //    {
-            //        MessageBox.Show("ลบโครงการเรียบร้อย", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //        LoadProjectData(); // โหลดข้อมูลใหม่
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("เกิดข้อผิดพลาดในการลบโครงการ", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    }
-            //}
+                if (success)
+                {
+                    MessageBox.Show("ลบโครงการเรียบร้อย", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadProjectData(); // โหลดข้อมูลใหม่
+                }
+                else
+                {
+                    MessageBox.Show("เกิดข้อผิดพลาดในการลบโครงการ", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         //-----------------------------------------------------------------------------------------------------------------------------------------

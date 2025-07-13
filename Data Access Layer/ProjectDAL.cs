@@ -431,7 +431,55 @@ namespace JRSApplication.Data_Access_Layer
             }
         }
 
+        public bool DeleteProjectWithPhases(int projectId)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
 
+                MySqlTransaction transaction = conn.BeginTransaction();
+
+                try
+                {
+                    // 1. Delete phase_working
+                    string deleteWorkSql = @"
+                DELETE pw 
+                FROM phase_working pw
+                JOIN project_phase pp ON pw.phase_id = pp.phase_id
+                WHERE pp.pro_id = @ProjectID";
+
+                    using (MySqlCommand cmd = new MySqlCommand(deleteWorkSql, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@ProjectID", projectId);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // 2. Delete project_phase
+                    string deletePhaseSql = "DELETE FROM project_phase WHERE pro_id = @ProjectID";
+                    using (MySqlCommand cmd = new MySqlCommand(deletePhaseSql, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@ProjectID", projectId);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // 3. Delete project
+                    string deleteProjectSql = "DELETE FROM project WHERE pro_id = @ProjectID";
+                    using (MySqlCommand cmd = new MySqlCommand(deleteProjectSql, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@ProjectID", projectId);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    return false;
+                }
+            }
+        }
 
 
     }
