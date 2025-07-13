@@ -31,6 +31,7 @@
             this.pnlInfomation = new System.Windows.Forms.Panel();
             this.pnlsubInfo = new System.Windows.Forms.Panel();
             this.starRemark = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
             this.starAssignDescription = new System.Windows.Forms.Label();
             this.stardueDate = new System.Windows.Forms.Label();
             this.starstartDate = new System.Windows.Forms.Label();
@@ -45,12 +46,19 @@
             this.dueDate = new System.Windows.Forms.DateTimePicker();
             this.startDate = new System.Windows.Forms.DateTimePicker();
             this.cmbSelectPhase = new System.Windows.Forms.ComboBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.txtPhaseDetail = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtPorjectID = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.txtProjectName = new System.Windows.Forms.TextBox();
+            this.btnInsertFile = new System.Windows.Forms.Button();
             this.btnSearchProject = new System.Windows.Forms.Button();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.txtSupplierPhone = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -82,13 +90,14 @@
             this.pnlInfomation.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInfomation.Location = new System.Drawing.Point(0, 0);
             this.pnlInfomation.Name = "pnlInfomation";
-            this.pnlInfomation.Size = new System.Drawing.Size(1567, 356);
+            this.pnlInfomation.Size = new System.Drawing.Size(1567, 397);
             this.pnlInfomation.TabIndex = 0;
             // 
             // pnlsubInfo
             // 
             this.pnlsubInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.pnlsubInfo.Controls.Add(this.starRemark);
+            this.pnlsubInfo.Controls.Add(this.label18);
             this.pnlsubInfo.Controls.Add(this.starAssignDescription);
             this.pnlsubInfo.Controls.Add(this.stardueDate);
             this.pnlsubInfo.Controls.Add(this.starstartDate);
@@ -103,12 +112,19 @@
             this.pnlsubInfo.Controls.Add(this.dueDate);
             this.pnlsubInfo.Controls.Add(this.startDate);
             this.pnlsubInfo.Controls.Add(this.cmbSelectPhase);
+            this.pnlsubInfo.Controls.Add(this.label20);
+            this.pnlsubInfo.Controls.Add(this.txtPhaseDetail);
             this.pnlsubInfo.Controls.Add(this.label9);
             this.pnlsubInfo.Controls.Add(this.txtPorjectID);
             this.pnlsubInfo.Controls.Add(this.label8);
+            this.pnlsubInfo.Controls.Add(this.label19);
+            this.pnlsubInfo.Controls.Add(this.textBox2);
             this.pnlsubInfo.Controls.Add(this.label7);
             this.pnlsubInfo.Controls.Add(this.txtProjectName);
+            this.pnlsubInfo.Controls.Add(this.btnInsertFile);
             this.pnlsubInfo.Controls.Add(this.btnSearchProject);
+            this.pnlsubInfo.Controls.Add(this.label17);
+            this.pnlsubInfo.Controls.Add(this.label16);
             this.pnlsubInfo.Controls.Add(this.label5);
             this.pnlsubInfo.Controls.Add(this.txtSupplierPhone);
             this.pnlsubInfo.Controls.Add(this.label4);
@@ -120,7 +136,7 @@
             this.pnlsubInfo.Controls.Add(this.pnlStep);
             this.pnlsubInfo.Location = new System.Drawing.Point(28, 15);
             this.pnlsubInfo.Name = "pnlsubInfo";
-            this.pnlsubInfo.Size = new System.Drawing.Size(1518, 335);
+            this.pnlsubInfo.Size = new System.Drawing.Size(1518, 367);
             this.pnlsubInfo.TabIndex = 0;
             // 
             // starRemark
@@ -128,19 +144,31 @@
             this.starRemark.AutoSize = true;
             this.starRemark.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.starRemark.ForeColor = System.Drawing.Color.Red;
-            this.starRemark.Location = new System.Drawing.Point(890, 131);
+            this.starRemark.Location = new System.Drawing.Point(637, 284);
             this.starRemark.Name = "starRemark";
             this.starRemark.Size = new System.Drawing.Size(22, 30);
             this.starRemark.TabIndex = 41;
             this.starRemark.Text = "*";
             this.starRemark.Visible = false;
             // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.ForeColor = System.Drawing.Color.Red;
+            this.label18.Location = new System.Drawing.Point(499, 223);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(22, 30);
+            this.label18.TabIndex = 40;
+            this.label18.Text = "*";
+            this.label18.Visible = false;
+            // 
             // starAssignDescription
             // 
             this.starAssignDescription.AutoSize = true;
             this.starAssignDescription.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.starAssignDescription.ForeColor = System.Drawing.Color.Red;
-            this.starAssignDescription.Location = new System.Drawing.Point(686, 132);
+            this.starAssignDescription.Location = new System.Drawing.Point(806, 214);
             this.starAssignDescription.Name = "starAssignDescription";
             this.starAssignDescription.Size = new System.Drawing.Size(22, 30);
             this.starAssignDescription.TabIndex = 40;
@@ -152,7 +180,7 @@
             this.stardueDate.AutoSize = true;
             this.stardueDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.stardueDate.ForeColor = System.Drawing.Color.Red;
-            this.stardueDate.Location = new System.Drawing.Point(1402, 129);
+            this.stardueDate.Location = new System.Drawing.Point(1262, 210);
             this.stardueDate.Name = "stardueDate";
             this.stardueDate.Size = new System.Drawing.Size(22, 30);
             this.stardueDate.TabIndex = 39;
@@ -164,7 +192,7 @@
             this.starstartDate.AutoSize = true;
             this.starstartDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.starstartDate.ForeColor = System.Drawing.Color.Red;
-            this.starstartDate.Location = new System.Drawing.Point(1383, 58);
+            this.starstartDate.Location = new System.Drawing.Point(1014, 210);
             this.starstartDate.Name = "starstartDate";
             this.starstartDate.Size = new System.Drawing.Size(22, 30);
             this.starstartDate.TabIndex = 38;
@@ -176,7 +204,7 @@
             this.starSeclectPhase.AutoSize = true;
             this.starSeclectPhase.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.starSeclectPhase.ForeColor = System.Drawing.Color.Red;
-            this.starSeclectPhase.Location = new System.Drawing.Point(1163, 58);
+            this.starSeclectPhase.Location = new System.Drawing.Point(612, 129);
             this.starSeclectPhase.Name = "starSeclectPhase";
             this.starSeclectPhase.Size = new System.Drawing.Size(22, 30);
             this.starSeclectPhase.TabIndex = 37;
@@ -187,7 +215,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(1303, 129);
+            this.label14.Location = new System.Drawing.Point(1163, 210);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(93, 30);
             this.label14.TabIndex = 36;
@@ -197,7 +225,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(1303, 58);
+            this.label13.Location = new System.Drawing.Point(934, 210);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(74, 30);
             this.label13.TabIndex = 35;
@@ -207,7 +235,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(1085, 58);
+            this.label12.Location = new System.Drawing.Point(534, 129);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(72, 30);
             this.label12.TabIndex = 34;
@@ -217,7 +245,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(796, 129);
+            this.label10.Location = new System.Drawing.Point(543, 282);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(88, 30);
             this.label10.TabIndex = 33;
@@ -228,38 +256,36 @@
             this.txtRemark.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtRemark.Enabled = false;
             this.txtRemark.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRemark.Location = new System.Drawing.Point(801, 162);
-            this.txtRemark.Multiline = true;
+            this.txtRemark.Location = new System.Drawing.Point(543, 315);
             this.txtRemark.Name = "txtRemark";
-            this.txtRemark.Size = new System.Drawing.Size(442, 124);
+            this.txtRemark.Size = new System.Drawing.Size(375, 35);
             this.txtRemark.TabIndex = 32;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(338, 132);
+            this.label11.Location = new System.Drawing.Point(543, 214);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(342, 30);
+            this.label11.Size = new System.Drawing.Size(257, 30);
             this.label11.TabIndex = 31;
-            this.label11.Text = "รายละเอียดงานที่ต้องดำเนินการให้แล้วเสร็จ";
+            this.label11.Text = "รายละเอียดงานที่ต้องดำเนินการ";
             // 
             // txtAssignDescription
             // 
             this.txtAssignDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtAssignDescription.Enabled = false;
             this.txtAssignDescription.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAssignDescription.Location = new System.Drawing.Point(338, 162);
-            this.txtAssignDescription.Multiline = true;
+            this.txtAssignDescription.Location = new System.Drawing.Point(543, 244);
             this.txtAssignDescription.Name = "txtAssignDescription";
-            this.txtAssignDescription.Size = new System.Drawing.Size(442, 124);
+            this.txtAssignDescription.Size = new System.Drawing.Size(375, 35);
             this.txtAssignDescription.TabIndex = 30;
             // 
             // dueDate
             // 
             this.dueDate.Enabled = false;
             this.dueDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dueDate.Location = new System.Drawing.Point(1308, 162);
+            this.dueDate.Location = new System.Drawing.Point(1168, 243);
             this.dueDate.Name = "dueDate";
             this.dueDate.Size = new System.Drawing.Size(207, 35);
             this.dueDate.TabIndex = 29;
@@ -268,7 +294,7 @@
             // 
             this.startDate.Enabled = false;
             this.startDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.startDate.Location = new System.Drawing.Point(1308, 91);
+            this.startDate.Location = new System.Drawing.Point(939, 243);
             this.startDate.Name = "startDate";
             this.startDate.Size = new System.Drawing.Size(207, 35);
             this.startDate.TabIndex = 28;
@@ -278,16 +304,36 @@
             this.cmbSelectPhase.Enabled = false;
             this.cmbSelectPhase.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbSelectPhase.FormattingEnabled = true;
-            this.cmbSelectPhase.Location = new System.Drawing.Point(1090, 91);
+            this.cmbSelectPhase.Location = new System.Drawing.Point(539, 162);
             this.cmbSelectPhase.Name = "cmbSelectPhase";
             this.cmbSelectPhase.Size = new System.Drawing.Size(207, 38);
             this.cmbSelectPhase.TabIndex = 24;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Location = new System.Drawing.Point(752, 129);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(204, 30);
+            this.label20.TabIndex = 23;
+            this.label20.Text = "ข้อมูลการดำเนินงานเฟส";
+            // 
+            // txtPhaseDetail
+            // 
+            this.txtPhaseDetail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPhaseDetail.Enabled = false;
+            this.txtPhaseDetail.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPhaseDetail.Location = new System.Drawing.Point(757, 162);
+            this.txtPhaseDetail.Name = "txtPhaseDetail";
+            this.txtPhaseDetail.Size = new System.Drawing.Size(644, 35);
+            this.txtPhaseDetail.TabIndex = 22;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(795, 58);
+            this.label9.Location = new System.Drawing.Point(825, 58);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(111, 30);
             this.label9.TabIndex = 23;
@@ -298,7 +344,7 @@
             this.txtPorjectID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPorjectID.Enabled = false;
             this.txtPorjectID.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPorjectID.Location = new System.Drawing.Point(801, 91);
+            this.txtPorjectID.Location = new System.Drawing.Point(830, 91);
             this.txtPorjectID.Name = "txtPorjectID";
             this.txtPorjectID.Size = new System.Drawing.Size(282, 35);
             this.txtPorjectID.TabIndex = 22;
@@ -307,18 +353,38 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(333, 15);
+            this.label8.Location = new System.Drawing.Point(353, 15);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(491, 30);
             this.label8.TabIndex = 21;
             this.label8.Text = "ข้อมูลโครงการ และ รายละเอียดงานที่ต้องดำเนินการ";
             // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(1119, 58);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(110, 30);
+            this.label19.TabIndex = 20;
+            this.label19.Text = "เลขที่สัญญา";
+            // 
+            // textBox2
+            // 
+            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox2.Enabled = false;
+            this.textBox2.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox2.Location = new System.Drawing.Point(1124, 91);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(277, 35);
+            this.textBox2.TabIndex = 19;
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(508, 58);
+            this.label7.Location = new System.Drawing.Point(534, 58);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(103, 30);
             this.label7.TabIndex = 20;
@@ -329,17 +395,30 @@
             this.txtProjectName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtProjectName.Enabled = false;
             this.txtProjectName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtProjectName.Location = new System.Drawing.Point(519, 91);
+            this.txtProjectName.Location = new System.Drawing.Point(539, 91);
             this.txtProjectName.Name = "txtProjectName";
             this.txtProjectName.Size = new System.Drawing.Size(277, 35);
             this.txtProjectName.TabIndex = 19;
+            // 
+            // btnInsertFile
+            // 
+            this.btnInsertFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
+            this.btnInsertFile.Enabled = false;
+            this.btnInsertFile.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnInsertFile.Location = new System.Drawing.Point(365, 256);
+            this.btnInsertFile.Name = "btnInsertFile";
+            this.btnInsertFile.Size = new System.Drawing.Size(168, 56);
+            this.btnInsertFile.TabIndex = 18;
+            this.btnInsertFile.Text = "เพิ่มไฟล์";
+            this.btnInsertFile.UseVisualStyleBackColor = false;
+            this.btnInsertFile.Click += new System.EventHandler(this.btnInsertFile_Click);
             // 
             // btnSearchProject
             // 
             this.btnSearchProject.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
             this.btnSearchProject.Enabled = false;
             this.btnSearchProject.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearchProject.Location = new System.Drawing.Point(334, 58);
+            this.btnSearchProject.Location = new System.Drawing.Point(365, 58);
             this.btnSearchProject.Name = "btnSearchProject";
             this.btnSearchProject.Size = new System.Drawing.Size(168, 56);
             this.btnSearchProject.TabIndex = 18;
@@ -347,11 +426,32 @@
             this.btnSearchProject.UseVisualStyleBackColor = false;
             this.btnSearchProject.Click += new System.EventHandler(this.btnSearchProject_Click);
             // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.ForeColor = System.Drawing.Color.Blue;
+            this.label17.Location = new System.Drawing.Point(364, 315);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(157, 21);
+            this.label17.TabIndex = 15;
+            this.label17.Text = "ขนาดไฟล์ไม่เกิน 20 MB";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(364, 223);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(139, 30);
+            this.label16.TabIndex = 15;
+            this.label16.Text = "ไฟล์เอกสารแนบ";
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(11, 259);
+            this.label5.Location = new System.Drawing.Point(31, 259);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(119, 30);
             this.label5.TabIndex = 15;
@@ -362,7 +462,7 @@
             this.txtSupplierPhone.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSupplierPhone.Enabled = false;
             this.txtSupplierPhone.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSupplierPhone.Location = new System.Drawing.Point(16, 292);
+            this.txtSupplierPhone.Location = new System.Drawing.Point(36, 292);
             this.txtSupplierPhone.Name = "txtSupplierPhone";
             this.txtSupplierPhone.Size = new System.Drawing.Size(286, 35);
             this.txtSupplierPhone.TabIndex = 14;
@@ -371,7 +471,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(11, 188);
+            this.label4.Location = new System.Drawing.Point(31, 188);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(174, 30);
             this.label4.TabIndex = 13;
@@ -382,7 +482,7 @@
             this.txtSupplierJuristic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSupplierJuristic.Enabled = false;
             this.txtSupplierJuristic.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSupplierJuristic.Location = new System.Drawing.Point(16, 221);
+            this.txtSupplierJuristic.Location = new System.Drawing.Point(36, 221);
             this.txtSupplierJuristic.Name = "txtSupplierJuristic";
             this.txtSupplierJuristic.Size = new System.Drawing.Size(286, 35);
             this.txtSupplierJuristic.TabIndex = 12;
@@ -391,7 +491,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(11, 117);
+            this.label3.Location = new System.Drawing.Point(31, 117);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(82, 30);
             this.label3.TabIndex = 11;
@@ -402,7 +502,7 @@
             this.txtSupplierName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSupplierName.Enabled = false;
             this.txtSupplierName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSupplierName.Location = new System.Drawing.Point(16, 150);
+            this.txtSupplierName.Location = new System.Drawing.Point(36, 150);
             this.txtSupplierName.Name = "txtSupplierName";
             this.txtSupplierName.Size = new System.Drawing.Size(286, 35);
             this.txtSupplierName.TabIndex = 10;
@@ -412,7 +512,7 @@
             this.btnSearchSupplier.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
             this.btnSearchSupplier.Enabled = false;
             this.btnSearchSupplier.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearchSupplier.Location = new System.Drawing.Point(16, 58);
+            this.btnSearchSupplier.Location = new System.Drawing.Point(36, 58);
             this.btnSearchSupplier.Name = "btnSearchSupplier";
             this.btnSearchSupplier.Size = new System.Drawing.Size(168, 56);
             this.btnSearchSupplier.TabIndex = 9;
@@ -424,7 +524,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(11, 15);
+            this.label2.Location = new System.Drawing.Point(31, 15);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(159, 30);
@@ -434,9 +534,9 @@
             // pnlStep
             // 
             this.pnlStep.BackColor = System.Drawing.Color.Black;
-            this.pnlStep.Location = new System.Drawing.Point(318, 0);
+            this.pnlStep.Location = new System.Drawing.Point(338, 0);
             this.pnlStep.Name = "pnlStep";
-            this.pnlStep.Size = new System.Drawing.Size(10, 340);
+            this.pnlStep.Size = new System.Drawing.Size(10, 460);
             this.pnlStep.TabIndex = 2;
             // 
             // pnlActionMenu
@@ -446,7 +546,7 @@
             this.pnlActionMenu.Controls.Add(this.btnAdd);
             this.pnlActionMenu.Controls.Add(this.btnSave);
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlActionMenu.Location = new System.Drawing.Point(0, 356);
+            this.pnlActionMenu.Location = new System.Drawing.Point(0, 397);
             this.pnlActionMenu.Name = "pnlActionMenu";
             this.pnlActionMenu.Size = new System.Drawing.Size(1567, 85);
             this.pnlActionMenu.TabIndex = 1;
@@ -462,7 +562,7 @@
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(175, 58);
             this.btnDelete.TabIndex = 11;
-            this.btnDelete.Text = "ลบข้อมูล";
+            this.btnDelete.Text = "ยกเลิกการจ้าง";
             this.btnDelete.UseVisualStyleBackColor = false;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
@@ -517,9 +617,9 @@
             this.panel3.Controls.Add(this.searchboxControl1);
             this.panel3.Controls.Add(this.label1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(0, 447);
+            this.panel3.Location = new System.Drawing.Point(0, 488);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1567, 507);
+            this.panel3.Size = new System.Drawing.Size(1567, 466);
             this.panel3.TabIndex = 2;
             // 
             // dtgvAssignment
@@ -533,7 +633,7 @@
             this.dtgvAssignment.ReadOnly = true;
             this.dtgvAssignment.RowHeadersWidth = 51;
             this.dtgvAssignment.RowTemplate.Height = 24;
-            this.dtgvAssignment.Size = new System.Drawing.Size(1512, 401);
+            this.dtgvAssignment.Size = new System.Drawing.Size(1512, 359);
             this.dtgvAssignment.TabIndex = 11;
             this.dtgvAssignment.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvAssignment_CellClick);
             // 
@@ -620,5 +720,13 @@
         private SearchboxControl searchboxControl1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dtgvAssignment;
+        private System.Windows.Forms.Button btnInsertFile;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox txtPhaseDetail;
     }
 }

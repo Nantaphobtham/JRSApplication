@@ -88,7 +88,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 0);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1363, 274);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1525, 274);
             this.pnlProjectdata.TabIndex = 0;
             // 
             // dtgvProjectData
@@ -132,7 +132,7 @@
             this.pnlStep.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep.Location = new System.Drawing.Point(0, 274);
             this.pnlStep.Name = "pnlStep";
-            this.pnlStep.Size = new System.Drawing.Size(1363, 46);
+            this.pnlStep.Size = new System.Drawing.Size(1525, 46);
             this.pnlStep.TabIndex = 1;
             // 
             // txtNormalData
@@ -178,7 +178,7 @@
             this.pnlInfomationview.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlInfomationview.Location = new System.Drawing.Point(0, 320);
             this.pnlInfomationview.Name = "pnlInfomationview";
-            this.pnlInfomationview.Size = new System.Drawing.Size(1363, 2756);
+            this.pnlInfomationview.Size = new System.Drawing.Size(1525, 2756);
             this.pnlInfomationview.TabIndex = 2;
             // 
             // txtDemolition
@@ -555,7 +555,7 @@
             this.Controls.Add(this.pnlStep);
             this.Controls.Add(this.pnlProjectdata);
             this.Name = "ProjectData";
-            this.Size = new System.Drawing.Size(1363, 954);
+            this.Size = new System.Drawing.Size(1525, 954);
             this.pnlProjectdata.ResumeLayout(false);
             this.pnlProjectdata.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).EndInit();
