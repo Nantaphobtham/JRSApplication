@@ -4,6 +4,7 @@ using JRSApplication.Data_Access_Layer;
 using System;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace JRSApplication
@@ -301,5 +302,56 @@ namespace JRSApplication
                 }));
             }
         }
+
+        private void btnInsertFile_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Title = "เลือกไฟล์ PDF";
+                openFileDialog.Filter = "PDF files (*.pdf)|*.pdf";
+                openFileDialog.Multiselect = false;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+
+                    if (Path.GetExtension(filePath).ToLower() != ".pdf")
+                    {
+                        MessageBox.Show("กรุณาเลือกไฟล์ PDF เท่านั้น", "คำเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    FileInfo fileInfo = new FileInfo(filePath);
+                    long maxSizeInBytes = 20 * 1024 * 1024; // 20 MB
+
+                    if (fileInfo.Length > maxSizeInBytes)
+                    {
+                        MessageBox.Show("ไฟล์มีขนาดใหญ่เกิน 20 MB", "คำเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // ✅ โหลดไฟล์เป็น byte[]
+                    byte[] fileData = File.ReadAllBytes(filePath);
+
+                    // ✅ สร้าง object
+                    SupplierAssignmentFile fileModel = new SupplierAssignmentFile
+                    {
+                        FileName = Path.GetFileName(filePath),
+                        FileType = "application/pdf",
+                        FileData = fileData,
+                        UploadedAt = DateTime.Now,
+                        UploadedBy = Environment.UserName // หรือดึงจากระบบ login ของคุณ
+                                                          // AssignmentId ยังไม่ต้องใส่ถ้ายังไม่ได้เลือก assignment
+                    };
+
+                    // ✅ ตัวอย่าง: แสดงชื่อไฟล์ใน TextBox หรือ Label
+                    MessageBox.Show("ไฟล์เตรียมข้อมูลเรียบร้อย: " + fileModel.FileName, "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // 📌 ถ้าอยากเก็บ object นี้ไว้ใช้ตอนกด Save, สามารถเก็บไว้ใน class-level field เช่น
+                    // this.currentFile = fileModel;
+                }
+            }
+        }
+
     }
 }
