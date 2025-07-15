@@ -86,6 +86,30 @@ namespace JRSApplication
                                 WHERE p.pro_name LIKE @Keyword OR p.pro_id LIKE @Keyword
                             ";
                 }
+                else if (searchType == "Invoice")
+                {
+                    query = @"
+                                SELECT 
+                                    i.inv_no AS 'เลขที่ใบแจ้งหนี้',
+                                    i.inv_date AS 'วันที่ออก',
+                                    i.inv_status AS 'สถานะ',
+                                    i.inv_method AS 'วิธีชำระ',
+                                    i.paid_date AS 'วันที่รับเงิน',
+                                    c.cus_id AS 'รหัสลูกค้า',
+                                    CONCAT(c.cus_name, ' ', c.cus_lname) AS 'ชื่อลูกค้า',
+                                    c.cus_id_card AS 'เลขบัตรประชาชน',
+                                    c.cus_address AS 'ที่อยู่',
+                                    p.pro_id AS 'รหัสโครงการ',
+                                    p.pro_name AS 'ชื่อโครงการ',
+                                    p.pro_number AS 'เลขที่สัญญา',
+                                    p.pro_currentphasenumber AS 'เฟสงาน'
+                                FROM invoice i
+                                LEFT JOIN customer c ON i.cus_id = c.cus_id
+                                LEFT JOIN project p ON i.pro_id = p.pro_id
+                                WHERE i.pro_id LIKE @Keyword OR i.inv_no LIKE @Keyword
+                            ";
+                }
+
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
