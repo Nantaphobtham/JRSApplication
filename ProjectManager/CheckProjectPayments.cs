@@ -18,9 +18,7 @@ namespace JRSApplication
         {
             InitializeComponent();
         }
-    
-
-    private void btnSearchProject_Click(object sender, EventArgs e)
+        private void btnSearchProject_Click(object sender, EventArgs e)
         {
             string keyword = txtProjectID.Text.Trim(); // หรือจะใช้ TextBox ชื่ออื่นก็ได้
 
@@ -41,35 +39,53 @@ namespace JRSApplication
                 MessageBox.Show("ไม่พบข้อมูลโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-        private void btnSearchInvoice_Click(object sender, EventArgs e)
+
+        private void btnSearchPayment_Click(object sender, EventArgs e)
         {
-            // เปิดฟอร์มค้นหา Invoice
-            SearchForm form = new SearchForm("InvoiceFull");
-
-            if (form.ShowDialog() == DialogResult.OK)
+            SearchForm searchForm = new SearchForm("Invoice");
+            if (searchForm.ShowDialog() == DialogResult.OK)
             {
-                // ดึงข้อมูลที่เลือกจาก SearchForm
-                string invoiceNo = form.SelectedID;               // เลขที่ใบแจ้งหนี้
-                string customerName = form.SelectedName;          // ชื่อลูกค้า
-                string idCard = form.SelectedLastName;            // เลขบัตรประชาชน
-                string address = form.SelectedIDCardOrRole;       // ที่อยู่
-                string projectId = form.SelectedPhone;            // รหัสโครงการ
-                string projectName = form.SelectedEmail;          // ชื่อโครงการ
+                // ดึงค่าที่เลือก
+                string invNo = searchForm.SelectedID;
+                string cusId = searchForm.SelectedName;
+                string proId = searchForm.SelectedLastName;
+                string empId = searchForm.SelectedIDCardOrRole;
+                string paymentMethod = searchForm.SelectedPhone;
+                string status = searchForm.SelectedEmail;
 
-                // 👇 ตั้งค่า textbox ของคุณตามนี้ (แก้ชื่อตามที่คุณตั้งใน Designer)
-                //txtInvoiceNo.Text = invoiceNo;
-                txtCustomerName2.Text = customerName;
-                txtIDCard.Text = idCard;
-                txtAddress.Text = address;
-                txtProjectID.Text = projectId;
-                //txtProjectName.Text = projectName;
+                // =========================
+                // 🟢 โหลดข้อมูลลูกค้า
+                // =========================
+                CustomerDAL customerDAL = new CustomerDAL();
+                var customer = customerDAL.GetCustomerById(cusId);
+                if (customer != null)
+                {
+                    txtCustomer.Text = $"{customer.FirstName} {customer.LastName}";
+                    txtIDCard.Text = customer.IDCard;
+                    txtAddress.Text = customer.Address;
+                }
 
-                // ถ้ามี textbox อื่นๆ เช่น วันที่ หรือสถานะ สามารถเพิ่มได้
-                // txtStatus.Text = form.YourAdditionalField;
-                // txtPaymentMethod.Text = form.YourAdditionalField2;
+                // =========================
+                // 🔵 โหลดข้อมูลโครงการ
+                // =========================
+                ProjectDAL projectDAL = new ProjectDAL();
+                var project = projectDAL.GetProjectDetailsById(Convert.ToInt32(proId));
+                if (project != null)
+                {
+                    txtContractNumber.Text = project.ProjectNumber;
+                    txtProjectName2.Text = project.ProjectName;
+                    txtPhase.Text = project.CurrentPhaseNumber.ToString();
+                }
+
+                // =========================
+                // 🟡 โหลดข้อมูลการชำระเงิน
+                // =========================
+                txtInvoiceNo.Text = invNo;
+                txtEmpName.Text = new EmployeeDAL().GetEmployeeFullNameById(empId);
+                txtPaymentDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                txtPaymentMethod.Text = paymentMethod;
             }
         }
-
 
 
 

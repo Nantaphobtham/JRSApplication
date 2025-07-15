@@ -47,40 +47,35 @@ namespace JRSApplication.Data_Access_Layer
             return dt;
         }
         //รอเรียก
-        public Customer GetCustomerById(string customerId)
-        {
-            Customer customer = null;
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                string sql = "SELECT * FROM customer WHERE cus_id = @CustomerID";
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@CustomerID", customerId);
-                    conn.Open();
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            customer = new Customer
-                            {
-                                CustomerID = reader.GetString("cus_id"),
-                                FirstName = reader.GetString("cus_name"),
-                                LastName = reader.GetString("cus_lname"),
-                                IDCard = reader.GetString("cus_id_card"),
-                                Address = reader.GetString("cus_address"),
-                                Email = reader.GetString("cus_email"),
-                                Phone = reader.GetString("cus_tel")
-                            };
-                        }
-                    }
-                }
-            }
-            return customer;
-        }
-
-
-
-
+        //public Customer GetCustomerByIdtoProjectdata(int customerId)
+        //{
+        //    Customer customer = null;
+        //    using (MySqlConnection conn = new MySqlConnection(connectionString))
+        //    {
+        //        string sql = "SELECT * FROM customer WHERE cus_id = @CustomerID";
+        //        using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+        //        {
+        //            cmd.Parameters.AddWithValue("@CustomerID", customerId);
+        //            conn.Open();
+        //            using (MySqlDataReader reader = cmd.ExecuteReader())
+        //            {
+        //                if (reader.Read())
+        //                {
+        //                    customer = new Customer
+        //                    {
+        //                        CustomerID = reader.GetInt32("cus_id"),
+        //                        FirstName = reader.GetString("cus_name"),
+        //                        LastName = reader.GetString("cus_lname"),
+        //                        Email = reader.GetString("cus_email"),
+        //                        Phone = reader.GetString("cus_tel"),
+        //                        Address = reader.GetString("cus_address")
+        //                    };
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return customer;
+        //}
 
         public string GenerateCustomerID()
         {
@@ -258,6 +253,38 @@ namespace JRSApplication.Data_Access_Layer
                 return count > 0;
             }
         }
+
+        public Customer GetCustomerById(string customerId)
+        {
+            Customer customer = null;
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string sql = "SELECT * FROM customer WHERE cus_id = @CustomerID";
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@CustomerID", customerId);
+                    conn.Open();
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            customer = new Customer
+                            {
+                                CustomerID = reader.GetInt32("cus_id"),
+                                FirstName = reader.GetString("cus_name"),
+                                LastName = reader.GetString("cus_lname"),
+                                Email = reader.GetString("cus_email"),
+                                Phone = reader.GetString("cus_tel"),
+                                Address = reader.GetString("cus_address"),
+                                IDCard = reader.GetString("cus_id_card")
+                            };
+                        }
+                    }
+                }
+            }
+            return customer;
+        }
+
 
     }
 }

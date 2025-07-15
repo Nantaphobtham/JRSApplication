@@ -197,5 +197,30 @@ namespace JRSApplication.Components
             return dt;
         }
 
+        public string GetEmployeeFullNameById(string empId)
+        {
+            string fullName = "";
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string sql = "SELECT emp_name, emp_lname FROM employee WHERE emp_id = @EmpID";
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@EmpID", empId);
+                    conn.Open();
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            string firstName = reader["emp_name"].ToString();
+                            string lastName = reader["emp_lname"].ToString();
+                            fullName = $"{firstName} {lastName}";
+                        }
+                    }
+                }
+            }
+            return fullName;
+        }
+
+
     }
 }

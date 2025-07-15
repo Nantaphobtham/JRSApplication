@@ -8,7 +8,7 @@ namespace JRSApplication.Components
 {
     public class Customer
     {
-        public String CustomerID { get; set; } // cus_id (Primary Key)
+        public int CustomerID { get; set; } // cus_id (Primary Key)
         public string FirstName { get; set; } // cus_name
         public string LastName { get; set; } // cus_lname
         public string IDCard { get; set; } // cus_id_card
