@@ -1,5 +1,6 @@
 ﻿using JRSApplication.Components;
 using JRSApplication.Components.Models;
+using JRSApplication.Components.Service;
 using JRSApplication.Data_Access_Layer;
 using System;
 using System.Data;
@@ -16,10 +17,16 @@ namespace JRSApplication
         private string projectID = "";
         private int currentAssignmentId = -1; // ใช้สำหรับ Edit/Delete
         private bool isEditing = false; // ตรวจสอบว่าอยู่ในโหมดแก้ไขหรือไม่
+        private SupplierAssignmentFile currentFile; // เก็บไฟล์ PDF ที่แนบล่าสุด
+        private string _empId; // เก็บ empId ของ user ที่ login อยู่
 
-        public DetermineSubcontractors()
+        private FormPDFPreview pdfPreviewForm = null; // ✅ ฟอร์ม Preview
+        private Timer hoverCheckTimer;                // ✅ Timer เช็กเมาส์ออก
+
+        public DetermineSubcontractors(string empId)
         {
             InitializeComponent();
+            _empId = empId;
             CustomizeDataGridViewAssignment();
             LoadAssignments(); // ปิดฟิลด์ทั้งหมดไม่ให้แก้ไขก่อน
         }
@@ -30,9 +37,16 @@ namespace JRSApplication
             SearchService service = new SearchService();
             DataTable dt = service.GetPhasesByProjectId(projectId);
 
-            cmbSelectPhase.DisplayMember = "phase_no"; // แสดงหมายเลขเฟส
-            cmbSelectPhase.ValueMember = "phase_id"; // เก็บค่า id ตอน save
-            cmbSelectPhase.DataSource = dt; // ใส่ data ลง combobox
+            // เพิ่ม row สำหรับ 'เลือกเฟส'
+            DataRow dr = dt.NewRow();
+            dr["phase_id"] = DBNull.Value;     // หรือ 0 ก็ได้ (แต่ DBNull.Value จะปลอดภัยกว่า)
+            dr["phase_no"] = "-- เลือกเฟส --";
+            dt.Rows.InsertAt(dr, 0);           // เพิ่มเป็น index 0
+
+            cmbSelectPhase.DisplayMember = "phase_no";    // แสดงหมายเลขเฟส
+            cmbSelectPhase.ValueMember = "phase_id";      // เก็บค่า id ตอน save
+            cmbSelectPhase.DataSource = dt;               // ใส่ data ลง combobox
+            cmbSelectPhase.SelectedIndex = 0;             // ให้ชี้มาที่ "เลือกเฟส" ทันที
         }
 
         // โหลดรายการทั้งหมดจาก DB
@@ -51,6 +65,7 @@ namespace JRSApplication
                 projectID = searchForm.SelectedID; // เก็บ id ไว้ใช้ตอน save
                 txtPorjectID.Text = searchForm.SelectedID;
                 txtProjectName.Text = searchForm.SelectedName;
+                txtContractnumber.Text = searchForm.SelectedContract;
                 LoadPhasesToComboBox(projectID); // โหลด phase มาให้เลือก
             }
         }
@@ -108,9 +123,11 @@ namespace JRSApplication
             txtPorjectID.Enabled = true;
             txtRemark.Enabled = true;
             txtAssignDescription.Enabled = true;
+            txtDate.Enabled = true;
             cmbSelectPhase.Enabled = true;
             startDate.Enabled = true;
             dueDate.Enabled = true;
+            btnInsertFile.Enabled = true;
         }
 
         private void DisableFormFields()
@@ -124,9 +141,11 @@ namespace JRSApplication
             txtPorjectID.Enabled = false;
             txtRemark.Enabled = false;
             txtAssignDescription.Enabled = false;
+            txtDate.Enabled = false;
             cmbSelectPhase.Enabled = false;
             startDate.Enabled = false;
             dueDate.Enabled = false;
+            btnInsertFile.Enabled = false;
         }
 
         private void ClearandClossForm()
@@ -147,10 +166,18 @@ namespace JRSApplication
             DisableFormFields();
             supplierID = "";
             projectID = "";
+            txtDate.Text = "";
+            currentFile = null;
+            btnInsertFile.Text = "แนบไฟล์ PDF";
         }
 
         private bool ValidateBeforeSave()
         {
+            if (cmbSelectPhase.SelectedIndex <= 0 || cmbSelectPhase.SelectedValue == null || cmbSelectPhase.SelectedValue == DBNull.Value)
+            {
+                MessageBox.Show("กรุณาเลือกเฟสที่ต้องการดำเนินงาน", "คำเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
             if (string.IsNullOrEmpty(supplierID))
             {
                 MessageBox.Show("กรุณาเลือกผู้รับเหมา", "คำเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -171,6 +198,11 @@ namespace JRSApplication
                 MessageBox.Show("กรุณาระบุรายละเอียดงาน", "คำเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+            if (currentFile == null)
+            {
+                MessageBox.Show("กรุณาแนบไฟล์ก่อนบันทึก", "เตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
             return true;
         }
 
@@ -186,25 +218,58 @@ namespace JRSApplication
                 DueDate = dueDate.Value,
                 AssignDescription = txtAssignDescription.Text.Trim(),
                 AssignRemark = txtRemark.Text.Trim(),
-                PhaseId = Convert.ToInt32(cmbSelectPhase.SelectedValue)
+                PhaseId = Convert.ToInt32(cmbSelectPhase.SelectedValue),
+                AssignStatus = "InProgress",    
+                EmployeeID = _empId
             };
 
             SupplierWorkAssignmentDAL dal = new SupplierWorkAssignmentDAL();
 
-            if (isEditing && currentAssignmentId != -1)
+            try
             {
-                model.AssignmentId = currentAssignmentId;
-                dal.Update(model);
-                MessageBox.Show("แก้ไขข้อมูลสำเร็จ", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                dal.Insert(model);
+                if (isEditing && currentAssignmentId != -1)
+                {
+                    model.AssignmentId = currentAssignmentId;
+                    dal.Update(model);
+
+                    // 🟩 จัดการไฟล์แนบ
+                    if (currentFile != null)
+                    {
+                        var fileDal = new SupplierAssignmentFileDAL();
+                        fileDal.DeleteByAssignmentId(model.AssignmentId);
+                        currentFile.AssignmentId = model.AssignmentId;
+                        fileDal.Insert(currentFile);
+                        currentFile = null;
+                    }
+                }
+                else
+                {
+                    int newAssignmentId = dal.Insert(model);
+
+                    if (currentFile != null)
+                    {
+                        var fileDal = new SupplierAssignmentFileDAL();
+                        fileDal.DeleteByAssignmentId(newAssignmentId);
+                        currentFile.AssignmentId = newAssignmentId;
+                        fileDal.Insert(currentFile);
+                        currentFile = null;
+                    }
+                }
+
+                // 🟢 ประกาศ "สำเร็จ" ตรงนี้เท่านั้น เมื่อทุกอย่างผ่าน
                 MessageBox.Show("บันทึกข้อมูลสำเร็จ", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                ClearandClossForm();
+                LoadAssignments();
+            }
+            catch (Exception ex)
+            {
+                // 🟠 แจ้ง error หากบันทึกล้มเหลว (เช่น มีปัญหาไฟล์ หรือฐานข้อมูล)
+                MessageBox.Show("เกิดข้อผิดพลาดในการบันทึก: " + ex.Message, "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            ClearandClossForm();
-            LoadAssignments();
+
+
         }
 
         // ปุ่ม Add เปิดให้กรอกข้อมูลใหม่
@@ -340,18 +405,139 @@ namespace JRSApplication
                         FileType = "application/pdf",
                         FileData = fileData,
                         UploadedAt = DateTime.Now,
-                        UploadedBy = Environment.UserName // หรือดึงจากระบบ login ของคุณ
-                                                          // AssignmentId ยังไม่ต้องใส่ถ้ายังไม่ได้เลือก assignment
+                        UploadedBy = _empId // ใช้ empId ที่ส่งมาจาก Formณ
+                                            // AssignmentId ยังไม่ต้องใส่ถ้ายังไม่ได้เลือก assignment
                     };
 
                     // ✅ ตัวอย่าง: แสดงชื่อไฟล์ใน TextBox หรือ Label
                     MessageBox.Show("ไฟล์เตรียมข้อมูลเรียบร้อย: " + fileModel.FileName, "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     // 📌 ถ้าอยากเก็บ object นี้ไว้ใช้ตอนกด Save, สามารถเก็บไว้ใน class-level field เช่น
-                    // this.currentFile = fileModel;
+                     this.currentFile = fileModel;
+                    // 👉 เปลี่ยนชื่อปุ่มเป็นชื่อไฟล์ที่เลือก
+                    btnInsertFile.Text = fileModel.FileName;
                 }
             }
         }
 
+        private void cmbSelectPhase_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // กรองเฉพาะถ้าเลือก phase จริง (index 0 เป็น "-- เลือกเฟส --" ไม่ต้องโชว์ detail)
+            if (cmbSelectPhase.SelectedIndex > 0 && cmbSelectPhase.SelectedItem is DataRowView row)
+            {
+                txtPhaseDetail.Text = row["phase_detail"].ToString();
+            }
+            else
+            {
+                txtPhaseDetail.Text = ""; // หรือ "--" ถ้าอยากให้มีค่า default
+            }
+        }
+
+        //เมธอดเปิดฟอร์ม Preview
+        private void ShowPDFPreviewFromBytes(byte[] pdfBytes, Control targetControl)
+        {
+            if (pdfBytes == null) return;
+
+            // ถ้า Form ยังไม่ได้เปิด
+            if (pdfPreviewForm == null || pdfPreviewForm.IsDisposed)
+            {
+                // ✅ สร้างและเปิด Form ใหม่
+                pdfPreviewForm = new FormPDFPreview(pdfBytes);
+
+                // ✅ วางตำแหน่ง Form ใต้ปุ่ม
+                var location = targetControl.PointToScreen(new Point(0, targetControl.Height));
+                pdfPreviewForm.Location = location;
+
+                pdfPreviewForm.Show();
+            }
+
+            StartHoverTimer(targetControl); // เริ่มเช็กเมื่อเมาส์ออก
+        }
+        //Timer เช็กเมาส์ "ออก" แล้วปิด Form
+        private void StartHoverTimer(Control buttonControl)
+        {
+            if (hoverCheckTimer == null)
+            {
+                hoverCheckTimer = new Timer();
+                hoverCheckTimer.Interval = 300;
+                hoverCheckTimer.Tick += (s, e) =>
+                {
+                    Point mousePos = Cursor.Position;
+
+                    // ✅ เช็กเมาส์อยู่บนปุ่ม
+                    bool overButton = buttonControl.Bounds.Contains(buttonControl.Parent.PointToClient(mousePos));
+
+                    // ✅ เช็กเมาส์อยู่บนฟอร์ม Preview
+                    bool overPreview = pdfPreviewForm != null && !pdfPreviewForm.IsDisposed && pdfPreviewForm.Bounds.Contains(mousePos);
+
+                    // ❌ ถ้าเมาส์อยู่นอกทั้ง 2 จุด ให้ปิดฟอร์ม
+                    if (!overButton && !overPreview)
+                    {
+                        if (pdfPreviewForm != null && !pdfPreviewForm.IsDisposed)
+                        {
+                            pdfPreviewForm.Close();
+                            pdfPreviewForm = null;
+                        }
+
+                        hoverCheckTimer.Stop();
+                    }
+                };
+            }
+
+            hoverCheckTimer.Start();
+        }
+
+        private void btnInsertFile_MouseEnter(object sender, EventArgs e)
+        {
+            if (currentFile?.FileData != null)
+            {
+                ShowPDFPreviewFromBytes(currentFile.FileData, btnInsertFile);
+            }
+        }
+
+        private DateTime CalculateDueDate(DateTime start, int workingDays)
+        {
+            int added = 0;
+            DateTime current = start;
+
+            while (added < workingDays)
+            {
+                if (current.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    added++;
+                    if (added == workingDays) break;
+                }
+                current = current.AddDays(1);
+            }
+
+            // ถ้า dueDate ตรงกับวันอาทิตย์ → ขยับเป็นวันจันทร์
+            if (current.DayOfWeek == DayOfWeek.Sunday)
+                current = current.AddDays(1);
+
+            return current;
+        }
+        private void UpdateDueDate()
+        {
+            int workDays;
+            if (int.TryParse(txtDate.Text, out workDays) && workDays > 0)
+            {
+                DateTime start = startDate.Value.Date;
+                DateTime due = CalculateDueDate(start, workDays);
+                dueDate.Value = due;
+            }
+            else
+            {
+                dueDate.Value = startDate.Value;
+            }
+        }
+        private void txtDate_TextChanged(object sender, EventArgs e)
+        {
+            UpdateDueDate();
+        }
+
+        private void startDate_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateDueDate();
+        }
     }
 }

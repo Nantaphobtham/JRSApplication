@@ -52,7 +52,7 @@
             this.txtPorjectID = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtContractnumber = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.txtProjectName = new System.Windows.Forms.TextBox();
             this.btnInsertFile = new System.Windows.Forms.Button();
@@ -77,6 +77,9 @@
             this.dtgvAssignment = new System.Windows.Forms.DataGridView();
             this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.label1 = new System.Windows.Forms.Label();
+            this.txtDate = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
             this.pnlInfomation.SuspendLayout();
             this.pnlsubInfo.SuspendLayout();
             this.pnlActionMenu.SuspendLayout();
@@ -100,9 +103,11 @@
             this.pnlsubInfo.Controls.Add(this.label18);
             this.pnlsubInfo.Controls.Add(this.starAssignDescription);
             this.pnlsubInfo.Controls.Add(this.stardueDate);
+            this.pnlsubInfo.Controls.Add(this.label15);
             this.pnlsubInfo.Controls.Add(this.starstartDate);
             this.pnlsubInfo.Controls.Add(this.starSeclectPhase);
             this.pnlsubInfo.Controls.Add(this.label14);
+            this.pnlsubInfo.Controls.Add(this.label6);
             this.pnlsubInfo.Controls.Add(this.label13);
             this.pnlsubInfo.Controls.Add(this.label12);
             this.pnlsubInfo.Controls.Add(this.label10);
@@ -118,7 +123,8 @@
             this.pnlsubInfo.Controls.Add(this.txtPorjectID);
             this.pnlsubInfo.Controls.Add(this.label8);
             this.pnlsubInfo.Controls.Add(this.label19);
-            this.pnlsubInfo.Controls.Add(this.textBox2);
+            this.pnlsubInfo.Controls.Add(this.txtDate);
+            this.pnlsubInfo.Controls.Add(this.txtContractnumber);
             this.pnlsubInfo.Controls.Add(this.label7);
             this.pnlsubInfo.Controls.Add(this.txtProjectName);
             this.pnlsubInfo.Controls.Add(this.btnInsertFile);
@@ -180,7 +186,7 @@
             this.stardueDate.AutoSize = true;
             this.stardueDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.stardueDate.ForeColor = System.Drawing.Color.Red;
-            this.stardueDate.Location = new System.Drawing.Point(1262, 210);
+            this.stardueDate.Location = new System.Drawing.Point(1288, 280);
             this.stardueDate.Name = "stardueDate";
             this.stardueDate.Size = new System.Drawing.Size(22, 30);
             this.stardueDate.TabIndex = 39;
@@ -192,7 +198,7 @@
             this.starstartDate.AutoSize = true;
             this.starstartDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.starstartDate.ForeColor = System.Drawing.Color.Red;
-            this.starstartDate.Location = new System.Drawing.Point(1014, 210);
+            this.starstartDate.Location = new System.Drawing.Point(1269, 211);
             this.starstartDate.Name = "starstartDate";
             this.starstartDate.Size = new System.Drawing.Size(22, 30);
             this.starstartDate.TabIndex = 38;
@@ -215,7 +221,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(1163, 210);
+            this.label14.Location = new System.Drawing.Point(1189, 280);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(93, 30);
             this.label14.TabIndex = 36;
@@ -225,7 +231,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(934, 210);
+            this.label13.Location = new System.Drawing.Point(1189, 211);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(74, 30);
             this.label13.TabIndex = 35;
@@ -285,7 +291,7 @@
             // 
             this.dueDate.Enabled = false;
             this.dueDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dueDate.Location = new System.Drawing.Point(1168, 243);
+            this.dueDate.Location = new System.Drawing.Point(1194, 313);
             this.dueDate.Name = "dueDate";
             this.dueDate.Size = new System.Drawing.Size(207, 35);
             this.dueDate.TabIndex = 29;
@@ -294,10 +300,11 @@
             // 
             this.startDate.Enabled = false;
             this.startDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.startDate.Location = new System.Drawing.Point(939, 243);
+            this.startDate.Location = new System.Drawing.Point(1194, 244);
             this.startDate.Name = "startDate";
             this.startDate.Size = new System.Drawing.Size(207, 35);
             this.startDate.TabIndex = 28;
+            this.startDate.ValueChanged += new System.EventHandler(this.startDate_ValueChanged);
             // 
             // cmbSelectPhase
             // 
@@ -308,6 +315,7 @@
             this.cmbSelectPhase.Name = "cmbSelectPhase";
             this.cmbSelectPhase.Size = new System.Drawing.Size(207, 38);
             this.cmbSelectPhase.TabIndex = 24;
+            this.cmbSelectPhase.SelectedIndexChanged += new System.EventHandler(this.cmbSelectPhase_SelectedIndexChanged);
             // 
             // label20
             // 
@@ -321,11 +329,12 @@
             // 
             // txtPhaseDetail
             // 
+            this.txtPhaseDetail.BackColor = System.Drawing.Color.White;
             this.txtPhaseDetail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPhaseDetail.Enabled = false;
             this.txtPhaseDetail.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPhaseDetail.Location = new System.Drawing.Point(757, 162);
             this.txtPhaseDetail.Name = "txtPhaseDetail";
+            this.txtPhaseDetail.ReadOnly = true;
             this.txtPhaseDetail.Size = new System.Drawing.Size(644, 35);
             this.txtPhaseDetail.TabIndex = 22;
             // 
@@ -341,11 +350,13 @@
             // 
             // txtPorjectID
             // 
+            this.txtPorjectID.BackColor = System.Drawing.Color.White;
             this.txtPorjectID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPorjectID.Enabled = false;
             this.txtPorjectID.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPorjectID.Location = new System.Drawing.Point(830, 91);
             this.txtPorjectID.Name = "txtPorjectID";
+            this.txtPorjectID.ReadOnly = true;
             this.txtPorjectID.Size = new System.Drawing.Size(282, 35);
             this.txtPorjectID.TabIndex = 22;
             // 
@@ -370,15 +381,16 @@
             this.label19.TabIndex = 20;
             this.label19.Text = "เลขที่สัญญา";
             // 
-            // textBox2
+            // txtContractnumber
             // 
-            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox2.Enabled = false;
-            this.textBox2.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(1124, 91);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(277, 35);
-            this.textBox2.TabIndex = 19;
+            this.txtContractnumber.BackColor = System.Drawing.Color.White;
+            this.txtContractnumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtContractnumber.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtContractnumber.Location = new System.Drawing.Point(1124, 91);
+            this.txtContractnumber.Name = "txtContractnumber";
+            this.txtContractnumber.ReadOnly = true;
+            this.txtContractnumber.Size = new System.Drawing.Size(277, 35);
+            this.txtContractnumber.TabIndex = 19;
             // 
             // label7
             // 
@@ -392,11 +404,13 @@
             // 
             // txtProjectName
             // 
+            this.txtProjectName.BackColor = System.Drawing.Color.White;
             this.txtProjectName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtProjectName.Enabled = false;
             this.txtProjectName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProjectName.Location = new System.Drawing.Point(539, 91);
             this.txtProjectName.Name = "txtProjectName";
+            this.txtProjectName.ReadOnly = true;
             this.txtProjectName.Size = new System.Drawing.Size(277, 35);
             this.txtProjectName.TabIndex = 19;
             // 
@@ -409,9 +423,10 @@
             this.btnInsertFile.Name = "btnInsertFile";
             this.btnInsertFile.Size = new System.Drawing.Size(168, 56);
             this.btnInsertFile.TabIndex = 18;
-            this.btnInsertFile.Text = "เพิ่มไฟล์";
+            this.btnInsertFile.Text = "แนบไฟล์ PDF";
             this.btnInsertFile.UseVisualStyleBackColor = false;
             this.btnInsertFile.Click += new System.EventHandler(this.btnInsertFile_Click);
+            this.btnInsertFile.MouseEnter += new System.EventHandler(this.btnInsertFile_MouseEnter);
             // 
             // btnSearchProject
             // 
@@ -459,11 +474,13 @@
             // 
             // txtSupplierPhone
             // 
+            this.txtSupplierPhone.BackColor = System.Drawing.Color.White;
             this.txtSupplierPhone.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSupplierPhone.Enabled = false;
             this.txtSupplierPhone.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSupplierPhone.Location = new System.Drawing.Point(36, 292);
             this.txtSupplierPhone.Name = "txtSupplierPhone";
+            this.txtSupplierPhone.ReadOnly = true;
             this.txtSupplierPhone.Size = new System.Drawing.Size(286, 35);
             this.txtSupplierPhone.TabIndex = 14;
             // 
@@ -479,11 +496,13 @@
             // 
             // txtSupplierJuristic
             // 
+            this.txtSupplierJuristic.BackColor = System.Drawing.Color.White;
             this.txtSupplierJuristic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSupplierJuristic.Enabled = false;
             this.txtSupplierJuristic.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSupplierJuristic.Location = new System.Drawing.Point(36, 221);
             this.txtSupplierJuristic.Name = "txtSupplierJuristic";
+            this.txtSupplierJuristic.ReadOnly = true;
             this.txtSupplierJuristic.Size = new System.Drawing.Size(286, 35);
             this.txtSupplierJuristic.TabIndex = 12;
             // 
@@ -499,11 +518,13 @@
             // 
             // txtSupplierName
             // 
+            this.txtSupplierName.BackColor = System.Drawing.Color.White;
             this.txtSupplierName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSupplierName.Enabled = false;
             this.txtSupplierName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSupplierName.Location = new System.Drawing.Point(36, 150);
             this.txtSupplierName.Name = "txtSupplierName";
+            this.txtSupplierName.ReadOnly = true;
             this.txtSupplierName.Size = new System.Drawing.Size(286, 35);
             this.txtSupplierName.TabIndex = 10;
             // 
@@ -657,6 +678,39 @@
             this.label1.TabIndex = 9;
             this.label1.Text = "ข้อมูลการจ้างผู้รับเหมา";
             // 
+            // txtDate
+            // 
+            this.txtDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtDate.Enabled = false;
+            this.txtDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDate.Location = new System.Drawing.Point(993, 244);
+            this.txtDate.Name = "txtDate";
+            this.txtDate.Size = new System.Drawing.Size(160, 35);
+            this.txtDate.TabIndex = 19;
+            this.txtDate.TextChanged += new System.EventHandler(this.txtDate_TextChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(988, 214);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(84, 30);
+            this.label6.TabIndex = 35;
+            this.label6.Text = "ระยะเวลา";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.ForeColor = System.Drawing.Color.Red;
+            this.label15.Location = new System.Drawing.Point(1078, 214);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(22, 30);
+            this.label15.TabIndex = 38;
+            this.label15.Text = "*";
+            this.label15.Visible = false;
+            // 
             // DetermineSubcontractors
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -725,8 +779,11 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txtContractnumber;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox txtPhaseDetail;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtDate;
     }
 }

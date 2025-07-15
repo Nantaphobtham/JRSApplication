@@ -22,7 +22,7 @@ namespace JRSApplication
         //ตัวแปรระดับคลาส
         private string selectedCustomerID = "";
         private string selectedEmployeeID = "";
-        private string loggedInUser = "Admin"; // ✅ เก็บชื่อผู้ใช้ที่ล็อกอินมา
+        //private string loggedInUser = "Admin"; // ✅ เก็บชื่อผู้ใช้ที่ล็อกอินมา
 
         private string _loggedInUser;
         private string _loggedInRole;

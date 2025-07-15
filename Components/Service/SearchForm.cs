@@ -16,6 +16,7 @@ namespace JRSApplication
         public string SearchMode { get; set; }  // "Customer" หรือ "Employee" หรือ "Supplier"
         public string SelectedID { get; private set; } = "";
         public string SelectedName { get; private set; } = "";
+        public string SelectedContract { get; private set; } = "";
         public string SelectedLastName { get; private set; } = "";
         public string SelectedIDCardOrRole { get; private set; } = "";
         public string SelectedPhone { get; private set; } = "";
@@ -85,6 +86,7 @@ namespace JRSApplication
                 else if (SearchMode == "Project")
                 {
                     SelectedID = selectedRow.Cells["รหัสโครงการ"].Value?.ToString() ?? "";
+                    SelectedContract = selectedRow.Cells["เลขที่สัญญา"].Value?.ToString() ?? "";
                     SelectedName = selectedRow.Cells["ชื่อโครงการ"].Value?.ToString() ?? "";
                     SelectedLastName = selectedRow.Cells["ลูกค้า"].Value?.ToString() ?? "";
                     SelectedIDCardOrRole = selectedRow.Cells["พนักงานดูแล"].Value?.ToString() ?? "";

@@ -78,7 +78,7 @@ namespace JRSApplication
 
         private void btnChooseSubcontractors_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new DetermineSubcontractors());
+            LoadUserControl(new DetermineSubcontractors(_empID));
             txtFunctionname.Text = "กำหนดผู้รับเหมาช่วง";
             txtsubFunctionname.Visible = false;
         }

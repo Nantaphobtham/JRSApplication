@@ -19,8 +19,9 @@ namespace JRSApplication
 
             string query = @"
                         SELECT 
-                            phase_id,
-                            phase_no
+                            phase_id, 
+                            CAST(phase_no AS CHAR) AS phase_no,   -- ✅ ตรงนี้!
+                            phase_detail
                         FROM project_phase
                         WHERE pro_id = @ProjectId
                         ORDER BY phase_no ASC;
@@ -76,6 +77,7 @@ namespace JRSApplication
                                 SELECT 
                                     p.pro_id AS 'รหัสโครงการ',
                                     p.pro_name AS 'ชื่อโครงการ',
+                                    p.pro_number AS 'เลขที่สัญญา',
                                     p.pro_address AS 'สถานที่',
                                     p.pro_budget AS 'งบประมาณ',
                                     CONCAT(c.cus_name, ' ', c.cus_lname) AS 'ลูกค้า',

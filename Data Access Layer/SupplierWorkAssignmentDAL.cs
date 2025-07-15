@@ -14,13 +14,15 @@ namespace JRSApplication.Data_Access_Layer
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
-        public void Insert(SupplierWorkAssignment model)
+        public int Insert(SupplierWorkAssignment model)
         {
+            int newId = 0;
             string query = @"
-                INSERT INTO supplier_work_assignment 
-                (sup_id, start_date, due_date, assign_description, assign_remark, phase_id)
-                VALUES (@SupId, @StartDate, @DueDate, @AssignDescription, @AssignRemark, @PhaseId);
-            ";
+                    INSERT INTO supplier_work_assignment 
+                    (sup_id, start_date, due_date, assign_description, assign_remark, phase_id, assign_status, emp_id)
+                    VALUES (@SupId, @StartDate, @DueDate, @AssignDescription, @AssignRemark, @PhaseId, @AssignStatus, @EmpId);
+                    SELECT LAST_INSERT_ID();
+                ";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -31,10 +33,13 @@ namespace JRSApplication.Data_Access_Layer
                 cmd.Parameters.AddWithValue("@AssignDescription", model.AssignDescription);
                 cmd.Parameters.AddWithValue("@AssignRemark", model.AssignRemark);
                 cmd.Parameters.AddWithValue("@PhaseId", model.PhaseId);
+                cmd.Parameters.AddWithValue("@AssignStatus", model.AssignStatus);   
+                cmd.Parameters.AddWithValue("@EmpId", model.EmployeeID);
 
                 conn.Open();
-                cmd.ExecuteNonQuery();
+                newId = Convert.ToInt32(cmd.ExecuteScalar());
             }
+            return newId;
         }
 
         public DataTable GetAllAssignmentsWithPhase()
@@ -66,6 +71,7 @@ namespace JRSApplication.Data_Access_Layer
 
             return dt;
         }
+        //ไม่ถูกเรียกใช้
         public SupplierWorkAssignment GetAssignmentByPhaseId(int phaseId)
         {
             SupplierWorkAssignment assignment = null;

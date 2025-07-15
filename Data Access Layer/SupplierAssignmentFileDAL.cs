@@ -37,5 +37,21 @@ namespace JRSApplication.Data_Access_Layer
         }
 
         // เพิ่มฟังก์ชันดึงไฟล์, ลบไฟล์ ฯลฯ ได้ตามต้องการ
+
+        public void DeleteByAssignmentId(int assignmentId)
+        {
+            string query = "DELETE FROM supplier_assignment_file WHERE supplier_assignment_id = @AssignmentId";
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@AssignmentId", assignmentId);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
+
+
     }
 }
