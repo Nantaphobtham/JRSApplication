@@ -46,20 +46,11 @@
             this.pnlMailDescription = new System.Windows.Forms.Panel();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.pnlSupplier = new System.Windows.Forms.Panel();
-            this.txtSupplierWork = new System.Windows.Forms.TextBox();
-            this.txtSupplierJuristic = new System.Windows.Forms.TextBox();
-            this.txtSupplierName = new System.Windows.Forms.TextBox();
-            this.lblSupplierWork = new System.Windows.Forms.Label();
-            this.lblSupplierJuristic = new System.Windows.Forms.Label();
-            this.lblSupplierName = new System.Windows.Forms.Label();
-            this.checkeSupplier = new System.Windows.Forms.CheckedListBox();
             this.txtRemark = new System.Windows.Forms.TextBox();
             this.txtWorkingDescription = new System.Windows.Forms.TextBox();
             this.cmbStatus = new System.Windows.Forms.ComboBox();
             this.lblRemark = new System.Windows.Forms.Label();
             this.lblWorkingDescription = new System.Windows.Forms.Label();
-            this.lblSupplier = new System.Windows.Forms.Label();
             this.lblSeclectStatus = new System.Windows.Forms.Label();
             this.lblDate = new System.Windows.Forms.Label();
             this.dtpkDate = new System.Windows.Forms.DateTimePicker();
@@ -73,15 +64,16 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnInsertPicture = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.dtgvDetailofWork = new System.Windows.Forms.DataGridView();
             this.pnlProjectDetail.SuspendLayout();
             this.pnlWorkHistory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvWhorHistory)).BeginInit();
             this.fpnlDatainfomation.SuspendLayout();
             this.pnlMailDescription.SuspendLayout();
-            this.pnlSupplier.SuspendLayout();
             this.pnlPictureDescription.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxListDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvDetailofWork)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlProjectDetail
@@ -112,7 +104,7 @@
             this.btnSearchProject.TabIndex = 12;
             this.btnSearchProject.Text = "ค้นหาโครงการ";
             this.btnSearchProject.UseVisualStyleBackColor = false;
-            this.btnSearchProject.Click += new System.EventHandler(this.btnSearchProject_Click);
+            
             // 
             // lblStatus
             // 
@@ -247,16 +239,14 @@
             // pnlMailDescription
             // 
             this.pnlMailDescription.BackColor = System.Drawing.Color.White;
+            this.pnlMailDescription.Controls.Add(this.dtgvDetailofWork);
             this.pnlMailDescription.Controls.Add(this.btnEdit);
             this.pnlMailDescription.Controls.Add(this.btnSave);
-            this.pnlMailDescription.Controls.Add(this.pnlSupplier);
-            this.pnlMailDescription.Controls.Add(this.checkeSupplier);
             this.pnlMailDescription.Controls.Add(this.txtRemark);
             this.pnlMailDescription.Controls.Add(this.txtWorkingDescription);
             this.pnlMailDescription.Controls.Add(this.cmbStatus);
             this.pnlMailDescription.Controls.Add(this.lblRemark);
             this.pnlMailDescription.Controls.Add(this.lblWorkingDescription);
-            this.pnlMailDescription.Controls.Add(this.lblSupplier);
             this.pnlMailDescription.Controls.Add(this.lblSeclectStatus);
             this.pnlMailDescription.Controls.Add(this.lblDate);
             this.pnlMailDescription.Controls.Add(this.dtpkDate);
@@ -290,91 +280,7 @@
             this.btnSave.TabIndex = 10;
             this.btnSave.Text = "บันทึกข้อมูล";
             this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // pnlSupplier
-            // 
-            this.pnlSupplier.Controls.Add(this.txtSupplierWork);
-            this.pnlSupplier.Controls.Add(this.txtSupplierJuristic);
-            this.pnlSupplier.Controls.Add(this.txtSupplierName);
-            this.pnlSupplier.Controls.Add(this.lblSupplierWork);
-            this.pnlSupplier.Controls.Add(this.lblSupplierJuristic);
-            this.pnlSupplier.Controls.Add(this.lblSupplierName);
-            this.pnlSupplier.Location = new System.Drawing.Point(128, 51);
-            this.pnlSupplier.Name = "pnlSupplier";
-            this.pnlSupplier.Size = new System.Drawing.Size(629, 165);
-            this.pnlSupplier.TabIndex = 9;
-            // 
-            // txtSupplierWork
-            // 
-            this.txtSupplierWork.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtSupplierWork.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSupplierWork.Location = new System.Drawing.Point(314, 36);
-            this.txtSupplierWork.Multiline = true;
-            this.txtSupplierWork.Name = "txtSupplierWork";
-            this.txtSupplierWork.Size = new System.Drawing.Size(309, 112);
-            this.txtSupplierWork.TabIndex = 2;
-            // 
-            // txtSupplierJuristic
-            // 
-            this.txtSupplierJuristic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtSupplierJuristic.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSupplierJuristic.Location = new System.Drawing.Point(8, 113);
-            this.txtSupplierJuristic.Name = "txtSupplierJuristic";
-            this.txtSupplierJuristic.Size = new System.Drawing.Size(295, 35);
-            this.txtSupplierJuristic.TabIndex = 2;
-            // 
-            // txtSupplierName
-            // 
-            this.txtSupplierName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtSupplierName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSupplierName.Location = new System.Drawing.Point(8, 36);
-            this.txtSupplierName.Name = "txtSupplierName";
-            this.txtSupplierName.Size = new System.Drawing.Size(295, 35);
-            this.txtSupplierName.TabIndex = 2;
-            // 
-            // lblSupplierWork
-            // 
-            this.lblSupplierWork.AutoSize = true;
-            this.lblSupplierWork.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSupplierWork.Location = new System.Drawing.Point(309, 8);
-            this.lblSupplierWork.Name = "lblSupplierWork";
-            this.lblSupplierWork.Size = new System.Drawing.Size(257, 30);
-            this.lblSupplierWork.TabIndex = 1;
-            this.lblSupplierWork.Text = "รายละเอียดงานที่ต้องดำเนินการ";
-            // 
-            // lblSupplierJuristic
-            // 
-            this.lblSupplierJuristic.AutoSize = true;
-            this.lblSupplierJuristic.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSupplierJuristic.Location = new System.Drawing.Point(3, 85);
-            this.lblSupplierJuristic.Name = "lblSupplierJuristic";
-            this.lblSupplierJuristic.Size = new System.Drawing.Size(174, 30);
-            this.lblSupplierJuristic.TabIndex = 1;
-            this.lblSupplierJuristic.Text = "เลขทะเบียนนิติบุคคล";
-            // 
-            // lblSupplierName
-            // 
-            this.lblSupplierName.AutoSize = true;
-            this.lblSupplierName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSupplierName.Location = new System.Drawing.Point(3, 8);
-            this.lblSupplierName.Name = "lblSupplierName";
-            this.lblSupplierName.Size = new System.Drawing.Size(82, 30);
-            this.lblSupplierName.TabIndex = 1;
-            this.lblSupplierName.Text = "ชื่อบริษัท";
-            // 
-            // checkeSupplier
-            // 
-            this.checkeSupplier.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.checkeSupplier.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkeSupplier.FormattingEnabled = true;
-            this.checkeSupplier.Items.AddRange(new object[] {
-            "มี",
-            "ไม่"});
-            this.checkeSupplier.Location = new System.Drawing.Point(23, 97);
-            this.checkeSupplier.Name = "checkeSupplier";
-            this.checkeSupplier.Size = new System.Drawing.Size(73, 60);
-            this.checkeSupplier.TabIndex = 8;
+            
             // 
             // txtRemark
             // 
@@ -424,16 +330,6 @@
             this.lblWorkingDescription.Size = new System.Drawing.Size(221, 30);
             this.lblWorkingDescription.TabIndex = 5;
             this.lblWorkingDescription.Text = "รายะละเอียดการดำเนินงาน";
-            // 
-            // lblSupplier
-            // 
-            this.lblSupplier.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSupplier.Location = new System.Drawing.Point(0, 54);
-            this.lblSupplier.Name = "lblSupplier";
-            this.lblSupplier.Size = new System.Drawing.Size(126, 41);
-            this.lblSupplier.TabIndex = 5;
-            this.lblSupplier.Text = "ซัพพลายเออร์";
-            this.lblSupplier.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblSeclectStatus
             // 
@@ -495,7 +391,7 @@
             this.pictureBoxListDisplay.BackColor = System.Drawing.Color.Gray;
             this.pictureBoxListDisplay.Location = new System.Drawing.Point(104, 38);
             this.pictureBoxListDisplay.Name = "pictureBoxListDisplay";
-            this.pictureBoxListDisplay.Size = new System.Drawing.Size(618, 330);
+            this.pictureBoxListDisplay.Size = new System.Drawing.Size(618, 376);
             this.pictureBoxListDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxListDisplay.TabIndex = 7;
             this.pictureBoxListDisplay.TabStop = false;
@@ -533,7 +429,7 @@
             this.button3.TabIndex = 5;
             this.button3.Text = "เพิ่มรูปภาพ";
             this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.btnAddImage_Click);
+            
             // 
             // txtPictureDescription
             // 
@@ -545,7 +441,6 @@
             this.txtPictureDescription.Name = "txtPictureDescription";
             this.txtPictureDescription.Size = new System.Drawing.Size(558, 75);
             this.txtPictureDescription.TabIndex = 4;
-            this.txtPictureDescription.Text = "คำอธิบายรูปภาพ";
             // 
             // label4
             // 
@@ -568,7 +463,6 @@
             this.btnInsertPicture.TabIndex = 0;
             this.btnInsertPicture.Text = "เลือกรูปภาพ";
             this.btnInsertPicture.UseVisualStyleBackColor = false;
-            this.btnInsertPicture.Click += new System.EventHandler(this.btnSelectImage_Click);
             // 
             // label1
             // 
@@ -580,6 +474,14 @@
             this.label1.Size = new System.Drawing.Size(148, 30);
             this.label1.TabIndex = 2;
             this.label1.Text = "รายการรูปภาพ";
+            // 
+            // dtgvDetailofWork
+            // 
+            this.dtgvDetailofWork.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvDetailofWork.Location = new System.Drawing.Point(3, 34);
+            this.dtgvDetailofWork.Name = "dtgvDetailofWork";
+            this.dtgvDetailofWork.Size = new System.Drawing.Size(759, 194);
+            this.dtgvDetailofWork.TabIndex = 11;
             // 
             // UpdateProjectPhase
             // 
@@ -597,12 +499,11 @@
             this.fpnlDatainfomation.ResumeLayout(false);
             this.pnlMailDescription.ResumeLayout(false);
             this.pnlMailDescription.PerformLayout();
-            this.pnlSupplier.ResumeLayout(false);
-            this.pnlSupplier.PerformLayout();
             this.pnlPictureDescription.ResumeLayout(false);
             this.pnlPictureDescription.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxListDisplay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvDetailofWork)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -635,23 +536,15 @@
         private System.Windows.Forms.ComboBox cmbStatus;
         private System.Windows.Forms.Label lblSeclectStatus;
         private System.Windows.Forms.Label lblDate;
-        private System.Windows.Forms.CheckedListBox checkeSupplier;
         private System.Windows.Forms.TextBox txtRemark;
         private System.Windows.Forms.Label lblRemark;
         private System.Windows.Forms.Label lblWorkingDescription;
-        private System.Windows.Forms.Panel pnlSupplier;
-        private System.Windows.Forms.Label lblSupplier;
-        private System.Windows.Forms.TextBox txtSupplierName;
-        private System.Windows.Forms.Label lblSupplierName;
-        private System.Windows.Forms.TextBox txtSupplierWork;
-        private System.Windows.Forms.TextBox txtSupplierJuristic;
-        private System.Windows.Forms.Label lblSupplierWork;
-        private System.Windows.Forms.Label lblSupplierJuristic;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.PictureBox pictureBoxPreview;
         private System.Windows.Forms.PictureBox pictureBoxListDisplay;
+        private System.Windows.Forms.DataGridView dtgvDetailofWork;
     }
 }
