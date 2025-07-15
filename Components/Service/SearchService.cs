@@ -1,11 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JRSApplication
 {
@@ -41,7 +37,6 @@ namespace JRSApplication
 
             return dt;
         }
-
 
         public DataTable SearchData(string searchType, string keyword)
         {
@@ -88,6 +83,23 @@ namespace JRSApplication
                                 WHERE p.pro_name LIKE @Keyword OR p.pro_id LIKE @Keyword
                             ";
                 }
+                else if (searchType == "Invoice")
+                {
+                    query = @"
+                            SELECT 
+                                inv_no AS 'เลขที่ใบแจ้งหนี้',
+                                inv_date AS 'วันที่ออก',
+                                inv_status AS 'สถานะ',
+                                inv_method AS 'วิธีชำระเงิน',
+                                cus_id AS 'รหัสลูกค้า',
+                                pro_id AS 'รหัสโครงการ',
+                                emp_id AS 'รหัสพนักงาน',
+                                inv_duedate AS 'กำหนดชำระ',
+                                paid_date AS 'วันที่ชำระ'
+                            FROM invoice
+                            WHERE pro_id LIKE @Keyword OR inv_no LIKE @Keyword
+    ";
+                }
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
@@ -101,7 +113,5 @@ namespace JRSApplication
 
             return dt;
         }
-
-
     }
 }

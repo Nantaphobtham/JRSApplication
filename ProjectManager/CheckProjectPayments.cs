@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using JRSApplication.Components;
+using JRSApplication.Data_Access_Layer;
 
 namespace JRSApplication
 {
@@ -16,5 +18,76 @@ namespace JRSApplication
         {
             InitializeComponent();
         }
+        private void btnSearchProject_Click(object sender, EventArgs e)
+        {
+            string keyword = txtProjectID.Text.Trim(); // หรือจะใช้ TextBox ชื่ออื่นก็ได้
+
+            SearchService service = new SearchService();
+            DataTable dt = service.SearchData("Project", keyword);
+
+            if (dt.Rows.Count > 0)
+            {
+                DataRow projectRow = dt.Rows[0];
+
+                txtProjectID.Text = projectRow["รหัสโครงการ"].ToString();
+                txtProjectname.Text = projectRow["ชื่อโครงการ"].ToString();
+                txtCustomername.Text = projectRow["ลูกค้า"].ToString();
+                txtProjectManager.Text = projectRow["พนักงานดูแล"].ToString();
+            }
+            else
+            {
+                MessageBox.Show("ไม่พบข้อมูลโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnSearchPayment_Click(object sender, EventArgs e)
+        {
+            SearchForm searchForm = new SearchForm("Invoice");
+            if (searchForm.ShowDialog() == DialogResult.OK)
+            {
+                // ดึงค่าที่เลือก
+                string invNo = searchForm.SelectedID;
+                string cusId = searchForm.SelectedName;
+                string proId = searchForm.SelectedLastName;
+                string empId = searchForm.SelectedIDCardOrRole;
+                string paymentMethod = searchForm.SelectedPhone;
+                string status = searchForm.SelectedEmail;
+
+                // =========================
+                // 🟢 โหลดข้อมูลลูกค้า
+                // =========================
+                CustomerDAL customerDAL = new CustomerDAL();
+                var customer = customerDAL.GetCustomerById(cusId);
+                if (customer != null)
+                {
+                    txtCustomer.Text = $"{customer.FirstName} {customer.LastName}";
+                    txtIDCard.Text = customer.IDCard;
+                    txtAddress.Text = customer.Address;
+                }
+
+                // =========================
+                // 🔵 โหลดข้อมูลโครงการ
+                // =========================
+                ProjectDAL projectDAL = new ProjectDAL();
+                var project = projectDAL.GetProjectDetailsById(Convert.ToInt32(proId));
+                if (project != null)
+                {
+                    txtContractNumber.Text = project.ProjectNumber;
+                    txtProjectName2.Text = project.ProjectName;
+                    txtPhase.Text = project.CurrentPhaseNumber.ToString();
+                }
+
+                // =========================
+                // 🟡 โหลดข้อมูลการชำระเงิน
+                // =========================
+                txtInvoiceNo.Text = invNo;
+                txtEmpName.Text = new EmployeeDAL().GetEmployeeFullNameById(empId);
+                txtPaymentDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                txtPaymentMethod.Text = paymentMethod;
+            }
+        }
+
+
+
     }
 }

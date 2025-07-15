@@ -13,7 +13,7 @@ namespace JRSApplication
     public partial class SearchForm : Form
     {
         private SearchService searchService = new SearchService();
-        public string SearchMode { get; set; }  // "Customer" หรือ "Employee" หรือ "Supplier"
+        public string SearchMode { get; set; }  // "Customer" หรือ "Employee" หรือ "Supplier" หรือ "Project" หรือ "Invoice"
         public string SelectedID { get; private set; } = "";
         public string SelectedName { get; private set; } = "";
         public string SelectedContract { get; private set; } = "";
@@ -34,32 +34,31 @@ namespace JRSApplication
                 lblTitle.Text = "ค้นหาซัพพลายเออร์";
             else if (SearchMode == "Project")
                 lblTitle.Text = "ค้นหาโครงการ";
+            else if (SearchMode == "Invoice")
+                lblTitle.Text = "ค้นหาใบแจ้งหนี้";
             else
                 lblTitle.Text = "ค้นหา";
+
             LoadSearchData(""); // ✅ โหลดข้อมูลเริ่มต้น
             CustomizeDataGridViewAlldata(); // ✅ ปรับแต่ง DataGridView
         }
 
-        // โหลดข้อมูลตามประเภทที่เลือก (ลูกค้าหรือพนักงาน)
         private void LoadSearchData(string keyword)
         {
             dtgvAlldata.DataSource = searchService.SearchData(SearchMode, keyword);
         }
 
-        // ค้นหาแบบ Real-time เมื่อพิมพ์ใน TextBox
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             LoadSearchData(txtSearch.Text);
         }
 
-        // กดปุ่มยืนยัน (btnConfirm) เพื่อนำข้อมูลไปใช้
         private void btnConfirm_Click(object sender, EventArgs e)
         {
             if (dtgvAlldata.SelectedRows.Count > 0)
             {
                 DataGridViewRow selectedRow = dtgvAlldata.SelectedRows[0];
 
-                // ✅ ย้ายเข้าแต่ละ if แทนที่จะเรียกแบบ hard-coded ก่อน if
                 if (SearchMode == "Customer")
                 {
                     SelectedID = selectedRow.Cells["ID"].Value?.ToString() ?? "";
@@ -93,6 +92,15 @@ namespace JRSApplication
                     SelectedPhone = selectedRow.Cells["สถานที่"].Value?.ToString() ?? "";
                     SelectedEmail = selectedRow.Cells["งบประมาณ"].Value?.ToString() ?? "";
                 }
+                else if (SearchMode == "Invoice")
+                {
+                    SelectedID = selectedRow.Cells["เลขที่ใบแจ้งหนี้"].Value?.ToString() ?? "";
+                    SelectedName = selectedRow.Cells["รหัสลูกค้า"].Value?.ToString() ?? "";
+                    SelectedLastName = selectedRow.Cells["รหัสโครงการ"].Value?.ToString() ?? "";
+                    SelectedIDCardOrRole = selectedRow.Cells["รหัสพนักงาน"].Value?.ToString() ?? "";
+                    SelectedPhone = selectedRow.Cells["วิธีชำระเงิน"].Value?.ToString() ?? "";
+                    SelectedEmail = selectedRow.Cells["สถานะ"].Value?.ToString() ?? "";
+                }
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -103,11 +111,10 @@ namespace JRSApplication
             }
         }
 
-
         private void CustomizeDataGridViewAlldata()
         {
             dtgvAlldata.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dtgvAlldata.MultiSelect = false; // ✅ เลือกได้ทีละแถวเท่านั้น
+            dtgvAlldata.MultiSelect = false;
 
             dtgvAlldata.BorderStyle = BorderStyle.None;
             dtgvAlldata.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
@@ -140,18 +147,14 @@ namespace JRSApplication
             dtgvAlldata.AllowUserToResizeRows = false;
         }
 
-
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            LoadSearchData(txtSearch.Text.Trim()); // ✅ ค้นหาตาม Keyword
+            LoadSearchData(txtSearch.Text.Trim());
         }
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            //ปิดหน้าจอ
             this.Close();
         }
-
-        
     }
 }
