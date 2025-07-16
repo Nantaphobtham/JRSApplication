@@ -142,7 +142,7 @@
     <Compile Include="Components\Models\Customer.cs" />
     <Compile Include="Components\Models\Employee.cs" />
     <Compile Include="Components\Models\EmployeeAssignment.cs" />
-    <Compile Include="Components\Models\Invoice.cs" />
+    <Compile Include="Components\Models\InvoiceModel.cs" />
     <Compile Include="Components\Models\InvoiceDetail.cs" />
     <Compile Include="Components\Models\MaterialDetail.cs" />
     <Compile Include="Components\Models\PhaseWithStatus.cs" />
@@ -169,6 +169,8 @@
     <Compile Include="Components\Service\POForm.Designer.cs">
       <DependentUpon>POForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Data Access Layer\InvoiceDetailDAL.cs" />
+    <Compile Include="Data Access Layer\InvoiceDAL.cs" />
     <Compile Include="Data Access Layer\CustomerDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeAssignmentDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeDAL.cs" />
