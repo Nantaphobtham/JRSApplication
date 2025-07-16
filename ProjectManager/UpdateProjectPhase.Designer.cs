@@ -40,10 +40,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lblAmountPictureUpload = new System.Windows.Forms.Label();
             this.pnlWorkHistory = new System.Windows.Forms.Panel();
-            this.dtgvWhorHistory = new System.Windows.Forms.DataGridView();
+            this.dtgvWorkHistory = new System.Windows.Forms.DataGridView();
             this.fpnlDatainfomation = new System.Windows.Forms.FlowLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.pnlMailDescription = new System.Windows.Forms.Panel();
+            this.dtgvDetailSubcontractorWork = new System.Windows.Forms.DataGridView();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.txtRemark = new System.Windows.Forms.TextBox();
@@ -56,24 +57,23 @@
             this.dtpkDate = new System.Windows.Forms.DateTimePicker();
             this.label5 = new System.Windows.Forms.Label();
             this.pnlPictureDescription = new System.Windows.Forms.Panel();
-            this.pictureBoxListDisplay = new System.Windows.Forms.PictureBox();
             this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnEditPicture = new System.Windows.Forms.Button();
+            this.btnAddPicture = new System.Windows.Forms.Button();
             this.txtPictureDescription = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnInsertPicture = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.dtgvDetailofWork = new System.Windows.Forms.DataGridView();
+            this.dtgvPicturelist = new System.Windows.Forms.DataGridView();
             this.pnlProjectDetail.SuspendLayout();
             this.pnlWorkHistory.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvWhorHistory)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvWorkHistory)).BeginInit();
             this.fpnlDatainfomation.SuspendLayout();
             this.pnlMailDescription.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvDetailSubcontractorWork)).BeginInit();
             this.pnlPictureDescription.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxListDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvDetailofWork)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvPicturelist)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlProjectDetail
@@ -104,7 +104,7 @@
             this.btnSearchProject.TabIndex = 12;
             this.btnSearchProject.Text = "ค้นหาโครงการ";
             this.btnSearchProject.UseVisualStyleBackColor = false;
-            
+            this.btnSearchProject.Click += new System.EventHandler(this.btnSearchProject_Click);
             // 
             // lblStatus
             // 
@@ -135,6 +135,7 @@
             this.cmbSelectPhase.Name = "cmbSelectPhase";
             this.cmbSelectPhase.Size = new System.Drawing.Size(147, 38);
             this.cmbSelectPhase.TabIndex = 6;
+            this.cmbSelectPhase.SelectedIndexChanged += new System.EventHandler(this.cmbSelectPhase_SelectedIndexChanged);
             // 
             // txtProjectID
             // 
@@ -201,7 +202,7 @@
             // 
             // pnlWorkHistory
             // 
-            this.pnlWorkHistory.Controls.Add(this.dtgvWhorHistory);
+            this.pnlWorkHistory.Controls.Add(this.dtgvWorkHistory);
             this.pnlWorkHistory.Controls.Add(this.lblAmountPictureUpload);
             this.pnlWorkHistory.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlWorkHistory.Location = new System.Drawing.Point(0, 84);
@@ -209,13 +210,13 @@
             this.pnlWorkHistory.Size = new System.Drawing.Size(1572, 173);
             this.pnlWorkHistory.TabIndex = 2;
             // 
-            // dtgvWhorHistory
+            // dtgvWorkHistory
             // 
-            this.dtgvWhorHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvWhorHistory.Location = new System.Drawing.Point(19, 36);
-            this.dtgvWhorHistory.Name = "dtgvWhorHistory";
-            this.dtgvWhorHistory.Size = new System.Drawing.Size(1538, 128);
-            this.dtgvWhorHistory.TabIndex = 2;
+            this.dtgvWorkHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvWorkHistory.Location = new System.Drawing.Point(19, 36);
+            this.dtgvWorkHistory.Name = "dtgvWorkHistory";
+            this.dtgvWorkHistory.Size = new System.Drawing.Size(1538, 128);
+            this.dtgvWorkHistory.TabIndex = 2;
             // 
             // fpnlDatainfomation
             // 
@@ -239,7 +240,7 @@
             // pnlMailDescription
             // 
             this.pnlMailDescription.BackColor = System.Drawing.Color.White;
-            this.pnlMailDescription.Controls.Add(this.dtgvDetailofWork);
+            this.pnlMailDescription.Controls.Add(this.dtgvDetailSubcontractorWork);
             this.pnlMailDescription.Controls.Add(this.btnEdit);
             this.pnlMailDescription.Controls.Add(this.btnSave);
             this.pnlMailDescription.Controls.Add(this.txtRemark);
@@ -256,6 +257,14 @@
             this.pnlMailDescription.Name = "pnlMailDescription";
             this.pnlMailDescription.Size = new System.Drawing.Size(1460, 241);
             this.pnlMailDescription.TabIndex = 0;
+            // 
+            // dtgvDetailSubcontractorWork
+            // 
+            this.dtgvDetailSubcontractorWork.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvDetailSubcontractorWork.Location = new System.Drawing.Point(3, 34);
+            this.dtgvDetailSubcontractorWork.Name = "dtgvDetailSubcontractorWork";
+            this.dtgvDetailSubcontractorWork.Size = new System.Drawing.Size(759, 194);
+            this.dtgvDetailSubcontractorWork.TabIndex = 11;
             // 
             // btnEdit
             // 
@@ -280,7 +289,6 @@
             this.btnSave.TabIndex = 10;
             this.btnSave.Text = "บันทึกข้อมูล";
             this.btnSave.UseVisualStyleBackColor = false;
-            
             // 
             // txtRemark
             // 
@@ -373,10 +381,10 @@
             // 
             // pnlPictureDescription
             // 
-            this.pnlPictureDescription.Controls.Add(this.pictureBoxListDisplay);
+            this.pnlPictureDescription.Controls.Add(this.dtgvPicturelist);
             this.pnlPictureDescription.Controls.Add(this.pictureBoxPreview);
-            this.pnlPictureDescription.Controls.Add(this.button4);
-            this.pnlPictureDescription.Controls.Add(this.button3);
+            this.pnlPictureDescription.Controls.Add(this.btnEditPicture);
+            this.pnlPictureDescription.Controls.Add(this.btnAddPicture);
             this.pnlPictureDescription.Controls.Add(this.txtPictureDescription);
             this.pnlPictureDescription.Controls.Add(this.label4);
             this.pnlPictureDescription.Controls.Add(this.btnInsertPicture);
@@ -385,16 +393,6 @@
             this.pnlPictureDescription.Name = "pnlPictureDescription";
             this.pnlPictureDescription.Size = new System.Drawing.Size(1501, 424);
             this.pnlPictureDescription.TabIndex = 2;
-            // 
-            // pictureBoxListDisplay
-            // 
-            this.pictureBoxListDisplay.BackColor = System.Drawing.Color.Gray;
-            this.pictureBoxListDisplay.Location = new System.Drawing.Point(104, 38);
-            this.pictureBoxListDisplay.Name = "pictureBoxListDisplay";
-            this.pictureBoxListDisplay.Size = new System.Drawing.Size(618, 376);
-            this.pictureBoxListDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxListDisplay.TabIndex = 7;
-            this.pictureBoxListDisplay.TabStop = false;
             // 
             // pictureBoxPreview
             // 
@@ -406,30 +404,30 @@
             this.pictureBoxPreview.TabIndex = 6;
             this.pictureBoxPreview.TabStop = false;
             // 
-            // button4
+            // btnEditPicture
             // 
-            this.button4.AutoSize = true;
-            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(153)))), ((int)(((byte)(0)))));
-            this.button4.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(1135, 374);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(124, 40);
-            this.button4.TabIndex = 5;
-            this.button4.Text = "แก้ไขรูปภาพ";
-            this.button4.UseVisualStyleBackColor = false;
+            this.btnEditPicture.AutoSize = true;
+            this.btnEditPicture.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(153)))), ((int)(((byte)(0)))));
+            this.btnEditPicture.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEditPicture.Location = new System.Drawing.Point(1135, 374);
+            this.btnEditPicture.Name = "btnEditPicture";
+            this.btnEditPicture.Size = new System.Drawing.Size(124, 40);
+            this.btnEditPicture.TabIndex = 5;
+            this.btnEditPicture.Text = "แก้ไขรูปภาพ";
+            this.btnEditPicture.UseVisualStyleBackColor = false;
             // 
-            // button3
+            // btnAddPicture
             // 
-            this.button3.AutoSize = true;
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(251)))), ((int)(((byte)(77)))));
-            this.button3.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(1274, 374);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(113, 40);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "เพิ่มรูปภาพ";
-            this.button3.UseVisualStyleBackColor = false;
-            
+            this.btnAddPicture.AutoSize = true;
+            this.btnAddPicture.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(251)))), ((int)(((byte)(77)))));
+            this.btnAddPicture.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddPicture.Location = new System.Drawing.Point(1274, 374);
+            this.btnAddPicture.Name = "btnAddPicture";
+            this.btnAddPicture.Size = new System.Drawing.Size(113, 40);
+            this.btnAddPicture.TabIndex = 5;
+            this.btnAddPicture.Text = "เพิ่มรูปภาพ";
+            this.btnAddPicture.UseVisualStyleBackColor = false;
+            this.btnAddPicture.Click += new System.EventHandler(this.btnAddPicture_Click);
             // 
             // txtPictureDescription
             // 
@@ -463,6 +461,7 @@
             this.btnInsertPicture.TabIndex = 0;
             this.btnInsertPicture.Text = "เลือกรูปภาพ";
             this.btnInsertPicture.UseVisualStyleBackColor = false;
+            this.btnInsertPicture.Click += new System.EventHandler(this.btnInsertPicture_Click);
             // 
             // label1
             // 
@@ -475,13 +474,13 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "รายการรูปภาพ";
             // 
-            // dtgvDetailofWork
+            // dtgvPicturelist
             // 
-            this.dtgvDetailofWork.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvDetailofWork.Location = new System.Drawing.Point(3, 34);
-            this.dtgvDetailofWork.Name = "dtgvDetailofWork";
-            this.dtgvDetailofWork.Size = new System.Drawing.Size(759, 194);
-            this.dtgvDetailofWork.TabIndex = 11;
+            this.dtgvPicturelist.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvPicturelist.Location = new System.Drawing.Point(44, 38);
+            this.dtgvPicturelist.Name = "dtgvPicturelist";
+            this.dtgvPicturelist.Size = new System.Drawing.Size(759, 376);
+            this.dtgvPicturelist.TabIndex = 11;
             // 
             // UpdateProjectPhase
             // 
@@ -495,15 +494,15 @@
             this.pnlProjectDetail.PerformLayout();
             this.pnlWorkHistory.ResumeLayout(false);
             this.pnlWorkHistory.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvWhorHistory)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvWorkHistory)).EndInit();
             this.fpnlDatainfomation.ResumeLayout(false);
             this.pnlMailDescription.ResumeLayout(false);
             this.pnlMailDescription.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvDetailSubcontractorWork)).EndInit();
             this.pnlPictureDescription.ResumeLayout(false);
             this.pnlPictureDescription.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxListDisplay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvDetailofWork)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvPicturelist)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -521,7 +520,7 @@
         private System.Windows.Forms.Label lblAmountPictureUpload;
         private System.Windows.Forms.Button btnSearchProject;
         private System.Windows.Forms.Panel pnlWorkHistory;
-        private System.Windows.Forms.DataGridView dtgvWhorHistory;
+        private System.Windows.Forms.DataGridView dtgvWorkHistory;
         private System.Windows.Forms.FlowLayoutPanel fpnlDatainfomation;
         private System.Windows.Forms.Panel pnlMailDescription;
         private System.Windows.Forms.Label label1;
@@ -539,12 +538,12 @@
         private System.Windows.Forms.TextBox txtRemark;
         private System.Windows.Forms.Label lblRemark;
         private System.Windows.Forms.Label lblWorkingDescription;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnAddPicture;
         private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnEditPicture;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.PictureBox pictureBoxPreview;
-        private System.Windows.Forms.PictureBox pictureBoxListDisplay;
-        private System.Windows.Forms.DataGridView dtgvDetailofWork;
+        private System.Windows.Forms.DataGridView dtgvDetailSubcontractorWork;
+        private System.Windows.Forms.DataGridView dtgvPicturelist;
     }
 }

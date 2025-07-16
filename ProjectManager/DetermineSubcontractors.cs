@@ -15,7 +15,7 @@ namespace JRSApplication
         //  เก็บ ID ต่าง ๆ ที่ใช้ขณะทำงาน
         private string supplierID = "";
         private string projectID = "";
-        private int currentAssignmentId = -1; // ใช้สำหรับ Edit/Delete
+        private string currentAssignmentId = ""; // ใช้สำหรับ Edit/Delete
         private bool isEditing = false; // ตรวจสอบว่าอยู่ในโหมดแก้ไขหรือไม่
         private SupplierAssignmentFile currentFile; // เก็บไฟล์ PDF ที่แนบล่าสุด
         private string _empId; // เก็บ empId ของ user ที่ login อยู่
@@ -161,12 +161,13 @@ namespace JRSApplication
             cmbSelectPhase.Items.Clear();
             startDate.Value = DateTime.Now;
             dueDate.Value = DateTime.Now;
-            currentAssignmentId = -1;
+            currentAssignmentId = "";
             isEditing = false;
             DisableFormFields();
             supplierID = "";
             projectID = "";
             txtDate.Text = "";
+            txtContractnumber.Text = "";
             currentFile = null;
             btnInsertFile.Text = "แนบไฟล์ PDF";
         }
@@ -213,13 +214,14 @@ namespace JRSApplication
 
             SupplierWorkAssignment model = new SupplierWorkAssignment
             {
+                AssignmentId = isEditing ? currentAssignmentId : "",   // ถ้าแก้ไขให้ใช้รหัสเดิม, ถ้าเพิ่มใหม่ให้ว่างไว้ เดี๋ยว generate
                 SupId = supplierID,
                 StartDate = startDate.Value,
                 DueDate = dueDate.Value,
                 AssignDescription = txtAssignDescription.Text.Trim(),
                 AssignRemark = txtRemark.Text.Trim(),
                 PhaseId = Convert.ToInt32(cmbSelectPhase.SelectedValue),
-                AssignStatus = "InProgress",    
+                AssignStatus = "InProgress",
                 EmployeeID = _empId
             };
 
@@ -227,12 +229,11 @@ namespace JRSApplication
 
             try
             {
-                if (isEditing && currentAssignmentId != -1)
+                if (isEditing && !string.IsNullOrEmpty(model.AssignmentId))
                 {
-                    model.AssignmentId = currentAssignmentId;
                     dal.Update(model);
 
-                    // 🟩 จัดการไฟล์แนบ
+                    // ✅ จัดการไฟล์แนบ (AssignmentId เป็น string)
                     if (currentFile != null)
                     {
                         var fileDal = new SupplierAssignmentFileDAL();
@@ -244,33 +245,31 @@ namespace JRSApplication
                 }
                 else
                 {
-                    int newAssignmentId = dal.Insert(model);
+                    // ✅ สร้างรหัสใหม่ (SWO6807001...) แล้วเซ็ตให้ AssignmentId
+                    model.AssignmentId = dal.GenerateWorkOrderId();
+
+                    dal.Insert(model);
 
                     if (currentFile != null)
                     {
                         var fileDal = new SupplierAssignmentFileDAL();
-                        fileDal.DeleteByAssignmentId(newAssignmentId);
-                        currentFile.AssignmentId = newAssignmentId;
+                        fileDal.DeleteByAssignmentId(model.AssignmentId);
+                        currentFile.AssignmentId = model.AssignmentId;
                         fileDal.Insert(currentFile);
                         currentFile = null;
                     }
                 }
 
-                // 🟢 ประกาศ "สำเร็จ" ตรงนี้เท่านั้น เมื่อทุกอย่างผ่าน
                 MessageBox.Show("บันทึกข้อมูลสำเร็จ", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                 ClearandClossForm();
                 LoadAssignments();
             }
             catch (Exception ex)
             {
-                // 🟠 แจ้ง error หากบันทึกล้มเหลว (เช่น มีปัญหาไฟล์ หรือฐานข้อมูล)
                 MessageBox.Show("เกิดข้อผิดพลาดในการบันทึก: " + ex.Message, "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
-
         }
+
 
         // ปุ่ม Add เปิดให้กรอกข้อมูลใหม่
         private void btnAdd_Click(object sender, EventArgs e)
@@ -282,7 +281,7 @@ namespace JRSApplication
         // ปุ่ม Edit → เปิดให้แก้ไขฟิลด์
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            if (currentAssignmentId == -1)
+            if (string.IsNullOrEmpty(currentAssignmentId))
             {
                 MessageBox.Show("กรุณาเลือกรายการก่อนแก้ไข", "คำเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -292,24 +291,25 @@ namespace JRSApplication
             EnableFormFields();
         }
 
-        // ปุ่ม Delete → ลบข้อมูล
+        // ปุ่ม นี้จะเป็นยกเลิกการจ้างแทน
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (currentAssignmentId == -1)
-            {
-                MessageBox.Show("กรุณาเลือกรายการที่ต้องการลบ", "คำเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
 
-            DialogResult result = MessageBox.Show("คุณต้องการลบรายการนี้หรือไม่?", "ยืนยัน", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                SupplierWorkAssignmentDAL dal = new SupplierWorkAssignmentDAL();
-                dal.Delete(currentAssignmentId);
-                MessageBox.Show("ลบข้อมูลสำเร็จ", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                ClearandClossForm();
-                LoadAssignments();
-            }
+            //if (string.IsNullOrEmpty(currentAssignmentId))
+            //{
+            //    MessageBox.Show("กรุณาเลือกรายการที่ต้องการลบ", "คำเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return;
+            //}
+
+            //DialogResult result = MessageBox.Show("คุณต้องการลบรายการนี้หรือไม่?", "ยืนยัน", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            //if (result == DialogResult.Yes)
+            //{
+            //    SupplierWorkAssignmentDAL dal = new SupplierWorkAssignmentDAL();
+            //    cmd.Parameters.AddWithValue("@AssignmentId", assignmentId);
+            //    MessageBox.Show("ลบข้อมูลสำเร็จ", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    ClearandClossForm();
+            //    LoadAssignments();
+            //}
         }
 
         // เมื่อคลิกตาราง เพื่อโหลดข้อมูลขึ้นฟอร์ม (แต่ยังไม่ให้แก้ไข)
@@ -318,7 +318,7 @@ namespace JRSApplication
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dtgvAssignment.Rows[e.RowIndex];
-                currentAssignmentId = Convert.ToInt32(row.Cells["รหัสงาน"].Value);
+                currentAssignmentId = row.Cells["รหัสงาน"].Value?.ToString() ?? "";
                 supplierID = row.Cells["รหัสผู้รับเหมา"].Value?.ToString();
                 string startDateStr = row.Cells["วันที่เริ่ม"].Value?.ToString();
                 string dueDateStr = row.Cells["วันที่สิ้นสุด"].Value?.ToString();

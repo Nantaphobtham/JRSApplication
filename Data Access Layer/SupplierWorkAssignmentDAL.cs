@@ -14,19 +14,54 @@ namespace JRSApplication.Data_Access_Layer
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
+        public string GenerateWorkOrderId()
+        {
+            string prefix = "SWO";
+            int thaiYear = DateTime.Now.Year + 543;
+            string yearPart = thaiYear.ToString().Substring(2, 2); // เอา 2 หลักหลัง
+            string monthPart = DateTime.Now.Month.ToString("D2");  // เดือน 2 หลัก
+
+            // 👉 Query หาเลข running ล่าสุดในเดือน/ปีเดียวกัน
+            int running = 1;
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string sql = @"SELECT MAX(SUBSTRING(supplier_assignment_id, 7, 3)) 
+                       FROM supplier_work_assignment 
+                       WHERE SUBSTRING(supplier_assignment_id, 4, 2) = @YearPart 
+                         AND SUBSTRING(supplier_assignment_id, 6, 2) = @MonthPart";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@YearPart", yearPart);
+                    cmd.Parameters.AddWithValue("@MonthPart", monthPart);
+
+                    conn.Open();
+                    var result = cmd.ExecuteScalar();
+                    if (result != DBNull.Value && result != null)
+                    {
+                        running = Convert.ToInt32(result) + 1;
+                    }
+                }
+            }
+
+            string runningPart = running.ToString("D3"); // เลข 3 หลัก เติม 0 ด้านหน้า
+            return $"{prefix}{yearPart}{monthPart}{runningPart}";
+        }
+
         public int Insert(SupplierWorkAssignment model)
         {
-            int newId = 0;
+            model.AssignmentId = GenerateWorkOrderId();
             string query = @"
                     INSERT INTO supplier_work_assignment 
-                    (sup_id, start_date, due_date, assign_description, assign_remark, phase_id, assign_status, emp_id)
-                    VALUES (@SupId, @StartDate, @DueDate, @AssignDescription, @AssignRemark, @PhaseId, @AssignStatus, @EmpId);
-                    SELECT LAST_INSERT_ID();
-                ";
+                    (supplier_assignment_id, sup_id, start_date, due_date, assign_description, assign_remark, phase_id)
+                    VALUES (@AssignmentId, @SupId, @StartDate, @DueDate, @AssignDescription, @AssignRemark, @PhaseId);
+                    SELECT LAST_INSERT_ID();";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
             {
+                cmd.Parameters.AddWithValue("@AssignmentId", model.AssignmentId);
                 cmd.Parameters.AddWithValue("@SupId", model.SupId);
                 cmd.Parameters.AddWithValue("@StartDate", model.StartDate);
                 cmd.Parameters.AddWithValue("@DueDate", model.DueDate);
@@ -37,9 +72,10 @@ namespace JRSApplication.Data_Access_Layer
                 cmd.Parameters.AddWithValue("@EmpId", model.EmployeeID);
 
                 conn.Open();
-                newId = Convert.ToInt32(cmd.ExecuteScalar());
+                int newId = Convert.ToInt32(cmd.ExecuteScalar());
+                return newId;
             }
-            return newId;
+            
         }
 
         public DataTable GetAllAssignmentsWithPhase()
@@ -47,19 +83,21 @@ namespace JRSApplication.Data_Access_Layer
             DataTable dt = new DataTable();
 
             string query = @"
-                        SELECT
-                            swa.supplier_assignment_id AS 'รหัสงาน',
-                            pp.pro_id AS 'รหัสโครงการ',
-                            swa.sup_id AS 'รหัสผู้รับเหมา',
-                            swa.start_date AS 'วันที่เริ่ม',
-                            swa.due_date AS 'วันที่สิ้นสุด',
-                            swa.assign_description AS 'รายละเอียดงาน',
-                            swa.assign_remark AS 'หมายเหตุ',
-                            pp.phase_no AS 'เฟสที่'
-                        FROM supplier_work_assignment swa
-                        LEFT JOIN project_phase pp ON swa.phase_id = pp.phase_id
-                        ORDER BY swa.supplier_assignment_id DESC;
-                    ";
+                    SELECT
+                        swa.supplier_assignment_id AS 'รหัสงาน',
+                        pp.pro_id AS 'รหัสโครงการ',
+                        swa.sup_id AS 'รหัสผู้รับเหมา',
+                        swa.start_date AS 'วันที่เริ่ม',
+                        swa.due_date AS 'วันที่สิ้นสุด',
+                        swa.assign_description AS 'รายละเอียดงาน',
+                        swa.assign_remark AS 'หมายเหตุ',
+                        pp.phase_no AS 'เฟสที่',
+                        saf.file_name AS 'ไฟล์แนบ'
+                    FROM supplier_work_assignment swa
+                    LEFT JOIN project_phase pp ON swa.phase_id = pp.phase_id
+                    LEFT JOIN supplier_assignment_file saf ON swa.supplier_assignment_id = saf.supplier_assignment_id
+                    ORDER BY swa.supplier_assignment_id DESC;
+                ";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -71,6 +109,7 @@ namespace JRSApplication.Data_Access_Layer
 
             return dt;
         }
+
         //ไม่ถูกเรียกใช้
         public SupplierWorkAssignment GetAssignmentByPhaseId(int phaseId)
         {

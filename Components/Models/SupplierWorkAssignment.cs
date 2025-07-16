@@ -8,7 +8,7 @@ namespace JRSApplication.Components.Models
 {
     public class SupplierWorkAssignment
     {
-        public int AssignmentId { get; set; }       // Primary Key, Auto Increment
+        public string AssignmentId { get; set; }       // Primary Key
         public string SupId { get; set; }           // VARCHAR(10), Not null
         public DateTime StartDate { get; set; }  // start_date
         public DateTime? DueDate { get; set; }      // due_date
