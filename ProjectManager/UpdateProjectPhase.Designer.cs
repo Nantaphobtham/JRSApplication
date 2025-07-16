@@ -40,7 +40,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lblAmountPictureUpload = new System.Windows.Forms.Label();
             this.pnlWorkHistory = new System.Windows.Forms.Panel();
-            this.dtgvWorkHistory = new System.Windows.Forms.DataGridView();
+            this.dtgvPhaseWorkingHistory = new System.Windows.Forms.DataGridView();
             this.fpnlDatainfomation = new System.Windows.Forms.FlowLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.pnlMailDescription = new System.Windows.Forms.Panel();
@@ -65,9 +65,11 @@
             this.btnInsertPicture = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.dtgvPicturelist = new System.Windows.Forms.DataGridView();
+            this.label6 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.pnlProjectDetail.SuspendLayout();
             this.pnlWorkHistory.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvWorkHistory)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvPhaseWorkingHistory)).BeginInit();
             this.fpnlDatainfomation.SuspendLayout();
             this.pnlMailDescription.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvDetailSubcontractorWork)).BeginInit();
@@ -202,7 +204,7 @@
             // 
             // pnlWorkHistory
             // 
-            this.pnlWorkHistory.Controls.Add(this.dtgvWorkHistory);
+            this.pnlWorkHistory.Controls.Add(this.dtgvPhaseWorkingHistory);
             this.pnlWorkHistory.Controls.Add(this.lblAmountPictureUpload);
             this.pnlWorkHistory.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlWorkHistory.Location = new System.Drawing.Point(0, 84);
@@ -210,13 +212,14 @@
             this.pnlWorkHistory.Size = new System.Drawing.Size(1572, 173);
             this.pnlWorkHistory.TabIndex = 2;
             // 
-            // dtgvWorkHistory
+            // dtgvPhaseWorkingHistory
             // 
-            this.dtgvWorkHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvWorkHistory.Location = new System.Drawing.Point(19, 36);
-            this.dtgvWorkHistory.Name = "dtgvWorkHistory";
-            this.dtgvWorkHistory.Size = new System.Drawing.Size(1538, 128);
-            this.dtgvWorkHistory.TabIndex = 2;
+            this.dtgvPhaseWorkingHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvPhaseWorkingHistory.Location = new System.Drawing.Point(19, 36);
+            this.dtgvPhaseWorkingHistory.Name = "dtgvPhaseWorkingHistory";
+            this.dtgvPhaseWorkingHistory.ReadOnly = true;
+            this.dtgvPhaseWorkingHistory.Size = new System.Drawing.Size(1538, 128);
+            this.dtgvPhaseWorkingHistory.TabIndex = 2;
             // 
             // fpnlDatainfomation
             // 
@@ -245,9 +248,11 @@
             this.pnlMailDescription.Controls.Add(this.btnSave);
             this.pnlMailDescription.Controls.Add(this.txtRemark);
             this.pnlMailDescription.Controls.Add(this.txtWorkingDescription);
+            this.pnlMailDescription.Controls.Add(this.comboBox1);
             this.pnlMailDescription.Controls.Add(this.cmbStatus);
             this.pnlMailDescription.Controls.Add(this.lblRemark);
             this.pnlMailDescription.Controls.Add(this.lblWorkingDescription);
+            this.pnlMailDescription.Controls.Add(this.label6);
             this.pnlMailDescription.Controls.Add(this.lblSeclectStatus);
             this.pnlMailDescription.Controls.Add(this.lblDate);
             this.pnlMailDescription.Controls.Add(this.dtpkDate);
@@ -314,9 +319,9 @@
             // 
             this.cmbStatus.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbStatus.FormattingEnabled = true;
-            this.cmbStatus.Location = new System.Drawing.Point(1012, 48);
+            this.cmbStatus.Location = new System.Drawing.Point(1225, 48);
             this.cmbStatus.Name = "cmbStatus";
-            this.cmbStatus.Size = new System.Drawing.Size(146, 38);
+            this.cmbStatus.Size = new System.Drawing.Size(175, 38);
             this.cmbStatus.TabIndex = 6;
             // 
             // lblRemark
@@ -343,7 +348,7 @@
             // 
             this.lblSeclectStatus.AutoSize = true;
             this.lblSeclectStatus.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSeclectStatus.Location = new System.Drawing.Point(1007, 18);
+            this.lblSeclectStatus.Location = new System.Drawing.Point(1220, 18);
             this.lblSeclectStatus.Name = "lblSeclectStatus";
             this.lblSeclectStatus.Size = new System.Drawing.Size(126, 30);
             this.lblSeclectStatus.TabIndex = 5;
@@ -353,7 +358,7 @@
             // 
             this.lblDate.AutoSize = true;
             this.lblDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDate.Location = new System.Drawing.Point(778, 18);
+            this.lblDate.Location = new System.Drawing.Point(768, 18);
             this.lblDate.Name = "lblDate";
             this.lblDate.Size = new System.Drawing.Size(47, 30);
             this.lblDate.TabIndex = 5;
@@ -482,6 +487,25 @@
             this.dtgvPicturelist.Size = new System.Drawing.Size(759, 376);
             this.dtgvPicturelist.TabIndex = 11;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(1007, 20);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(180, 25);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "สถานะงานผู้รับเหมาช่วง";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(1012, 48);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(175, 38);
+            this.comboBox1.TabIndex = 6;
+            // 
             // UpdateProjectPhase
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -494,7 +518,7 @@
             this.pnlProjectDetail.PerformLayout();
             this.pnlWorkHistory.ResumeLayout(false);
             this.pnlWorkHistory.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvWorkHistory)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvPhaseWorkingHistory)).EndInit();
             this.fpnlDatainfomation.ResumeLayout(false);
             this.pnlMailDescription.ResumeLayout(false);
             this.pnlMailDescription.PerformLayout();
@@ -520,7 +544,7 @@
         private System.Windows.Forms.Label lblAmountPictureUpload;
         private System.Windows.Forms.Button btnSearchProject;
         private System.Windows.Forms.Panel pnlWorkHistory;
-        private System.Windows.Forms.DataGridView dtgvWorkHistory;
+        private System.Windows.Forms.DataGridView dtgvPhaseWorkingHistory;
         private System.Windows.Forms.FlowLayoutPanel fpnlDatainfomation;
         private System.Windows.Forms.Panel pnlMailDescription;
         private System.Windows.Forms.Label label1;
@@ -545,5 +569,7 @@
         private System.Windows.Forms.PictureBox pictureBoxPreview;
         private System.Windows.Forms.DataGridView dtgvDetailSubcontractorWork;
         private System.Windows.Forms.DataGridView dtgvPicturelist;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label6;
     }
 }

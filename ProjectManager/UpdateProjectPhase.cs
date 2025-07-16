@@ -24,6 +24,7 @@ namespace JRSApplication
         {
             InitializeComponent();
             InitGrid();
+            CustomSubcontractorGrid();
             CustomDataGridView();
             // ตั้งค่า Placeholder ให้ TextBox
             txtPictureDescription.Text = "คำอธิบายรูปภาพ";
@@ -224,6 +225,7 @@ namespace JRSApplication
             phaseList = phaseDAL.GetPhasesWithStatus(Convert.ToInt32(projectId));
 
             var comboSource = new List<object>();
+            // ✅ ให้ phase_id = 0 (int) เสมอ (ไม่ใช้ string/nullable)
             comboSource.Add(new { phase_id = 0, phase_no = "-- เลือกเฟส --" });
             comboSource.AddRange(
                 phaseList.Select(p => new { phase_id = p.PhaseId, phase_no = $"เฟส {p.PhaseNumber}" })
@@ -237,24 +239,31 @@ namespace JRSApplication
 
         private void cmbSelectPhase_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbSelectPhase.SelectedIndex <= 0)
-            {
-                txtPhaseStatus.Text = "";
-                txtPhaseStatus.BackColor = Color.Yellow; // สี default หรือลบออกก็ได้
-                return;
-            }
-
-            // ดึง phase id ที่เลือก
-            var selectedValue = cmbSelectPhase.SelectedValue?.ToString();
-            if (string.IsNullOrEmpty(selectedValue))
+            // ถ้ายังไม่เลือก (index 0) ให้ clear ข้อมูลทุกอย่าง
+            if (cmbSelectPhase.SelectedIndex <= 0 || cmbSelectPhase.SelectedValue == null)
             {
                 txtPhaseStatus.Text = "";
                 txtPhaseStatus.BackColor = Color.Yellow;
+                dtgvDetailSubcontractorWork.DataSource = null;
+                dtgvPhaseWorkingHistory.DataSource = null;
                 return;
             }
 
+            // ✅ ดึง phase_id แบบ type-safe
             int phaseId;
-            if (!int.TryParse(selectedValue, out phaseId)) return;
+            // ลอง cast เป็น int โดยตรง (เพราะเรา set phase_id เป็น int ตอนสร้าง object)
+            if (cmbSelectPhase.SelectedValue is int)
+            {
+                phaseId = (int)cmbSelectPhase.SelectedValue;
+            }
+            else if (!int.TryParse(cmbSelectPhase.SelectedValue.ToString(), out phaseId))
+            {
+                txtPhaseStatus.Text = "";
+                txtPhaseStatus.BackColor = Color.Yellow;
+                dtgvDetailSubcontractorWork.DataSource = null;
+                dtgvPhaseWorkingHistory.DataSource = null;
+                return;
+            }
 
             // หา phase ที่เลือก
             var selectedPhase = phaseList.FirstOrDefault(p => p.PhaseId == phaseId);
@@ -271,10 +280,75 @@ namespace JRSApplication
                 txtPhaseStatus.BackColor = Color.Gray;
                 txtPhaseStatus.ForeColor = Color.White;
             }
+
+            if (cmbSelectPhase.SelectedIndex > 0 && phaseId > 0)
+            {
+                LoadSupplierAssignmentsForPhase(phaseId);
+                LoadPhaseWorkingHistoryForPhase(phaseId);
+            }
+            else
+            {
+                dtgvDetailSubcontractorWork.DataSource = null;
+                dtgvPhaseWorkingHistory.DataSource = null;
+            }
         }
 
+        private void LoadSupplierAssignmentsForPhase(int phaseId)
+        {
+            MessageBox.Show(phaseId.ToString(), "phaseId ที่ส่งไป DAL");
 
+            var dal = new SupplierWorkAssignmentDAL();
+            DataTable dt = dal.GetAssignmentsByPhase(phaseId);
 
+            MessageBox.Show(dt.Rows.Count.ToString(), "จํานวน row ที่ดึงได้");
+
+            // 🔍 Add these debug lines to see what's in the DataTable
+            if (dt.Rows.Count > 0)
+            {
+                string debugInfo = "";
+                foreach (DataColumn col in dt.Columns)
+                {
+                    debugInfo += $"Column: {col.ColumnName}\n";
+                }
+                MessageBox.Show(debugInfo, "Columns in DataTable");
+
+                // Show first row data
+                string firstRowData = "";
+                foreach (DataColumn col in dt.Columns)
+                {
+                    firstRowData += $"{col.ColumnName}: {dt.Rows[0][col.ColumnName]}\n";
+                }
+                MessageBox.Show(firstRowData, "First Row Data");
+            }
+
+            // Clear any existing columns if they exist
+            dtgvDetailSubcontractorWork.Columns.Clear();
+            dtgvDetailSubcontractorWork.DataSource = dt;
+
+            // Force refresh
+            dtgvDetailSubcontractorWork.Refresh();
+        }
+
+        private void LoadPhaseWorkingHistoryForPhase(int phaseId)
+        {
+            var dal = new PhaseWorkDAL();
+            DataTable history = dal.GetWorkingHistoryByPhase(phaseId);
+            dtgvPhaseWorkingHistory.DataSource = history;
+        }
+        private void CustomSubcontractorGrid()
+        {
+            dtgvDetailSubcontractorWork.EnableHeadersVisualStyles = false;
+            dtgvDetailSubcontractorWork.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkSlateBlue;
+            dtgvDetailSubcontractorWork.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dtgvDetailSubcontractorWork.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            dtgvDetailSubcontractorWork.DefaultCellStyle.Font = new Font("Segoe UI", 11F);
+            dtgvDetailSubcontractorWork.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dtgvDetailSubcontractorWork.RowTemplate.Height = 32;
+            // ปิดแถวเพิ่มเอง
+            dtgvDetailSubcontractorWork.AllowUserToAddRows = false;
+            dtgvDetailSubcontractorWork.ReadOnly = true;
+            // ...ตามต้องการ
+        }
 
     }
 }

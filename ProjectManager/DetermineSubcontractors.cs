@@ -221,8 +221,8 @@ namespace JRSApplication
                 AssignDescription = txtAssignDescription.Text.Trim(),
                 AssignRemark = txtRemark.Text.Trim(),
                 PhaseId = Convert.ToInt32(cmbSelectPhase.SelectedValue),
-                AssignStatus = "InProgress",
-                EmployeeID = _empId
+                AssignStatus = "InProgress", // ทำไมไม่ทำงาน
+                EmployeeID = _empId   // ทำไมไม่ทำงาน
             };
 
             SupplierWorkAssignmentDAL dal = new SupplierWorkAssignmentDAL();
