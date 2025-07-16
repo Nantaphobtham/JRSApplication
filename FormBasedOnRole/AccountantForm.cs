@@ -16,5 +16,15 @@ namespace JRSApplication
         {
             InitializeComponent();
         }
+
+        private void btnReceivePaymentMain_Click(object sender, EventArgs e)
+        {
+            // Toggle การซ่อน/แสดง
+            panelReceivePaymentSub.Visible = !panelReceivePaymentSub.Visible;
+        }
+
+
+
+
     }
 }
