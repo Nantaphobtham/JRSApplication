@@ -46,8 +46,9 @@ namespace JRSApplication
         {
             LoadUserControl(new Receipt());
         }
-
-
-
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close(); // ปิดโปรแกรม
+        }
     }
 }
