@@ -14,9 +14,12 @@ namespace JRSApplication
 {
     public partial class CheckProjectPayments : UserControl
     {
+
         public CheckProjectPayments()
         {
             InitializeComponent();
+            CustomizeDataGridViewInvoice();
+            LoadPaidInvoices();
         }
         private void btnSearchProject_Click(object sender, EventArgs e)
         {
@@ -85,6 +88,46 @@ namespace JRSApplication
                 txtPaymentDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
                 txtPaymentMethod.Text = paymentMethod;
             }
+        }
+
+        private void CustomizeDataGridViewInvoice()
+        {
+            dtgvInvoice.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dtgvInvoice.MultiSelect = false;
+            dtgvInvoice.BorderStyle = BorderStyle.None;
+            dtgvInvoice.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dtgvInvoice.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dtgvInvoice.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
+            dtgvInvoice.DefaultCellStyle.SelectionForeColor = Color.White;
+            dtgvInvoice.BackgroundColor = Color.White;
+
+            dtgvInvoice.EnableHeadersVisualStyles = false;
+            dtgvInvoice.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dtgvInvoice.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            dtgvInvoice.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dtgvInvoice.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+            dtgvInvoice.ColumnHeadersHeight = 30;
+
+            dtgvInvoice.DefaultCellStyle.Font = new Font("Segoe UI", 14);
+            dtgvInvoice.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvInvoice.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvInvoice.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
+
+            dtgvInvoice.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgvInvoice.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dtgvInvoice.RowTemplate.Height = 30;
+            dtgvInvoice.GridColor = Color.LightGray;
+            dtgvInvoice.RowHeadersVisible = false;
+            dtgvInvoice.ReadOnly = true;
+            dtgvInvoice.AllowUserToAddRows = false;
+            dtgvInvoice.AllowUserToResizeRows = false;
+        }
+
+        private void LoadPaidInvoices()
+        {
+            SearchService service = new SearchService();
+            DataTable dt = service.GetPaidInvoices();
+            dtgvInvoice.DataSource = dt;
         }
 
 

@@ -1,7 +1,6 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data;
+using MySql.Data.MySqlClient;
 
 namespace JRSApplication
 {
@@ -113,5 +112,45 @@ namespace JRSApplication
 
             return dt;
         }
+        public DataTable GetPaidInvoices()
+        {
+            DataTable dt = new DataTable();
+            string query = @"
+                            SELECT 
+                                i.inv_no AS 'inv_no',
+                                CONCAT(c.cus_name, ' ', c.cus_lname) AS 'ข้อมูลลูกค้า',
+                                c.cus_id_card AS 'เลขบัตรประชาชน',
+                                c.cus_address AS 'ที่อยู่',
+                                p.pro_number AS 'เลขที่สัญญา',
+                                p.pro_name AS 'ชื่อโครงการ',
+                                p.pro_currentphasenumber AS 'เฟสงาน',
+                                CONCAT(e.emp_name, ' ', e.emp_lname) AS 'พนักงานผู้รับเงิน',
+                                i.paid_date AS 'วันที่ชำระ',
+                                i.inv_method AS 'วิธีชำระเงิน'
+                            FROM invoice i
+                            JOIN customer c ON i.cus_id = c.cus_id
+                            JOIN project p ON i.pro_id = p.pro_id
+                            JOIN employee e ON i.emp_id = e.emp_id
+                            WHERE i.inv_status = 'ชำระแล้ว';
+                        ";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(dt);
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+
+
+
     }
 }
