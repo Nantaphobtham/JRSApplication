@@ -75,6 +75,7 @@ namespace JRSApplication
                                 p.pro_number AS 'เลขที่สัญญา',
                                 p.pro_address AS 'สถานที่',
                                 p.pro_budget AS 'งบประมาณ',
+                                c.cus_id AS 'รหัสลูกค้า',  
                                 CONCAT(c.cus_name, ' ', c.cus_lname) AS 'ลูกค้า',
                                 c.cus_tel AS 'เบอร์โทร',
                                 c.cus_email AS 'อีเมล',
@@ -115,43 +116,110 @@ namespace JRSApplication
 
             return dt;
         }
-        public DataTable GetPaidInvoices()
+
+
+
+        public DataTable GetAllInvoices()
+        {
+            string query = @"SELECT inv_id, inv_no, inv_date, inv_duedate, cus_id, pro_id, phase_id 
+                     FROM invoice 
+                     WHERE inv_status = 'Draft'";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+            {
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                return dt;
+            }
+        }
+
+
+        public DataTable GetCustomerById(string cusId)
         {
             DataTable dt = new DataTable();
             string query = @"
-                            SELECT 
-                                i.inv_no AS 'inv_no',
-                                CONCAT(c.cus_name, ' ', c.cus_lname) AS 'ข้อมูลลูกค้า',
-                                c.cus_id_card AS 'เลขบัตรประชาชน',
-                                c.cus_address AS 'ที่อยู่',
-                                p.pro_number AS 'เลขที่สัญญา',
-                                p.pro_name AS 'ชื่อโครงการ',
-                                p.pro_currentphasenumber AS 'เฟสงาน',
-                                CONCAT(e.emp_name, ' ', e.emp_lname) AS 'พนักงานผู้รับเงิน',
-                                i.paid_date AS 'วันที่ชำระ',
-                                i.inv_method AS 'วิธีชำระเงิน'
-                            FROM invoice i
-                            JOIN customer c ON i.cus_id = c.cus_id
-                            JOIN project p ON i.pro_id = p.pro_id
-                            JOIN employee e ON i.emp_id = e.emp_id
-                            WHERE i.inv_status = 'ชำระแล้ว';
-                        ";
+                         SELECT 
+                            cus_name, 
+                            cus_id_card, 
+                            cus_address 
+                        FROM customer 
+                        WHERE cus_id = @cusId";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
             {
+                cmd.Parameters.AddWithValue("@cusId", cusId);
                 conn.Open();
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                 {
-                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
-                    {
-                        adapter.Fill(dt);
-                    }
+                    adapter.Fill(dt);
                 }
             }
 
             return dt;
         }
 
+        public DataTable GetProjectById(string proId)
+        {
+            DataTable dt = new DataTable();
+            string query = @"
+                        SELECT 
+                            pro_name 
+                        FROM project 
+                        WHERE pro_id = @proId";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@proId", proId);
+                conn.Open();
+
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                {
+                    adapter.Fill(dt);
+                }
+            }
+
+            return dt;
+        }
+        public DataTable GetPaidInvoices()
+        {
+            string query = @"
+        SELECT 
+            i.inv_id,
+            i.inv_no,
+            i.inv_date,
+            i.inv_duedate,
+            i.inv_status,
+            i.inv_method,
+            i.paid_date,
+            c.cus_name,
+            c.cus_id_card,
+            c.cus_address,
+            p.pro_name,
+            p.pro_number,
+            e.emp_name,
+            e.emp_lname
+        FROM invoice i
+        LEFT JOIN customer c ON i.cus_id = c.cus_id
+        LEFT JOIN project p ON i.pro_id = p.pro_id
+        LEFT JOIN employee e ON i.emp_id = e.emp_id
+        WHERE i.inv_status = 'ชำระแล้ว'
+        ORDER BY i.paid_date DESC;
+    ";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+            {
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                return dt;
+            }
+        }
 
 
 

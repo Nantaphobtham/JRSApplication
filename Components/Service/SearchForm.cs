@@ -21,6 +21,8 @@ namespace JRSApplication
         public string SelectedIDCardOrRole { get; private set; } = "";
         public string SelectedPhone { get; private set; } = "";
         public string SelectedEmail { get; private set; } = "";
+        public string SelectedCusID { get; private set; } = "";
+
 
         public SearchForm(string mode)
         {
@@ -93,11 +95,12 @@ namespace JRSApplication
                     SelectedPhone = selectedRow.Cells["เบอร์โทร"].Value?.ToString() ?? "";    // ✅ ใช้ "เบอร์โทร"
                     SelectedEmail = selectedRow.Cells["อีเมล"].Value?.ToString() ?? "";        // ✅ ใช้ "อีเมล"
                     SelectedIDCardOrRole = selectedRow.Cells["พนักงานดูแล"].Value?.ToString() ?? "";
+                    SelectedCusID = selectedRow.Cells["รหัสลูกค้า"].Value?.ToString() ?? "";
                 }
                 else if (SearchMode == "Invoice")
                 {
                     SelectedID = selectedRow.Cells["เลขที่ใบแจ้งหนี้"].Value?.ToString() ?? "";
-                    SelectedName = selectedRow.Cells["รหัสลูกค้า"].Value?.ToString() ?? "";
+                    SelectedCusID = selectedRow.Cells["รหัสลูกค้า"].Value.ToString();  // ✅ ค่าของ cus_id
                     SelectedLastName = selectedRow.Cells["รหัสโครงการ"].Value?.ToString() ?? "";
                     SelectedIDCardOrRole = selectedRow.Cells["รหัสพนักงาน"].Value?.ToString() ?? "";
                     SelectedPhone = selectedRow.Cells["วิธีชำระเงิน"].Value?.ToString() ?? "";

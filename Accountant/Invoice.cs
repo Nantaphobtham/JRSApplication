@@ -18,11 +18,12 @@ namespace JRSApplication.Accountant
             SearchForm searchForm = new SearchForm("Project");
             if (searchForm.ShowDialog() == DialogResult.OK)
             {
-                txtProjectID.Text = searchForm.SelectedID;
-                txtContractNumber.Text = searchForm.SelectedContract;
-                txtProjectName.Text = searchForm.SelectedName;
-                txtCusID.Text = searchForm.SelectedIDCardOrRole;
-                txtCusName.Text = searchForm.SelectedPhone;
+                txtProjectID.Text = searchForm.SelectedID;                  // รหัสโครงการ
+                txtContractNumber.Text = searchForm.SelectedContract;       // เลขที่สัญญา
+                txtProjectName.Text = searchForm.SelectedName;              // ชื่อโครงการ
+                txtCusID.Text = searchForm.SelectedCusID;  // ✅ แก้ให้ใช้ cus_id โดยตรง                                                          
+                txtCusName.Text = searchForm.SelectedLastName;             // ชื่อ-นามสกุล ลูกค้า
+
 
                 LoadPhasesToComboBox(searchForm.SelectedID);
             }
