@@ -54,8 +54,8 @@ namespace JRSApplication.Data_Access_Layer
             model.AssignmentId = GenerateWorkOrderId();
             string query = @"
                     INSERT INTO supplier_work_assignment 
-                    (supplier_assignment_id, sup_id, start_date, due_date, assign_description, assign_remark, phase_id)
-                    VALUES (@AssignmentId, @SupId, @StartDate, @DueDate, @AssignDescription, @AssignRemark, @PhaseId);
+                    (supplier_assignment_id, sup_id, start_date, due_date, assign_description, assign_remark, phase_id , assign_status, emp_id)
+                    VALUES (@AssignmentId, @SupId, @StartDate, @DueDate, @AssignDescription, @AssignRemark, @PhaseId, @AssignStatus, @EmployeeID);
                     SELECT LAST_INSERT_ID();";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -69,7 +69,7 @@ namespace JRSApplication.Data_Access_Layer
                 cmd.Parameters.AddWithValue("@AssignRemark", model.AssignRemark);
                 cmd.Parameters.AddWithValue("@PhaseId", model.PhaseId);
                 cmd.Parameters.AddWithValue("@AssignStatus", model.AssignStatus);   
-                cmd.Parameters.AddWithValue("@EmpId", model.EmployeeID);
+                cmd.Parameters.AddWithValue("@EmployeeID", model.EmployeeID);
 
                 conn.Open();
                 int newId = Convert.ToInt32(cmd.ExecuteScalar());
@@ -237,7 +237,34 @@ namespace JRSApplication.Data_Access_Layer
         }
 
 
+        public DataTable GetAssignmentsByPhase(int phaseId)
+        {
+            DataTable dt = new DataTable();
 
+            string query = @"
+                    SELECT 
+                        supplier_assignment_id AS 'เลขที่งาน',
+                        assign_description AS 'รายละเอียดงาน',
+                        start_date AS 'วันเริ่มต้น',
+                        due_date AS 'วันครบกำหนด'
+                    FROM supplier_work_assignment
+                    WHERE phase_id = @PhaseId
+                    ORDER BY start_date
+                ";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@PhaseId", phaseId);
+                conn.Open();
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                {
+                    adapter.Fill(dt);
+                }
+            }
+
+            return dt;
+        }
 
 
 

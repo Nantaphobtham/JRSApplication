@@ -28,22 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AccountantForm));
             this.Header = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnMaximize = new System.Windows.Forms.Button();
             this.btnMinimize = new System.Windows.Forms.Button();
+            this.txtSubFunctionname = new System.Windows.Forms.Label();
             this.txtFunctionname = new System.Windows.Forms.Label();
             this.txtPosition = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.Label();
             this.Profile = new System.Windows.Forms.PictureBox();
             this.Siderbar = new System.Windows.Forms.Panel();
+            this.panelReceivePaymentSub = new System.Windows.Forms.Panel();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.btnManageUser = new System.Windows.Forms.Button();
             this.Body = new System.Windows.Forms.Panel();
             this.PicLogo = new System.Windows.Forms.PictureBox();
-            this.txtSubFunctionname = new System.Windows.Forms.Label();
             this.Header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Profile)).BeginInit();
             this.Siderbar.SuspendLayout();
+            this.panelReceivePaymentSub.SuspendLayout();
             this.Body.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicLogo)).BeginInit();
             this.SuspendLayout();
@@ -77,6 +83,7 @@
             this.btnClose.TabIndex = 5;
             this.btnClose.Text = "X";
             this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // btnMaximize
             // 
@@ -101,6 +108,17 @@
             this.btnMinimize.TabIndex = 5;
             this.btnMinimize.Text = "_";
             this.btnMinimize.UseVisualStyleBackColor = false;
+            // 
+            // txtSubFunctionname
+            // 
+            this.txtSubFunctionname.AutoSize = true;
+            this.txtSubFunctionname.BackColor = System.Drawing.Color.Transparent;
+            this.txtSubFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSubFunctionname.Location = new System.Drawing.Point(1128, 75);
+            this.txtSubFunctionname.Name = "txtSubFunctionname";
+            this.txtSubFunctionname.Size = new System.Drawing.Size(0, 37);
+            this.txtSubFunctionname.TabIndex = 4;
+            this.txtSubFunctionname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtFunctionname
             // 
@@ -147,6 +165,7 @@
             // Siderbar
             // 
             this.Siderbar.BackgroundImage = global::JRSApplication.Properties.Resources.sidebar;
+            this.Siderbar.Controls.Add(this.panelReceivePaymentSub);
             this.Siderbar.Controls.Add(this.btnManageUser);
             this.Siderbar.Dock = System.Windows.Forms.DockStyle.Left;
             this.Siderbar.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -154,6 +173,71 @@
             this.Siderbar.Name = "Siderbar";
             this.Siderbar.Size = new System.Drawing.Size(336, 954);
             this.Siderbar.TabIndex = 2;
+            // 
+            // panelReceivePaymentSub
+            // 
+            this.panelReceivePaymentSub.Controls.Add(this.button3);
+            this.panelReceivePaymentSub.Controls.Add(this.button2);
+            this.panelReceivePaymentSub.Controls.Add(this.button1);
+            this.panelReceivePaymentSub.Location = new System.Drawing.Point(0, 77);
+            this.panelReceivePaymentSub.Name = "panelReceivePaymentSub";
+            this.panelReceivePaymentSub.Size = new System.Drawing.Size(336, 159);
+            this.panelReceivePaymentSub.TabIndex = 1;
+            this.panelReceivePaymentSub.Visible = false;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.Transparent;
+            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
+            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.button3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.button3.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.Location = new System.Drawing.Point(0, 104);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(336, 52);
+            this.button3.TabIndex = 6;
+            this.button3.Text = "พิมพ์ใบเสร็จรับเงิน";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.btnPrintReceipt_Click);
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.Transparent;
+            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.button2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(0, 52);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(336, 52);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "ยืนยันการรับชำระเงิน";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.btnConfirmInvoice_Click);
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.button1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(0, 0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(336, 52);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "เรียกชำระเงิน";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.btnInvoice_Click);
             // 
             // btnManageUser
             // 
@@ -167,8 +251,9 @@
             this.btnManageUser.Name = "btnManageUser";
             this.btnManageUser.Size = new System.Drawing.Size(336, 80);
             this.btnManageUser.TabIndex = 0;
-            this.btnManageUser.Text = "จัดการบัญชีผู้ใช้";
+            this.btnManageUser.Text = "รับชำระเงินตามโครงการ";
             this.btnManageUser.UseVisualStyleBackColor = false;
+            this.btnManageUser.Click += new System.EventHandler(this.btnReceivePaymentMain_Click);
             // 
             // Body
             // 
@@ -189,17 +274,6 @@
             this.PicLogo.TabIndex = 0;
             this.PicLogo.TabStop = false;
             // 
-            // txtSubFunctionname
-            // 
-            this.txtSubFunctionname.AutoSize = true;
-            this.txtSubFunctionname.BackColor = System.Drawing.Color.Transparent;
-            this.txtSubFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSubFunctionname.Location = new System.Drawing.Point(1128, 75);
-            this.txtSubFunctionname.Name = "txtSubFunctionname";
-            this.txtSubFunctionname.Size = new System.Drawing.Size(0, 37);
-            this.txtSubFunctionname.TabIndex = 4;
-            this.txtSubFunctionname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // AccountantForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -216,6 +290,7 @@
             this.Header.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Profile)).EndInit();
             this.Siderbar.ResumeLayout(false);
+            this.panelReceivePaymentSub.ResumeLayout(false);
             this.Body.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PicLogo)).EndInit();
             this.ResumeLayout(false);
@@ -237,5 +312,9 @@
         private System.Windows.Forms.Panel Body;
         private System.Windows.Forms.PictureBox PicLogo;
         private System.Windows.Forms.Label txtSubFunctionname;
+        private System.Windows.Forms.Panel panelReceivePaymentSub;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
     }
 }
