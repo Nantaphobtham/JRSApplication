@@ -148,6 +148,7 @@
     <Compile Include="Components\Models\PhaseWithStatus.cs" />
     <Compile Include="Components\Models\PhaseWorking.cs" />
     <Compile Include="Components\Models\Project.cs" />
+    <Compile Include="Components\Models\ProjectEmployeeSupervisionModel.cs" />
     <Compile Include="Components\Models\ProjectPhase.cs" />
     <Compile Include="Components\Evaluators\ProjectStatusEvaluator.cs" />
     <Compile Include="Components\Models\project_files.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="Data Access Layer\PhaseWorkDAL.cs" />
     <Compile Include="Data Access Layer\ProjectDAL.cs" />
     <Compile Include="Data Access Layer\PhaseDAL.cs" />
+    <Compile Include="Data Access Layer\ProjectEmployeeSupervisionDAL.cs" />
     <Compile Include="Data Access Layer\PurchaseOrderDAL.cs" />
     <Compile Include="Data Access Layer\SupplierAssignmentFileDAL.cs" />
     <Compile Include="Data Access Layer\SupplierDAL.cs" />

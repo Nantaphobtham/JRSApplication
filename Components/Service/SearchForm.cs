@@ -74,6 +74,8 @@ namespace JRSApplication
                     SelectedName = selectedRow.Cells["ชื่อ"].Value?.ToString() ?? "";
                     SelectedLastName = selectedRow.Cells["นามสกุล"].Value?.ToString() ?? "";
                     SelectedIDCardOrRole = selectedRow.Cells["ตำแหน่ง"].Value?.ToString() ?? "";
+                    SelectedPhone = selectedRow.Cells["เบอร์โทร"].Value?.ToString() ?? "";
+
                 }
                 else if (SearchMode == "Supplier")
                 {
@@ -88,9 +90,9 @@ namespace JRSApplication
                     SelectedContract = selectedRow.Cells["เลขที่สัญญา"].Value?.ToString() ?? "";
                     SelectedName = selectedRow.Cells["ชื่อโครงการ"].Value?.ToString() ?? "";
                     SelectedLastName = selectedRow.Cells["ลูกค้า"].Value?.ToString() ?? "";
+                    SelectedPhone = selectedRow.Cells["เบอร์โทร"].Value?.ToString() ?? "";    // ✅ ใช้ "เบอร์โทร"
+                    SelectedEmail = selectedRow.Cells["อีเมล"].Value?.ToString() ?? "";        // ✅ ใช้ "อีเมล"
                     SelectedIDCardOrRole = selectedRow.Cells["พนักงานดูแล"].Value?.ToString() ?? "";
-                    SelectedPhone = selectedRow.Cells["สถานที่"].Value?.ToString() ?? "";
-                    SelectedEmail = selectedRow.Cells["งบประมาณ"].Value?.ToString() ?? "";
                 }
                 else if (SearchMode == "Invoice")
                 {

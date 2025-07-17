@@ -55,7 +55,8 @@ namespace JRSApplication
                 else if (searchType == "Employee")
                 {
                     query = "SELECT emp_id AS 'ID', emp_name AS 'ชื่อ', emp_lname AS 'นามสกุล', " +
-                            "emp_pos AS 'ตำแหน่ง' FROM employee " +
+                            "emp_pos AS 'ตำแหน่ง', emp_tel AS 'เบอร์โทร' " +
+                            "FROM employee " +
                             "WHERE emp_name LIKE @Keyword OR emp_lname LIKE @Keyword";
                 }
                 else if (searchType == "Supplier")
@@ -68,19 +69,21 @@ namespace JRSApplication
                 else if (searchType == "Project")
                 {
                     query = @"
-                                SELECT 
-                                    p.pro_id AS 'รหัสโครงการ',
-                                    p.pro_name AS 'ชื่อโครงการ',
-                                    p.pro_number AS 'เลขที่สัญญา',
-                                    p.pro_address AS 'สถานที่',
-                                    p.pro_budget AS 'งบประมาณ',
-                                    CONCAT(c.cus_name, ' ', c.cus_lname) AS 'ลูกค้า',
-                                    CONCAT(e.emp_name, ' ', e.emp_lname) AS 'พนักงานดูแล'
-                                FROM project p
-                                LEFT JOIN customer c ON p.cus_id = c.cus_id
-                                LEFT JOIN employee e ON p.emp_id = e.emp_id
-                                WHERE p.pro_name LIKE @Keyword OR p.pro_id LIKE @Keyword
-                            ";
+                            SELECT 
+                                p.pro_id AS 'รหัสโครงการ',
+                                p.pro_name AS 'ชื่อโครงการ',
+                                p.pro_number AS 'เลขที่สัญญา',
+                                p.pro_address AS 'สถานที่',
+                                p.pro_budget AS 'งบประมาณ',
+                                CONCAT(c.cus_name, ' ', c.cus_lname) AS 'ลูกค้า',
+                                c.cus_tel AS 'เบอร์โทร',
+                                c.cus_email AS 'อีเมล',
+                                CONCAT(e.emp_name, ' ', e.emp_lname) AS 'พนักงานดูแล'
+                            FROM project p
+                            LEFT JOIN customer c ON p.cus_id = c.cus_id
+                            LEFT JOIN employee e ON p.emp_id = e.emp_id
+                            WHERE p.pro_name LIKE @Keyword OR p.pro_id LIKE @Keyword
+                        ";
                 }
                 else if (searchType == "Invoice")
                 {
@@ -97,7 +100,7 @@ namespace JRSApplication
                                 paid_date AS 'วันที่ชำระ'
                             FROM invoice
                             WHERE pro_id LIKE @Keyword OR inv_no LIKE @Keyword
-    ";
+                           ";
                 }
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))

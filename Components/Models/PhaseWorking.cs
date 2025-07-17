@@ -17,6 +17,9 @@ namespace JRSApplication.Components
         public DateTime? EndDate { get; set; } 
         public DateTime UpdateDate { get; set; }
         public string Remark { get; set; }
+        public int EmployeeID { get; set; }
+        public DateTime StartDate { get; set; }
+      
 
         //public int ProjectID { get; set; } // ลบออกไปแล้ว
         //public string SupplierID { get; set; } //ลบออกไปแล้ว
