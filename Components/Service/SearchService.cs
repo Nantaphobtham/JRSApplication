@@ -121,46 +121,56 @@ namespace JRSApplication
 
         public DataTable GetAllInvoices()
         {
-            string query = @"SELECT inv_id, inv_no, inv_date, inv_duedate, cus_id, pro_id, phase_id 
-                     FROM invoice 
-                     WHERE inv_status = 'Draft'";
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            using (MySqlCommand cmd = new MySqlCommand(query, conn))
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+            string connStr = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+            using (MySqlConnection conn = new MySqlConnection(connStr))
             {
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
-                return dt;
+                string query = @"
+            SELECT 
+                i.inv_id,
+                i.inv_no,
+                i.inv_date,
+                i.inv_duedate,
+                i.inv_status,
+                i.inv_method,
+                i.paid_date,
+                i.pro_id,
+                i.cus_id,
+                i.phase_id
+            FROM invoice i
+            WHERE i.inv_status = 'Draft' OR i.inv_status IS NULL
+        ";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    return dt;
+                }
             }
         }
 
-
         public DataTable GetCustomerById(string cusId)
         {
-            DataTable dt = new DataTable();
-            string query = @"
-                         SELECT 
-                            cus_name, 
-                            cus_id_card, 
-                            cus_address 
-                        FROM customer 
-                        WHERE cus_id = @cusId";
+            string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
+            string query = @"SELECT cus_name, cus_lname, cus_id_card, cus_address
+                     FROM customer
+                     WHERE cus_id = @cusId";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
             {
                 cmd.Parameters.AddWithValue("@cusId", cusId);
-                conn.Open();
-
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                 {
+                    DataTable dt = new DataTable();
                     adapter.Fill(dt);
+                    return dt;
                 }
             }
-
-            return dt;
         }
+
 
         public DataTable GetProjectById(string proId)
         {
@@ -185,6 +195,7 @@ namespace JRSApplication
 
             return dt;
         }
+
         public DataTable GetPaidInvoices()
         {
             string query = @"

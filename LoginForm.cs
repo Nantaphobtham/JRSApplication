@@ -118,7 +118,7 @@ namespace JRSApplication
                     dashboard = new SiteSupervisorForm(fullName, role, empId); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role
                     break;
                 case "Accountant":
-                    dashboard = new AccountantForm(); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role
+                    dashboard = new AccountantForm(fullName, role, empId); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role
                     break;
                 default:
                     throw new InvalidOperationException("ตำแหน่งงานไม่ถูกต้อง");

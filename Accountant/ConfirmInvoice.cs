@@ -16,12 +16,18 @@ namespace JRSApplication.Accountant
 {
     public partial class ConfirmInvoice : UserControl
     {
-        public ConfirmInvoice()
+
+        private string empId;
+        private string fullName;
+        private string role;
+        public ConfirmInvoice(string fullName, string role, string empId)
         {
             InitializeComponent();
             CustomizeDataGridView();
             LoadInvoiceData();
             PopulatePaymentMethod();
+            this.empId = empId;
+
         }
 
         private void CustomizeDataGridView()
@@ -82,11 +88,16 @@ namespace JRSApplication.Accountant
             if (dt.Rows.Count > 0)
             {
                 DataRow row = dt.Rows[0];
-                txtCustomerName.Text = row["cus_name"].ToString();
-                txtCustomerIDCard.Text = row["cus_id_card"].ToString(); // <-- National ID card
+
+                // ✅ รวมชื่อ + นามสกุล
+                string fullName = $"{row["cus_name"]} {row["cus_lname"]}";
+
+                txtCustomerName.Text = fullName;
+                txtCustomerIDCard.Text = row["cus_id_card"].ToString();
                 txtCustomerAddress.Text = row["cus_address"].ToString();
             }
         }
+
 
 
         private void LoadProjectDetails(string proId)
@@ -166,7 +177,8 @@ namespace JRSApplication.Accountant
             string query = @"UPDATE invoice 
                      SET inv_status = 'ชำระแล้ว', 
                          inv_method = @method, 
-                         paid_date = @paid_date
+                         paid_date = @paid_date,
+                         emp_id = @emp_id
                      WHERE inv_id = @inv_id";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -174,12 +186,15 @@ namespace JRSApplication.Accountant
             {
                 cmd.Parameters.AddWithValue("@method", comboPaymentMethod.SelectedItem.ToString());
                 cmd.Parameters.AddWithValue("@paid_date", dtpPaymentDate.Value);
+                cmd.Parameters.AddWithValue("@emp_id", this.empId); // ✅ ใส่ empId ของผู้ที่ล็อกอิน
                 cmd.Parameters.AddWithValue("@inv_id", invId);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
         }
+
+
         private void btnConfirm_Click(object sender, EventArgs e)
         {
             if (dgvInvoices.SelectedRows.Count == 0)
