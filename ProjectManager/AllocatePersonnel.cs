@@ -41,35 +41,51 @@ namespace JRSApplication
             bool isEditExisting = isEditing && currentEditId.HasValue;
 
             // Project Fields
-            textBox3.ReadOnly = true; // project_id - ห้ามแก้
-            textBox1.ReadOnly = true; // project_name - ห้ามแก้
-            textBox4.ReadOnly = true; // contract_number - ห้ามแก้
-            textBox5.ReadOnly = true; // customer_name - ห้ามแก้
+            textBox3.Enabled = false; // project_id - ห้ามแก้
+            textBox1.Enabled = false; // project_name - ห้ามแก้
+            textBox4.Enabled = false; // contract_number - ห้ามแก้
+            textBox5.Enabled = false; // customer_name - ห้ามแก้
 
-            textBox2.ReadOnly = !(editable && isEditExisting); // เบอร์โทรลูกค้า - แก้ได้
-            textBox6.ReadOnly = !(editable && isEditExisting); // email - แก้ได้
+            textBox2.Enabled = (editable && isEditExisting); // เบอร์โทรลูกค้า - แก้ได้
+            textBox6.Enabled = (editable && isEditExisting); // email - แก้ได้
 
             // Employee Fields
-            textBox10.ReadOnly = true; // emp_first_name - ห้ามแก้
-            textBox11.ReadOnly = true; // emp_last_name - ห้ามแก้
-            textBox12.ReadOnly = !(editable && isEditExisting); // เบอร์พนักงาน - แก้ได้
-            textBox13.ReadOnly = true; // ตำแหน่ง - ห้ามแก้
+            textBox10.Enabled = false; // emp_first_name - ห้ามแก้
+            textBox11.Enabled = false; // emp_last_name - ห้ามแก้
+            textBox12.Enabled = (editable && isEditExisting); // เบอร์พนักงาน - แก้ได้
+            textBox13.Enabled = false; // ตำแหน่ง - ห้ามแก้
 
-            // ตั้งสีโอยและพื้นหลัง
-            SetTextboxColor(textBox3);
-            SetTextboxColor(textBox1);
-            SetTextboxColor(textBox4);
-            SetTextboxColor(textBox5);
-            SetTextboxColor(textBox2);
-            SetTextboxColor(textBox6);
-            SetTextboxColor(textBox10);
-            SetTextboxColor(textBox11);
-            SetTextboxColor(textBox12);
-            SetTextboxColor(textBox13);
+            // ตั้งค่าสีให้เหมาะสมกับ Enabled
+            SetTextboxStyle(textBox3);
+            SetTextboxStyle(textBox1);
+            SetTextboxStyle(textBox4);
+            SetTextboxStyle(textBox5);
+            SetTextboxStyle(textBox2);
+            SetTextboxStyle(textBox6);
+            SetTextboxStyle(textBox10);
+            SetTextboxStyle(textBox11);
+            SetTextboxStyle(textBox12);
+            SetTextboxStyle(textBox13);
 
-            btnSearchProject.Enabled = editable && !isEditExisting; // ห้ามค้นหาใหม่ตอนแก้ไขข้อมูลเดิม
+            // ปุ่มค้นหา
+            btnSearchProject.Enabled = editable && !isEditExisting;
             btnSearchEmployee.Enabled = editable && !isEditExisting;
         }
+
+        private void SetTextboxStyle(TextBox textbox)
+        {
+            if (!textbox.Enabled)
+            {
+                textbox.BackColor = Color.LightGray;
+                textbox.ForeColor = Color.Gray;
+            }
+            else
+            {
+                textbox.BackColor = Color.White;
+                textbox.ForeColor = Color.Black;
+            }
+        }
+
 
 
         private void SetTextboxColor(TextBox textbox)
