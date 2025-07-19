@@ -131,13 +131,13 @@ namespace JRSApplication
                 i.inv_date,
                 i.inv_duedate,
                 i.inv_status,
-                i.inv_method,
                 i.paid_date,
                 i.pro_id,
                 i.cus_id,
                 i.phase_id
             FROM invoice i
             WHERE i.inv_status = 'Draft' OR i.inv_status IS NULL
+            
         ";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -149,6 +149,31 @@ namespace JRSApplication
                 }
             }
         }
+
+        public DataTable GetDraftInvoicesByProject(string projectId)
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+            string query = @"
+        SELECT inv_id, inv_no, inv_date, inv_duedate, pro_id, cus_id, phase_id
+        FROM invoice
+        WHERE (inv_status IS NULL OR inv_status = 'Draft')
+        AND pro_id = @projectId";
+
+            using (MySqlConnection conn = new MySqlConnection(connStr))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@projectId", projectId);
+                conn.Open();
+
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    return dt;
+                }
+            }
+        }
+
 
         public DataTable GetCustomerById(string cusId)
         {

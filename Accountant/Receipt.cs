@@ -9,6 +9,9 @@ namespace JRSApplication.Accountant
     public partial class Receipt : UserControl
     {
         private InvoiceDAL invoiceDAL = new InvoiceDAL();
+        private ReceiptDAL receiptDAL = new ReceiptDAL();
+        private int currentInvId;
+
 
         public Receipt()
         {
@@ -55,13 +58,16 @@ namespace JRSApplication.Accountant
             {
                 DataGridViewRow row = dtgvInvoice.Rows[e.RowIndex];
 
+                int invId = Convert.ToInt32(row.Cells["inv_id"].Value);
+                LoadInvoiceDetailForReceipt(invId);
+
                 // 🧾 ข้อมูลการชำระเงิน
                 txtInvNo.Text = row.Cells["inv_no"].Value?.ToString();
                 txtEmpName.Text = row.Cells["emp_fullname"]?.Value?.ToString() ?? "";
                 dtpPaidDate.Value = row.Cells["paid_date"].Value != DBNull.Value
                     ? Convert.ToDateTime(row.Cells["paid_date"].Value)
                     : DateTime.Now;
-                string status = row.Cells["inv_status"]?.Value?.ToString() ?? "";
+                textBox1.Text = row.Cells["inv_status"].Value?.ToString();
 
 
                 // 👤 ข้อมูลลูกค้า
@@ -73,7 +79,19 @@ namespace JRSApplication.Accountant
                 txtContractNo.Text = row.Cells["pro_id"].Value?.ToString();  // Contract No
                 txtProName.Text = row.Cells["pro_name"].Value?.ToString();       // Project Name
                 txtPhaseID.Text = row.Cells["phase_id"].Value?.ToString();       // Phase
+
+                currentInvId = Convert.ToInt32(row.Cells["inv_id"].Value);
+
+                SetupReceiptDetailGrid(); // call first to prepare columns
+                
             }
+        }
+        private void LoadInvoiceDetailForReceipt(int invId)
+        {
+            SetupReceiptDetailGrid(); // Prepare the grid
+
+            DataTable dt = InvoiceDAL.GetInvoiceDetail(invId); // Load detail from DB
+            dtgvReceiptDetail.DataSource = dt;
         }
 
         private void btnSearchProject_Click(object sender, EventArgs e)
@@ -91,7 +109,116 @@ namespace JRSApplication.Accountant
             dtgvInvoice.AutoGenerateColumns = true;
             dtgvInvoice.DataSource = dt;
         }
+        private void SetupReceiptDetailGrid()
+        {
+            dtgvReceiptDetail.Columns.Clear();
+            dtgvReceiptDetail.AutoGenerateColumns = false;
+            dtgvReceiptDetail.RowHeadersVisible = false;
+            dtgvReceiptDetail.AllowUserToAddRows = false;
+            dtgvReceiptDetail.ReadOnly = true;
+            dtgvReceiptDetail.BackgroundColor = Color.White;
+            dtgvReceiptDetail.BorderStyle = BorderStyle.FixedSingle;
+            dtgvReceiptDetail.GridColor = Color.LightGray;
+            dtgvReceiptDetail.DefaultCellStyle.Font = new Font("Tahoma", 11);
+            dtgvReceiptDetail.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Bold);
+            dtgvReceiptDetail.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvReceiptDetail.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvReceiptDetail.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
+            dtgvReceiptDetail.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "No",
+                HeaderText = "No",
+                Width = 50
+            });
+
+            dtgvReceiptDetail.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "inv_detail",
+                HeaderText = "รายละเอียด",
+                DataPropertyName = "inv_detail",
+                Width = 300,
+                DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleLeft }
+            });
+
+            dtgvReceiptDetail.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "inv_quantity",
+                HeaderText = "จำนวน",
+                DataPropertyName = "inv_quantity",
+                Width = 80
+            });
+
+            dtgvReceiptDetail.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "inv_price",
+                HeaderText = "ราคา",
+                DataPropertyName = "inv_price",
+                Width = 100
+            });
+
+            dtgvReceiptDetail.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "subtotal",
+                HeaderText = "ราคารวม",
+                Width = 120
+            });
+
+            dtgvReceiptDetail.CellFormatting += dtgvReceiptDetail_CellFormatting;
+        }
+
+        private void dtgvReceiptDetail_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            var row = dtgvReceiptDetail.Rows[e.RowIndex];
+
+            if (dtgvReceiptDetail.Columns[e.ColumnIndex].Name == "subtotal")
+            {
+                if (row.Cells["inv_quantity"].Value != null && row.Cells["inv_price"].Value != null)
+                {
+                    decimal qty = Convert.ToDecimal(row.Cells["inv_quantity"].Value);
+                    decimal price = Convert.ToDecimal(row.Cells["inv_price"].Value);
+                    e.Value = (qty * price).ToString("N2");
+                }
+            }
+
+            if (dtgvReceiptDetail.Columns[e.ColumnIndex].Name == "No")
+            {
+                e.Value = (e.RowIndex + 1).ToString();
+            }
+        }
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            string receiptNo = txtReceiptNo.Text.Trim();
+            DateTime receiptDate = dtpReceiptDate.Value;
+            string remark = txtReason.Text.Trim();
+
+            if (string.IsNullOrEmpty(receiptNo))
+            {
+                MessageBox.Show("กรุณากรอกเลขที่ใบเสร็จรับเงิน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                int result = receiptDAL.InsertReceipt(receiptNo, receiptDate, remark, currentInvId);
+
+                if (result > 0)
+                    MessageBox.Show("บันทึกใบเสร็จรับเงินสำเร็จ", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else
+                    MessageBox.Show("ไม่สามารถบันทึกข้อมูลได้", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Duplicate entry"))
+                {
+                    MessageBox.Show("เลขที่ใบเสร็จรับเงินนี้มีอยู่แล้ว", "ข้อมูลซ้ำ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    MessageBox.Show("เกิดข้อผิดพลาด: " + ex.Message, "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
 
     }
 }

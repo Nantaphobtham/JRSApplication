@@ -115,7 +115,8 @@ namespace JRSApplication.Data_Access_Layer
     JOIN project ON invoice.pro_id = project.pro_id
     JOIN customer ON project.cus_id = customer.cus_id
     LEFT JOIN employee ON invoice.emp_id = employee.emp_id
-    WHERE invoice.pro_id = @ProjectId";
+    WHERE invoice.inv_status = 'ชำระแล้ว'
+    AND invoice.pro_id = @ProjectId";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -131,6 +132,47 @@ namespace JRSApplication.Data_Access_Layer
             return dt;
         }
 
+        public static DataTable GetInvoiceDetail(int invoiceId)
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+            DataTable dt = new DataTable();
+
+            string query = @"SELECT inv_detail, inv_quantity, inv_price 
+                     FROM invoice_detail 
+                     WHERE inv_id = @inv_id";
+
+            using (MySqlConnection conn = new MySqlConnection(connStr))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@inv_id", invoiceId);
+                conn.Open();
+
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                {
+                    adapter.Fill(dt);
+                }
+            }
+
+            return dt;
+        }
+
+        public int InsertReceipt(string receiptNo, DateTime receiptDate, string remark, int invId)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string query = @"INSERT INTO receipt (receipt_no, receipt_date, remark, inv_id)
+                             VALUES (@receipt_no, @receipt_date, @remark, @inv_id)";
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@receipt_no", receiptNo);
+                cmd.Parameters.AddWithValue("@receipt_date", receiptDate);
+                cmd.Parameters.AddWithValue("@remark", remark);
+                cmd.Parameters.AddWithValue("@inv_id", invId);
+
+                conn.Open();
+                return cmd.ExecuteNonQuery(); // return rows affected
+            }
+        }
 
     }
 }

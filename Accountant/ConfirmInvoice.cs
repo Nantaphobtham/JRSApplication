@@ -24,10 +24,9 @@ namespace JRSApplication.Accountant
         {
             InitializeComponent();
             CustomizeDataGridView();
-            LoadInvoiceData();
+            //LoadInvoiceData();
             PopulatePaymentMethod();
             this.empId = empId;
-
         }
 
         private void CustomizeDataGridView()
@@ -135,8 +134,39 @@ namespace JRSApplication.Accountant
                 // Fill project & customer details
                 LoadProjectDetails(proId);
                 LoadCustomerDetails(cusId);
+                int invId = Convert.ToInt32(row.Cells["inv_id"].Value);
+                LoadInvoiceDetails(invId);  // Show invoice detail in bottom-right
+
             }
         }
+
+        private void LoadInvoiceDetails(int invId)
+        {
+            SetupInvoiceDetailGrid();
+
+            DataTable dt = InvoiceDAL.GetInvoiceDetail(invId);
+
+            decimal total = 0;
+            foreach (DataRow row in dt.Rows)
+            {
+                if (decimal.TryParse(row["inv_quantity"].ToString(), out decimal qty) &&
+                    decimal.TryParse(row["inv_price"].ToString(), out decimal price))
+                {
+                    total += qty * price;
+                }
+            }
+
+            // ✅ Add final "total row"
+            DataRow totalRow = dt.NewRow();
+            totalRow["inv_detail"] = "รวม";
+            dt.Rows.Add(totalRow);
+
+            dgvInvoiceDetails.DataSource = dt;
+
+            // ✅ Pass total into Tag so we can format later
+            dgvInvoiceDetails.Tag = total;
+        }
+
 
         private void PopulatePaymentMethod()
         {
@@ -194,12 +224,178 @@ namespace JRSApplication.Accountant
             }
         }
 
+        private void btnSearchProject_Click(object sender, EventArgs e)
+        {
+            using (var searchForm = new SearchForm("Project"))
+            {
+                if (searchForm.ShowDialog() == DialogResult.OK)
+                {
+                    string selectedProjectId = searchForm.SelectedID;
+
+                    SearchService service = new SearchService();
+                    DataTable filtered = service.GetDraftInvoicesByProject(selectedProjectId);
+
+                    dgvInvoices.DataSource = filtered;
+
+                    // Optional: Customize columns again
+                    if (dgvInvoices.Columns.Contains("inv_id")) dgvInvoices.Columns["inv_id"].HeaderText = "รหัสใบแจ้งหนี้";
+                    if (dgvInvoices.Columns.Contains("inv_no")) dgvInvoices.Columns["inv_no"].HeaderText = "เลขที่ใบแจ้งหนี้";
+                    if (dgvInvoices.Columns.Contains("inv_date")) dgvInvoices.Columns["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
+                    if (dgvInvoices.Columns.Contains("inv_duedate")) dgvInvoices.Columns["inv_duedate"].HeaderText = "กำหนดชำระ";
+
+                    // Optional: auto-select first row
+                    if (dgvInvoices.Rows.Count > 0)
+                    {
+                        dgvInvoices.Rows[0].Selected = true;
+                        dgvInvoices_CellContentClick(dgvInvoices, new DataGridViewCellEventArgs(0, 0));
+                    }
+                }
+            }
+        }
+
+
+        private void SetupInvoiceDetailGrid()
+        {
+            dgvInvoiceDetails.Columns.Clear();
+            dgvInvoiceDetails.AutoGenerateColumns = false;
+            dgvInvoiceDetails.RowHeadersVisible = false;
+            dgvInvoiceDetails.AllowUserToAddRows = false;
+            dgvInvoiceDetails.ReadOnly = true;
+            dgvInvoiceDetails.BackgroundColor = Color.White;
+            dgvInvoiceDetails.BorderStyle = BorderStyle.FixedSingle;
+            dgvInvoiceDetails.GridColor = Color.LightGray;
+            dgvInvoiceDetails.DefaultCellStyle.Font = new Font("Tahoma", 11);
+            dgvInvoiceDetails.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Bold);
+            dgvInvoiceDetails.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvInvoiceDetails.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvInvoiceDetails.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvInvoiceDetails.ScrollBars = ScrollBars.Both;
+
+            dgvInvoiceDetails.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "No",
+                HeaderText = "No",
+                Width = 50
+            });
+
+            dgvInvoiceDetails.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "inv_detail",
+                HeaderText = "รายละเอียด",
+                DataPropertyName = "inv_detail",
+                Width = 260,
+                DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleLeft }
+            });
+
+            dgvInvoiceDetails.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "inv_quantity",
+                HeaderText = "จำนวน",
+                DataPropertyName = "inv_quantity",
+                Width = 80
+            });
+
+            dgvInvoiceDetails.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "inv_price",
+                HeaderText = "ราคา",
+                DataPropertyName = "inv_price",
+                Width = 80
+            });
+
+            dgvInvoiceDetails.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "subtotal",
+                HeaderText = "ราคารวม",
+                Width = 120
+            });
+
+            dgvInvoiceDetails.CellFormatting += dgvInvoiceDetails_CellFormatting;
+        }
+
+
+
+        private void dgvInvoiceDetails_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            var row = dgvInvoiceDetails.Rows[e.RowIndex];
+
+            // ✅ Detect last row: "รวม"
+            if (row.Cells["inv_detail"].Value?.ToString() == "รวม")
+            {
+                if (dgvInvoiceDetails.Columns[e.ColumnIndex].Name == "subtotal")
+                {
+                    decimal total = dgvInvoiceDetails.Tag != null ? (decimal)dgvInvoiceDetails.Tag : 0;
+                    e.Value = total.ToString("N2") + " บาท";
+                    e.CellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+                    e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                }
+                else if (dgvInvoiceDetails.Columns[e.ColumnIndex].Name == "inv_detail")
+                {
+                    e.CellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+                    e.CellStyle.ForeColor = Color.Black;
+                    e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                }
+                else
+                {
+                    e.Value = ""; // Empty other cells
+                }
+
+                e.CellStyle.BackColor = Color.LightYellow;
+                return;
+            }
+
+            // 🧮 Calculate Subtotal Normally
+            if (dgvInvoiceDetails.Columns[e.ColumnIndex].Name == "subtotal")
+            {
+                if (row.Cells["inv_quantity"].Value != null && row.Cells["inv_price"].Value != null)
+                {
+                    decimal qty = Convert.ToDecimal(row.Cells["inv_quantity"].Value);
+                    decimal price = Convert.ToDecimal(row.Cells["inv_price"].Value);
+                    e.Value = (qty * price).ToString("N2");
+                }
+            }
+
+            // ➕ Add "No" column auto numbering
+            if (dgvInvoiceDetails.Columns[e.ColumnIndex].Name == "No")
+            {
+                e.Value = (e.RowIndex + 1).ToString();
+            }
+        }
+
+
+
+
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
             if (dgvInvoices.SelectedRows.Count == 0)
             {
                 MessageBox.Show("กรุณาเลือกใบแจ้งหนี้ก่อน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            // ตรวจสอบช่องว่าง
+            if (string.IsNullOrWhiteSpace(txtInvoiceNumber.Text) ||
+                string.IsNullOrWhiteSpace(txtDueDate.Text) ||
+                string.IsNullOrWhiteSpace(txtProjectID.Text) ||
+                string.IsNullOrWhiteSpace(txtProjectName.Text) ||
+                string.IsNullOrWhiteSpace(txtCustomerName.Text) ||
+                string.IsNullOrWhiteSpace(txtCustomerIDCard.Text) ||
+                string.IsNullOrWhiteSpace(txtCustomerAddress.Text))
+            {
+                MessageBox.Show("กรุณากรอกข้อมูลให้ครบถ้วนก่อนทำการบันทึก", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            // ตรวจสอบไฟล์แนบ
+            if (string.IsNullOrWhiteSpace(txtFilePath.Text))
+            {
+                MessageBox.Show("กรุณาแนบไฟล์หลักฐานการชำระเงิน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // ตรวจสอบการเลือกวิธีการชำระเงิน
+            if (comboPaymentMethod.SelectedItem == null)
+            {
+                MessageBox.Show("กรุณาเลือกวิธีการชำระเงิน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

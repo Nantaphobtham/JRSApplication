@@ -170,6 +170,7 @@
     <Compile Include="Components\Service\POForm.Designer.cs">
       <DependentUpon>POForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Data Access Layer\ReceiptDAL.cs" />
     <Compile Include="Data Access Layer\InvoiceDetailDAL.cs" />
     <Compile Include="Data Access Layer\InvoiceDAL.cs" />
     <Compile Include="Data Access Layer\CustomerDAL.cs" />
