@@ -13,10 +13,19 @@ namespace JRSApplication
 {
     public partial class AccountantForm : Form
     {
-        public AccountantForm()
+
+        private string fullName;
+        private string role;
+        private string empId;
+        public AccountantForm(string fullName, string role, string empId)
         {
             InitializeComponent();
+            fullName = fullName;
+            role = role;
+            this.empId = empId;
+
         }
+
 
         private void btnReceivePaymentMain_Click(object sender, EventArgs e)
         {
@@ -39,8 +48,10 @@ namespace JRSApplication
 
         private void btnConfirmInvoice_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ConfirmInvoice());
+            // ✅ ส่งค่าที่ได้จาก login ไปยัง ConfirmInvoice
+            LoadUserControl(new ConfirmInvoice(fullName, role, empId));
         }
+
 
         private void btnPrintReceipt_Click(object sender, EventArgs e)
         {

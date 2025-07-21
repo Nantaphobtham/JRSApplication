@@ -238,6 +238,7 @@
             // txtCusName
             // 
             this.txtCusName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCusName.Enabled = false;
             this.txtCusName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCusName.Location = new System.Drawing.Point(223, 426);
             this.txtCusName.Name = "txtCusName";
@@ -285,6 +286,7 @@
             // txtProjectName
             // 
             this.txtProjectName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtProjectName.Enabled = false;
             this.txtProjectName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProjectName.Location = new System.Drawing.Point(428, 210);
             this.txtProjectName.Name = "txtProjectName";
@@ -323,6 +325,7 @@
             // txtContractNumber
             // 
             this.txtContractNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtContractNumber.Enabled = false;
             this.txtContractNumber.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtContractNumber.Location = new System.Drawing.Point(223, 210);
             this.txtContractNumber.Name = "txtContractNumber";
@@ -332,6 +335,7 @@
             // txtCusID
             // 
             this.txtCusID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCusID.Enabled = false;
             this.txtCusID.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCusID.Location = new System.Drawing.Point(20, 426);
             this.txtCusID.Name = "txtCusID";
@@ -352,6 +356,7 @@
             // txtProjectID
             // 
             this.txtProjectID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtProjectID.Enabled = false;
             this.txtProjectID.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProjectID.Location = new System.Drawing.Point(20, 210);
             this.txtProjectID.Name = "txtProjectID";
@@ -390,13 +395,14 @@
             // button7
             // 
             this.button7.AutoSize = true;
+            this.button7.BackColor = System.Drawing.Color.Lime;
             this.button7.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button7.Location = new System.Drawing.Point(918, 305);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(103, 41);
             this.button7.TabIndex = 43;
             this.button7.Text = "เพิ่ม";
-            this.button7.UseVisualStyleBackColor = true;
+            this.button7.UseVisualStyleBackColor = false;
             this.button7.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // button2

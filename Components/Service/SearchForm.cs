@@ -21,6 +21,8 @@ namespace JRSApplication
         public string SelectedIDCardOrRole { get; private set; } = "";
         public string SelectedPhone { get; private set; } = "";
         public string SelectedEmail { get; private set; } = "";
+        public string SelectedCusID { get; private set; } = "";
+
 
         public SearchForm(string mode)
         {
@@ -74,6 +76,8 @@ namespace JRSApplication
                     SelectedName = selectedRow.Cells["ชื่อ"].Value?.ToString() ?? "";
                     SelectedLastName = selectedRow.Cells["นามสกุล"].Value?.ToString() ?? "";
                     SelectedIDCardOrRole = selectedRow.Cells["ตำแหน่ง"].Value?.ToString() ?? "";
+                    SelectedPhone = selectedRow.Cells["เบอร์โทร"].Value?.ToString() ?? "";
+
                 }
                 else if (SearchMode == "Supplier")
                 {
@@ -88,14 +92,15 @@ namespace JRSApplication
                     SelectedContract = selectedRow.Cells["เลขที่สัญญา"].Value?.ToString() ?? "";
                     SelectedName = selectedRow.Cells["ชื่อโครงการ"].Value?.ToString() ?? "";
                     SelectedLastName = selectedRow.Cells["ลูกค้า"].Value?.ToString() ?? "";
+                    SelectedPhone = selectedRow.Cells["เบอร์โทร"].Value?.ToString() ?? "";    // ✅ ใช้ "เบอร์โทร"
+                    SelectedEmail = selectedRow.Cells["อีเมล"].Value?.ToString() ?? "";        // ✅ ใช้ "อีเมล"
                     SelectedIDCardOrRole = selectedRow.Cells["พนักงานดูแล"].Value?.ToString() ?? "";
-                    SelectedPhone = selectedRow.Cells["สถานที่"].Value?.ToString() ?? "";
-                    SelectedEmail = selectedRow.Cells["งบประมาณ"].Value?.ToString() ?? "";
+                    SelectedCusID = selectedRow.Cells["รหัสลูกค้า"].Value?.ToString() ?? "";
                 }
                 else if (SearchMode == "Invoice")
                 {
                     SelectedID = selectedRow.Cells["เลขที่ใบแจ้งหนี้"].Value?.ToString() ?? "";
-                    SelectedName = selectedRow.Cells["รหัสลูกค้า"].Value?.ToString() ?? "";
+                    SelectedCusID = selectedRow.Cells["รหัสลูกค้า"].Value.ToString();  // ✅ ค่าของ cus_id
                     SelectedLastName = selectedRow.Cells["รหัสโครงการ"].Value?.ToString() ?? "";
                     SelectedIDCardOrRole = selectedRow.Cells["รหัสพนักงาน"].Value?.ToString() ?? "";
                     SelectedPhone = selectedRow.Cells["วิธีชำระเงิน"].Value?.ToString() ?? "";

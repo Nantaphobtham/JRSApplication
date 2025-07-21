@@ -9,6 +9,7 @@ namespace JRSApplication.Components
     public class EmployeeAssignment
     {
         // employee_assignment
+        public string AssignID { get; set; }
         public string EmployeeID { get; set; }  // emp_id
         public string EmployeeName { get; set; }
         public string EmployeeLastName { get; set; }
@@ -16,5 +17,7 @@ namespace JRSApplication.Components
         public string AssignBy { get; set; }
         public DateTime AssignDate { get; set; }
         public int ProjectID { get; set; }
+        
+
     }
 }

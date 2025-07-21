@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CheckProjectPayments));
             this.panel1 = new System.Windows.Forms.Panel();
             this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.dtgvInvoice = new System.Windows.Forms.DataGridView();
@@ -75,7 +74,7 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.pdfProofofPayment = new AxAcroPDFLib.AxAcroPDF();
+            this.pictureBoxProof = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).BeginInit();
             this.panel8.SuspendLayout();
@@ -85,7 +84,7 @@
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pdfProofofPayment)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProof)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -99,7 +98,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1482, 776);
+            this.panel1.Size = new System.Drawing.Size(1431, 776);
             this.panel1.TabIndex = 0;
             // 
             // searchboxControl1
@@ -118,6 +117,7 @@
             this.dtgvInvoice.Name = "dtgvInvoice";
             this.dtgvInvoice.Size = new System.Drawing.Size(1410, 327);
             this.dtgvInvoice.TabIndex = 40;
+            this.dtgvInvoice.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvInvoice_CellContentClick);
             // 
             // button4
             // 
@@ -556,7 +556,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 776);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1482, 276);
+            this.panel2.Size = new System.Drawing.Size(1431, 276);
             this.panel2.TabIndex = 1;
             // 
             // panel3
@@ -566,7 +566,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel3.Location = new System.Drawing.Point(0, 1052);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1482, 929);
+            this.panel3.Size = new System.Drawing.Size(1431, 929);
             this.panel3.TabIndex = 2;
             // 
             // label15
@@ -583,21 +583,19 @@
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
-            this.panel7.Controls.Add(this.pdfProofofPayment);
-            this.panel7.Location = new System.Drawing.Point(19, 349);
+            this.panel7.Controls.Add(this.pictureBoxProof);
+            this.panel7.Location = new System.Drawing.Point(372, 372);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(1512, 808);
+            this.panel7.Size = new System.Drawing.Size(888, 515);
             this.panel7.TabIndex = 9;
             // 
-            // pdfProofofPayment
+            // pictureBoxProof
             // 
-            this.pdfProofofPayment.Enabled = true;
-            this.pdfProofofPayment.Location = new System.Drawing.Point(93, 28);
-            this.pdfProofofPayment.Margin = new System.Windows.Forms.Padding(2);
-            this.pdfProofofPayment.Name = "pdfProofofPayment";
-            this.pdfProofofPayment.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("pdfProofofPayment.OcxState")));
-            this.pdfProofofPayment.Size = new System.Drawing.Size(1326, 763);
-            this.pdfProofofPayment.TabIndex = 7;
+            this.pictureBoxProof.Location = new System.Drawing.Point(18, 14);
+            this.pictureBoxProof.Name = "pictureBoxProof";
+            this.pictureBoxProof.Size = new System.Drawing.Size(858, 487);
+            this.pictureBoxProof.TabIndex = 0;
+            this.pictureBoxProof.TabStop = false;
             // 
             // CheckProjectPayments
             // 
@@ -608,7 +606,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "CheckProjectPayments";
-            this.Size = new System.Drawing.Size(1482, 954);
+            this.Size = new System.Drawing.Size(1431, 954);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
@@ -624,7 +622,7 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pdfProofofPayment)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProof)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -664,7 +662,6 @@
         private System.Windows.Forms.TextBox txtCustomer;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Label label15;
-        private AxAcroPDFLib.AxAcroPDF pdfProofofPayment;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.TextBox txtProjectID;
         private System.Windows.Forms.Label label18;
@@ -678,5 +675,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dtgvInvoice;
         private SearchboxControl searchboxControl1;
+        private System.Windows.Forms.PictureBox pictureBoxProof;
     }
 }

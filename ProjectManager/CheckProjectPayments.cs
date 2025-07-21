@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using JRSApplication.Components;
 using JRSApplication.Data_Access_Layer;
+using MySql.Data.MySqlClient;
 
 namespace JRSApplication
 {
     public partial class CheckProjectPayments : UserControl
     {
+        private SearchService searchService = new SearchService();
 
         public CheckProjectPayments()
         {
@@ -129,6 +133,70 @@ namespace JRSApplication
             DataTable dt = service.GetPaidInvoices();
             dtgvInvoice.DataSource = dt;
         }
+
+        private void dtgvInvoice_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dtgvInvoice.Rows[e.RowIndex];
+
+                // Get inv_id from the clicked row
+                int invId = Convert.ToInt32(row.Cells["inv_id"].Value);
+
+                try
+                {
+                    InvoiceDAL invoiceDAL = new InvoiceDAL();
+                    Image image = invoiceDAL.GetPaymentProofImage(invId); // ✅ NOT from searchService
+
+                    if (image != null)
+                    {
+                        pictureBoxProof.Image = image; // <- make sure your PictureBox name matches
+                    }
+                    else
+                    {
+                        MessageBox.Show("No payment image found.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error loading image: " + ex.Message);
+                }
+            }
+        }
+
+        private void LoadPaymentProofImage(int invId)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT file_data FROM payment_proof WHERE inv_id = @invId LIMIT 1";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@invId", invId);
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        byte[] imageBytes = (byte[])result;
+
+                        using (MemoryStream ms = new MemoryStream(imageBytes))
+                        {
+                            pictureBoxProof.Image = Image.FromStream(ms);
+                        }
+                    }
+                    else
+                    {
+                        pictureBoxProof.Image = null;
+                        MessageBox.Show("No payment proof found for this invoice.", "No Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+        }
+
+
 
 
 

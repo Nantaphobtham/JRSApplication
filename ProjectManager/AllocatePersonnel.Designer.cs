@@ -30,6 +30,9 @@
         {
             this.pnlInfomation = new System.Windows.Forms.Panel();
             this.pnlsubInfo = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnSearchEmployee = new System.Windows.Forms.Button();
+            this.btnSearchProject = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
             this.textBox13 = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -53,17 +56,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlActionMenu = new System.Windows.Forms.Panel();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.lblToppic2 = new System.Windows.Forms.Label();
             this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.dtgvCustomer = new System.Windows.Forms.DataGridView();
             this.pnlStep = new System.Windows.Forms.Panel();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.pnlInfomation.SuspendLayout();
             this.pnlsubInfo.SuspendLayout();
             this.pnlActionMenu.SuspendLayout();
@@ -84,8 +84,8 @@
             // 
             this.pnlsubInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.pnlsubInfo.Controls.Add(this.panel1);
-            this.pnlsubInfo.Controls.Add(this.button5);
-            this.pnlsubInfo.Controls.Add(this.button4);
+            this.pnlsubInfo.Controls.Add(this.btnSearchEmployee);
+            this.pnlsubInfo.Controls.Add(this.btnSearchProject);
             this.pnlsubInfo.Controls.Add(this.label14);
             this.pnlsubInfo.Controls.Add(this.textBox13);
             this.pnlsubInfo.Controls.Add(this.label13);
@@ -112,6 +112,38 @@
             this.pnlsubInfo.Name = "pnlsubInfo";
             this.pnlsubInfo.Size = new System.Drawing.Size(1425, 246);
             this.pnlsubInfo.TabIndex = 0;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Black;
+            this.panel1.Location = new System.Drawing.Point(805, -6);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(10, 253);
+            this.panel1.TabIndex = 39;
+            // 
+            // btnSearchEmployee
+            // 
+            this.btnSearchEmployee.AutoSize = true;
+            this.btnSearchEmployee.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
+            this.btnSearchEmployee.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearchEmployee.Location = new System.Drawing.Point(834, 46);
+            this.btnSearchEmployee.Name = "button5";
+            this.btnSearchEmployee.Size = new System.Drawing.Size(152, 40);
+            this.btnSearchEmployee.TabIndex = 38;
+            this.btnSearchEmployee.Text = "ค้นหาพนักงาน";
+            this.btnSearchEmployee.UseVisualStyleBackColor = false;
+            // 
+            // btnSearchProject
+            // 
+            this.btnSearchProject.AutoSize = true;
+            this.btnSearchProject.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
+            this.btnSearchProject.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearchProject.Location = new System.Drawing.Point(12, 46);
+            this.btnSearchProject.Name = "button4";
+            this.btnSearchProject.Size = new System.Drawing.Size(138, 40);
+            this.btnSearchProject.TabIndex = 37;
+            this.btnSearchProject.Text = "ค้นหาโครงการ";
+            this.btnSearchProject.UseVisualStyleBackColor = false;
             // 
             // label14
             // 
@@ -327,8 +359,8 @@
             // 
             // pnlActionMenu
             // 
-            this.pnlActionMenu.Controls.Add(this.button3);
-            this.pnlActionMenu.Controls.Add(this.button2);
+            this.pnlActionMenu.Controls.Add(this.btnEdit);
+            this.pnlActionMenu.Controls.Add(this.btnSave);
             this.pnlActionMenu.Controls.Add(this.button1);
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 275);
@@ -336,31 +368,35 @@
             this.pnlActionMenu.Size = new System.Drawing.Size(1584, 100);
             this.pnlActionMenu.TabIndex = 1;
             // 
-            // button3
+            // btnEdit
             // 
-            this.button3.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOrange;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(1362, 21);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(175, 58);
-            this.button3.TabIndex = 7;
-            this.button3.Text = "แก้ไขข้อมูล";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.btnEdit.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnEdit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOrange;
+            this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEdit.Location = new System.Drawing.Point(1362, 21);
+            this.btnEdit.Name = "button3";
+            this.btnEdit.Size = new System.Drawing.Size(175, 58);
+            this.btnEdit.TabIndex = 7;
+            this.btnEdit.Text = "แก้ไขข้อมูล";
+            this.btnEdit.UseVisualStyleBackColor = false;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
-            // button2
+            // btnSave
             // 
-            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(1145, 21);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(175, 58);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "บันทึกข้อมูล";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(251)))), ((int)(((byte)(77)))));
+            this.btnSave.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSave.Location = new System.Drawing.Point(1145, 21);
+            this.btnSave.Name = "button2";
+            this.btnSave.Size = new System.Drawing.Size(175, 58);
+            this.btnSave.TabIndex = 8;
+            this.btnSave.Text = "บันทึกข้อมูล";
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // button1
             // 
@@ -423,36 +459,6 @@
             this.pnlStep.Size = new System.Drawing.Size(1584, 10);
             this.pnlStep.TabIndex = 3;
             // 
-            // button4
-            // 
-            this.button4.AutoSize = true;
-            this.button4.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(12, 46);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(138, 40);
-            this.button4.TabIndex = 37;
-            this.button4.Text = "ค้นหาโครงการ";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button5
-            // 
-            this.button5.AutoSize = true;
-            this.button5.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(834, 46);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(152, 40);
-            this.button5.TabIndex = 38;
-            this.button5.Text = "ค้นหาพนักงาน";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.Black;
-            this.panel1.Location = new System.Drawing.Point(805, -6);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(10, 253);
-            this.panel1.TabIndex = 39;
-            // 
             // AllocatePersonnel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -480,8 +486,8 @@
         private System.Windows.Forms.Panel pnlInfomation;
         private System.Windows.Forms.Panel pnlActionMenu;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnEdit;
+        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button button1;
         private SearchboxControl searchboxControl1;
         private System.Windows.Forms.DataGridView dtgvCustomer;
@@ -510,8 +516,8 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.Panel pnlStep;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnSearchEmployee;
+        private System.Windows.Forms.Button btnSearchProject;
         private System.Windows.Forms.Panel panel1;
     }
 }
