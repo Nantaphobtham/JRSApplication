@@ -205,6 +205,10 @@ namespace JRSApplication
 
                     // โหลด Phase ทั้งหมดของโครงการ
                     LoadPhaseForProject(searchForm.SelectedID);
+                    // เพิ่มตรงนี้เพื่อ filter ข้อมูลเฉพาะของ Project ที่เลือก
+                    // 1. phaseList จะมี Phase ของ Project นั้นๆ
+                    var phaseIds = phaseList.Select(p => p.PhaseId); // ดึง PhaseId ทั้งหมดของ project
+                    FilterPhaseWorkingByProject(phaseIds);
                 }
             }
         }

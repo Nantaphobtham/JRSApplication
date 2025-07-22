@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace JRSApplication.Data_Access_Layer
 {
@@ -300,24 +301,8 @@ namespace JRSApplication.Data_Access_Layer
             }
         }
 
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@PhaseID", phaseWork.PhaseID);
-                    cmd.Parameters.AddWithValue("@ProjectID", phaseWork.ProjectID);
-                    cmd.Parameters.AddWithValue("@WorkDetail", phaseWork.WorkDetail ?? "");
-                    cmd.Parameters.AddWithValue("@WorkStatus", phaseWork.WorkStatus ?? "InProgress");
-                    cmd.Parameters.AddWithValue("@WorkDate", phaseWork.WorkDate);
-                    cmd.Parameters.AddWithValue("@UpdateDate", phaseWork.UpdateDate);
-                    cmd.Parameters.AddWithValue("@Remark", phaseWork.Remark ?? "");
-                    cmd.Parameters.AddWithValue("@EmpID", phaseWork.EmployeeID);
-                    cmd.Parameters.AddWithValue("@StartDate", phaseWork.StartDate);
-                    cmd.Parameters.AddWithValue("@EndDate", phaseWork.EndDate);
-
-                    conn.Open();
-                    int rows = cmd.ExecuteNonQuery();
-                    return rows > 0;
-                }
-            }
-        }
+               
+            
+        
     }
 }
