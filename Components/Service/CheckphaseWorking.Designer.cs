@@ -70,7 +70,7 @@
             this.Header.Dock = System.Windows.Forms.DockStyle.Top;
             this.Header.Location = new System.Drawing.Point(0, 0);
             this.Header.Name = "Header";
-            this.Header.Size = new System.Drawing.Size(787, 133);
+            this.Header.Size = new System.Drawing.Size(804, 133);
             this.Header.TabIndex = 0;
             // 
             // txtProjectNumber
@@ -182,7 +182,7 @@
             this.phaseDetail.Dock = System.Windows.Forms.DockStyle.Top;
             this.phaseDetail.Location = new System.Drawing.Point(0, 133);
             this.phaseDetail.Name = "phaseDetail";
-            this.phaseDetail.Size = new System.Drawing.Size(787, 150);
+            this.phaseDetail.Size = new System.Drawing.Size(804, 150);
             this.phaseDetail.TabIndex = 1;
             // 
             // txtPhaseDetail
@@ -232,7 +232,7 @@
             this.Work.Dock = System.Windows.Forms.DockStyle.Top;
             this.Work.Location = new System.Drawing.Point(0, 283);
             this.Work.Name = "Work";
-            this.Work.Size = new System.Drawing.Size(787, 800);
+            this.Work.Size = new System.Drawing.Size(804, 800);
             this.Work.TabIndex = 2;
             // 
             // pnlAction
@@ -244,7 +244,7 @@
             this.pnlAction.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlAction.Location = new System.Drawing.Point(0, 1083);
             this.pnlAction.Name = "pnlAction";
-            this.pnlAction.Size = new System.Drawing.Size(787, 100);
+            this.pnlAction.Size = new System.Drawing.Size(804, 100);
             this.pnlAction.TabIndex = 3;
             // 
             // label1
@@ -295,7 +295,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(804, 1061);
+            this.ClientSize = new System.Drawing.Size(821, 1061);
             this.Controls.Add(this.pnlAction);
             this.Controls.Add(this.Work);
             this.Controls.Add(this.phaseDetail);

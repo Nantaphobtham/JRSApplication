@@ -239,13 +239,14 @@ namespace JRSApplication.Components.Service
         }
         private void btnApproved_Click(object sender, EventArgs e)
         {
-            string remark = PromptForRemark("อนุมัติใบสั่งซื้อ", "กรุณาระบุหมายเหตุ (ไม่บังคับ):");
-            if (remark == null) return; // ถ้ายกเลิก dialog
+            // รับ remark ได้ทั้งกรอกหรือไม่กรอก
+            string remark = txtRemark.Text.Trim(); // สมมุติ textbox ชื่อ txtRemark
 
-            DialogResult result = MessageBox.Show("คุณยืนยันที่จะอนุมัติใบสั่งซื้อนี้หรือไม่?",
-                                                  "ยืนยันการอนุมัติ",
-                                                  MessageBoxButtons.YesNo,
-                                                  MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show(
+                "คุณยืนยันที่จะอนุมัติใบสั่งซื้อฉบับนี้หรือไม่?",
+                "ยืนยันการอนุมัติ",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
@@ -255,17 +256,14 @@ namespace JRSApplication.Components.Service
 
         private void btnRejected_Click(object sender, EventArgs e)
         {
-            string remark = PromptForRemark("ไม่อนุมัติใบสั่งซื้อ", "กรุณาระบุเหตุผล *จำเป็นต้องกรอก*:");
-            if (string.IsNullOrWhiteSpace(remark))
-            {
-                MessageBox.Show("กรุณากรอกเหตุผลก่อนทำรายการไม่อนุมัติ", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            // รับ remark ได้ทั้งกรอกหรือไม่กรอก
+            string remark = txtRemark.Text.Trim();
 
-            DialogResult result = MessageBox.Show("คุณแน่ใจหรือไม่ที่จะ *ไม่อนุมัติ* ใบสั่งซื้อนี้?",
-                                                  "ยืนยันไม่อนุมัติ",
-                                                  MessageBoxButtons.YesNo,
-                                                  MessageBoxIcon.Warning);
+            DialogResult result = MessageBox.Show(
+                "คุณแน่ใจหรือไม่ที่จะ 'ไม่อนุมัติ' ใบสั่งซื้อนี้?",
+                "ยืนยันไม่อนุมัติ",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
 
             if (result == DialogResult.Yes)
             {

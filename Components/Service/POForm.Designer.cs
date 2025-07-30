@@ -43,7 +43,7 @@
             this.txtEmpApprove = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.txtDetail = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.txtRemark = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -213,15 +213,15 @@
             this.txtDetail.Size = new System.Drawing.Size(609, 35);
             this.txtDetail.TabIndex = 5;
             // 
-            // textBox6
+            // txtRemark
             // 
-            this.textBox6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox6.Font = new System.Drawing.Font("Segoe UI Light", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox6.Location = new System.Drawing.Point(17, 775);
-            this.textBox6.Multiline = true;
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(373, 146);
-            this.textBox6.TabIndex = 5;
+            this.txtRemark.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtRemark.Font = new System.Drawing.Font("Segoe UI Light", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRemark.Location = new System.Drawing.Point(17, 775);
+            this.txtRemark.Multiline = true;
+            this.txtRemark.Name = "txtRemark";
+            this.txtRemark.Size = new System.Drawing.Size(373, 146);
+            this.txtRemark.TabIndex = 5;
             // 
             // label7
             // 
@@ -291,7 +291,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 933);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.textBox6);
+            this.Controls.Add(this.txtRemark);
             this.Controls.Add(this.txtDetail);
             this.Controls.Add(this.txtEmpApprove);
             this.Controls.Add(this.txtEmpName);
@@ -338,7 +338,7 @@
         private System.Windows.Forms.TextBox txtEmpApprove;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtDetail;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox txtRemark;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label8;
