@@ -423,6 +423,7 @@
             this.button6.TabIndex = 47;
             this.button6.Text = "พิมพ์ใบเสร็จรับเงิน";
             this.button6.UseVisualStyleBackColor = false;
+            this.button6.Click += new System.EventHandler(this.btnPrintReceipt_Click);
             // 
             // button5
             // 
@@ -535,7 +536,7 @@
             this.Controls.Add(this.dtgvInvoice);
             this.Controls.Add(this.Topic1);
             this.Name = "Receipt";
-            this.Size = new System.Drawing.Size(1464, 662);
+            this.Size = new System.Drawing.Size(1447, 645);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvReceiptDetail)).EndInit();
             this.panel4.ResumeLayout(false);

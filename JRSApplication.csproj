@@ -109,6 +109,7 @@
     <Compile Include="Accountant\ConfirmInvoice.Designer.cs">
       <DependentUpon>ConfirmInvoice.cs</DependentUpon>
     </Compile>
+    <Compile Include="Accountant\Helpers\InvoiceDetailDAL.cs" />
     <Compile Include="Accountant\Invoice.cs">
       <SubType>UserControl</SubType>
     </Compile>
