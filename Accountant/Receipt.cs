@@ -221,22 +221,85 @@ namespace JRSApplication.Accountant
         }
         private void btnPrintReceipt_Click(object sender, EventArgs e)
         {
-            // Create a form
+            string receiptNo = receiptDAL.GetReceiptNoByInvId(currentInvId);
+
+            if (string.IsNullOrWhiteSpace(receiptNo))
+            {
+                MessageBox.Show("ยังไม่พบเลขที่ใบเสร็จสำหรับใบแจ้งหนี้นี้ กรุณาบันทึกข้อมูลก่อน", "ไม่พบข้อมูล", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var receiptPrint = new ReceiptPrint();
+
+            // ✅ ซ้ายบน: ข้อมูลลูกค้า
+            receiptPrint.SetCustomerBox(
+                txtCusName.Text,
+                txtCusAddress.Text,
+                txtInvNo.Text
+            );
+
+            // ✅ ขวาบน: หัวใบเสร็จ
+            receiptPrint.SetReceiptHeader(
+                receiptNo,
+                dtpReceiptDate.Value.ToString("d/M/yyyy"),
+                txtInvNo.Text.Trim()
+            );
+
+            // ✅ สร้างตาราง invoice detail จาก DataGridView
+            DataTable invoiceTable = new DataTable();
+            foreach (DataGridViewColumn col in dtgvReceiptDetail.Columns)
+            {
+                invoiceTable.Columns.Add(col.Name);
+            }
+
+            foreach (DataGridViewRow row in dtgvReceiptDetail.Rows)
+            {
+                if (!row.IsNewRow)
+                {
+                    DataRow dataRow = invoiceTable.NewRow();
+                    foreach (DataGridViewColumn col in dtgvReceiptDetail.Columns)
+                    {
+                        dataRow[col.Name] = row.Cells[col.Index].Value ?? DBNull.Value;
+                    }
+                    invoiceTable.Rows.Add(dataRow);
+                }
+            }
+
+            // ✅ คำนวณราคารวม
+            decimal subtotal = 0;
+            foreach (DataRow row in invoiceTable.Rows)
+            {
+                decimal qty = Convert.ToDecimal(row["inv_quantity"]);
+                decimal price = Convert.ToDecimal(row["inv_price"]);
+                subtotal += qty * price;
+            }
+
+            decimal vat = subtotal * 0.07m;
+            decimal grandTotal = subtotal + vat;
+
+            // ✅ แสดงรายการสินค้า
+            receiptPrint.SetInvoiceDetails(invoiceTable);
+
+            // ✅ แสดงผลรวมทางการเงินด้านขวาล่าง
+            receiptPrint.SetReceiptSummary(subtotal, vat, grandTotal);
+
+            // ✅ เพิ่มหมายเหตุด้านซ้ายล่างจาก inv_remark
+            string remark = invoiceDAL.GetInvoiceRemark(currentInvId);
+            receiptPrint.SetInvoiceRemark(remark);
+
+            // ✅ แสดง Print Preview (Full-sized and clean layout)
             Form previewForm = new Form();
             previewForm.Text = "ใบเสร็จรับเงิน";
-            previewForm.Size = new Size(850, 1100); // Set to desired paper size
             previewForm.StartPosition = FormStartPosition.CenterScreen;
+            previewForm.Size = new Size(1620, 1080); // consistent size
+            previewForm.FormBorderStyle = FormBorderStyle.FixedDialog;
+            previewForm.MaximizeBox = false;
 
-            // Create the user control
-            var receiptPrint = new ReceiptPrint();
             receiptPrint.Dock = DockStyle.Fill;
-
-            // Add the user control to the form
             previewForm.Controls.Add(receiptPrint);
-
-            // Show as modal
-            previewForm.ShowDialog(); // Use .Show() for non-blocking
+            previewForm.ShowDialog();
         }
+
 
     }
 }

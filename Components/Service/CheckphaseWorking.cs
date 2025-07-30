@@ -23,39 +23,6 @@ namespace JRSApplication.Components.Service
             _phaseId = phaseId;
             _projectId = projectId;
         }
-        private void LoadAllData()
-        {
-            // 👉 โหลดข้อมูล Project
-            Project project = new ProjectDAL().GetProjectById(_projectId);
-            if (project != null)
-            {
-                txtProjectID.Text = project.ProjectID.ToString();
-                txtProjectname.Text = project.ProjectName;
-                txtProjectNumber.Text = project.ProjectNumber;
-                txtCustomer.Text = $"{project.CustomerName}";
-                txtEmployee.Text = $"{project.EmployeeName}";
-            }
-
-            // 👉 โหลดข้อมูล Phase
-            ProjectPhase phase = new ProjectPhaseDAL().GetPhaseById(_phaseId);
-            if (phase != null)
-            {
-                txtPhaseNo.Text = phase.PhaseNumber.ToString();
-                txtPhaseDetail.Text = phase.PhaseDetail;
-            }
-
-            // 👉 โหลดรายการงานทั้งหมดในเฟส
-            List<PhaseWorking> works = new PhaseWorkingDAL().GetWorksByPhaseId(_phaseId);
-            foreach (var work in works)
-            {
-                // โหลดรูปภาพของงาน
-                work.Pictures = new WorkingPictureDAL().GetPicturesByWorkId(work.WorkID);
-            }
-
-            // 👉 แสดงใน panel3
-            RenderWorks(works);
-        }
-
 
     }
 }

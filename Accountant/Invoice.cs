@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 using JRSApplication.Components; // ✅ ใช้ Model ใหม่
 using JRSApplication.Data_Access_Layer;
@@ -104,5 +105,20 @@ namespace JRSApplication.Accountant
                 MessageBox.Show("เกิดข้อผิดพลาด: " + ex.Message, "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void btnPrintInvoice_Click(object sender, EventArgs e)
+        {
+            Form invoiceForm = new Form();
+            invoiceForm.Text = "ใบแจ้งหนี้";
+            invoiceForm.Size = new Size(850, 1100);
+            invoiceForm.StartPosition = FormStartPosition.CenterScreen;
+
+            InvoicePrint invoicePrint = new InvoicePrint();
+            invoicePrint.Dock = DockStyle.Fill;
+
+            invoiceForm.Controls.Add(invoicePrint);
+            invoiceForm.ShowDialog();
+        }
+
+
     }
 }

@@ -173,6 +173,28 @@ namespace JRSApplication.Data_Access_Layer
                 return cmd.ExecuteNonQuery(); // return rows affected
             }
         }
+        public string GetInvoiceRemark(int invId)
+        {
+            string remark = "";
+            string sql = "SELECT inv_remark FROM invoice WHERE inv_id = @invId";
+
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("@invId", invId);
+                conn.Open();
+                var result = cmd.ExecuteScalar();
+                if (result != null && result != DBNull.Value)
+                {
+                    remark = result.ToString();
+                }
+            }
+
+            return remark;
+        }
+
+
+
 
     }
 }

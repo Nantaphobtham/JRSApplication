@@ -40,5 +40,23 @@ namespace JRSApplication.Data_Access_Layer
 
             return result;
         }
+        public string GetReceiptNoByInvId(int invId)
+        {
+            string receiptNo = "";
+            string query = "SELECT receipt_no FROM receipt WHERE inv_id = @inv_id";
+
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@inv_id", invId);
+                conn.Open();
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                    receiptNo = result.ToString();
+            }
+
+            return receiptNo;
+        }
+
     }
 }
