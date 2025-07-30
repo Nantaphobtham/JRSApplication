@@ -14,7 +14,7 @@ namespace JRSApplication
     {
         // เก็บค่าที่ส่งมา
         private readonly string _fullName;
-        private readonly string _role;
+        private readonly string userRole;
         private readonly string _empId;
 
         public SiteSupervisorForm(string fullName, string role, string empId)
@@ -22,11 +22,11 @@ namespace JRSApplication
             InitializeComponent();
 
             _fullName = fullName;
-            _role = role;
+            userRole = role;
             _empId = empId;
 
             txtName.Text = _fullName;
-            txtPosition.Text = _role;
+            txtPosition.Text = userRole;
 
         }
 
@@ -73,6 +73,11 @@ namespace JRSApplication
         private void btnPurchaseOrder_Click(object sender, EventArgs e)
         {
             LoadUserControl(new PurchaseOrderForm(_empId), "ออกใบสั่งซื้อ");
+        }
+
+        private void btnUpdatePhase_Click(object sender, EventArgs e)
+        {
+            LoadUserControl(new UpdateProjectPhase(_empId, userRole), "ปรับปรุงข้อมูลเฟส");
         }
     }
 }

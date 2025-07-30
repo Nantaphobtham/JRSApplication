@@ -219,6 +219,24 @@ namespace JRSApplication.Accountant
                 }
             }
         }
+        private void btnPrintReceipt_Click(object sender, EventArgs e)
+        {
+            // Create a form
+            Form previewForm = new Form();
+            previewForm.Text = "ใบเสร็จรับเงิน";
+            previewForm.Size = new Size(850, 1100); // Set to desired paper size
+            previewForm.StartPosition = FormStartPosition.CenterScreen;
+
+            // Create the user control
+            var receiptPrint = new ReceiptPrint();
+            receiptPrint.Dock = DockStyle.Fill;
+
+            // Add the user control to the form
+            previewForm.Controls.Add(receiptPrint);
+
+            // Show as modal
+            previewForm.ShowDialog(); // Use .Show() for non-blocking
+        }
 
     }
 }

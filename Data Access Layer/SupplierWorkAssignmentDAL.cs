@@ -1,4 +1,5 @@
-﻿using JRSApplication.Components.Models;
+﻿using JRSApplication.Components;
+using JRSApplication.Components.Models;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -237,35 +238,37 @@ namespace JRSApplication.Data_Access_Layer
         }
 
 
-        public DataTable GetAssignmentsByPhase(int phaseId)
-        {
-            DataTable dt = new DataTable();
+        //public DataTable GetAssignmentsByPhase(int phaseId)
+        //{
+        //    DataTable dt = new DataTable();
 
-            string query = @"
-                    SELECT 
-                        supplier_assignment_id AS 'เลขที่งาน',
-                        assign_description AS 'รายละเอียดงาน',
-                        start_date AS 'วันเริ่มต้น',
-                        due_date AS 'วันครบกำหนด'
-                    FROM supplier_work_assignment
-                    WHERE phase_id = @PhaseId
-                    ORDER BY start_date
-                ";
+        //    string query = @"
+        //            SELECT 
+        //                supplier_assignment_id AS 'เลขที่งาน',
+        //                assign_description AS 'รายละเอียดงาน',
+        //                start_date AS 'วันเริ่มต้น',
+        //                due_date AS 'วันครบกำหนด'
+        //            FROM supplier_work_assignment
+        //            WHERE phase_id = @PhaseId
+        //            ORDER BY start_date
+        //        ";
 
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            using (MySqlCommand cmd = new MySqlCommand(query, conn))
-            {
-                cmd.Parameters.AddWithValue("@PhaseId", phaseId);
-                conn.Open();
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
-                {
-                    adapter.Fill(dt);
-                }
-            }
+        //    using (MySqlConnection conn = new MySqlConnection(connectionString))
+        //    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+        //    {
+        //        cmd.Parameters.AddWithValue("@PhaseId", phaseId);
+        //        conn.Open();
+        //        using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+        //        {
+        //            adapter.Fill(dt);
+        //        }
+        //    }
 
-            return dt;
-        }
+        //    return dt;
+        //}
 
+        
+        
 
 
 
