@@ -12,6 +12,29 @@ namespace JRSApplication.Data_Access_Layer
     public class PhaseWorkDAL
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+        public class PhaseWorkingFullRow
+        {
+            public int ProjectID { get; set; }
+            public string ProjectNumber { get; set; }
+            public string ProjectName { get; set; }
+            public string EmployeeName { get; set; }
+            public string CustomerName { get; set; }
+
+            public int PhaseNo { get; set; }
+            public string PhaseDetail { get; set; }
+
+            public string WorkID { get; set; }
+            public string WorkStatus { get; set; }
+            public DateTime WorkDate { get; set; }
+            public DateTime? WorkEndDate { get; set; }
+            public string WorkDetail { get; set; }
+            public string WorkRemark { get; set; }
+
+            public int PicNo { get; set; }
+            public string PicName { get; set; }
+            public string PicDescription { get; set; }
+            public byte[] PicData { get; set; }
+        }
 
         public List<PhaseWorking> GetAllPhaseWorking()
         {
@@ -340,7 +363,94 @@ namespace JRSApplication.Data_Access_Layer
         //--------------------------------------------------------------------------------
         //สำหรับการ approve phase_working
 
+        public List<PhaseWorkingFullRow> GetFullPhaseWorkingByPhaseId(int phaseId)
+        {
+            List<PhaseWorkingFullRow> results = new List<PhaseWorkingFullRow>();
 
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                string sql = @"
+            SELECT 
+                pj.pro_id, pj.pro_number, pj.pro_name,
+                emp.emp_name, emp.emp_lname,
+                cus.cus_name, cus.cus_lname,
+                ph.phase_no, ph.phase_detail,
+                pw.work_id, pw.work_status, pw.work_date, pw.work_end_date,
+                pw.work_detail, pw.work_remark,
+                wp.pic_no, wp.pic_name, wp.description, wp.picture_data
+            FROM phase_working pw
+            JOIN project_phase ph ON pw.phase_id = ph.phase_id
+            JOIN project pj ON ph.pro_id = pj.pro_id
+            JOIN employee emp ON pj.emp_id = emp.emp_id
+            JOIN customer cus ON pj.cus_id = cus.cus_id
+            LEFT JOIN working_picture wp ON pw.work_id = wp.work_id
+            WHERE ph.phase_id = @phaseId
+            ORDER BY pw.work_date, wp.pic_no";
+
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@phaseId", phaseId);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var row = new PhaseWorkingFullRow
+                            {
+                                ProjectID = reader.GetInt32("pro_id"),
+                                ProjectNumber = reader["pro_number"].ToString(),
+                                ProjectName = reader["pro_name"].ToString(),
+                                EmployeeName = reader["emp_name"].ToString() + " " + reader["emp_lname"].ToString(),
+                                CustomerName = reader["cus_name"].ToString() + " " + reader["cus_lname"].ToString(),
+                                PhaseNo = Convert.ToInt32(reader["phase_no"]),
+                                PhaseDetail = reader["phase_detail"].ToString(),
+
+                                WorkID = reader["work_id"].ToString(),
+                                WorkStatus = reader["work_status"].ToString(),
+                                WorkDate = reader.GetDateTime("work_date"),
+                                WorkEndDate = reader["work_end_date"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["work_end_date"]),
+                                WorkDetail = reader["work_detail"].ToString(),
+                                WorkRemark = reader["work_remark"].ToString(),
+
+                                PicNo = reader["pic_no"] == DBNull.Value ? 0 : Convert.ToInt32(reader["pic_no"]),
+                                PicName = reader["pic_name"]?.ToString(),
+                                PicDescription = reader["description"]?.ToString(),
+                                PicData = reader["picture_data"] == DBNull.Value ? null : (byte[])reader["picture_data"]
+                            };
+
+                            results.Add(row);
+                        }
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public void UpdateWorkStatus(string workId, string status, string remark)
+        {
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                string sql = @"
+            UPDATE phase_working 
+            SET 
+                work_status = @status,
+                work_remark = @remark,
+                work_update_date = CURRENT_DATE()
+            WHERE work_id = @workId";
+
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@status", status);
+                    cmd.Parameters.AddWithValue("@remark", string.IsNullOrWhiteSpace(remark) ? DBNull.Value : (object)remark);
+                    cmd.Parameters.AddWithValue("@workId", workId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
 
     }
