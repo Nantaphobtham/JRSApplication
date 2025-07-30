@@ -273,36 +273,75 @@ namespace JRSApplication.Data_Access_Layer
         }
 
         // --- Insert ลง phase_working
-        public void InsertPhaseWorking(PhaseWorking work)
+        public void InsertPhaseWorkingAndPictures(PhaseWorking work, List<WorkingPicture> pictures)
         {
             using (var conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
-                // Generate WorkID 
-                work.WorkID = GenerateWorkIdByYear(conn);
-
-                string sql = @"INSERT INTO phase_working
-            (work_id, phase_id, work_detail, work_status, work_date, work_end_date, work_update_date, work_remark, supplier_assignment_id)
-            VALUES
-            (@WorkId, @PhaseId, @WorkDetail, @WorkStatus, @WorkDate, @WorkEndDate, @WorkUpdateDate, @WorkRemark, @SupplierAssignmentId)";
-                using (var cmd = new MySqlCommand(sql, conn))
+                using (var tran = conn.BeginTransaction())
                 {
-                    cmd.Parameters.AddWithValue("@WorkId", work.WorkID);
-                    cmd.Parameters.AddWithValue("@PhaseId", work.PhaseID);
-                    cmd.Parameters.AddWithValue("@WorkDetail", work.WorkDetail);
-                    cmd.Parameters.AddWithValue("@WorkStatus", work.WorkStatus);
-                    cmd.Parameters.AddWithValue("@WorkDate", work.WorkDate);
-                    cmd.Parameters.AddWithValue("@WorkEndDate", work.EndDate.HasValue ? (object)work.EndDate.Value : DBNull.Value);
-                    cmd.Parameters.AddWithValue("@WorkUpdateDate", DateTime.Now);
-                    cmd.Parameters.AddWithValue("@WorkRemark", string.IsNullOrWhiteSpace(work.Remark) ? DBNull.Value : (object)work.Remark);
-                    cmd.Parameters.AddWithValue("@SupplierAssignmentId", work.SupplierAssignmentId);
-                    cmd.ExecuteNonQuery();
+                    try
+                    {
+                        // Generate WorkID
+                        work.WorkID = GenerateWorkIdByYear(conn);
+
+                        // 1. Insert phase_working
+                        string sqlWork = @"INSERT INTO phase_working
+                    (work_id, phase_id, work_detail, work_status, work_date, work_end_date, work_update_date, work_remark, supplier_assignment_id)
+                    VALUES (@WorkId, @PhaseId, @WorkDetail, @WorkStatus, @WorkDate, @WorkEndDate, @WorkUpdateDate, @WorkRemark, @SupplierAssignmentId)";
+                        using (var cmd = new MySqlCommand(sqlWork, conn, tran))
+                        {
+                            cmd.Parameters.AddWithValue("@WorkId", work.WorkID);
+                            cmd.Parameters.AddWithValue("@PhaseId", work.PhaseID);
+                            cmd.Parameters.AddWithValue("@WorkDetail", work.WorkDetail);
+                            cmd.Parameters.AddWithValue("@WorkStatus", work.WorkStatus);
+                            cmd.Parameters.AddWithValue("@WorkDate", work.WorkDate);
+                            cmd.Parameters.AddWithValue("@WorkEndDate", work.EndDate.HasValue ? (object)work.EndDate.Value : DBNull.Value);
+                            cmd.Parameters.AddWithValue("@WorkUpdateDate", DateTime.Now);
+                            cmd.Parameters.AddWithValue("@WorkRemark", string.IsNullOrWhiteSpace(work.Remark) ? DBNull.Value : (object)work.Remark);
+                            cmd.Parameters.AddWithValue("@SupplierAssignmentId", work.SupplierAssignmentId);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // 2. Insert working_picture (ถ้ามี)
+                        if (pictures != null && pictures.Count > 0)
+                        {
+                            string sqlPic = @"INSERT INTO working_picture
+                        (work_id, pic_no, pic_name, description, picture_data, created_at)
+                        VALUES (@WorkId, @PicNo, @PicName, @Description, @PictureData, @CreatedAt)";
+
+                            foreach (var pic in pictures)
+                            {
+                                pic.WorkID = work.WorkID; // set work_id ให้รูป
+                                using (var cmd = new MySqlCommand(sqlPic, conn, tran))
+                                {
+                                    cmd.Parameters.AddWithValue("@WorkId", pic.WorkID);
+                                    cmd.Parameters.AddWithValue("@PicNo", pic.PicNo);
+                                    cmd.Parameters.AddWithValue("@PicName", pic.PicName ?? ""); // ไม่เข้าใจ Null 
+                                    cmd.Parameters.AddWithValue("@Description", pic.Description ?? "");
+                                    cmd.Parameters.AddWithValue("@PictureData", pic.PictureData);
+                                    cmd.Parameters.AddWithValue("@CreatedAt", pic.CreatedAt == default(DateTime) ? DateTime.Now : pic.CreatedAt);
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+
+                        tran.Commit();
+                    }
+                    catch
+                    {
+                        tran.Rollback();
+                        throw; // ส่ง error กลับไป
+                    }
                 }
             }
         }
 
-               
-            
-        
+        //--------------------------------------------------------------------------------
+        //สำหรับการ approve phase_working
+
+
+
+
     }
 }
