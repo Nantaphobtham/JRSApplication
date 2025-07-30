@@ -384,6 +384,18 @@ namespace JRSApplication
                     return false;
                 }
             }
+            //เพิ่ม validate กรณีบันทึก completed โดยที่ supplier_work_assignment all id column assign_status ยังไม่ == completed 
+            //if (newAssignStatus == WorkStatus.Completed)
+            //{
+            //    var dal = new PhaseWorkDAL();
+            //    string supplierAssignmentId = dtgvDetailSubcontractorWork.SelectedRows[0].Cells["เลขที่งาน"].Value.ToString();
+            //    string currentAssignStatus = dal.GetSupplierAssignmentStatus(supplierAssignmentId);
+            //    if (currentAssignStatus != WorkStatus.Completed)
+            //    {
+            //        MessageBox.Show("ไม่สามารถบันทึกสถานะเป็น 'เสร็จสมบูรณ์' ได้ เนื่องจากยังมีงานที่ยังไม่เสร็จสมบูรณ์", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //        return false;
+            //    }
+            //}
 
             return true;
         }
@@ -419,7 +431,8 @@ namespace JRSApplication
                 Remark = txtRemark.Text,
                 SupplierAssignmentId = supplierAssignmentId
             };
-            dal.InsertPhaseWorking(phaseWork);
+            dal.InsertPhaseWorkingAndPictures(phaseWork, pictures);
+           
 
             // --- เรียก ClearFormAfterSave ---
             ClearFormAfterSave();
@@ -440,7 +453,7 @@ namespace JRSApplication
             }
         }
         //------------------------------------------------------------------------------------------------------------------------------
-        //path Edit
+        //path Edit จำเป็นไหม ?
         private void btnEdit_Click(object sender, EventArgs e)
         {
 
