@@ -92,7 +92,7 @@ namespace JRSApplication
 
         private void btnProjectPhaseUpdate_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new UpdateProjectPhase());
+            LoadUserControl(new UpdateProjectPhase(_empID, userRole));
             txtFunctionname.Text = "ปรับปรุงข้อมูลโครงการ";
             txtsubFunctionname.Visible = true;
             txtsubFunctionname.Text = "ปรับปรุงข้อมูลเฟส";

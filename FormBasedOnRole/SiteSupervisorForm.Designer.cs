@@ -32,6 +32,7 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.btnMaximize = new System.Windows.Forms.Button();
             this.btnMinimize = new System.Windows.Forms.Button();
+            this.txtsubFunctionname = new System.Windows.Forms.Label();
             this.txtFunctionname = new System.Windows.Forms.Label();
             this.txtPosition = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.Label();
@@ -39,11 +40,10 @@
             this.Siderbar = new System.Windows.Forms.Panel();
             this.btnPurchaseOrder = new System.Windows.Forms.Button();
             this.btnRegisSupplier = new System.Windows.Forms.Button();
-            this.btnRegisCustomer = new System.Windows.Forms.Button();
+            this.btnUpdatePhase = new System.Windows.Forms.Button();
             this.btnCheckProjectInformation = new System.Windows.Forms.Button();
             this.Body = new System.Windows.Forms.Panel();
             this.PicLogo = new System.Windows.Forms.PictureBox();
-            this.txtsubFunctionname = new System.Windows.Forms.Label();
             this.Header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Profile)).BeginInit();
             this.Siderbar.SuspendLayout();
@@ -106,6 +106,17 @@
             this.btnMinimize.Text = "_";
             this.btnMinimize.UseVisualStyleBackColor = false;
             // 
+            // txtsubFunctionname
+            // 
+            this.txtsubFunctionname.AutoSize = true;
+            this.txtsubFunctionname.BackColor = System.Drawing.Color.Transparent;
+            this.txtsubFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtsubFunctionname.Location = new System.Drawing.Point(884, 67);
+            this.txtsubFunctionname.Name = "txtsubFunctionname";
+            this.txtsubFunctionname.Size = new System.Drawing.Size(0, 37);
+            this.txtsubFunctionname.TabIndex = 4;
+            this.txtsubFunctionname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // txtFunctionname
             // 
             this.txtFunctionname.AutoSize = true;
@@ -153,7 +164,7 @@
             this.Siderbar.BackgroundImage = global::JRSApplication.Properties.Resources.sidebar;
             this.Siderbar.Controls.Add(this.btnPurchaseOrder);
             this.Siderbar.Controls.Add(this.btnRegisSupplier);
-            this.Siderbar.Controls.Add(this.btnRegisCustomer);
+            this.Siderbar.Controls.Add(this.btnUpdatePhase);
             this.Siderbar.Controls.Add(this.btnCheckProjectInformation);
             this.Siderbar.Dock = System.Windows.Forms.DockStyle.Left;
             this.Siderbar.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -191,20 +202,21 @@
             this.btnRegisSupplier.Text = "รอออออ";
             this.btnRegisSupplier.UseVisualStyleBackColor = false;
             // 
-            // btnRegisCustomer
+            // btnUpdatePhase
             // 
-            this.btnRegisCustomer.BackColor = System.Drawing.Color.Transparent;
-            this.btnRegisCustomer.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnRegisCustomer.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnRegisCustomer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.btnRegisCustomer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRegisCustomer.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRegisCustomer.Location = new System.Drawing.Point(0, 80);
-            this.btnRegisCustomer.Name = "btnRegisCustomer";
-            this.btnRegisCustomer.Size = new System.Drawing.Size(336, 80);
-            this.btnRegisCustomer.TabIndex = 1;
-            this.btnRegisCustomer.Text = "รออออ";
-            this.btnRegisCustomer.UseVisualStyleBackColor = false;
+            this.btnUpdatePhase.BackColor = System.Drawing.Color.Transparent;
+            this.btnUpdatePhase.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnUpdatePhase.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnUpdatePhase.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnUpdatePhase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUpdatePhase.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdatePhase.Location = new System.Drawing.Point(0, 80);
+            this.btnUpdatePhase.Name = "btnUpdatePhase";
+            this.btnUpdatePhase.Size = new System.Drawing.Size(336, 80);
+            this.btnUpdatePhase.TabIndex = 1;
+            this.btnUpdatePhase.Text = "ปรับปรุงข้อมูลเฟส";
+            this.btnUpdatePhase.UseVisualStyleBackColor = false;
+            this.btnUpdatePhase.Click += new System.EventHandler(this.btnUpdatePhase_Click);
             // 
             // btnCheckProjectInformation
             // 
@@ -241,17 +253,6 @@
             this.PicLogo.TabIndex = 0;
             this.PicLogo.TabStop = false;
             // 
-            // txtsubFunctionname
-            // 
-            this.txtsubFunctionname.AutoSize = true;
-            this.txtsubFunctionname.BackColor = System.Drawing.Color.Transparent;
-            this.txtsubFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtsubFunctionname.Location = new System.Drawing.Point(884, 67);
-            this.txtsubFunctionname.Name = "txtsubFunctionname";
-            this.txtsubFunctionname.Size = new System.Drawing.Size(0, 37);
-            this.txtsubFunctionname.TabIndex = 4;
-            this.txtsubFunctionname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // SiteSupervisorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -286,7 +287,7 @@
         private System.Windows.Forms.Panel Siderbar;
         private System.Windows.Forms.Button btnPurchaseOrder;
         private System.Windows.Forms.Button btnRegisSupplier;
-        private System.Windows.Forms.Button btnRegisCustomer;
+        private System.Windows.Forms.Button btnUpdatePhase;
         private System.Windows.Forms.Button btnCheckProjectInformation;
         private System.Windows.Forms.Panel Body;
         private System.Windows.Forms.PictureBox PicLogo;

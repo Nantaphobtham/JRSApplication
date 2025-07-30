@@ -62,9 +62,9 @@ namespace JRSApplication
                 else if (searchType == "Supplier")
                 {
                     query = @"SELECT sup_id AS 'ID', sup_name AS 'ชื่อบริษัท', sup_juristic AS 'เลขทะเบียนนิติบุคคล',
-                      sup_tel AS 'เบอร์โทร', sup_address AS 'ที่อยู่', sup_email AS 'อีเมล'
-                      FROM supplier
-                      WHERE sup_name LIKE @Keyword OR sup_juristic LIKE @Keyword";
+                              sup_tel AS 'เบอร์โทร', sup_address AS 'ที่อยู่', sup_email AS 'อีเมล'
+                              FROM supplier
+                              WHERE sup_name LIKE @Keyword OR sup_juristic LIKE @Keyword";
                 }
                 else if (searchType == "Project")
                 {
@@ -101,7 +101,7 @@ namespace JRSApplication
                                 paid_date AS 'วันที่ชำระ'
                             FROM invoice
                             WHERE pro_id LIKE @Keyword OR inv_no LIKE @Keyword
-                           ";
+                            ";
                 }
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))

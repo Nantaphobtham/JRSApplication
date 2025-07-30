@@ -49,14 +49,17 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.txtRemark = new System.Windows.Forms.TextBox();
             this.txtWorkingDescription = new System.Windows.Forms.TextBox();
-            this.cmbStatus = new System.Windows.Forms.ComboBox();
+            this.cmbWorkstatusOfSupplier = new System.Windows.Forms.ComboBox();
+            this.cmbWorkStatus = new System.Windows.Forms.ComboBox();
             this.lblRemark = new System.Windows.Forms.Label();
             this.lblWorkingDescription = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.lblSeclectStatus = new System.Windows.Forms.Label();
             this.lblDate = new System.Windows.Forms.Label();
             this.dtpkDate = new System.Windows.Forms.DateTimePicker();
             this.label5 = new System.Windows.Forms.Label();
             this.pnlPictureDescription = new System.Windows.Forms.Panel();
+            this.dtgvPicturelist = new System.Windows.Forms.DataGridView();
             this.pictureBoxPreview = new System.Windows.Forms.PictureBox();
             this.btnEditPicture = new System.Windows.Forms.Button();
             this.btnAddPicture = new System.Windows.Forms.Button();
@@ -64,9 +67,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnInsertPicture = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.dtgvPicturelist = new System.Windows.Forms.DataGridView();
-            this.label6 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.pnlProjectDetail.SuspendLayout();
             this.pnlWorkHistory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPhaseWorkingHistory)).BeginInit();
@@ -74,8 +74,8 @@
             this.pnlMailDescription.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvDetailSubcontractorWork)).BeginInit();
             this.pnlPictureDescription.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPicturelist)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlProjectDetail
@@ -131,6 +131,7 @@
             // 
             // cmbSelectPhase
             // 
+            this.cmbSelectPhase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSelectPhase.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbSelectPhase.FormattingEnabled = true;
             this.cmbSelectPhase.Location = new System.Drawing.Point(1042, 22);
@@ -248,8 +249,8 @@
             this.pnlMailDescription.Controls.Add(this.btnSave);
             this.pnlMailDescription.Controls.Add(this.txtRemark);
             this.pnlMailDescription.Controls.Add(this.txtWorkingDescription);
-            this.pnlMailDescription.Controls.Add(this.comboBox1);
-            this.pnlMailDescription.Controls.Add(this.cmbStatus);
+            this.pnlMailDescription.Controls.Add(this.cmbWorkstatusOfSupplier);
+            this.pnlMailDescription.Controls.Add(this.cmbWorkStatus);
             this.pnlMailDescription.Controls.Add(this.lblRemark);
             this.pnlMailDescription.Controls.Add(this.lblWorkingDescription);
             this.pnlMailDescription.Controls.Add(this.label6);
@@ -270,6 +271,7 @@
             this.dtgvDetailSubcontractorWork.Name = "dtgvDetailSubcontractorWork";
             this.dtgvDetailSubcontractorWork.Size = new System.Drawing.Size(759, 194);
             this.dtgvDetailSubcontractorWork.TabIndex = 11;
+            this.dtgvDetailSubcontractorWork.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvDetailSubcontractorWork_CellClick);
             // 
             // btnEdit
             // 
@@ -282,6 +284,7 @@
             this.btnEdit.TabIndex = 10;
             this.btnEdit.Text = "แก้ไขข้อมูล";
             this.btnEdit.UseVisualStyleBackColor = false;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // btnSave
             // 
@@ -294,6 +297,7 @@
             this.btnSave.TabIndex = 10;
             this.btnSave.Text = "บันทึกข้อมูล";
             this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // txtRemark
             // 
@@ -315,14 +319,23 @@
             this.txtWorkingDescription.Size = new System.Drawing.Size(672, 35);
             this.txtWorkingDescription.TabIndex = 7;
             // 
-            // cmbStatus
+            // cmbWorkstatusOfSupplier
             // 
-            this.cmbStatus.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbStatus.FormattingEnabled = true;
-            this.cmbStatus.Location = new System.Drawing.Point(1225, 48);
-            this.cmbStatus.Name = "cmbStatus";
-            this.cmbStatus.Size = new System.Drawing.Size(175, 38);
-            this.cmbStatus.TabIndex = 6;
+            this.cmbWorkstatusOfSupplier.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbWorkstatusOfSupplier.FormattingEnabled = true;
+            this.cmbWorkstatusOfSupplier.Location = new System.Drawing.Point(1012, 48);
+            this.cmbWorkstatusOfSupplier.Name = "cmbWorkstatusOfSupplier";
+            this.cmbWorkstatusOfSupplier.Size = new System.Drawing.Size(175, 38);
+            this.cmbWorkstatusOfSupplier.TabIndex = 6;
+            // 
+            // cmbWorkStatus
+            // 
+            this.cmbWorkStatus.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbWorkStatus.FormattingEnabled = true;
+            this.cmbWorkStatus.Location = new System.Drawing.Point(1225, 48);
+            this.cmbWorkStatus.Name = "cmbWorkStatus";
+            this.cmbWorkStatus.Size = new System.Drawing.Size(175, 38);
+            this.cmbWorkStatus.TabIndex = 6;
             // 
             // lblRemark
             // 
@@ -344,6 +357,16 @@
             this.lblWorkingDescription.TabIndex = 5;
             this.lblWorkingDescription.Text = "รายะละเอียดการดำเนินงาน";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(1007, 20);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(180, 25);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "สถานะงานผู้รับเหมาช่วง";
+            // 
             // lblSeclectStatus
             // 
             this.lblSeclectStatus.AutoSize = true;
@@ -360,9 +383,9 @@
             this.lblDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDate.Location = new System.Drawing.Point(768, 18);
             this.lblDate.Name = "lblDate";
-            this.lblDate.Size = new System.Drawing.Size(47, 30);
+            this.lblDate.Size = new System.Drawing.Size(129, 30);
             this.lblDate.TabIndex = 5;
-            this.lblDate.Text = "วันที่";
+            this.lblDate.Text = "วันที่ดำเนินงาน";
             // 
             // dtpkDate
             // 
@@ -398,6 +421,14 @@
             this.pnlPictureDescription.Name = "pnlPictureDescription";
             this.pnlPictureDescription.Size = new System.Drawing.Size(1501, 424);
             this.pnlPictureDescription.TabIndex = 2;
+            // 
+            // dtgvPicturelist
+            // 
+            this.dtgvPicturelist.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvPicturelist.Location = new System.Drawing.Point(44, 38);
+            this.dtgvPicturelist.Name = "dtgvPicturelist";
+            this.dtgvPicturelist.Size = new System.Drawing.Size(759, 376);
+            this.dtgvPicturelist.TabIndex = 11;
             // 
             // pictureBoxPreview
             // 
@@ -479,33 +510,6 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "รายการรูปภาพ";
             // 
-            // dtgvPicturelist
-            // 
-            this.dtgvPicturelist.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvPicturelist.Location = new System.Drawing.Point(44, 38);
-            this.dtgvPicturelist.Name = "dtgvPicturelist";
-            this.dtgvPicturelist.Size = new System.Drawing.Size(759, 376);
-            this.dtgvPicturelist.TabIndex = 11;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(1007, 20);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(180, 25);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "สถานะงานผู้รับเหมาช่วง";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(1012, 48);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(175, 38);
-            this.comboBox1.TabIndex = 6;
-            // 
             // UpdateProjectPhase
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -525,8 +529,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtgvDetailSubcontractorWork)).EndInit();
             this.pnlPictureDescription.ResumeLayout(false);
             this.pnlPictureDescription.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPicturelist)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -556,7 +560,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DateTimePicker dtpkDate;
         private System.Windows.Forms.TextBox txtWorkingDescription;
-        private System.Windows.Forms.ComboBox cmbStatus;
+        private System.Windows.Forms.ComboBox cmbWorkStatus;
         private System.Windows.Forms.Label lblSeclectStatus;
         private System.Windows.Forms.Label lblDate;
         private System.Windows.Forms.TextBox txtRemark;
@@ -569,7 +573,7 @@
         private System.Windows.Forms.PictureBox pictureBoxPreview;
         private System.Windows.Forms.DataGridView dtgvDetailSubcontractorWork;
         private System.Windows.Forms.DataGridView dtgvPicturelist;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cmbWorkstatusOfSupplier;
         private System.Windows.Forms.Label label6;
     }
 }
