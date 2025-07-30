@@ -23,28 +23,27 @@ namespace JRSApplication
         {
             InitializeComponent();
             CustomizeDataGridViewInvoice();
-            LoadPaidInvoices();
+            //LoadPaidInvoices();
         }
         private void btnSearchProject_Click(object sender, EventArgs e)
         {
-            string keyword = txtProjectID.Text.Trim(); // หรือจะใช้ TextBox ชื่ออื่นก็ได้
-
-            SearchService service = new SearchService();
-            DataTable dt = service.SearchData("Project", keyword);
-
-            if (dt.Rows.Count > 0)
+            SearchForm searchForm = new SearchForm("Project");
+            if (searchForm.ShowDialog() == DialogResult.OK)
             {
-                DataRow projectRow = dt.Rows[0];
+                txtProjectID.Text = searchForm.SelectedID;
+                txtContractNumber.Text = searchForm.SelectedContract;
+                txtProjectname.Text = searchForm.SelectedName;
+                txtCustomername.Text = searchForm.SelectedLastName;
+                txtProjectManager.Text = searchForm.SelectedIDCardOrRole;
 
-                txtProjectID.Text = projectRow["รหัสโครงการ"].ToString();
-                txtProjectname.Text = projectRow["ชื่อโครงการ"].ToString();
-                txtCustomername.Text = projectRow["ลูกค้า"].ToString();
-                txtProjectManager.Text = projectRow["พนักงานดูแล"].ToString();
+                // 🔹 Load invoice data for this project
+                LoadPaidInvoicesByProject(searchForm.SelectedID);
             }
-            else
-            {
-                MessageBox.Show("ไม่พบข้อมูลโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+        }
+        private void LoadPaidInvoicesByProject(string projectId)
+        {
+            DataTable dt = searchService.GetPaidInvoicesByProject(projectId);
+            dtgvInvoice.DataSource = dt;
         }
 
         private void btnSearchPayment_Click(object sender, EventArgs e)
@@ -140,27 +139,37 @@ namespace JRSApplication
             {
                 DataGridViewRow row = dtgvInvoice.Rows[e.RowIndex];
 
-                // Get inv_id from the clicked row
+                // 🔹 Invoice info
+                txtInvoiceNo.Text = row.Cells["inv_no"].Value?.ToString();
+                txtPaymentMethod.Text = row.Cells["inv_method"].Value?.ToString();
+
+                // 🔹 Payment date
+                if (row.Cells["paid_date"].Value != DBNull.Value)
+                {
+                    DateTime paidDate = Convert.ToDateTime(row.Cells["paid_date"].Value);
+                    txtPaymentDate.Text = paidDate.ToString("yyyy-MM-dd");
+                }
+
+                // 🔹 Customer info
+                txtCustomer.Text = row.Cells["cus_name"].Value?.ToString();
+                txtIDCard.Text = row.Cells["cus_id_card"].Value?.ToString();
+                txtAddress.Text = row.Cells["cus_address"].Value?.ToString();
+
+                // 🔹 Project info
+                txtContractNumber.Text = row.Cells["pro_number"].Value?.ToString();
+                txtProjectName2.Text = row.Cells["pro_name"].Value?.ToString();
+
+                // 🔹 Employee info
+                string empName = row.Cells["emp_name"].Value?.ToString();
+                string empLname = row.Cells["emp_lname"].Value?.ToString();
+                txtEmpName.Text = $"{empName} {empLname}";
+
+                // 🔹 Phase (optional)
+                txtPhase.Text = row.Cells["phase_id"].Value?.ToString();
+
+                // 🔹 Load Image
                 int invId = Convert.ToInt32(row.Cells["inv_id"].Value);
-
-                try
-                {
-                    InvoiceDAL invoiceDAL = new InvoiceDAL();
-                    Image image = invoiceDAL.GetPaymentProofImage(invId); // ✅ NOT from searchService
-
-                    if (image != null)
-                    {
-                        pictureBoxProof.Image = image; // <- make sure your PictureBox name matches
-                    }
-                    else
-                    {
-                        MessageBox.Show("No payment image found.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error loading image: " + ex.Message);
-                }
+                LoadPaymentProofImage(invId);
             }
         }
 

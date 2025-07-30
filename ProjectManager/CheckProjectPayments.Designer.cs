@@ -98,7 +98,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1431, 776);
+            this.panel1.Size = new System.Drawing.Size(1414, 776);
             this.panel1.TabIndex = 0;
             // 
             // searchboxControl1
@@ -279,7 +279,7 @@
             this.panel4.Controls.Add(this.label6);
             this.panel4.Controls.Add(this.label2);
             this.panel4.Controls.Add(this.label3);
-            this.panel4.Location = new System.Drawing.Point(3, 37);
+            this.panel4.Location = new System.Drawing.Point(3, 6);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(500, 295);
             this.panel4.TabIndex = 6;
@@ -367,7 +367,7 @@
             this.panel6.Controls.Add(this.label12);
             this.panel6.Controls.Add(this.label11);
             this.panel6.Controls.Add(this.label5);
-            this.panel6.Location = new System.Drawing.Point(1015, 37);
+            this.panel6.Location = new System.Drawing.Point(1015, 6);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(500, 295);
             this.panel6.TabIndex = 8;
@@ -472,7 +472,7 @@
             this.panel5.Controls.Add(this.label9);
             this.panel5.Controls.Add(this.label8);
             this.panel5.Controls.Add(this.label4);
-            this.panel5.Location = new System.Drawing.Point(509, 37);
+            this.panel5.Location = new System.Drawing.Point(509, 6);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(500, 295);
             this.panel5.TabIndex = 7;
@@ -556,7 +556,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 776);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1431, 276);
+            this.panel2.Size = new System.Drawing.Size(1414, 276);
             this.panel2.TabIndex = 1;
             // 
             // panel3
@@ -566,14 +566,14 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel3.Location = new System.Drawing.Point(0, 1052);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1431, 929);
+            this.panel3.Size = new System.Drawing.Size(1414, 929);
             this.panel3.TabIndex = 2;
             // 
             // label15
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(38, 310);
+            this.label15.Location = new System.Drawing.Point(10, 8);
             this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(212, 30);
@@ -584,7 +584,7 @@
             // 
             this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.panel7.Controls.Add(this.pictureBoxProof);
-            this.panel7.Location = new System.Drawing.Point(372, 372);
+            this.panel7.Location = new System.Drawing.Point(344, 70);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(888, 515);
             this.panel7.TabIndex = 9;
@@ -606,7 +606,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "CheckProjectPayments";
-            this.Size = new System.Drawing.Size(1431, 954);
+            this.Size = new System.Drawing.Size(1414, 954);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();

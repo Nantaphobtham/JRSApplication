@@ -195,6 +195,50 @@ namespace JRSApplication
                 }
             }
         }
+        public DataTable GetPaidInvoicesByProject(string projectId)
+        {
+            string query = @"
+        SELECT 
+            i.inv_id,
+            i.inv_no,
+            i.inv_date,
+            i.inv_duedate,
+            i.inv_status,
+            i.inv_method,
+            i.paid_date,
+            i.phase_id,
+            c.cus_name,
+            c.cus_id_card,
+            c.cus_address,
+            p.pro_name,
+            p.pro_number,
+            e.emp_name,
+            e.emp_lname,
+            i.cus_id,
+            i.pro_id,
+            i.emp_id
+        FROM invoice i
+        LEFT JOIN customer c ON i.cus_id = c.cus_id
+        LEFT JOIN project p ON i.pro_id = p.pro_id
+        LEFT JOIN employee e ON i.emp_id = e.emp_id
+        WHERE i.inv_status = 'ชำระแล้ว'
+        AND i.pro_id = @projectId
+        ORDER BY i.paid_date DESC;
+    ";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@projectId", projectId);
+
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    return dt;
+                }
+            }
+        }
 
 
         public DataTable GetProjectById(string proId)
