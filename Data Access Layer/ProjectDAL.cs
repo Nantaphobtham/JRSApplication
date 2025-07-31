@@ -175,23 +175,27 @@ namespace JRSApplication.Data_Access_Layer
 
         public int GenerateProjectID()
         {
-            int newID = int.Parse(DateTime.Now.ToString("yyMM") + "000"); // เริ่มที่ 2503000 เช่น ถ้าเป็นปี 2025 เดือน 03 = 2503000
+            int baseID = int.Parse(DateTime.Now.ToString("yyMM") + "000"); // เช่น 2503000
+            int newID = baseID + 1; // ให้ค่าแรกเป็น 2503001
+
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 string sql = "SELECT MAX(pro_id) FROM project WHERE pro_id LIKE @Prefix";
                 using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Prefix", DateTime.Now.ToString("yyMM") + "%"); // หา MAX ของเดือนนี้
+                    cmd.Parameters.AddWithValue("@Prefix", DateTime.Now.ToString("yyMM") + "%");
                     conn.Open();
                     var result = cmd.ExecuteScalar();
                     if (result != DBNull.Value && result != null)
                     {
-                        newID = Convert.ToInt32(result) + 1; // ถ้ามีอยู่แล้ว ให้บวกเพิ่มจาก MAX
+                        newID = Convert.ToInt32(result) + 1; // ถ้ามีข้อมูล ให้เพิ่มจาก MAX
                     }
+                    // else newID จะเป็น baseID + 1 = 2503001
                 }
             }
             return newID;
         }
+
 
         public bool InsertProjectWithPhases(Project project, List<ProjectPhase> phases, byte[] constructionBlueprint, byte[] demolitionModel)
         {

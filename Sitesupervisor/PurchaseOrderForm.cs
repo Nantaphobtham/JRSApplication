@@ -635,9 +635,6 @@ namespace JRSApplication
             dtgvPurchaseOrderList.ClearSelection();
         }
 
-        private void label15_Click(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 }
