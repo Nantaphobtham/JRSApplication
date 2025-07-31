@@ -420,7 +420,40 @@ namespace JRSApplication.Accountant
             }
         }
 
+        private void panel3_Paint(object sender, PaintEventArgs e)
+        {
 
+        }
+
+        private void txtCustomerName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtInvoiceNumber_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtCustomerIDCard_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtProjectID_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtProjectName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtCustomerAddress_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

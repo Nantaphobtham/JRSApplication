@@ -63,11 +63,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.cmbPhase = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.button8 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.button8);
             this.panel1.Controls.Add(this.dtpDueDate);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Controls.Add(this.label13);
@@ -415,6 +417,7 @@
             this.button2.TabIndex = 43;
             this.button2.Text = "แก้ไข";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // button1
             // 
@@ -458,6 +461,19 @@
             this.label11.Size = new System.Drawing.Size(187, 31);
             this.label11.TabIndex = 30;
             this.label11.Text = "กำหนดชำระเงิน(วัน)";
+            // 
+            // button8
+            // 
+            this.button8.AutoSize = true;
+            this.button8.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.button8.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button8.Location = new System.Drawing.Point(667, 305);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(136, 41);
+            this.button8.TabIndex = 46;
+            this.button8.Text = "พิมพ์ใบแจ้งหนี้";
+            this.button8.UseVisualStyleBackColor = false;
+            this.button8.Click += new System.EventHandler(this.btnPrintInvoice_Click);
             // 
             // Invoice
             // 
@@ -514,5 +530,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.DateTimePicker dtpDueDate;
+        private System.Windows.Forms.Button button8;
     }
 }

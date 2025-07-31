@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.dtgvInvoice = new System.Windows.Forms.DataGridView();
             this.button4 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -43,7 +42,6 @@
             this.txtProjectID = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.txtHeaderSearch = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.txtIDCard = new System.Windows.Forms.TextBox();
@@ -75,6 +73,7 @@
             this.label15 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
             this.pictureBoxProof = new System.Windows.Forms.PictureBox();
+            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).BeginInit();
             this.panel8.SuspendLayout();
@@ -98,17 +97,8 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1414, 776);
+            this.panel1.Size = new System.Drawing.Size(1380, 776);
             this.panel1.TabIndex = 0;
-            // 
-            // searchboxControl1
-            // 
-            this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.Location = new System.Drawing.Point(788, 180);
-            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxControl1.Name = "searchboxControl1";
-            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl1.TabIndex = 41;
             // 
             // dtgvInvoice
             // 
@@ -256,24 +246,11 @@
             this.txtHeaderSearch.TabIndex = 2;
             this.txtHeaderSearch.Text = "ค้นหาโครงการ";
             // 
-            // button1
-            // 
-            this.button1.AutoSize = true;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(6, 11);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(181, 40);
-            this.button1.TabIndex = 39;
-            this.button1.Text = "ค้นหาข้อมูลชำระเงิน";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.btnSearchPayment_Click);
-            // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.SystemColors.Control;
             this.panel4.Controls.Add(this.txtAddress);
             this.panel4.Controls.Add(this.txtIDCard);
-            this.panel4.Controls.Add(this.button1);
             this.panel4.Controls.Add(this.txtCustomer);
             this.panel4.Controls.Add(this.label7);
             this.panel4.Controls.Add(this.label6);
@@ -556,7 +533,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 776);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1414, 276);
+            this.panel2.Size = new System.Drawing.Size(1380, 276);
             this.panel2.TabIndex = 1;
             // 
             // panel3
@@ -566,7 +543,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel3.Location = new System.Drawing.Point(0, 1052);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1414, 929);
+            this.panel3.Size = new System.Drawing.Size(1380, 929);
             this.panel3.TabIndex = 2;
             // 
             // label15
@@ -597,6 +574,15 @@
             this.pictureBoxProof.TabIndex = 0;
             this.pictureBoxProof.TabStop = false;
             // 
+            // searchboxControl1
+            // 
+            this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.Location = new System.Drawing.Point(788, 180);
+            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl1.Name = "searchboxControl1";
+            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl1.TabIndex = 41;
+            // 
             // CheckProjectPayments
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -606,7 +592,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "CheckProjectPayments";
-            this.Size = new System.Drawing.Size(1414, 954);
+            this.Size = new System.Drawing.Size(1380, 954);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
@@ -672,7 +658,6 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox txtProjectname;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dtgvInvoice;
         private SearchboxControl searchboxControl1;
         private System.Windows.Forms.PictureBox pictureBoxProof;
