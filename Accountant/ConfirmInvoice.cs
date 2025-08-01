@@ -24,10 +24,16 @@ namespace JRSApplication.Accountant
         {
             InitializeComponent();
             CustomizeDataGridView();
-            //LoadInvoiceData();
+
+            // 🔴 ตั้งค่าสีเทาและปิดการใช้งานเริ่มต้น
+            dgvInvoices.Enabled = false;
+            dgvInvoices.BackgroundColor = SystemColors.AppWorkspace;
+
+
             PopulatePaymentMethod();
             this.empId = empId;
         }
+
 
         private void CustomizeDataGridView()
         {
@@ -65,10 +71,21 @@ namespace JRSApplication.Accountant
         private void LoadInvoiceData()
         {
             SearchService service = new SearchService();
-            DataTable dt = service.GetAllInvoices(); // ✅ make sure this returns `inv_id`, `inv_no`, `inv_date`, `inv_duedate`, etc.
+            DataTable dt = service.GetAllInvoices(); // ✅ make sure this returns necessary columns
             dgvInvoices.DataSource = dt;
 
-            // Optional: Customize column headers (safe way with null checks)
+            if (dt.Rows.Count > 0)
+            {
+                dgvInvoices.Enabled = true;
+                dgvInvoices.BackgroundColor = Color.White;
+            }
+            else
+            {
+                dgvInvoices.Enabled = false;
+                dgvInvoices.BackgroundColor = SystemColors.AppWorkspace;
+            }
+
+            // Optional: Customize column headers
             if (dgvInvoices.Columns.Contains("inv_id")) dgvInvoices.Columns["inv_id"].HeaderText = "รหัสใบแจ้งหนี้";
             if (dgvInvoices.Columns.Contains("inv_no")) dgvInvoices.Columns["inv_no"].HeaderText = "เลขที่ใบแจ้งหนี้";
             if (dgvInvoices.Columns.Contains("inv_date")) dgvInvoices.Columns["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
@@ -77,6 +94,7 @@ namespace JRSApplication.Accountant
             if (dgvInvoices.Columns.Contains("pro_id")) dgvInvoices.Columns["pro_id"].HeaderText = "รหัสโครงการ";
             if (dgvInvoices.Columns.Contains("phase_id")) dgvInvoices.Columns["phase_id"].HeaderText = "รหัสเฟส";
         }
+
 
 
         private void LoadCustomerDetails(string cusId)
@@ -234,24 +252,32 @@ namespace JRSApplication.Accountant
 
                     SearchService service = new SearchService();
                     DataTable filtered = service.GetDraftInvoicesByProject(selectedProjectId);
-
                     dgvInvoices.DataSource = filtered;
 
-                    // Optional: Customize columns again
+                    if (filtered.Rows.Count > 0)
+                    {
+                        dgvInvoices.Enabled = true;
+                        dgvInvoices.BackgroundColor = Color.White;
+
+                        // Optional: Auto-select first row
+                        dgvInvoices.Rows[0].Selected = true;
+                        dgvInvoices_CellContentClick(dgvInvoices, new DataGridViewCellEventArgs(0, 0));
+                    }
+                    else
+                    {
+                        dgvInvoices.Enabled = false;
+                        dgvInvoices.BackgroundColor = Color.LightGray;
+                    }
+
+                    // Optional: Customize headers
                     if (dgvInvoices.Columns.Contains("inv_id")) dgvInvoices.Columns["inv_id"].HeaderText = "รหัสใบแจ้งหนี้";
                     if (dgvInvoices.Columns.Contains("inv_no")) dgvInvoices.Columns["inv_no"].HeaderText = "เลขที่ใบแจ้งหนี้";
                     if (dgvInvoices.Columns.Contains("inv_date")) dgvInvoices.Columns["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
                     if (dgvInvoices.Columns.Contains("inv_duedate")) dgvInvoices.Columns["inv_duedate"].HeaderText = "กำหนดชำระ";
-
-                    // Optional: auto-select first row
-                    if (dgvInvoices.Rows.Count > 0)
-                    {
-                        dgvInvoices.Rows[0].Selected = true;
-                        dgvInvoices_CellContentClick(dgvInvoices, new DataGridViewCellEventArgs(0, 0));
-                    }
                 }
             }
         }
+
 
 
         private void SetupInvoiceDetailGrid()

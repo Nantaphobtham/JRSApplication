@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Topic1 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.txtDueDate = new System.Windows.Forms.DateTimePicker();
@@ -61,25 +60,15 @@
             this.label1 = new System.Windows.Forms.Label();
             this.dgvInvoices = new System.Windows.Forms.DataGridView();
             this.label20 = new System.Windows.Forms.Label();
+            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInvoiceDetails)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInvoices)).BeginInit();
             this.SuspendLayout();
             // 
-            // Topic1
-            // 
-            this.Topic1.AutoSize = true;
-            this.Topic1.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Topic1.Location = new System.Drawing.Point(24, 26);
-            this.Topic1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Topic1.Name = "Topic1";
-            this.Topic1.Size = new System.Drawing.Size(151, 30);
-            this.Topic1.TabIndex = 13;
-            this.Topic1.Text = "ค้นหาโครงการ";
-            // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.button1);
+            this.panel3.Controls.Add(this.searchboxControl1);
             this.panel3.Controls.Add(this.txtDueDate);
             this.panel3.Controls.Add(this.label16);
             this.panel3.Controls.Add(this.dtpInvoiceDate);
@@ -122,7 +111,7 @@
             this.button1.AutoSize = true;
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
             this.button1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(354, 14);
+            this.button1.Location = new System.Drawing.Point(20, 14);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(195, 51);
             this.button1.TabIndex = 67;
@@ -439,13 +428,22 @@
             this.label20.TabIndex = 13;
             this.label20.Text = "รายการรับชำระเงินตามโครงการ";
             // 
+            // searchboxControl1
+            // 
+            this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.Location = new System.Drawing.Point(897, 15);
+            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl1.Name = "searchboxControl1";
+            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl1.TabIndex = 68;
+            // 
             // ConfirmInvoice
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.Controls.Add(this.panel3);
-            this.Controls.Add(this.Topic1);
+            this.Controls.Add(this.button1);
             this.Name = "ConfirmInvoice";
             this.Size = new System.Drawing.Size(1556, 954);
             this.panel3.ResumeLayout(false);
@@ -458,7 +456,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label Topic1;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.DataGridView dgvInvoices;
         private System.Windows.Forms.Label label20;
@@ -491,5 +488,6 @@
         private System.Windows.Forms.TextBox txtInvoiceNumber;
         private System.Windows.Forms.DateTimePicker txtDueDate;
         private System.Windows.Forms.Button button1;
+        private SearchboxControl searchboxControl1;
     }
 }
