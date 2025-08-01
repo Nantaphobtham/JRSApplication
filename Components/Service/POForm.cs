@@ -151,7 +151,22 @@ namespace JRSApplication.Components.Service
             // อนุญาต resize คอลัมน์ด้วยมือ
             dtgvMaterial.AllowUserToResizeColumns = true;
         }
+        //private void LoadOrderData()
+        //{
+        //    var dal = new PurchaseOrderDAL();
+        //    var order = dal.GetPurchaseOrderById(_orderId); // ต้องมีฟังก์ชันนี้ใน DAL
 
+        //    if (order != null)
+        //    {
+        //        txtPONumber.Text = order.OrderNumber;          // เลขที่ใบสั่งซื้อ
+        //        txtProjectNumber.Text = order.ProId.ToString(); // หรือจะแสดง ProjectNumber จริงก็ได้ถ้ามี JOIN
+
+        //        // ตัวอื่น ๆ ตามช่อง textbox ของคุณ
+        //        txtOrderDetail.Text = order.OrderDetail;
+        //        dtpOrderDate.Value = order.OrderDate;
+        //        // ...
+        //    }
+        //}
         private void LoadMaterialData()
         {
             MaterialDetailDAL dal = new MaterialDetailDAL();

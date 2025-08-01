@@ -1,6 +1,7 @@
 ﻿using JRSApplication.Components;
 using JRSApplication.Components.Models;
 using JRSApplication.Data_Access_Layer;
+using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -203,6 +204,13 @@ namespace JRSApplication
             if (materialList.Count == 0)
             {
                 MessageBox.Show("กรุณาเพิ่มรายการวัสดุก่อสร้างหรือวัสดุไฟฟ้าอย่างน้อย 1 รายการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtProjectID.Text) || txtProjectID.Text == "0")
+            {
+                MessageBox.Show("กรุณาเลือกโครงการก่อนบันทึก", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtProjectID.Focus();
                 return false;
             }
 
@@ -411,7 +419,9 @@ namespace JRSApplication
                     OrderDate = dtpOrderDate.Value.Date,
                     OrderDueDate = CalculateDueDate(),
                     OrderStatus = PurchaseOrderStatus.Submitted,
+                    ProId = int.Parse(txtProjectID.Text),
                     EmpId = _empId
+
                 };
 
                 // ✅ แนบวัสดุ
@@ -635,6 +645,17 @@ namespace JRSApplication
             dtgvPurchaseOrderList.ClearSelection();
         }
 
-        
+        private void btnSearchProject_Click(object sender, EventArgs e)
+        {
+            // เปิดฟอร์มค้นหาโครงการแบบ Dialog
+            var searchForm = new SearchForm("Project");
+            if (searchForm.ShowDialog() == DialogResult.OK)
+            {
+                // ดึงค่าที่เลือกกลับมา
+                txtProjectID.Text = searchForm.SelectedID;
+                txtProjectNumber.Text = searchForm.SelectedContract; // หรือใช้ชื่อ property ที่คุณส่งกลับ
+                txtProjectName.Text = searchForm.SelectedName;
+            }
+        }
     }
 }
