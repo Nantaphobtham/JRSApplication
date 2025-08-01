@@ -50,10 +50,10 @@ namespace JRSApplication
             textBox6.Enabled = (editable && isEditExisting); // email - แก้ได้
 
             // Employee Fields
-            textBox10.Enabled = false; // emp_first_name - ห้ามแก้
-            textBox11.Enabled = false; // emp_last_name - ห้ามแก้
+            textBox10.Enabled = (editable && isEditExisting); // emp_first_name 
+            textBox11.Enabled = (editable && isEditExisting); // emp_last_name 
             textBox12.Enabled = (editable && isEditExisting); // เบอร์พนักงาน - แก้ได้
-            textBox13.Enabled = false; // ตำแหน่ง - ห้ามแก้
+            textBox13.Enabled = (editable && isEditExisting); // ตำแหน่ง 
 
             // ตั้งค่าสีให้เหมาะสมกับ Enabled
             SetTextboxStyle(textBox3);
@@ -69,7 +69,8 @@ namespace JRSApplication
 
             // ปุ่มค้นหา
             btnSearchProject.Enabled = editable && !isEditExisting;
-            btnSearchEmployee.Enabled = editable && !isEditExisting;
+            btnSearchEmployee.Enabled = editable;  // ✅ กดเลือกพนักงานได้เสมอ ถ้าอยู่ในโหมดแก้ไข
+
         }
 
         private void SetTextboxStyle(TextBox textbox)
@@ -86,8 +87,6 @@ namespace JRSApplication
             }
         }
 
-
-
         private void SetTextboxColor(TextBox textbox)
         {
             if (textbox.ReadOnly)
@@ -101,10 +100,6 @@ namespace JRSApplication
                 textbox.ForeColor = Color.Black;
             }
         }
-
-
-
-
 
         private void CustomizeDataGridViewStyle(DataGridView dgv)
         {
