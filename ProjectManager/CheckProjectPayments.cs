@@ -31,7 +31,6 @@ namespace JRSApplication
             if (searchForm.ShowDialog() == DialogResult.OK)
             {
                 txtProjectID.Text = searchForm.SelectedID;
-                txtContractNumber.Text = searchForm.SelectedContract;
                 txtProjectname.Text = searchForm.SelectedName;
                 txtCustomername.Text = searchForm.SelectedLastName;
                 txtProjectManager.Text = searchForm.SelectedIDCardOrRole;
@@ -204,10 +203,6 @@ namespace JRSApplication
                 }
             }
         }
-
-
-
-
 
     }
 }
