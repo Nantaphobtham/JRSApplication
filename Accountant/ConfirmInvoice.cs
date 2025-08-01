@@ -362,10 +362,6 @@ namespace JRSApplication.Accountant
             }
         }
 
-
-
-
-
         private void btnConfirm_Click(object sender, EventArgs e)
         {
             if (dgvInvoices.SelectedRows.Count == 0)
