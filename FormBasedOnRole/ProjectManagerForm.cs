@@ -64,7 +64,7 @@ namespace JRSApplication
 
         private void btnPaymentsInfomation_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new CheckProjectPayments());
+            LoadUserControl(new CheckProjectPay());
             txtFunctionname.Text = "ตรวจสอบการชำระเงินโครงการ";
             txtsubFunctionname.Visible = false;
         }

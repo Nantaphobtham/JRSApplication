@@ -11,7 +11,7 @@ namespace JRSApplication.Components
     {
         public const string NotStarted = "NotStarted";          // ใช้เป็น Default ในอนาคตถ้าต้องการ
         public const string InProgress = "InProgress";          // ฝ่าย PM / site suppervisor 
-        public const string Completed = "Completed";            // ฝ่าย PM
+        public const string Completed = "Completed";            // ฝ่าย PM 
         public const string Rejected = "Rejected";            // ฝ่าย PM / site suppervisor (ถ้าไม่ผ่านการตรวจสอบ)
         public const string WaitingForInvoice = "WaitingForInvoice";  // ฝ่าย AC
         public const string Paid = "Paid";                      // ฝ่าย AC

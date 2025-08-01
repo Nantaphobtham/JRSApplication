@@ -280,6 +280,12 @@
     <Compile Include="ProjectManager\ProjectPhaseListRequestsforApproval.Designer.cs">
       <DependentUpon>ProjectPhaseListRequestsforApproval.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProjectManager\CheckProjectPay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProjectManager\CheckProjectPay.Designer.cs">
+      <DependentUpon>CheckProjectPay.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FormBasedOnRole\SiteSupervisorForm.cs">
       <SubType>Form</SubType>
@@ -364,6 +370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectManager\ApprovePurchaseOrder.resx">
       <DependentUpon>ApprovePurchaseOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectManager\CheckProjectPay.resx">
+      <DependentUpon>CheckProjectPay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectManager\DetermineSubcontractors.resx">
       <DependentUpon>DetermineSubcontractors.cs</DependentUpon>

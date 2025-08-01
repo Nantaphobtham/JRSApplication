@@ -55,9 +55,9 @@ namespace JRSApplication.Data_Access_Layer
                         // ✅ STEP 1: Insert purchaseorder
                         string insertOrderQuery = @"
                         INSERT INTO purchaseorder
-                        (order_number, order_detail, order_date, order_status, order_duedate, order_remark, emp_id)
+                        (order_number, order_detail, order_date, order_status, order_duedate, order_remark, emp_id, pro_id)
                         VALUES
-                        (@OrderNumber, @OrderDetail, @OrderDate, @OrderStatus, @OrderDueDate, @OrderRemark, @EmpId);
+                        (@OrderNumber, @OrderDetail, @OrderDate, @OrderStatus, @OrderDueDate, @OrderRemark, @EmpId, @ProId);
                         SELECT LAST_INSERT_ID();";
 
                         using (MySqlCommand cmd = new MySqlCommand(insertOrderQuery, conn, transaction))
@@ -69,6 +69,7 @@ namespace JRSApplication.Data_Access_Layer
                             cmd.Parameters.AddWithValue("@OrderDueDate", order.OrderDueDate);
                             cmd.Parameters.AddWithValue("@OrderRemark", DBNull.Value);
                             cmd.Parameters.AddWithValue("@EmpId", order.EmpId);
+                            cmd.Parameters.AddWithValue("@ProId", order.ProId);
 
                             object result = cmd.ExecuteScalar();
                             if (result != null && int.TryParse(result.ToString(), out int id))

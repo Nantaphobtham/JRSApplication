@@ -37,7 +37,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtPONumber = new System.Windows.Forms.TextBox();
-            this.txtProjectName = new System.Windows.Forms.TextBox();
+            this.txtProjectNumber = new System.Windows.Forms.TextBox();
             this.txtEmpName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtEmpApprove = new System.Windows.Forms.TextBox();
@@ -102,7 +102,7 @@
             // 
             this.lblSummary.AutoSize = true;
             this.lblSummary.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSummary.Location = new System.Drawing.Point(647, 742);
+            this.lblSummary.Location = new System.Drawing.Point(537, 752);
             this.lblSummary.Name = "lblSummary";
             this.lblSummary.Size = new System.Drawing.Size(141, 30);
             this.lblSummary.TabIndex = 3;
@@ -151,15 +151,15 @@
             this.txtPONumber.Size = new System.Drawing.Size(226, 35);
             this.txtPONumber.TabIndex = 5;
             // 
-            // txtProjectName
+            // txtProjectNumber
             // 
-            this.txtProjectName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtProjectName.Font = new System.Drawing.Font("Segoe UI Light", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtProjectName.Location = new System.Drawing.Point(562, 91);
-            this.txtProjectName.Name = "txtProjectName";
-            this.txtProjectName.ReadOnly = true;
-            this.txtProjectName.Size = new System.Drawing.Size(226, 35);
-            this.txtProjectName.TabIndex = 5;
+            this.txtProjectNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtProjectNumber.Font = new System.Drawing.Font("Segoe UI Light", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtProjectNumber.Location = new System.Drawing.Point(562, 91);
+            this.txtProjectNumber.Name = "txtProjectNumber";
+            this.txtProjectNumber.ReadOnly = true;
+            this.txtProjectNumber.Size = new System.Drawing.Size(226, 35);
+            this.txtProjectNumber.TabIndex = 5;
             // 
             // txtEmpName
             // 
@@ -297,7 +297,7 @@
             this.Controls.Add(this.txtEmpName);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.txtProjectName);
+            this.Controls.Add(this.txtProjectNumber);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtApproveDate);
             this.Controls.Add(this.txtDate);
@@ -332,7 +332,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtPONumber;
-        private System.Windows.Forms.TextBox txtProjectName;
+        private System.Windows.Forms.TextBox txtProjectNumber;
         private System.Windows.Forms.TextBox txtEmpName;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtEmpApprove;
