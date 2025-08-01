@@ -22,12 +22,16 @@ namespace JRSApplication
         public string SelectedPhone { get; private set; } = "";
         public string SelectedEmail { get; private set; } = "";
         public string SelectedCusID { get; private set; } = "";
+        private string optionalProjectId = null;
 
 
-        public SearchForm(string mode)
+        public SearchForm(string mode, string optionalProjectId = null)
         {
             InitializeComponent();
-            SearchMode = mode;
+            this.SearchMode = mode;
+            this.optionalProjectId = optionalProjectId;
+
+            // ✅ ตั้งชื่อหัวเรื่อง
             if (SearchMode == "Customer")
                 lblTitle.Text = "ค้นหาลูกค้า";
             else if (SearchMode == "Employee")
@@ -38,17 +42,28 @@ namespace JRSApplication
                 lblTitle.Text = "ค้นหาโครงการ";
             else if (SearchMode == "Invoice")
                 lblTitle.Text = "ค้นหาใบแจ้งหนี้";
+            else if (SearchMode == "UnpaidInvoiceByProject")
+                lblTitle.Text = "เลือกใบแจ้งหนี้ที่ยังไม่ชำระ";
             else
                 lblTitle.Text = "ค้นหา";
 
-            LoadSearchData(""); // ✅ โหลดข้อมูลเริ่มต้น
+            // ✅ โหลดข้อมูล: กรณีพิเศษใช้ projectId
+            if (SearchMode == "UnpaidInvoiceByProject")
+                LoadSearchData(optionalProjectId ?? "");
+            else
+                LoadSearchData("");  // default
+
             CustomizeDataGridViewAlldata(); // ✅ ปรับแต่ง DataGridView
         }
-
-        private void LoadSearchData(string keyword)
+        private void LoadSearchData(string keywordOrProjectId)
         {
-            dtgvAlldata.DataSource = searchService.SearchData(SearchMode, keyword);
+            // For unpaid invoices by project, we use the project ID as input
+            if (SearchMode == "UnpaidInvoiceByProject")
+                dtgvAlldata.DataSource = searchService.SearchData(SearchMode, keywordOrProjectId);
+            else
+                dtgvAlldata.DataSource = searchService.SearchData(SearchMode, keywordOrProjectId);
         }
+
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
@@ -106,9 +121,17 @@ namespace JRSApplication
                     SelectedPhone = selectedRow.Cells["วิธีชำระเงิน"].Value?.ToString() ?? "";
                     SelectedEmail = selectedRow.Cells["สถานะ"].Value?.ToString() ?? "";
                 }
-
+                else if (SearchMode == "UnpaidInvoiceByProject")
+                {
+                    SelectedID = selectedRow.Cells["inv_id"].Value?.ToString() ?? "";
+                    SelectedCusID = selectedRow.Cells["cus_id"].Value?.ToString() ?? "";
+                    SelectedLastName = selectedRow.Cells["pro_id"].Value?.ToString() ?? "";
+                    SelectedPhone = selectedRow.Cells["inv_method"].Value?.ToString() ?? "";
+                    SelectedEmail = selectedRow.Cells["inv_status"].Value?.ToString() ?? "";
+                }
                 this.DialogResult = DialogResult.OK;
                 this.Close();
+
             }
             else
             {
@@ -161,5 +184,6 @@ namespace JRSApplication
         {
             this.Close();
         }
+
     }
 }

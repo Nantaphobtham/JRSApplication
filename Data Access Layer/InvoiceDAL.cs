@@ -95,28 +95,28 @@ namespace JRSApplication.Data_Access_Layer
         {
             DataTable dt = new DataTable();
             string query = @"
-        SELECT 
-        invoice.inv_id,
-        invoice.inv_no,
-        invoice.inv_date,
-        invoice.inv_duedate,
-        invoice.inv_status,
-        invoice.inv_method,
-        invoice.paid_date,
-        invoice.emp_id,
-        CONCAT(employee.emp_name, ' ', employee.emp_lname) AS emp_fullname,
-        invoice.pro_id,
-        project.pro_name,
-        CONCAT(customer.cus_name, ' ', customer.cus_lname) AS cus_fullname,
-        customer.cus_id_card,
-        customer.cus_address,
-        invoice.phase_id
-    FROM invoice
-    JOIN project ON invoice.pro_id = project.pro_id
-    JOIN customer ON project.cus_id = customer.cus_id
-    LEFT JOIN employee ON invoice.emp_id = employee.emp_id
-    WHERE invoice.inv_status = 'ชำระแล้ว'
-    AND invoice.pro_id = @ProjectId";
+                            SELECT 
+                            invoice.inv_id,
+                            invoice.inv_no,
+                            invoice.inv_date,
+                            invoice.inv_duedate,
+                            invoice.inv_status,
+                            invoice.inv_method,
+                            invoice.paid_date,
+                            invoice.emp_id,
+                            CONCAT(employee.emp_name, ' ', employee.emp_lname) AS emp_fullname,
+                            invoice.pro_id,
+                            project.pro_name,
+                            CONCAT(customer.cus_name, ' ', customer.cus_lname) AS cus_fullname,
+                            customer.cus_id_card,
+                            customer.cus_address,
+                            invoice.phase_id
+                            FROM invoice
+                            JOIN project ON invoice.pro_id = project.pro_id
+                            JOIN customer ON project.cus_id = customer.cus_id
+                            LEFT JOIN employee ON invoice.emp_id = employee.emp_id
+                            WHERE invoice.inv_status = 'ชำระแล้ว'
+                            AND invoice.pro_id = @ProjectId";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -192,6 +192,49 @@ namespace JRSApplication.Data_Access_Layer
 
             return remark;
         }
+        public DataTable GetInvoiceID(string invId)
+        {
+            DataTable dt = new DataTable();
+            string query = @"
+        SELECT 
+            i.inv_id,
+            i.inv_no,
+            i.inv_date,
+            i.inv_duedate,
+            p.pro_id,
+            p.pro_name,
+            p.pro_number,
+            c.cus_id,
+            CONCAT(c.cus_name, ' ', c.cus_lname) AS cus_fullname,
+            c.cus_id_card,
+            c.cus_address,
+            ph.phase_id,
+            ph.phase_budget,
+            ph.phase_detail,
+            d.inv_detail,
+            d.inv_quantity,
+            d.inv_price
+        FROM invoice i
+        JOIN project p ON i.pro_id = p.pro_id
+        JOIN customer c ON p.cus_id = c.cus_id
+        JOIN project_phase ph ON i.phase_id = ph.phase_id
+        LEFT JOIN invoice_detail d ON i.inv_id = d.inv_id
+        WHERE i.inv_id = @invId
+        LIMIT 1";  // Return only first invoice_detail row
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@invId", invId);
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                {
+                    adapter.Fill(dt);
+                }
+            }
+
+            return dt;
+        }
+
 
 
 

@@ -127,7 +127,7 @@
             this.btnSearchEmployee.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
             this.btnSearchEmployee.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchEmployee.Location = new System.Drawing.Point(834, 46);
-            this.btnSearchEmployee.Name = "button5";
+            this.btnSearchEmployee.Name = "btnSearchEmployee";
             this.btnSearchEmployee.Size = new System.Drawing.Size(152, 40);
             this.btnSearchEmployee.TabIndex = 38;
             this.btnSearchEmployee.Text = "ค้นหาพนักงาน";
@@ -139,7 +139,7 @@
             this.btnSearchProject.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
             this.btnSearchProject.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchProject.Location = new System.Drawing.Point(12, 46);
-            this.btnSearchProject.Name = "button4";
+            this.btnSearchProject.Name = "btnSearchProject";
             this.btnSearchProject.Size = new System.Drawing.Size(138, 40);
             this.btnSearchProject.TabIndex = 37;
             this.btnSearchProject.Text = "ค้นหาโครงการ";
@@ -376,7 +376,7 @@
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEdit.Location = new System.Drawing.Point(1362, 21);
-            this.btnEdit.Name = "button3";
+            this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(175, 58);
             this.btnEdit.TabIndex = 7;
             this.btnEdit.Text = "แก้ไขข้อมูล";
@@ -391,7 +391,7 @@
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.Location = new System.Drawing.Point(1145, 21);
-            this.btnSave.Name = "button2";
+            this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(175, 58);
             this.btnSave.TabIndex = 8;
             this.btnSave.Text = "บันทึกข้อมูล";

@@ -1,6 +1,6 @@
-﻿namespace JRSApplication
+﻿namespace JRSApplication.ProjectManager
 {
-    partial class CheckProjectPayments
+    partial class CheckProjectPay
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,11 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.searchboxControl1 = new JRSApplication.SearchboxControl();
-            this.dtgvInvoice = new System.Windows.Forms.DataGridView();
-            this.button4 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.btnSearchProject = new System.Windows.Forms.Button();
+            this.txtHeaderSearch = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.txtProjectManager = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
@@ -42,7 +39,9 @@
             this.label16 = new System.Windows.Forms.Label();
             this.txtProjectID = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
-            this.txtHeaderSearch = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.searchboxControl1 = new JRSApplication.SearchboxControl();
+            this.dtgvInvoice = new System.Windows.Forms.DataGridView();
             this.panel4 = new System.Windows.Forms.Panel();
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.txtIDCard = new System.Windows.Forms.TextBox();
@@ -51,6 +50,14 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.txtPhase = new System.Windows.Forms.TextBox();
+            this.txtProjectName2 = new System.Windows.Forms.TextBox();
+            this.txtContractNumber = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
             this.txtPaymentMethod = new System.Windows.Forms.TextBox();
             this.txtPaymentDate = new System.Windows.Forms.TextBox();
@@ -61,86 +68,43 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.txtPhase = new System.Windows.Forms.TextBox();
-            this.txtProjectName2 = new System.Windows.Forms.TextBox();
-            this.txtContractNumber = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.label15 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
             this.pictureBoxProof = new System.Windows.Forms.PictureBox();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).BeginInit();
+            this.label15 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label20 = new System.Windows.Forms.Label();
             this.panel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).BeginInit();
             this.panel4.SuspendLayout();
-            this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProof)).BeginInit();
             this.SuspendLayout();
             // 
-            // panel1
+            // btnSearchProject
             // 
-            this.panel1.Controls.Add(this.searchboxControl1);
-            this.panel1.Controls.Add(this.dtgvInvoice);
-            this.panel1.Controls.Add(this.button4);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.panel8);
-            this.panel1.Controls.Add(this.txtHeaderSearch);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1329, 776);
-            this.panel1.TabIndex = 0;
+            this.btnSearchProject.AutoSize = true;
+            this.btnSearchProject.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
+            this.btnSearchProject.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearchProject.Location = new System.Drawing.Point(224, 34);
+            this.btnSearchProject.Name = "btnSearchProject";
+            this.btnSearchProject.Size = new System.Drawing.Size(159, 40);
+            this.btnSearchProject.TabIndex = 40;
+            this.btnSearchProject.Text = "ค้นหาโครงการ";
+            this.btnSearchProject.UseVisualStyleBackColor = false;
+            this.btnSearchProject.Click += new System.EventHandler(this.btnSearchProject_Click_1);
             // 
-            // searchboxControl1
+            // txtHeaderSearch
             // 
-            this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.Location = new System.Drawing.Point(788, 180);
-            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxControl1.Name = "searchboxControl1";
-            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl1.TabIndex = 41;
-            // 
-            // dtgvInvoice
-            // 
-            this.dtgvInvoice.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvInvoice.Location = new System.Drawing.Point(28, 235);
-            this.dtgvInvoice.Name = "dtgvInvoice";
-            this.dtgvInvoice.Size = new System.Drawing.Size(1204, 327);
-            this.dtgvInvoice.TabIndex = 40;
-            this.dtgvInvoice.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvInvoice_CellContentClick);
-            // 
-            // button4
-            // 
-            this.button4.AutoSize = true;
-            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
-            this.button4.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(211, 39);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(159, 40);
-            this.button4.TabIndex = 38;
-            this.button4.Text = "ค้นหาโครงการ";
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.btnSearchProject_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(30, 170);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(188, 30);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "ข้อมูลการชำระเงิน";
+            this.txtHeaderSearch.AutoSize = true;
+            this.txtHeaderSearch.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHeaderSearch.Location = new System.Drawing.Point(52, 34);
+            this.txtHeaderSearch.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.txtHeaderSearch.Name = "txtHeaderSearch";
+            this.txtHeaderSearch.Size = new System.Drawing.Size(151, 30);
+            this.txtHeaderSearch.TabIndex = 39;
+            this.txtHeaderSearch.Text = "ค้นหาโครงการ";
             // 
             // panel8
             // 
@@ -152,10 +116,10 @@
             this.panel8.Controls.Add(this.label16);
             this.panel8.Controls.Add(this.txtProjectID);
             this.panel8.Controls.Add(this.label18);
-            this.panel8.Location = new System.Drawing.Point(19, 90);
+            this.panel8.Location = new System.Drawing.Point(33, 80);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(1512, 61);
-            this.panel8.TabIndex = 8;
+            this.panel8.TabIndex = 41;
             // 
             // txtProjectManager
             // 
@@ -245,16 +209,33 @@
             this.label18.TabIndex = 8;
             this.label18.Text = "รหัสโครงการ";
             // 
-            // txtHeaderSearch
+            // label1
             // 
-            this.txtHeaderSearch.AutoSize = true;
-            this.txtHeaderSearch.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtHeaderSearch.Location = new System.Drawing.Point(39, 39);
-            this.txtHeaderSearch.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.txtHeaderSearch.Name = "txtHeaderSearch";
-            this.txtHeaderSearch.Size = new System.Drawing.Size(151, 30);
-            this.txtHeaderSearch.TabIndex = 2;
-            this.txtHeaderSearch.Text = "ค้นหาโครงการ";
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(56, 192);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(188, 30);
+            this.label1.TabIndex = 42;
+            this.label1.Text = "ข้อมูลการชำระเงิน";
+            // 
+            // searchboxControl1
+            // 
+            this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.Location = new System.Drawing.Point(876, 183);
+            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl1.Name = "searchboxControl1";
+            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl1.TabIndex = 43;
+            // 
+            // dtgvInvoice
+            // 
+            this.dtgvInvoice.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvInvoice.Location = new System.Drawing.Point(57, 251);
+            this.dtgvInvoice.Name = "dtgvInvoice";
+            this.dtgvInvoice.Size = new System.Drawing.Size(1469, 327);
+            this.dtgvInvoice.TabIndex = 44;
             // 
             // panel4
             // 
@@ -266,10 +247,10 @@
             this.panel4.Controls.Add(this.label6);
             this.panel4.Controls.Add(this.label2);
             this.panel4.Controls.Add(this.label3);
-            this.panel4.Location = new System.Drawing.Point(3, 6);
+            this.panel4.Location = new System.Drawing.Point(32, 593);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(500, 295);
-            this.panel4.TabIndex = 6;
+            this.panel4.TabIndex = 45;
             // 
             // txtAddress
             // 
@@ -343,6 +324,91 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "ข้อมูลลูกค้า";
             // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.txtPhase);
+            this.panel5.Controls.Add(this.txtProjectName2);
+            this.panel5.Controls.Add(this.txtContractNumber);
+            this.panel5.Controls.Add(this.label10);
+            this.panel5.Controls.Add(this.label9);
+            this.panel5.Controls.Add(this.label8);
+            this.panel5.Controls.Add(this.label4);
+            this.panel5.Location = new System.Drawing.Point(538, 593);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(500, 295);
+            this.panel5.TabIndex = 46;
+            // 
+            // txtPhase
+            // 
+            this.txtPhase.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.txtPhase.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPhase.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPhase.Location = new System.Drawing.Point(180, 165);
+            this.txtPhase.Name = "txtPhase";
+            this.txtPhase.Size = new System.Drawing.Size(305, 35);
+            this.txtPhase.TabIndex = 13;
+            // 
+            // txtProjectName2
+            // 
+            this.txtProjectName2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.txtProjectName2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtProjectName2.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtProjectName2.Location = new System.Drawing.Point(180, 109);
+            this.txtProjectName2.Name = "txtProjectName2";
+            this.txtProjectName2.Size = new System.Drawing.Size(305, 35);
+            this.txtProjectName2.TabIndex = 12;
+            // 
+            // txtContractNumber
+            // 
+            this.txtContractNumber.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.txtContractNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtContractNumber.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtContractNumber.Location = new System.Drawing.Point(180, 55);
+            this.txtContractNumber.Name = "txtContractNumber";
+            this.txtContractNumber.Size = new System.Drawing.Size(305, 35);
+            this.txtContractNumber.TabIndex = 11;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(25, 164);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(74, 30);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "เฟสงาน";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(25, 109);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(103, 30);
+            this.label9.TabIndex = 9;
+            this.label9.Text = "ชื่อโครงการ";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(25, 54);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(110, 30);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "เลขที่สัญญา";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(175, 9);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(150, 30);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "ข้อมูลโครงการ";
+            // 
             // panel6
             // 
             this.panel6.Controls.Add(this.txtPaymentMethod);
@@ -354,10 +420,10 @@
             this.panel6.Controls.Add(this.label12);
             this.panel6.Controls.Add(this.label11);
             this.panel6.Controls.Add(this.label5);
-            this.panel6.Location = new System.Drawing.Point(1015, 6);
+            this.panel6.Location = new System.Drawing.Point(1044, 593);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(500, 295);
-            this.panel6.TabIndex = 8;
+            this.panel6.TabIndex = 47;
             // 
             // txtPaymentMethod
             // 
@@ -450,131 +516,14 @@
             this.label5.TabIndex = 6;
             this.label5.Text = "ข้อมูลการชำระเงิน";
             // 
-            // panel5
-            // 
-            this.panel5.Controls.Add(this.txtPhase);
-            this.panel5.Controls.Add(this.txtProjectName2);
-            this.panel5.Controls.Add(this.txtContractNumber);
-            this.panel5.Controls.Add(this.label10);
-            this.panel5.Controls.Add(this.label9);
-            this.panel5.Controls.Add(this.label8);
-            this.panel5.Controls.Add(this.label4);
-            this.panel5.Location = new System.Drawing.Point(509, 6);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(500, 295);
-            this.panel5.TabIndex = 7;
-            // 
-            // txtPhase
-            // 
-            this.txtPhase.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.txtPhase.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPhase.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPhase.Location = new System.Drawing.Point(180, 165);
-            this.txtPhase.Name = "txtPhase";
-            this.txtPhase.Size = new System.Drawing.Size(305, 35);
-            this.txtPhase.TabIndex = 13;
-            // 
-            // txtProjectName2
-            // 
-            this.txtProjectName2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.txtProjectName2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtProjectName2.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtProjectName2.Location = new System.Drawing.Point(180, 109);
-            this.txtProjectName2.Name = "txtProjectName2";
-            this.txtProjectName2.Size = new System.Drawing.Size(305, 35);
-            this.txtProjectName2.TabIndex = 12;
-            // 
-            // txtContractNumber
-            // 
-            this.txtContractNumber.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.txtContractNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtContractNumber.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtContractNumber.Location = new System.Drawing.Point(180, 55);
-            this.txtContractNumber.Name = "txtContractNumber";
-            this.txtContractNumber.Size = new System.Drawing.Size(305, 35);
-            this.txtContractNumber.TabIndex = 11;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(25, 164);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(74, 30);
-            this.label10.TabIndex = 10;
-            this.label10.Text = "เฟสงาน";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(25, 109);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(103, 30);
-            this.label9.TabIndex = 9;
-            this.label9.Text = "ชื่อโครงการ";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(25, 54);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(110, 30);
-            this.label8.TabIndex = 8;
-            this.label8.Text = "เลขที่สัญญา";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(175, 9);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(150, 30);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "ข้อมูลโครงการ";
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.panel4);
-            this.panel2.Controls.Add(this.panel5);
-            this.panel2.Controls.Add(this.panel6);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 776);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1329, 276);
-            this.panel2.TabIndex = 1;
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.label15);
-            this.panel3.Controls.Add(this.panel7);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(0, 1052);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1329, 929);
-            this.panel3.TabIndex = 2;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(10, 8);
-            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(212, 30);
-            this.label15.TabIndex = 10;
-            this.label15.Text = "หลักฐานการชำระเงิน";
-            // 
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.panel7.Controls.Add(this.pictureBoxProof);
-            this.panel7.Location = new System.Drawing.Point(344, 70);
+            this.panel7.Location = new System.Drawing.Point(342, 943);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(888, 515);
-            this.panel7.TabIndex = 9;
+            this.panel7.TabIndex = 48;
             // 
             // pictureBoxProof
             // 
@@ -584,83 +533,117 @@
             this.pictureBoxProof.TabIndex = 0;
             this.pictureBoxProof.TabStop = false;
             // 
-            // CheckProjectPayments
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(28, 908);
+            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(212, 30);
+            this.label15.TabIndex = 14;
+            this.label15.Text = "หลักฐานการชำระเงิน";
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.panel1.Location = new System.Drawing.Point(0, 153);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1567, 10);
+            this.panel1.TabIndex = 49;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Location = new System.Drawing.Point(651, 1526);
+            this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(0, 30);
+            this.label20.TabIndex = 50;
+            // 
+            // CheckProjectPay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.label20);
             this.Controls.Add(this.panel1);
-            this.Name = "CheckProjectPayments";
-            this.Size = new System.Drawing.Size(1329, 954);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.panel7);
+            this.Controls.Add(this.panel6);
+            this.Controls.Add(this.panel5);
+            this.Controls.Add(this.panel4);
+            this.Controls.Add(this.dtgvInvoice);
+            this.Controls.Add(this.searchboxControl1);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.panel8);
+            this.Controls.Add(this.btnSearchProject);
+            this.Controls.Add(this.txtHeaderSearch);
+            this.Name = "CheckProjectPay";
+            this.Size = new System.Drawing.Size(1550, 1499);
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            this.panel6.ResumeLayout(false);
-            this.panel6.PerformLayout();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
             this.panel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProof)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button btnSearchProject;
         private System.Windows.Forms.Label txtHeaderSearch;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox txtPaymentMethod;
-        private System.Windows.Forms.TextBox txtPaymentDate;
-        private System.Windows.Forms.TextBox txtEmpName;
-        private System.Windows.Forms.TextBox txtInvoiceNo;
-        private System.Windows.Forms.TextBox txtPhase;
-        private System.Windows.Forms.TextBox txtProjectName2;
-        private System.Windows.Forms.TextBox txtContractNumber;
-        private System.Windows.Forms.TextBox txtAddress;
-        private System.Windows.Forms.TextBox txtIDCard;
-        private System.Windows.Forms.TextBox txtCustomer;
-        private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.TextBox txtProjectID;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.TextBox txtProjectManager;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.TextBox txtCustomername;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox txtProjectname;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.DataGridView dtgvInvoice;
+        private System.Windows.Forms.TextBox txtProjectID;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label1;
         private SearchboxControl searchboxControl1;
+        private System.Windows.Forms.DataGridView dtgvInvoice;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.TextBox txtAddress;
+        private System.Windows.Forms.TextBox txtIDCard;
+        private System.Windows.Forms.TextBox txtCustomer;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.TextBox txtPhase;
+        private System.Windows.Forms.TextBox txtProjectName2;
+        private System.Windows.Forms.TextBox txtContractNumber;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.TextBox txtPaymentMethod;
+        private System.Windows.Forms.TextBox txtPaymentDate;
+        private System.Windows.Forms.TextBox txtEmpName;
+        private System.Windows.Forms.TextBox txtInvoiceNo;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.PictureBox pictureBoxProof;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label20;
     }
 }

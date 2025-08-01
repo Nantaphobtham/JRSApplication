@@ -62,62 +62,85 @@ namespace JRSApplication
                 else if (searchType == "Supplier")
                 {
                     query = @"SELECT sup_id AS 'ID', sup_name AS 'ชื่อบริษัท', sup_juristic AS 'เลขทะเบียนนิติบุคคล',
-                              sup_tel AS 'เบอร์โทร', sup_address AS 'ที่อยู่', sup_email AS 'อีเมล'
-                              FROM supplier
-                              WHERE sup_name LIKE @Keyword OR sup_juristic LIKE @Keyword";
+                      sup_tel AS 'เบอร์โทร', sup_address AS 'ที่อยู่', sup_email AS 'อีเมล'
+                      FROM supplier
+                      WHERE sup_name LIKE @Keyword OR sup_juristic LIKE @Keyword";
                 }
                 else if (searchType == "Project")
                 {
                     query = @"
-                            SELECT 
-                                p.pro_id AS 'รหัสโครงการ',
-                                p.pro_name AS 'ชื่อโครงการ',
-                                p.pro_number AS 'เลขที่สัญญา',
-                                p.pro_address AS 'สถานที่',
-                                p.pro_budget AS 'งบประมาณ',
-                                c.cus_id AS 'รหัสลูกค้า',  
-                                CONCAT(c.cus_name, ' ', c.cus_lname) AS 'ลูกค้า',
-                                c.cus_tel AS 'เบอร์โทร',
-                                c.cus_email AS 'อีเมล',
-                                CONCAT(e.emp_name, ' ', e.emp_lname) AS 'พนักงานดูแล'
-                            FROM project p
-                            LEFT JOIN customer c ON p.cus_id = c.cus_id
-                            LEFT JOIN employee e ON p.emp_id = e.emp_id
-                            WHERE p.pro_name LIKE @Keyword OR p.pro_id LIKE @Keyword
-                        ";
+                    SELECT 
+                        p.pro_id AS 'รหัสโครงการ',
+                        p.pro_name AS 'ชื่อโครงการ',
+                        p.pro_number AS 'เลขที่สัญญา',
+                        p.pro_address AS 'สถานที่',
+                        p.pro_budget AS 'งบประมาณ',
+                        c.cus_id AS 'รหัสลูกค้า',  
+                        CONCAT(c.cus_name, ' ', c.cus_lname) AS 'ลูกค้า',
+                        c.cus_tel AS 'เบอร์โทร',
+                        c.cus_email AS 'อีเมล',
+                        CONCAT(e.emp_name, ' ', e.emp_lname) AS 'พนักงานดูแล'
+                    FROM project p
+                    LEFT JOIN customer c ON p.cus_id = c.cus_id
+                    LEFT JOIN employee e ON p.emp_id = e.emp_id
+                    WHERE p.pro_name LIKE @Keyword OR p.pro_id LIKE @Keyword
+                ";
                 }
                 else if (searchType == "Invoice")
                 {
                     query = @"
-                            SELECT 
-                                inv_no AS 'เลขที่ใบแจ้งหนี้',
-                                inv_date AS 'วันที่ออก',
-                                inv_status AS 'สถานะ',
-                                inv_method AS 'วิธีชำระเงิน',
-                                cus_id AS 'รหัสลูกค้า',
-                                pro_id AS 'รหัสโครงการ',
-                                emp_id AS 'รหัสพนักงาน',
-                                inv_duedate AS 'กำหนดชำระ',
-                                paid_date AS 'วันที่ชำระ'
-                            FROM invoice
-                            WHERE pro_id LIKE @Keyword OR inv_no LIKE @Keyword
-                            ";
+                SELECT 
+                    inv_no AS 'เลขที่ใบแจ้งหนี้',
+                    inv_date AS 'วันที่ออก',
+                    inv_status AS 'สถานะ',
+                    inv_method AS 'วิธีชำระเงิน',
+                    cus_id AS 'รหัสลูกค้า',
+                    pro_id AS 'รหัสโครงการ',
+                    emp_id AS 'รหัสพนักงาน',
+                    inv_duedate AS 'กำหนดชำระ',
+                    paid_date AS 'วันที่ชำระ'
+                FROM invoice
+                WHERE pro_id LIKE @Keyword OR inv_no LIKE @Keyword";
+                }
+                else if (searchType == "UnpaidInvoiceByProject")
+                {
+                    query = @"
+                SELECT 
+                    inv_id, inv_no, inv_date, inv_duedate, 
+                    pro_id, cus_id, emp_id, inv_method, inv_status
+                FROM invoice
+                WHERE (inv_status IS NULL OR inv_status = 'Draft')
+                AND pro_id = @projectId";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@projectId", keyword); // ✅ use direct ID match
+
+                        using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                        {
+                            adapter.Fill(dt);
+                        }
+                    }
+
+                    return dt; // ✅ exit early here
                 }
 
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@Keyword", "%" + keyword + "%");
-                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                if (string.IsNullOrWhiteSpace(query))
+                        return dt; // or throw new Exception("Invalid search type");
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-                        adapter.Fill(dt);
+                        cmd.Parameters.AddWithValue("@Keyword", "%" + keyword + "%");
+
+                        using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                        {
+                            adapter.Fill(dt);
+                        }
                     }
                 }
+
+                return dt;
             }
-
-            return dt;
-        }
-
-
+        
 
         public DataTable GetAllInvoices()
         {
@@ -152,19 +175,24 @@ namespace JRSApplication
 
         public DataTable GetDraftInvoicesByProject(string projectId)
         {
-            string connStr = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
             string query = @"
-        SELECT inv_id, inv_no, inv_date, inv_duedate, pro_id, cus_id, phase_id
-        FROM invoice
-        WHERE (inv_status IS NULL OR inv_status = 'Draft')
-        AND pro_id = @projectId";
+        SELECT 
+            i.inv_id,
+            i.inv_no,
+            i.inv_date,
+            i.inv_duedate,
+            i.pro_id,
+            i.phase_id,
+            i.cus_id
+        FROM invoice i
+        WHERE (i.inv_status IS NULL OR i.inv_status = 'Draft')
+        AND i.pro_id = @projectId
+        ORDER BY i.inv_date DESC";
 
-            using (MySqlConnection conn = new MySqlConnection(connStr))
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
             {
                 cmd.Parameters.AddWithValue("@projectId", projectId);
-                conn.Open();
-
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                 {
                     DataTable dt = new DataTable();
@@ -173,6 +201,7 @@ namespace JRSApplication
                 }
             }
         }
+
 
 
         public DataTable GetCustomerById(string cusId)

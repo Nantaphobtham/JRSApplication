@@ -150,11 +150,59 @@ namespace JRSApplication.Data_Access_Layer
 
             return phases;
         }
+        public (decimal budget, string detail) GetPhaseBudgetAndDetail(string phaseId)
+        {
+            decimal budget = 0;
+            string detail = "";
 
-        
+            string query = "SELECT phase_budget, phase_detail FROM project_phase WHERE phase_id = @phaseId";
 
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@phaseId", phaseId);
+                conn.Open();
 
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        budget = reader.GetDecimal("phase_budget");
+                        detail = reader.GetString("phase_detail");
+                    }
+                }
+            }
 
+            return (budget, detail);
+        }
+        public class PhaseData
+        {
+            public decimal Budget { get; set; }
+            public string Detail { get; set; }
+        }
+
+        public PhaseData GetPhaseDataById(string phaseId)
+        {
+            string query = "SELECT phase_budget, phase_detail FROM project_phase WHERE phase_id = @phaseId";
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@phaseId", phaseId);
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new PhaseData
+                        {
+                            Budget = reader.GetDecimal("phase_budget"),
+                            Detail = reader.GetString("phase_detail")
+                        };
+                    }
+                }
+            }
+            return null;
+        }
 
 
     }

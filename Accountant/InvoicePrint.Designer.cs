@@ -53,7 +53,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label10 = new System.Windows.Forms.Label();
-            this.tblHeader = new System.Windows.Forms.TableLayoutPanel();
+            this.lblCustomer = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -69,7 +69,7 @@
             this.tblBottomRight.SuspendLayout();
             this.tblReceiptItems.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.tblHeader.SuspendLayout();
+            this.lblCustomer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -107,7 +107,7 @@
             this.panel1.Controls.Add(this.tblBottomRight);
             this.panel1.Controls.Add(this.tblReceiptItems);
             this.panel1.Controls.Add(this.tableLayoutPanel2);
-            this.panel1.Controls.Add(this.tblHeader);
+            this.panel1.Controls.Add(this.lblCustomer);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label3);
@@ -175,7 +175,7 @@
             this.label22.AutoSize = true;
             this.label22.BackColor = System.Drawing.SystemColors.Control;
             this.label22.Font = new System.Drawing.Font("Angsana New", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(724, 692);
+            this.label22.Location = new System.Drawing.Point(698, 692);
             this.label22.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(92, 26);
@@ -199,7 +199,7 @@
             this.label23.AutoSize = true;
             this.label23.BackColor = System.Drawing.SystemColors.Control;
             this.label23.Font = new System.Drawing.Font("Angsana New", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(294, 692);
+            this.label23.Location = new System.Drawing.Point(274, 692);
             this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(85, 26);
@@ -230,8 +230,8 @@
             this.tblLeftBottom.Name = "tblLeftBottom";
             this.tblLeftBottom.RowCount = 1;
             this.tblLeftBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblLeftBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 104F));
-            this.tblLeftBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 104F));
+            this.tblLeftBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 134F));
+            this.tblLeftBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 134F));
             this.tblLeftBottom.Size = new System.Drawing.Size(416, 135);
             this.tblLeftBottom.TabIndex = 64;
             // 
@@ -416,22 +416,22 @@
             this.label10.TabIndex = 59;
             this.label10.Text = "อ้างอิง";
             // 
-            // tblHeader
+            // lblCustomer
             // 
-            this.tblHeader.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.tblHeader.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tblHeader.ColumnCount = 1;
-            this.tblHeader.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblHeader.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tblHeader.Controls.Add(this.label6, 0, 0);
-            this.tblHeader.Location = new System.Drawing.Point(77, 190);
-            this.tblHeader.Name = "tblHeader";
-            this.tblHeader.RowCount = 1;
-            this.tblHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));
-            this.tblHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));
-            this.tblHeader.Size = new System.Drawing.Size(532, 131);
-            this.tblHeader.TabIndex = 60;
+            this.lblCustomer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.lblCustomer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.lblCustomer.ColumnCount = 1;
+            this.lblCustomer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.lblCustomer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.lblCustomer.Controls.Add(this.label6, 0, 0);
+            this.lblCustomer.Location = new System.Drawing.Point(77, 190);
+            this.lblCustomer.Name = "lblCustomer";
+            this.lblCustomer.RowCount = 1;
+            this.lblCustomer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.lblCustomer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));
+            this.lblCustomer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));
+            this.lblCustomer.Size = new System.Drawing.Size(532, 131);
+            this.lblCustomer.TabIndex = 60;
             // 
             // label6
             // 
@@ -514,12 +514,13 @@
             this.button1.TabIndex = 57;
             this.button1.Text = "พิมพ์ใบเสร็จรับเงิน";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btnPrintReceipt_Click);
             // 
             // dataGridView1
             // 
             this.dataGridView1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(213, 3);
+            this.dataGridView1.Location = new System.Drawing.Point(222, 3);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1200, 954);
             this.dataGridView1.TabIndex = 56;
@@ -550,8 +551,8 @@
             this.tblReceiptItems.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.tblHeader.ResumeLayout(false);
-            this.tblHeader.PerformLayout();
+            this.lblCustomer.ResumeLayout(false);
+            this.lblCustomer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -585,7 +586,7 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TableLayoutPanel tblHeader;
+        private System.Windows.Forms.TableLayoutPanel lblCustomer;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
