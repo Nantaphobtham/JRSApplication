@@ -135,6 +135,8 @@ namespace JRSApplication.ProjectManager
                         using (MemoryStream ms = new MemoryStream(imageBytes))
                         {
                             pictureBoxProof.Image = Image.FromStream(ms);
+                            pictureBoxProof.SizeMode = PictureBoxSizeMode.Zoom;
+
                         }
                     }
                     else
