@@ -67,6 +67,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnInsertPicture = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.pnlProjectDetail.SuspendLayout();
             this.pnlWorkHistory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPhaseWorkingHistory)).BeginInit();
@@ -266,6 +267,7 @@
             // 
             // dtgvDetailSubcontractorWork
             // 
+            this.dtgvDetailSubcontractorWork.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dtgvDetailSubcontractorWork.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgvDetailSubcontractorWork.Location = new System.Drawing.Point(3, 34);
             this.dtgvDetailSubcontractorWork.Name = "dtgvDetailSubcontractorWork";
@@ -416,6 +418,7 @@
             this.pnlPictureDescription.Controls.Add(this.txtPictureDescription);
             this.pnlPictureDescription.Controls.Add(this.label4);
             this.pnlPictureDescription.Controls.Add(this.btnInsertPicture);
+            this.pnlPictureDescription.Controls.Add(this.label7);
             this.pnlPictureDescription.Controls.Add(this.label1);
             this.pnlPictureDescription.Location = new System.Drawing.Point(3, 250);
             this.pnlPictureDescription.Name = "pnlPictureDescription";
@@ -429,13 +432,14 @@
             this.dtgvPicturelist.Name = "dtgvPicturelist";
             this.dtgvPicturelist.Size = new System.Drawing.Size(759, 376);
             this.dtgvPicturelist.TabIndex = 11;
+            this.dtgvPicturelist.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvPicturelist_CellClick);
             // 
             // pictureBoxPreview
             // 
             this.pictureBoxPreview.BackColor = System.Drawing.Color.Gray;
             this.pictureBoxPreview.Location = new System.Drawing.Point(829, 38);
             this.pictureBoxPreview.Name = "pictureBoxPreview";
-            this.pictureBoxPreview.Size = new System.Drawing.Size(558, 203);
+            this.pictureBoxPreview.Size = new System.Drawing.Size(558, 183);
             this.pictureBoxPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxPreview.TabIndex = 6;
             this.pictureBoxPreview.TabStop = false;
@@ -451,6 +455,7 @@
             this.btnEditPicture.TabIndex = 5;
             this.btnEditPicture.Text = "แก้ไขรูปภาพ";
             this.btnEditPicture.UseVisualStyleBackColor = false;
+            this.btnEditPicture.Click += new System.EventHandler(this.btnEditPicture_Click);
             // 
             // btnAddPicture
             // 
@@ -470,10 +475,10 @@
             this.txtPictureDescription.BackColor = System.Drawing.Color.White;
             this.txtPictureDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPictureDescription.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPictureDescription.Location = new System.Drawing.Point(829, 293);
+            this.txtPictureDescription.Location = new System.Drawing.Point(829, 294);
             this.txtPictureDescription.Multiline = true;
             this.txtPictureDescription.Name = "txtPictureDescription";
-            this.txtPictureDescription.Size = new System.Drawing.Size(558, 75);
+            this.txtPictureDescription.Size = new System.Drawing.Size(558, 74);
             this.txtPictureDescription.TabIndex = 4;
             // 
             // label4
@@ -491,7 +496,7 @@
             // 
             this.btnInsertPicture.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
             this.btnInsertPicture.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnInsertPicture.Location = new System.Drawing.Point(829, 247);
+            this.btnInsertPicture.Location = new System.Drawing.Point(829, 248);
             this.btnInsertPicture.Name = "btnInsertPicture";
             this.btnInsertPicture.Size = new System.Drawing.Size(558, 40);
             this.btnInsertPicture.TabIndex = 0;
@@ -509,6 +514,18 @@
             this.label1.Size = new System.Drawing.Size(148, 30);
             this.label1.TabIndex = 2;
             this.label1.Text = "รายการรูปภาพ";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.Blue;
+            this.label7.Location = new System.Drawing.Point(825, 224);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(561, 21);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "โปรดเลือกไฟล์รูปภาพที่มีขนาดไม่เกิน 5 MB ต่อไฟล์ และจำกัดจำนวนไม่เกิน 10 รูปภาพต่" +
+    "อครั้ง";
             // 
             // UpdateProjectPhase
             // 
@@ -575,5 +592,6 @@
         private System.Windows.Forms.DataGridView dtgvPicturelist;
         private System.Windows.Forms.ComboBox cmbWorkstatusOfSupplier;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
     }
 }

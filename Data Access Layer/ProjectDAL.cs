@@ -236,8 +236,8 @@ namespace JRSApplication.Data_Access_Layer
                         foreach (var phase in phases)
                         {
                             string sqlPhase = @"
-                                    INSERT INTO project_phase (phase_no, phase_detail, phase_budget, phase_percent, pro_id)
-                                    VALUES (@PhaseNo, @PhaseDetail, @PhaseBudget, @PhasePercent, @ProjectID)";
+                                    INSERT INTO project_phase (phase_no, phase_detail, phase_budget, phase_percent, pro_id, phase_status)
+                                    VALUES (@PhaseNo, @PhaseDetail, @PhaseBudget, @PhasePercent, @ProjectID , @PhaseStatus)";
 
                             using (MySqlCommand cmdPhase = new MySqlCommand(sqlPhase, conn, transaction))
                             {
@@ -246,6 +246,7 @@ namespace JRSApplication.Data_Access_Layer
                                 cmdPhase.Parameters.AddWithValue("@PhaseBudget", phase.PhaseBudget);
                                 cmdPhase.Parameters.AddWithValue("@PhasePercent", phase.PhasePercent);
                                 cmdPhase.Parameters.AddWithValue("@ProjectID", project.ProjectID);
+                                cmdPhase.Parameters.AddWithValue("@PhaseStatus", phase.PhaseStatus?? "waiting"); // กำหนดค่าเริ่มต้นเป็น "รอเริ่มงาน" "waiting"
 
                                 cmdPhase.ExecuteNonQuery();
                             }
@@ -447,10 +448,10 @@ namespace JRSApplication.Data_Access_Layer
                 {
                     // 1. Delete phase_working
                     string deleteWorkSql = @"
-                DELETE pw 
-                FROM phase_working pw
-                JOIN project_phase pp ON pw.phase_id = pp.phase_id
-                WHERE pp.pro_id = @ProjectID";
+                        DELETE pw 
+                        FROM phase_working pw
+                        JOIN project_phase pp ON pw.phase_id = pp.phase_id
+                        WHERE pp.pro_id = @ProjectID";
 
                     using (MySqlCommand cmd = new MySqlCommand(deleteWorkSql, conn, transaction))
                     {
@@ -473,6 +474,7 @@ namespace JRSApplication.Data_Access_Layer
                         cmd.Parameters.AddWithValue("@ProjectID", projectId);
                         cmd.ExecuteNonQuery();
                     }
+                    // Delete somthing more
 
                     transaction.Commit();
                     return true;
@@ -486,5 +488,6 @@ namespace JRSApplication.Data_Access_Layer
         }
 
 
+      
     }
 }

@@ -363,7 +363,7 @@ namespace JRSApplication
         {
             txtMaterialName.Clear();
             txtQuantity.Clear();
-            txtUnit.Clear();
+            //txtUnit.Clear(); // เปลี่ยนจุดนี้เป็น cmb แต่ยังใช้ txtUnit เพื่อความสะดวก
             txtUnitPrice.Clear();
             txtTotalPrice.Clear();
         }

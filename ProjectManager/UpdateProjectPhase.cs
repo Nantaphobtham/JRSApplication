@@ -159,38 +159,6 @@ namespace JRSApplication
             grid.AllowUserToAddRows = false;
             grid.AllowUserToResizeRows = false;
             //--------------------------------------------
-            grid2.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            grid2.MultiSelect = false;
-
-            grid2.BorderStyle = BorderStyle.None;
-            grid2.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
-            grid2.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            grid2.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
-            grid2.DefaultCellStyle.SelectionForeColor = Color.White;
-            grid2.BackgroundColor = Color.White;
-
-            grid2.EnableHeadersVisualStyles = false;
-            grid2.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            grid2.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
-            grid2.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            grid2.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
-            grid2.ColumnHeadersHeight = 30;
-
-            grid2.DefaultCellStyle.Font = new Font("Segoe UI", 12);
-            grid2.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            grid2.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            grid2.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
-
-            grid2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            grid2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            grid2.RowTemplate.Height = 30;
-
-            grid2.GridColor = Color.LightGray;
-            grid2.RowHeadersVisible = false;
-
-            grid2.ReadOnly = true;
-            grid2.AllowUserToAddRows = false;
-            grid2.AllowUserToResizeRows = false;
             
         }
 
@@ -277,8 +245,13 @@ namespace JRSApplication
         {
             var dal = new PhaseWorkDAL();
             DataTable dt = dal.GetAssignmentsByPhase(phaseId);
+
+            InitDetailSubcontractorGrid();
             dtgvDetailSubcontractorWork.DataSource = dt;
             dtgvDetailSubcontractorWork.ClearSelection(); // <-- ไม่มีแถวถูกเลือกจนกว่าจะคลิก
+
+            
+
         }
         //โหลด status
         private void LoadStatusComboBox()
@@ -367,7 +340,7 @@ namespace JRSApplication
             string oldAssignStatus = ""; // อ่านค่าจาก grid หรือ field ที่เก็บไว้
             if (dtgvDetailSubcontractorWork.SelectedRows.Count > 0)
             {
-                oldAssignStatus = dtgvDetailSubcontractorWork.SelectedRows[0].Cells["สถานะงาน"].Value?.ToString();
+                oldAssignStatus = dtgvDetailSubcontractorWork.SelectedRows[0].Cells["Status"].Value?.ToString();
             }
             string newAssignStatus = GetSelectedStatus(cmbWorkstatusOfSupplier);
 
@@ -408,7 +381,7 @@ namespace JRSApplication
             // เตรียมข้อมูล
             int phaseId = Convert.ToInt32(cmbSelectPhase.SelectedValue);
             string workStatus = GetSelectedStatus(cmbWorkStatus);
-            string supplierAssignmentId = dtgvDetailSubcontractorWork.SelectedRows[0].Cells["เลขที่งาน"].Value.ToString();
+            string supplierAssignmentId = dtgvDetailSubcontractorWork.SelectedRows[0].Cells["AssignID"].Value.ToString();
             string assignStatus = GetSelectedStatus(cmbWorkstatusOfSupplier);
 
             // เช็ค role
@@ -470,11 +443,29 @@ namespace JRSApplication
                 dlg.Filter = "Image Files|*.jpg;*.jpeg;*.png;";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
+                    // เช็คขนาดไฟล์ (3MB)
+                    FileInfo fi = new FileInfo(dlg.FileName);
+                    long maxSizeBytes = 5 * 1024 * 1024; // 3 MB
+
+                    if (fi.Length > maxSizeBytes)
+                    {
+                        MessageBox.Show("ขนาดไฟล์รูปภาพต้องไม่เกิน 3 MB", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // เช็คจำนวนรูปภาพที่แนบ (ไม่เกิน 10 รูป)
+                    if (pictures.Count >= 10)
+                    {
+                        MessageBox.Show("ไม่สามารถแนบรูปภาพได้เกิน 10 รูปต่อครั้ง", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     pictureBoxPreview.Image = Image.FromFile(dlg.FileName);
                     pictureBoxPreview.SizeMode = PictureBoxSizeMode.Zoom;
                 }
             }
         }
+
         private void InitGrid()
         {
             dtgvPicturelist.AutoGenerateColumns = false;
@@ -511,42 +502,91 @@ namespace JRSApplication
         }
         private void btnAddPicture_Click(object sender, EventArgs e)
         {
-            if (pictureBoxPreview.Image == null)
+            if (!isEditPictureMode)
             {
-                MessageBox.Show("กรุณาเลือกรูปภาพก่อน");
-                return;
+                if (pictureBoxPreview.Image == null)
+                {
+                    MessageBox.Show("กรุณาเลือกรูปภาพก่อน");
+                    return;
+                }
+                if (pictures.Count > 10)
+                {
+                    MessageBox.Show("ไม่สามารถบันทึกรูปภาพเกิน 10 รูปได้", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // แปลงภาพเป็น byte[]
+                byte[] imageBytes;
+                using (var ms = new MemoryStream())
+                {
+                    pictureBoxPreview.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    imageBytes = ms.ToArray();
+                }
+
+                // เพิ่มข้อมูลลง List
+                var pic = new WorkingPicture
+                {
+                    PicNo = pictures.Count + 1,
+                    PictureData = imageBytes,
+                    Description = txtPictureDescription.Text == "คำอธิบายรูปภาพ" ? "" : txtPictureDescription.Text,
+                    // PicName, CreatedAt ใส่เพิ่มได้
+                };
+                pictures.Add(pic);
+
+                // เคลียร์รูปตัวอย่าง
+                if (pictureBoxPreview.Image != null)
+                {
+                    pictureBoxPreview.Image.Dispose();
+                    pictureBoxPreview.Image = null;
+                }
+
+                // เคลียร์กล่องคำอธิบาย (รีเซ็ต placeholder)
+                txtPictureDescription.Text = "คำอธิบายรูปภาพ";
+                txtPictureDescription.ForeColor = Color.Gray;
+                // อัปเดต Grid
+                RefreshPictureGrid();
+            }
+            else
+            {
+                // Logic แก้ไขรูปภาพ
+                var pic = pictures.FirstOrDefault(p => p.PicNo == editingPicNo);
+                if (pic != null)
+                {
+                    // แก้ไข description
+                    pic.Description = txtPictureDescription.Text == "คำอธิบายรูปภาพ" ? "" : txtPictureDescription.Text;
+                    // แก้ไขรูปถ้าเลือกใหม่
+                    if (pictureBoxPreview.Image != null)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            pictureBoxPreview.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                            pic.PictureData = ms.ToArray();
+                        }
+                    }
+                    if (pictureBoxPreview.Image != null)
+                    {
+                        pictureBoxPreview.Image.Dispose();
+                        pictureBoxPreview.Image = null;
+                    }
+
+                    // เคลียร์กล่องคำอธิบาย (รีเซ็ต placeholder)
+                    txtPictureDescription.Text = "คำอธิบายรูปภาพ";
+                    txtPictureDescription.ForeColor = Color.Gray;
+                    btnAddPicture.Enabled = true;
+                    //btnInsertPicture.Enabled = true;
+                    RefreshPictureGrid();
+                    MessageBox.Show("บันทึกการแก้ไขสำเร็จ!");
+                }
+                // Reset State กลับเป็นปกติ
+                isEditPictureMode = false;
+                editingPicNo = -1;
+                btnAddPicture.Text = "เพิ่มรูปภาพ";
+                txtPictureDescription.ReadOnly = true;
+                btnInsertPicture.Enabled = true;
+                // ล้าง input preview ด้วย (ถ้าต้องการ)
             }
 
-            // แปลงภาพเป็น byte[]
-            byte[] imageBytes;
-            using (var ms = new MemoryStream())
-            {
-                pictureBoxPreview.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                imageBytes = ms.ToArray();
-            }
 
-            // เพิ่มข้อมูลลง List
-            var pic = new WorkingPicture
-            {
-                PicNo = pictures.Count + 1,
-                PictureData = imageBytes,
-                Description = txtPictureDescription.Text == "คำอธิบายรูปภาพ" ? "" : txtPictureDescription.Text,
-                // PicName, CreatedAt ใส่เพิ่มได้
-            };
-            pictures.Add(pic);
-
-            // เคลียร์รูปตัวอย่าง
-            if (pictureBoxPreview.Image != null)
-            {
-                pictureBoxPreview.Image.Dispose();
-                pictureBoxPreview.Image = null;
-            }
-
-            // เคลียร์กล่องคำอธิบาย (รีเซ็ต placeholder)
-            txtPictureDescription.Text = "คำอธิบายรูปภาพ";
-            txtPictureDescription.ForeColor = Color.Gray;
-            // อัปเดต Grid
-            RefreshPictureGrid();
         }
 
         private void RefreshPictureGrid()
@@ -648,5 +688,120 @@ namespace JRSApplication
             dtgvPhaseWorkingHistory.ClearSelection();
         }
 
+        private void InitDetailSubcontractorGrid()
+        {
+            dtgvDetailSubcontractorWork.AutoGenerateColumns = false;
+            dtgvDetailSubcontractorWork.Columns.Clear();
+
+            dtgvDetailSubcontractorWork.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "AssignID",
+                HeaderText = "เลขที่งาน",
+                DataPropertyName = "เลขที่งาน"
+            });
+            dtgvDetailSubcontractorWork.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "Description",
+                HeaderText = "รายละเอียดงาน",
+                DataPropertyName = "รายละเอียดงาน"
+            });
+            dtgvDetailSubcontractorWork.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "StartDate",
+                HeaderText = "วันเริ่มต้น",
+                DataPropertyName = "วันเริ่มต้น"
+            });
+            dtgvDetailSubcontractorWork.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "DueDate",
+                HeaderText = "วันครบกำหนด",
+                DataPropertyName = "วันครบกำหนด"
+            });
+            dtgvDetailSubcontractorWork.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "Status",
+                HeaderText = "สถานะงาน",
+                DataPropertyName = "สถานะงาน"
+            });
+
+            // ✅ Custom Styling
+            dtgvDetailSubcontractorWork.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dtgvDetailSubcontractorWork.BorderStyle = BorderStyle.None;
+            dtgvDetailSubcontractorWork.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dtgvDetailSubcontractorWork.EnableHeadersVisualStyles = false;
+
+            dtgvDetailSubcontractorWork.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            dtgvDetailSubcontractorWork.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dtgvDetailSubcontractorWork.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            dtgvDetailSubcontractorWork.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvDetailSubcontractorWork.ColumnHeadersHeight = 42;
+
+            dtgvDetailSubcontractorWork.DefaultCellStyle.BackColor = Color.White;
+            dtgvDetailSubcontractorWork.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dtgvDetailSubcontractorWork.DefaultCellStyle.ForeColor = Color.Black;
+            dtgvDetailSubcontractorWork.DefaultCellStyle.Font = new Font("Segoe UI", 13, FontStyle.Regular);
+            dtgvDetailSubcontractorWork.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dtgvDetailSubcontractorWork.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
+            dtgvDetailSubcontractorWork.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            
+
+            dtgvDetailSubcontractorWork.GridColor = Color.LightGray;
+            dtgvDetailSubcontractorWork.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgvDetailSubcontractorWork.RowTemplate.Height = 42;
+            dtgvDetailSubcontractorWork.RowHeadersVisible = false;
+            dtgvDetailSubcontractorWork.ReadOnly = true;
+            dtgvDetailSubcontractorWork.MultiSelect = false;
+            dtgvDetailSubcontractorWork.AllowUserToAddRows = false;
+            dtgvDetailSubcontractorWork.AllowUserToResizeRows = false;
+        }
+        private bool isEditPictureMode = false;
+        private int editingPicNo = -1;
+        private void dtgvPicturelist_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // ป้องกันกรณี user คลิก header หรือ cell ว่าง
+            if (e.RowIndex < 0) return;
+
+            // 1. หา PicNo จาก row ที่ถูกคลิก
+            int picNo = Convert.ToInt32(dtgvPicturelist.Rows[e.RowIndex].Cells["PicNo"].Value);
+
+            // 2. หา WorkingPicture จาก list
+            var pic = pictures.FirstOrDefault(p => p.PicNo == picNo);
+            if (pic != null)
+            {
+                // 3. โหลดรูปใส่ preview
+                if (pictureBoxPreview.Image != null)
+                {
+                    pictureBoxPreview.Image.Dispose();
+                    pictureBoxPreview.Image = null;
+                }
+                pictureBoxPreview.Image = ByteArrayToImage(pic.PictureData);
+                pictureBoxPreview.SizeMode = PictureBoxSizeMode.Zoom;
+
+                // 4. ใส่ description กลับไป textbox
+                txtPictureDescription.Text = string.IsNullOrWhiteSpace(pic.Description) ? "คำอธิบายรูปภาพ" : pic.Description;
+                txtPictureDescription.ForeColor = Color.Black;
+            }
+
+            btnAddPicture.Enabled = false; // ปิดปุ่มเพิ่มรูปเมื่อมีการเลือก
+            btnInsertPicture.Enabled = false; // ปิดปุ่มเลือกภาพ
+            txtPictureDescription.ReadOnly = true; // ปิดการแก้ไข description
+        }
+
+        private void btnEditPicture_Click(object sender, EventArgs e)
+        {
+            if (dtgvPicturelist.SelectedRows.Count > 0)
+            {
+                int picNo = Convert.ToInt32(dtgvPicturelist.SelectedRows[0].Cells["PicNo"].Value);
+                editingPicNo = picNo;
+                isEditPictureMode = true;
+                btnAddPicture.Text = "บันทึกแก้ไข"; // เปลี่ยนชื่อปุ่ม
+                                                    // เปิดให้แก้ไข textbox และปุ่มเลือกภาพ
+                txtPictureDescription.ReadOnly = false;
+                btnInsertPicture.Enabled = true;
+                btnAddPicture.Enabled = true;
+            }
+        }
     }
 }

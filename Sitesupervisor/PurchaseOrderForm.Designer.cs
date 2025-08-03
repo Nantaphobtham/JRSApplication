@@ -50,7 +50,6 @@
             this.label15 = new System.Windows.Forms.Label();
             this.txtTotalPrice = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.txtUnit = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.txtUnitPrice = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -80,6 +79,7 @@
             this.dtgvPurchaseOrderList = new System.Windows.Forms.DataGridView();
             this.label20 = new System.Windows.Forms.Label();
             this.searchboxControl1 = new JRSApplication.SearchboxControl();
+            this.txtUnit = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvMaterialList)).BeginInit();
             this.pnlActionMenu.SuspendLayout();
@@ -90,6 +90,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.txtUnit);
             this.panel1.Controls.Add(this.btnSearchProject);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Controls.Add(this.dtgvMaterialList);
@@ -111,7 +112,6 @@
             this.panel1.Controls.Add(this.label15);
             this.panel1.Controls.Add(this.txtTotalPrice);
             this.panel1.Controls.Add(this.label13);
-            this.panel1.Controls.Add(this.txtUnit);
             this.panel1.Controls.Add(this.label11);
             this.panel1.Controls.Add(this.txtUnitPrice);
             this.panel1.Controls.Add(this.label8);
@@ -133,7 +133,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1313, 555);
+            this.panel1.Size = new System.Drawing.Size(1296, 555);
             this.panel1.TabIndex = 0;
             // 
             // btnSearchProject
@@ -371,16 +371,6 @@
             this.label13.TabIndex = 5;
             this.label13.Text = "ราคาต่อหน่วย";
             // 
-            // txtUnit
-            // 
-            this.txtUnit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtUnit.Enabled = false;
-            this.txtUnit.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUnit.Location = new System.Drawing.Point(604, 386);
-            this.txtUnit.Name = "txtUnit";
-            this.txtUnit.Size = new System.Drawing.Size(138, 35);
-            this.txtUnit.TabIndex = 4;
-            // 
             // label11
             // 
             this.label11.AutoSize = true;
@@ -571,7 +561,7 @@
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 555);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1313, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1296, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDeleteOrder
@@ -647,7 +637,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 649);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1313, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1296, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // panel4
@@ -659,7 +649,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel4.Location = new System.Drawing.Point(0, 659);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1313, 305);
+            this.panel4.Size = new System.Drawing.Size(1296, 305);
             this.panel4.TabIndex = 3;
             // 
             // dtgvPurchaseOrderList
@@ -690,6 +680,15 @@
             this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
             this.searchboxControl1.TabIndex = 0;
             // 
+            // txtUnit
+            // 
+            this.txtUnit.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUnit.FormattingEnabled = true;
+            this.txtUnit.Location = new System.Drawing.Point(604, 384);
+            this.txtUnit.Name = "txtUnit";
+            this.txtUnit.Size = new System.Drawing.Size(138, 38);
+            this.txtUnit.TabIndex = 14;
+            // 
             // PurchaseOrderForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -700,7 +699,7 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.panel1);
             this.Name = "PurchaseOrderForm";
-            this.Size = new System.Drawing.Size(1313, 915);
+            this.Size = new System.Drawing.Size(1296, 915);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvMaterialList)).EndInit();
@@ -739,7 +738,6 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox txtTotalPrice;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox txtUnit;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox txtUnitPrice;
         private System.Windows.Forms.TextBox txtQuantity;
@@ -766,5 +764,6 @@
         private System.Windows.Forms.TextBox txtProjectName;
         private System.Windows.Forms.TextBox txtProjectNumber;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox txtUnit;
     }
 }

@@ -135,6 +135,8 @@ namespace JRSApplication.ProjectManager
                         using (MemoryStream ms = new MemoryStream(imageBytes))
                         {
                             pictureBoxProof.Image = Image.FromStream(ms);
+                            pictureBoxProof.SizeMode = PictureBoxSizeMode.Zoom;
+
                         }
                     }
                     else
@@ -248,8 +250,13 @@ namespace JRSApplication.ProjectManager
                 string empName = row.Cells["emp_name"].Value?.ToString();
                 string empLname = row.Cells["emp_lname"].Value?.ToString();
                 txtEmpName.Text = $"{empName} {empLname}";
+
+                // ✅ โหลดรูปภาพ
+                int invId = Convert.ToInt32(row.Cells["inv_id"].Value);
+                LoadPaymentProofImage(invId);
             }
         }
+
 
     }
 }

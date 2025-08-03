@@ -12,10 +12,7 @@ namespace JRSApplication.Components
         public int PhaseNumber { get; set; }  // phase_no
         public string PhaseDetail { get; set; }  // phase_detail
         public decimal PhaseBudget { get; set; }  // phase_budget
-        public string PhaseRemark { get; set; }  // phase_remark
-        public int ProjectID { get; set; }  // pro_id (FK)
-        public string SupplierID { get; set; }  // sup_id (FK)
-
+        public string PhaseStatus { get; set; }  // phase_status
         public decimal PhasePercent { get; set; }  // ✅ เปอร์เซ็นต์งานของแต่ละเฟส
     }
 

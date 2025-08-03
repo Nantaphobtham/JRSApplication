@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectData));
             this.pnlProjectdata = new System.Windows.Forms.Panel();
             this.dtgvProjectData = new System.Windows.Forms.DataGridView();
-            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.txtHeaderSearch = new System.Windows.Forms.Label();
             this.pnlStep = new System.Windows.Forms.Panel();
             this.txtNormalData = new System.Windows.Forms.Label();
@@ -68,6 +67,7 @@
             this.lbProjectManager = new System.Windows.Forms.Label();
             this.lbContractnumber = new System.Windows.Forms.Label();
             this.lbProjectID = new System.Windows.Forms.Label();
+            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.pnlProjectdata.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).BeginInit();
             this.pnlStep.SuspendLayout();
@@ -88,7 +88,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 0);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1525, 274);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1457, 274);
             this.pnlProjectdata.TabIndex = 0;
             // 
             // dtgvProjectData
@@ -105,15 +105,6 @@
             this.dtgvProjectData.Size = new System.Drawing.Size(1529, 187);
             this.dtgvProjectData.TabIndex = 3;
             this.dtgvProjectData.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvProjectData_CellClick);
-            // 
-            // searchboxControl1
-            // 
-            this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.Location = new System.Drawing.Point(906, 17);
-            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxControl1.Name = "searchboxControl1";
-            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl1.TabIndex = 2;
             // 
             // txtHeaderSearch
             // 
@@ -132,7 +123,7 @@
             this.pnlStep.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep.Location = new System.Drawing.Point(0, 274);
             this.pnlStep.Name = "pnlStep";
-            this.pnlStep.Size = new System.Drawing.Size(1525, 46);
+            this.pnlStep.Size = new System.Drawing.Size(1457, 46);
             this.pnlStep.TabIndex = 1;
             // 
             // txtNormalData
@@ -178,7 +169,7 @@
             this.pnlInfomationview.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlInfomationview.Location = new System.Drawing.Point(0, 320);
             this.pnlInfomationview.Name = "pnlInfomationview";
-            this.pnlInfomationview.Size = new System.Drawing.Size(1525, 2756);
+            this.pnlInfomationview.Size = new System.Drawing.Size(1457, 2756);
             this.pnlInfomationview.TabIndex = 2;
             // 
             // txtDemolition
@@ -546,6 +537,15 @@
             this.lbProjectID.TabIndex = 4;
             this.lbProjectID.Text = "รหัสโครงการ";
             // 
+            // searchboxControl1
+            // 
+            this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.Location = new System.Drawing.Point(906, 17);
+            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl1.Name = "searchboxControl1";
+            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl1.TabIndex = 2;
+            // 
             // ProjectData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -555,7 +555,7 @@
             this.Controls.Add(this.pnlStep);
             this.Controls.Add(this.pnlProjectdata);
             this.Name = "ProjectData";
-            this.Size = new System.Drawing.Size(1525, 954);
+            this.Size = new System.Drawing.Size(1457, 954);
             this.pnlProjectdata.ResumeLayout(false);
             this.pnlProjectdata.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).EndInit();

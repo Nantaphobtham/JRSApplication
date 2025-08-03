@@ -24,7 +24,6 @@ namespace JRSApplication.ProjectManager
             CustomizePOGridStyling();
         }
 
-
         private void InitializePOGridColumns()
         {
             dtgvListofPO.AutoGenerateColumns = false;

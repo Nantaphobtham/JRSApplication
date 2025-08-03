@@ -90,6 +90,7 @@ namespace JRSApplication
             this.btnManageProject.BackColor = System.Drawing.Color.Transparent;
             this.btnManageProject.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnManageProject.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnManageProject.FlatAppearance.BorderSize = 0;
             this.btnManageProject.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnManageProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnManageProject.Location = new System.Drawing.Point(0, 240);
@@ -105,6 +106,7 @@ namespace JRSApplication
             this.btnRegisSupplier.BackColor = System.Drawing.Color.Transparent;
             this.btnRegisSupplier.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnRegisSupplier.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnRegisSupplier.FlatAppearance.BorderSize = 0;
             this.btnRegisSupplier.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnRegisSupplier.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRegisSupplier.Location = new System.Drawing.Point(0, 160);
@@ -120,6 +122,7 @@ namespace JRSApplication
             this.btnRegisCustomer.BackColor = System.Drawing.Color.Transparent;
             this.btnRegisCustomer.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnRegisCustomer.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnRegisCustomer.FlatAppearance.BorderSize = 0;
             this.btnRegisCustomer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnRegisCustomer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRegisCustomer.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -136,6 +139,7 @@ namespace JRSApplication
             this.btnManageUser.BackColor = System.Drawing.Color.Transparent;
             this.btnManageUser.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnManageUser.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnManageUser.FlatAppearance.BorderSize = 0;
             this.btnManageUser.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnManageUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnManageUser.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

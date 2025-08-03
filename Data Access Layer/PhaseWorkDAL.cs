@@ -349,6 +349,21 @@ namespace JRSApplication.Data_Access_Layer
                             }
                         }
 
+                        // สมมุติ work.PhaseID กับ work.WorkStatus พร้อมใช้งาน
+                        string updatePhaseSql = @"UPDATE project_phase
+                          SET phase_status = @PhaseStatus
+                          WHERE phase_id = @PhaseID";
+
+                        using (var cmd = new MySqlCommand(updatePhaseSql, conn, tran))
+                        {
+                            // จะใช้ work.WorkStatus ตรงๆ หรือจะใส่เงื่อนไขเพิ่มก็ได้ เช่น Completed/InProgress
+                            cmd.Parameters.AddWithValue("@PhaseStatus",
+                                work.WorkStatus == "Waiting" ? "InProgress" : work.WorkStatus);
+                            cmd.Parameters.AddWithValue("@PhaseID", work.PhaseID);
+                            cmd.ExecuteNonQuery();
+                        }
+
+
                         tran.Commit();
                     }
                     catch

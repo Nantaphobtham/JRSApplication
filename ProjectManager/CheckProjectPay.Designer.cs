@@ -581,7 +581,7 @@
             this.Controls.Add(this.btnSearchProject);
             this.Controls.Add(this.txtHeaderSearch);
             this.Name = "CheckProjectPay";
-            this.Size = new System.Drawing.Size(1550, 1499);
+            this.Size = new System.Drawing.Size(1533, 1482);
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
