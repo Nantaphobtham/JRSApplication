@@ -340,7 +340,7 @@ namespace JRSApplication
             string oldAssignStatus = ""; // อ่านค่าจาก grid หรือ field ที่เก็บไว้
             if (dtgvDetailSubcontractorWork.SelectedRows.Count > 0)
             {
-                oldAssignStatus = dtgvDetailSubcontractorWork.SelectedRows[0].Cells["สถานะงาน"].Value?.ToString();
+                oldAssignStatus = dtgvDetailSubcontractorWork.SelectedRows[0].Cells["Status"].Value?.ToString();
             }
             string newAssignStatus = GetSelectedStatus(cmbWorkstatusOfSupplier);
 
@@ -381,7 +381,7 @@ namespace JRSApplication
             // เตรียมข้อมูล
             int phaseId = Convert.ToInt32(cmbSelectPhase.SelectedValue);
             string workStatus = GetSelectedStatus(cmbWorkStatus);
-            string supplierAssignmentId = dtgvDetailSubcontractorWork.SelectedRows[0].Cells["เลขที่งาน"].Value.ToString();
+            string supplierAssignmentId = dtgvDetailSubcontractorWork.SelectedRows[0].Cells["AssignID"].Value.ToString();
             string assignStatus = GetSelectedStatus(cmbWorkstatusOfSupplier);
 
             // เช็ค role
@@ -443,11 +443,29 @@ namespace JRSApplication
                 dlg.Filter = "Image Files|*.jpg;*.jpeg;*.png;";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
+                    // เช็คขนาดไฟล์ (3MB)
+                    FileInfo fi = new FileInfo(dlg.FileName);
+                    long maxSizeBytes = 5 * 1024 * 1024; // 3 MB
+
+                    if (fi.Length > maxSizeBytes)
+                    {
+                        MessageBox.Show("ขนาดไฟล์รูปภาพต้องไม่เกิน 3 MB", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // เช็คจำนวนรูปภาพที่แนบ (ไม่เกิน 10 รูป)
+                    if (pictures.Count >= 10)
+                    {
+                        MessageBox.Show("ไม่สามารถแนบรูปภาพได้เกิน 10 รูปต่อครั้ง", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     pictureBoxPreview.Image = Image.FromFile(dlg.FileName);
                     pictureBoxPreview.SizeMode = PictureBoxSizeMode.Zoom;
                 }
             }
         }
+
         private void InitGrid()
         {
             dtgvPicturelist.AutoGenerateColumns = false;
@@ -484,42 +502,91 @@ namespace JRSApplication
         }
         private void btnAddPicture_Click(object sender, EventArgs e)
         {
-            if (pictureBoxPreview.Image == null)
+            if (!isEditPictureMode)
             {
-                MessageBox.Show("กรุณาเลือกรูปภาพก่อน");
-                return;
+                if (pictureBoxPreview.Image == null)
+                {
+                    MessageBox.Show("กรุณาเลือกรูปภาพก่อน");
+                    return;
+                }
+                if (pictures.Count > 10)
+                {
+                    MessageBox.Show("ไม่สามารถบันทึกรูปภาพเกิน 10 รูปได้", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // แปลงภาพเป็น byte[]
+                byte[] imageBytes;
+                using (var ms = new MemoryStream())
+                {
+                    pictureBoxPreview.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    imageBytes = ms.ToArray();
+                }
+
+                // เพิ่มข้อมูลลง List
+                var pic = new WorkingPicture
+                {
+                    PicNo = pictures.Count + 1,
+                    PictureData = imageBytes,
+                    Description = txtPictureDescription.Text == "คำอธิบายรูปภาพ" ? "" : txtPictureDescription.Text,
+                    // PicName, CreatedAt ใส่เพิ่มได้
+                };
+                pictures.Add(pic);
+
+                // เคลียร์รูปตัวอย่าง
+                if (pictureBoxPreview.Image != null)
+                {
+                    pictureBoxPreview.Image.Dispose();
+                    pictureBoxPreview.Image = null;
+                }
+
+                // เคลียร์กล่องคำอธิบาย (รีเซ็ต placeholder)
+                txtPictureDescription.Text = "คำอธิบายรูปภาพ";
+                txtPictureDescription.ForeColor = Color.Gray;
+                // อัปเดต Grid
+                RefreshPictureGrid();
+            }
+            else
+            {
+                // Logic แก้ไขรูปภาพ
+                var pic = pictures.FirstOrDefault(p => p.PicNo == editingPicNo);
+                if (pic != null)
+                {
+                    // แก้ไข description
+                    pic.Description = txtPictureDescription.Text == "คำอธิบายรูปภาพ" ? "" : txtPictureDescription.Text;
+                    // แก้ไขรูปถ้าเลือกใหม่
+                    if (pictureBoxPreview.Image != null)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            pictureBoxPreview.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                            pic.PictureData = ms.ToArray();
+                        }
+                    }
+                    if (pictureBoxPreview.Image != null)
+                    {
+                        pictureBoxPreview.Image.Dispose();
+                        pictureBoxPreview.Image = null;
+                    }
+
+                    // เคลียร์กล่องคำอธิบาย (รีเซ็ต placeholder)
+                    txtPictureDescription.Text = "คำอธิบายรูปภาพ";
+                    txtPictureDescription.ForeColor = Color.Gray;
+                    btnAddPicture.Enabled = true;
+                    //btnInsertPicture.Enabled = true;
+                    RefreshPictureGrid();
+                    MessageBox.Show("บันทึกการแก้ไขสำเร็จ!");
+                }
+                // Reset State กลับเป็นปกติ
+                isEditPictureMode = false;
+                editingPicNo = -1;
+                btnAddPicture.Text = "เพิ่มรูปภาพ";
+                txtPictureDescription.ReadOnly = true;
+                btnInsertPicture.Enabled = true;
+                // ล้าง input preview ด้วย (ถ้าต้องการ)
             }
 
-            // แปลงภาพเป็น byte[]
-            byte[] imageBytes;
-            using (var ms = new MemoryStream())
-            {
-                pictureBoxPreview.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                imageBytes = ms.ToArray();
-            }
 
-            // เพิ่มข้อมูลลง List
-            var pic = new WorkingPicture
-            {
-                PicNo = pictures.Count + 1,
-                PictureData = imageBytes,
-                Description = txtPictureDescription.Text == "คำอธิบายรูปภาพ" ? "" : txtPictureDescription.Text,
-                // PicName, CreatedAt ใส่เพิ่มได้
-            };
-            pictures.Add(pic);
-
-            // เคลียร์รูปตัวอย่าง
-            if (pictureBoxPreview.Image != null)
-            {
-                pictureBoxPreview.Image.Dispose();
-                pictureBoxPreview.Image = null;
-            }
-
-            // เคลียร์กล่องคำอธิบาย (รีเซ็ต placeholder)
-            txtPictureDescription.Text = "คำอธิบายรูปภาพ";
-            txtPictureDescription.ForeColor = Color.Gray;
-            // อัปเดต Grid
-            RefreshPictureGrid();
         }
 
         private void RefreshPictureGrid()
@@ -689,8 +756,52 @@ namespace JRSApplication
             dtgvDetailSubcontractorWork.AllowUserToAddRows = false;
             dtgvDetailSubcontractorWork.AllowUserToResizeRows = false;
         }
+        private bool isEditPictureMode = false;
+        private int editingPicNo = -1;
+        private void dtgvPicturelist_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // ป้องกันกรณี user คลิก header หรือ cell ว่าง
+            if (e.RowIndex < 0) return;
 
+            // 1. หา PicNo จาก row ที่ถูกคลิก
+            int picNo = Convert.ToInt32(dtgvPicturelist.Rows[e.RowIndex].Cells["PicNo"].Value);
 
+            // 2. หา WorkingPicture จาก list
+            var pic = pictures.FirstOrDefault(p => p.PicNo == picNo);
+            if (pic != null)
+            {
+                // 3. โหลดรูปใส่ preview
+                if (pictureBoxPreview.Image != null)
+                {
+                    pictureBoxPreview.Image.Dispose();
+                    pictureBoxPreview.Image = null;
+                }
+                pictureBoxPreview.Image = ByteArrayToImage(pic.PictureData);
+                pictureBoxPreview.SizeMode = PictureBoxSizeMode.Zoom;
 
+                // 4. ใส่ description กลับไป textbox
+                txtPictureDescription.Text = string.IsNullOrWhiteSpace(pic.Description) ? "คำอธิบายรูปภาพ" : pic.Description;
+                txtPictureDescription.ForeColor = Color.Black;
+            }
+
+            btnAddPicture.Enabled = false; // ปิดปุ่มเพิ่มรูปเมื่อมีการเลือก
+            btnInsertPicture.Enabled = false; // ปิดปุ่มเลือกภาพ
+            txtPictureDescription.ReadOnly = true; // ปิดการแก้ไข description
+        }
+
+        private void btnEditPicture_Click(object sender, EventArgs e)
+        {
+            if (dtgvPicturelist.SelectedRows.Count > 0)
+            {
+                int picNo = Convert.ToInt32(dtgvPicturelist.SelectedRows[0].Cells["PicNo"].Value);
+                editingPicNo = picNo;
+                isEditPictureMode = true;
+                btnAddPicture.Text = "บันทึกแก้ไข"; // เปลี่ยนชื่อปุ่ม
+                                                    // เปิดให้แก้ไข textbox และปุ่มเลือกภาพ
+                txtPictureDescription.ReadOnly = false;
+                btnInsertPicture.Enabled = true;
+                btnAddPicture.Enabled = true;
+            }
+        }
     }
 }
