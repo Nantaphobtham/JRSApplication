@@ -56,7 +56,6 @@
             this.dtgvRequestApproval.RowTemplate.Height = 24;
             this.dtgvRequestApproval.Size = new System.Drawing.Size(1512, 851);
             this.dtgvRequestApproval.TabIndex = 14;
-            
             this.dtgvRequestApproval.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvRequestApproval_CellDoubleClick);
             // 
             // label1

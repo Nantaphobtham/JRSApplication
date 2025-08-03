@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JRSApplication.Sitesupervisor;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -78,6 +79,11 @@ namespace JRSApplication
         private void btnUpdatePhase_Click(object sender, EventArgs e)
         {
             LoadUserControl(new UpdateProjectPhase(_empId, userRole), "ปรับปรุงข้อมูลเฟส");
+        }
+
+        private void btnWorkResponse_Click(object sender, EventArgs e)
+        {
+            LoadUserControl(new WorkResponse(), "ลงทะเบียนผู้รับเหมา"); 
         }
     }
 }

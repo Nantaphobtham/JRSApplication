@@ -123,5 +123,7 @@ namespace JRSApplication
                 detailForm.ShowDialog();  // หรือ Show()
             }
         }
+
+        
     }
 }

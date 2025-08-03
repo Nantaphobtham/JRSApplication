@@ -335,6 +335,12 @@
     <Compile Include="Sitesupervisor\PurchaseOrderForm.Designer.cs">
       <DependentUpon>PurchaseOrderForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sitesupervisor\WorkResponse.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sitesupervisor\WorkResponse.Designer.cs">
+      <DependentUpon>WorkResponse.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Accountant\ConfirmInvoice.resx">
       <DependentUpon>ConfirmInvoice.cs</DependentUpon>
     </EmbeddedResource>
@@ -420,6 +426,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Sitesupervisor\PurchaseOrderForm.resx">
       <DependentUpon>PurchaseOrderForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sitesupervisor\WorkResponse.resx">
+      <DependentUpon>WorkResponse.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
