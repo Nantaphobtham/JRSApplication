@@ -266,6 +266,7 @@
             // 
             // dtgvDetailSubcontractorWork
             // 
+            this.dtgvDetailSubcontractorWork.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dtgvDetailSubcontractorWork.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgvDetailSubcontractorWork.Location = new System.Drawing.Point(3, 34);
             this.dtgvDetailSubcontractorWork.Name = "dtgvDetailSubcontractorWork";

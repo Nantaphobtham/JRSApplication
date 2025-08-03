@@ -28,17 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Topic1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.cmbSearchBy = new System.Windows.Forms.ComboBox();
-            this.btnSearch = new System.Windows.Forms.PictureBox();
-            this.lblSearch = new System.Windows.Forms.Label();
-            this.lblSearchBy = new System.Windows.Forms.Label();
-            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.txtDueDate = new System.Windows.Forms.DateTimePicker();
             this.label16 = new System.Windows.Forms.Label();
             this.dtpInvoiceDate = new System.Windows.Forms.DateTimePicker();
@@ -71,65 +62,13 @@
             this.label20 = new System.Windows.Forms.Label();
             this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnSearch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInvoiceDetails)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInvoices)).BeginInit();
             this.SuspendLayout();
             // 
-            // Topic1
-            // 
-            this.Topic1.AutoSize = true;
-            this.Topic1.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Topic1.Location = new System.Drawing.Point(24, 26);
-            this.Topic1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.Topic1.Name = "Topic1";
-            this.Topic1.Size = new System.Drawing.Size(151, 30);
-            this.Topic1.TabIndex = 13;
-            this.Topic1.Text = "ค้นหาโครงการ";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(1154, 30);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(191, 35);
-            this.textBox1.TabIndex = 15;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(1351, 30);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(191, 35);
-            this.textBox2.TabIndex = 16;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(1149, 6);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(92, 25);
-            this.label7.TabIndex = 25;
-            this.label7.Text = "ชื่อโครงการ";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(1346, 6);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(100, 25);
-            this.label2.TabIndex = 27;
-            this.label2.Text = "เลขที่สัญญา";
-            // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.cmbSearchBy);
-            this.panel3.Controls.Add(this.btnSearch);
-            this.panel3.Controls.Add(this.lblSearch);
-            this.panel3.Controls.Add(this.lblSearchBy);
-            this.panel3.Controls.Add(this.txtSearch);
+            this.panel3.Controls.Add(this.searchboxControl1);
             this.panel3.Controls.Add(this.txtDueDate);
             this.panel3.Controls.Add(this.label16);
             this.panel3.Controls.Add(this.dtpInvoiceDate);
@@ -167,54 +106,18 @@
             this.panel3.TabIndex = 28;
             this.panel3.Paint += new System.Windows.Forms.PaintEventHandler(this.panel3_Paint);
             // 
-            // cmbSearchBy
+            // button1
             // 
-            this.cmbSearchBy.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmbSearchBy.FormattingEnabled = true;
-            this.cmbSearchBy.Location = new System.Drawing.Point(997, 39);
-            this.cmbSearchBy.Name = "cmbSearchBy";
-            this.cmbSearchBy.Size = new System.Drawing.Size(121, 38);
-            this.cmbSearchBy.TabIndex = 71;
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Image = global::JRSApplication.Properties.Resources.search;
-            this.btnSearch.Location = new System.Drawing.Point(1485, 43);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(46, 35);
-            this.btnSearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.btnSearch.TabIndex = 70;
-            this.btnSearch.TabStop = false;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearchProject_Click);
-            // 
-            // lblSearch
-            // 
-            this.lblSearch.AutoSize = true;
-            this.lblSearch.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSearch.Location = new System.Drawing.Point(1124, 40);
-            this.lblSearch.Name = "lblSearch";
-            this.lblSearch.Size = new System.Drawing.Size(81, 30);
-            this.lblSearch.TabIndex = 69;
-            this.lblSearch.Text = "คำค้นหา";
-            // 
-            // lblSearchBy
-            // 
-            this.lblSearchBy.AutoSize = true;
-            this.lblSearchBy.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSearchBy.Location = new System.Drawing.Point(899, 42);
-            this.lblSearchBy.Name = "lblSearchBy";
-            this.lblSearchBy.Size = new System.Drawing.Size(92, 30);
-            this.lblSearchBy.TabIndex = 68;
-            this.lblSearchBy.Text = "ค้นหาจาก";
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSearch.Location = new System.Drawing.Point(1211, 40);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(268, 35);
-            this.txtSearch.TabIndex = 67;
+            this.button1.AutoSize = true;
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(20, 14);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(195, 51);
+            this.button1.TabIndex = 67;
+            this.button1.Text = "ค้นหาโครงการ";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.btnSearchProject_Click);
             // 
             // txtDueDate
             // 
@@ -528,11 +431,11 @@
             // searchboxControl1
             // 
             this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.Location = new System.Drawing.Point(483, 15);
+            this.searchboxControl1.Location = new System.Drawing.Point(897, 15);
             this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.searchboxControl1.Name = "searchboxControl1";
             this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl1.TabIndex = 14;
+            this.searchboxControl1.TabIndex = 68;
             // 
             // ConfirmInvoice
             // 
@@ -540,17 +443,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.Controls.Add(this.panel3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.searchboxControl1);
-            this.Controls.Add(this.Topic1);
+            this.Controls.Add(this.button1);
             this.Name = "ConfirmInvoice";
             this.Size = new System.Drawing.Size(1556, 954);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnSearch)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInvoiceDetails)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInvoices)).EndInit();
             this.ResumeLayout(false);
@@ -559,13 +456,6 @@
         }
 
         #endregion
-
-        private SearchboxControl searchboxControl1;
-        private System.Windows.Forms.Label Topic1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.DataGridView dgvInvoices;
         private System.Windows.Forms.Label label20;
@@ -597,10 +487,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtInvoiceNumber;
         private System.Windows.Forms.DateTimePicker txtDueDate;
-        private System.Windows.Forms.ComboBox cmbSearchBy;
-        private System.Windows.Forms.PictureBox btnSearch;
-        private System.Windows.Forms.Label lblSearch;
-        private System.Windows.Forms.Label lblSearchBy;
-        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.Button button1;
+        private SearchboxControl searchboxControl1;
     }
 }

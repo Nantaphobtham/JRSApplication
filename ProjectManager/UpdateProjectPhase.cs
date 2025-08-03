@@ -159,38 +159,6 @@ namespace JRSApplication
             grid.AllowUserToAddRows = false;
             grid.AllowUserToResizeRows = false;
             //--------------------------------------------
-            grid2.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            grid2.MultiSelect = false;
-
-            grid2.BorderStyle = BorderStyle.None;
-            grid2.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
-            grid2.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            grid2.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
-            grid2.DefaultCellStyle.SelectionForeColor = Color.White;
-            grid2.BackgroundColor = Color.White;
-
-            grid2.EnableHeadersVisualStyles = false;
-            grid2.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            grid2.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
-            grid2.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            grid2.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
-            grid2.ColumnHeadersHeight = 30;
-
-            grid2.DefaultCellStyle.Font = new Font("Segoe UI", 12);
-            grid2.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            grid2.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            grid2.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
-
-            grid2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            grid2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            grid2.RowTemplate.Height = 30;
-
-            grid2.GridColor = Color.LightGray;
-            grid2.RowHeadersVisible = false;
-
-            grid2.ReadOnly = true;
-            grid2.AllowUserToAddRows = false;
-            grid2.AllowUserToResizeRows = false;
             
         }
 
@@ -277,8 +245,13 @@ namespace JRSApplication
         {
             var dal = new PhaseWorkDAL();
             DataTable dt = dal.GetAssignmentsByPhase(phaseId);
+
+            InitDetailSubcontractorGrid();
             dtgvDetailSubcontractorWork.DataSource = dt;
             dtgvDetailSubcontractorWork.ClearSelection(); // <-- ไม่มีแถวถูกเลือกจนกว่าจะคลิก
+
+            
+
         }
         //โหลด status
         private void LoadStatusComboBox()
@@ -647,6 +620,77 @@ namespace JRSApplication
             // เคลียร์ selection ใน DataGridView
             dtgvPhaseWorkingHistory.ClearSelection();
         }
+
+        private void InitDetailSubcontractorGrid()
+        {
+            dtgvDetailSubcontractorWork.AutoGenerateColumns = false;
+            dtgvDetailSubcontractorWork.Columns.Clear();
+
+            dtgvDetailSubcontractorWork.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "AssignID",
+                HeaderText = "เลขที่งาน",
+                DataPropertyName = "เลขที่งาน"
+            });
+            dtgvDetailSubcontractorWork.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "Description",
+                HeaderText = "รายละเอียดงาน",
+                DataPropertyName = "รายละเอียดงาน"
+            });
+            dtgvDetailSubcontractorWork.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "StartDate",
+                HeaderText = "วันเริ่มต้น",
+                DataPropertyName = "วันเริ่มต้น"
+            });
+            dtgvDetailSubcontractorWork.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "DueDate",
+                HeaderText = "วันครบกำหนด",
+                DataPropertyName = "วันครบกำหนด"
+            });
+            dtgvDetailSubcontractorWork.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "Status",
+                HeaderText = "สถานะงาน",
+                DataPropertyName = "สถานะงาน"
+            });
+
+            // ✅ Custom Styling
+            dtgvDetailSubcontractorWork.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dtgvDetailSubcontractorWork.BorderStyle = BorderStyle.None;
+            dtgvDetailSubcontractorWork.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dtgvDetailSubcontractorWork.EnableHeadersVisualStyles = false;
+
+            dtgvDetailSubcontractorWork.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            dtgvDetailSubcontractorWork.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dtgvDetailSubcontractorWork.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            dtgvDetailSubcontractorWork.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvDetailSubcontractorWork.ColumnHeadersHeight = 42;
+
+            dtgvDetailSubcontractorWork.DefaultCellStyle.BackColor = Color.White;
+            dtgvDetailSubcontractorWork.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dtgvDetailSubcontractorWork.DefaultCellStyle.ForeColor = Color.Black;
+            dtgvDetailSubcontractorWork.DefaultCellStyle.Font = new Font("Segoe UI", 13, FontStyle.Regular);
+            dtgvDetailSubcontractorWork.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dtgvDetailSubcontractorWork.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
+            dtgvDetailSubcontractorWork.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            
+
+            dtgvDetailSubcontractorWork.GridColor = Color.LightGray;
+            dtgvDetailSubcontractorWork.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgvDetailSubcontractorWork.RowTemplate.Height = 42;
+            dtgvDetailSubcontractorWork.RowHeadersVisible = false;
+            dtgvDetailSubcontractorWork.ReadOnly = true;
+            dtgvDetailSubcontractorWork.MultiSelect = false;
+            dtgvDetailSubcontractorWork.AllowUserToAddRows = false;
+            dtgvDetailSubcontractorWork.AllowUserToResizeRows = false;
+        }
+
+
 
     }
 }
