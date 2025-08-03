@@ -235,6 +235,9 @@ namespace JRSApplication.Accountant
                     SearchService service = new SearchService();
                     DataTable filtered = service.GetDraftInvoicesByProject(selectedProjectId);
 
+                    textBox2.Text = searchForm.SelectedID;
+                    textBox1.Text = searchForm.SelectedName;
+
                     dgvInvoices.DataSource = filtered;
 
                     // Optional: Customize columns again
