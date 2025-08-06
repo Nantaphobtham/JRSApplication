@@ -15,31 +15,6 @@ namespace JRSApplication.Data_Access_Layer
     {
         private readonly string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
-        public string GenerateNextOrderNumber()
-        {
-            string today = DateTime.Now.ToString("yyyyMMdd");
-            int runningNumber = 1;
-
-            string prefix = $"PO{today}";
-            string query = "SELECT COUNT(*) FROM purchaseorder WHERE order_number LIKE @PrefixPattern";
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            using (MySqlCommand cmd = new MySqlCommand(query, conn))
-            {
-                cmd.Parameters.AddWithValue("@PrefixPattern", prefix + "%");
-                conn.Open();
-
-                object result = cmd.ExecuteScalar();
-                if (result != null && int.TryParse(result.ToString(), out int count))
-                {
-                    runningNumber = count + 1;
-                }
-            }
-
-            return $"{prefix}-{runningNumber.ToString("D3")}";
-        }
-
-
         public int InsertFullPurchaseOrder(POModel order)
         {
             int newOrderId = -1;
