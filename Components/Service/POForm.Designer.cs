@@ -30,8 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.dtgvMaterial = new System.Windows.Forms.DataGridView();
-            this.btnRejected = new System.Windows.Forms.Button();
-            this.btnApproved = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.lblSummary = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -50,6 +49,8 @@
             this.txtDate = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtApproveDate = new System.Windows.Forms.TextBox();
+            this.chkApproved = new System.Windows.Forms.CheckBox();
+            this.chkRejected = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvMaterial)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -72,31 +73,18 @@
             this.dtgvMaterial.Size = new System.Drawing.Size(776, 484);
             this.dtgvMaterial.TabIndex = 1;
             // 
-            // btnRejected
+            // btnSave
             // 
-            this.btnRejected.AutoSize = true;
-            this.btnRejected.BackColor = System.Drawing.Color.Red;
-            this.btnRejected.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRejected.Location = new System.Drawing.Point(424, 866);
-            this.btnRejected.Name = "btnRejected";
-            this.btnRejected.Size = new System.Drawing.Size(174, 55);
-            this.btnRejected.TabIndex = 2;
-            this.btnRejected.Text = "ไม่อนุมัติใบสั่งซื้อ";
-            this.btnRejected.UseVisualStyleBackColor = false;
-            this.btnRejected.Click += new System.EventHandler(this.btnRejected_Click);
-            // 
-            // btnApproved
-            // 
-            this.btnApproved.AutoSize = true;
-            this.btnApproved.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
-            this.btnApproved.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnApproved.Location = new System.Drawing.Point(614, 866);
-            this.btnApproved.Name = "btnApproved";
-            this.btnApproved.Size = new System.Drawing.Size(174, 55);
-            this.btnApproved.TabIndex = 2;
-            this.btnApproved.Text = "อนุมัติใบสั่งซื้อ";
-            this.btnApproved.UseVisualStyleBackColor = false;
-            this.btnApproved.Click += new System.EventHandler(this.btnApproved_Click);
+            this.btnSave.AutoSize = true;
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSave.Location = new System.Drawing.Point(599, 846);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(174, 55);
+            this.btnSave.TabIndex = 2;
+            this.btnSave.Text = "บันทึก";
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnApproved_Click);
             // 
             // lblSummary
             // 
@@ -284,12 +272,38 @@
             this.txtApproveDate.Size = new System.Drawing.Size(226, 35);
             this.txtApproveDate.TabIndex = 5;
             // 
+            // chkApproved
+            // 
+            this.chkApproved.AutoSize = true;
+            this.chkApproved.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkApproved.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkApproved.Location = new System.Drawing.Point(413, 836);
+            this.chkApproved.Name = "chkApproved";
+            this.chkApproved.Size = new System.Drawing.Size(156, 34);
+            this.chkApproved.TabIndex = 7;
+            this.chkApproved.Text = "อนุมัติใบสั่งซื้อ";
+            this.chkApproved.UseVisualStyleBackColor = true;
+            // 
+            // chkRejected
+            // 
+            this.chkRejected.AutoSize = true;
+            this.chkRejected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkRejected.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkRejected.Location = new System.Drawing.Point(413, 876);
+            this.chkRejected.Name = "chkRejected";
+            this.chkRejected.Size = new System.Drawing.Size(180, 34);
+            this.chkRejected.TabIndex = 7;
+            this.chkRejected.Text = "ไม่อนุมัติใบสั่งซื้อ";
+            this.chkRejected.UseVisualStyleBackColor = true;
+            // 
             // POForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 933);
+            this.Controls.Add(this.chkRejected);
+            this.Controls.Add(this.chkApproved);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.txtRemark);
             this.Controls.Add(this.txtDetail);
@@ -308,8 +322,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblSummary);
-            this.Controls.Add(this.btnApproved);
-            this.Controls.Add(this.btnRejected);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.dtgvMaterial);
             this.Controls.Add(this.label1);
             this.Name = "POForm";
@@ -325,8 +338,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dtgvMaterial;
-        private System.Windows.Forms.Button btnRejected;
-        private System.Windows.Forms.Button btnApproved;
+        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label lblSummary;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -345,5 +357,7 @@
         private System.Windows.Forms.TextBox txtDate;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtApproveDate;
+        private System.Windows.Forms.CheckBox chkApproved;
+        private System.Windows.Forms.CheckBox chkRejected;
     }
 }

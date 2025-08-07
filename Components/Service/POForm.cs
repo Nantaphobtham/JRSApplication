@@ -151,6 +151,8 @@ namespace JRSApplication.Components.Service
             // อนุญาต resize คอลัมน์ด้วยมือ
             dtgvMaterial.AllowUserToResizeColumns = true;
         }
+        //โหลดข้อมูมใบ PO มาแสดงที่ textbox ต่าง ๆ จากฐานข้อมูล
+
         //private void LoadOrderData()
         //{
         //    var dal = new PurchaseOrderDAL();
@@ -269,21 +271,21 @@ namespace JRSApplication.Components.Service
             }
         }
 
-        private void btnRejected_Click(object sender, EventArgs e)
-        {
-            // รับ remark ได้ทั้งกรอกหรือไม่กรอก
-            string remark = txtRemark.Text.Trim();
+        //private void btnRejected_Click(object sender, EventArgs e)
+        //{
+        //    // รับ remark ได้ทั้งกรอกหรือไม่กรอก
+        //    string remark = txtRemark.Text.Trim();
 
-            DialogResult result = MessageBox.Show(
-                "คุณแน่ใจหรือไม่ที่จะ 'ไม่อนุมัติ' ใบสั่งซื้อนี้?",
-                "ยืนยันไม่อนุมัติ",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning);
+        //    DialogResult result = MessageBox.Show(
+        //        "คุณแน่ใจหรือไม่ที่จะ 'ไม่อนุมัติ' ใบสั่งซื้อนี้?",
+        //        "ยืนยันไม่อนุมัติ",
+        //        MessageBoxButtons.YesNo,
+        //        MessageBoxIcon.Warning);
 
-            if (result == DialogResult.Yes)
-            {
-                UpdateOrderStatus("rejected", remark);
-            }
-        }
+        //    if (result == DialogResult.Yes)
+        //    {
+        //        UpdateOrderStatus("rejected", remark);
+        //    }
+        //}
     }
 }
