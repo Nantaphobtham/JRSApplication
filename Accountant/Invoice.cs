@@ -18,7 +18,9 @@ namespace JRSApplication.Accountant
             // ✅ ทำให้ panel1 ขยายเต็มขอบ UserControl ทุกด้าน
             panel1.Dock = DockStyle.Fill;
 
-           
+            CustomizeInvoiceGrid(); // ✅ เรียกตกแต่ง
+
+
         }
 
 
@@ -35,8 +37,40 @@ namespace JRSApplication.Accountant
 
 
                 LoadPhasesToComboBox(searchForm.SelectedID);
+
+                // ✅ โหลดตาราง dtgvInvoice จาก project id
+                LoadInvoiceTableByProject(searchForm.SelectedID);
             }
         }
+
+        private void LoadInvoiceTableByProject(string projectId)
+        {
+            InvoiceDAL dal = new InvoiceDAL();
+            DataTable dt = dal.GetAllInvoicesByProjectId(projectId); // ✅ ใช้เมธอดใหม่
+            dtgvInvoice.DataSource = dt;
+
+            // ✅ เปลี่ยนชื่อหัวคอลัมน์
+            if (dtgvInvoice.Columns.Contains("inv_id")) dtgvInvoice.Columns["inv_id"].HeaderText = "รหัสใบแจ้งหนี้";
+            if (dtgvInvoice.Columns.Contains("inv_no")) dtgvInvoice.Columns["inv_no"].HeaderText = "เลขที่ใบแจ้งหนี้";
+            if (dtgvInvoice.Columns.Contains("inv_date")) dtgvInvoice.Columns["inv_date"].HeaderText = "วันที่ออก";
+            if (dtgvInvoice.Columns.Contains("inv_duedate")) dtgvInvoice.Columns["inv_duedate"].HeaderText = "กำหนดชำระ";
+            if (dtgvInvoice.Columns.Contains("inv_status")) dtgvInvoice.Columns["inv_status"].HeaderText = "สถานะใบแจ้งหนี้";
+            if (dtgvInvoice.Columns.Contains("inv_method")) dtgvInvoice.Columns["inv_method"].HeaderText = "วิธีการชำระเงิน";
+            if (dtgvInvoice.Columns.Contains("paid_date")) dtgvInvoice.Columns["paid_date"].HeaderText = "วันที่ชำระเงิน";
+            if (dtgvInvoice.Columns.Contains("emp_fullname")) dtgvInvoice.Columns["emp_fullname"].HeaderText = "ผู้รับเงิน";
+            if (dtgvInvoice.Columns.Contains("pro_id")) dtgvInvoice.Columns["pro_id"].HeaderText = "รหัสโครงการ";
+            if (dtgvInvoice.Columns.Contains("pro_name")) dtgvInvoice.Columns["pro_name"].HeaderText = "ชื่อโครงการ";
+            if (dtgvInvoice.Columns.Contains("cus_fullname")) dtgvInvoice.Columns["cus_fullname"].HeaderText = "ชื่อลูกค้า";
+            if (dtgvInvoice.Columns.Contains("cus_id_card")) dtgvInvoice.Columns["cus_id_card"].HeaderText = "เลขบัตรประชาชน";
+            if (dtgvInvoice.Columns.Contains("cus_address")) dtgvInvoice.Columns["cus_address"].HeaderText = "ที่อยู่ลูกค้า";
+            if (dtgvInvoice.Columns.Contains("phase_id")) dtgvInvoice.Columns["phase_id"].HeaderText = "เฟสที่";
+
+            // ✅ ซ่อน emp_id ไม่ให้แสดง
+            if (dtgvInvoice.Columns.Contains("emp_id"))
+                dtgvInvoice.Columns["emp_id"].Visible = false;
+        }
+
+
 
         private void LoadPhasesToComboBox(string projectId)
         {
@@ -237,6 +271,52 @@ namespace JRSApplication.Accountant
                 }
             }
         }
+
+        private void CustomizeInvoiceGrid()
+        {
+            dtgvInvoice.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dtgvInvoice.MultiSelect = false;
+            dtgvInvoice.BorderStyle = BorderStyle.None;
+
+            // ✅ สีสลับแถว
+            dtgvInvoice.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dtgvInvoice.DefaultCellStyle.BackColor = Color.White;
+            dtgvInvoice.DefaultCellStyle.ForeColor = Color.Black;
+
+            // ✅ สีเมื่อเลือกแถว
+            dtgvInvoice.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
+            dtgvInvoice.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            // ✅ ฟอนต์และการจัดข้อความภายในเซลล์
+            dtgvInvoice.DefaultCellStyle.Font = new Font("Segoe UI", 12); // ขนาดใหญ่เหมือน ConfirmInvoice
+            dtgvInvoice.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvInvoice.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
+
+            // ✅ หัวตาราง
+            dtgvInvoice.EnableHeadersVisualStyles = false;
+            dtgvInvoice.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dtgvInvoice.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy; // ใช้สีเดียวกับ ConfirmInvoice
+            dtgvInvoice.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dtgvInvoice.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            dtgvInvoice.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvInvoice.ColumnHeadersHeight = 30;
+
+            // ✅ ขนาดแถว
+            dtgvInvoice.RowTemplate.Height = 30;
+
+            // ✅ การจัดขนาดคอลัมน์
+            dtgvInvoice.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgvInvoice.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dtgvInvoice.RowHeadersVisible = false;
+            dtgvInvoice.ReadOnly = true;
+            dtgvInvoice.AllowUserToAddRows = false;
+            dtgvInvoice.AllowUserToResizeRows = false;
+
+            // ✅ สีเส้นตาราง
+            dtgvInvoice.GridColor = Color.LightGray;
+        }
+
+
 
     }
 }
