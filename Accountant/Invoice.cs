@@ -14,9 +14,14 @@ namespace JRSApplication.Accountant
         {
             InitializeComponent();
             cmbPhase.SelectedIndexChanged += cmbPhase_SelectedIndexChanged;
+
+            // ✅ ทำให้ panel1 ขยายเต็มขอบ UserControl ทุกด้าน
+            panel1.Dock = DockStyle.Fill;
+
+           
         }
 
-       
+
         private void btnSearchProject_Click(object sender, EventArgs e)
         {
             SearchForm searchForm = new SearchForm("Project");
