@@ -136,7 +136,7 @@ namespace JRSApplication.Accountant
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dgvInvoices.Rows[e.RowIndex];
-                InvoiceDAL dal = new InvoiceDAL(); // ✅ ประกาศตัวแปรก่อนใช้
+                InvoiceDAL dal = new InvoiceDAL();
 
                 string invNo = row.Cells["inv_no"].Value?.ToString() ?? "";
                 string invDate = row.Cells["inv_date"].Value?.ToString() ?? "";
@@ -443,7 +443,7 @@ namespace JRSApplication.Accountant
         private void btnChooseFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "PDF Files|*.pdf|All Files|*.*";
+            ofd.Filter = "Image Files (*.jpg;*.jpeg;*.png)|*.jpg;*.jpeg;*.png|All Files (*.*)|*.*";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 txtFilePath.Text = ofd.FileName;

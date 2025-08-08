@@ -50,6 +50,9 @@ namespace JRSApplication
             SearchForm searchForm = new SearchForm("Invoice");
             if (searchForm.ShowDialog() == DialogResult.OK)
             {
+                InvoiceDAL dal = new InvoiceDAL();
+
+                string phaseNo = dal.GetPhaseNoById(phaseId);
                 // ดึงค่าที่เลือก
                 string invNo = searchForm.SelectedID;
                 string cusId = searchForm.SelectedName;
@@ -79,7 +82,7 @@ namespace JRSApplication
                 {
                     txtContractNumber.Text = project.ProjectNumber;
                     txtProjectName2.Text = project.ProjectName;
-                    txtPhase.Text = project.CurrentPhaseNumber.ToString();
+                    txtPhase.Text = phaseNo;
                 }
 
                 // =========================
