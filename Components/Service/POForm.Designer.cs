@@ -78,13 +78,13 @@
             this.btnSave.AutoSize = true;
             this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnSave.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(599, 846);
+            this.btnSave.Location = new System.Drawing.Point(614, 845);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(174, 55);
             this.btnSave.TabIndex = 2;
             this.btnSave.Text = "บันทึก";
             this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnApproved_Click);
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // lblSummary
             // 
@@ -275,11 +275,13 @@
             // chkApproved
             // 
             this.chkApproved.AutoSize = true;
-            this.chkApproved.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkApproved.Checked = true;
+            this.chkApproved.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkApproved.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.chkApproved.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkApproved.Location = new System.Drawing.Point(413, 836);
             this.chkApproved.Name = "chkApproved";
-            this.chkApproved.Size = new System.Drawing.Size(156, 34);
+            this.chkApproved.Size = new System.Drawing.Size(165, 35);
             this.chkApproved.TabIndex = 7;
             this.chkApproved.Text = "อนุมัติใบสั่งซื้อ";
             this.chkApproved.UseVisualStyleBackColor = true;
@@ -287,11 +289,11 @@
             // chkRejected
             // 
             this.chkRejected.AutoSize = true;
-            this.chkRejected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkRejected.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.chkRejected.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkRejected.Location = new System.Drawing.Point(413, 876);
             this.chkRejected.Name = "chkRejected";
-            this.chkRejected.Size = new System.Drawing.Size(180, 34);
+            this.chkRejected.Size = new System.Drawing.Size(189, 35);
             this.chkRejected.TabIndex = 7;
             this.chkRejected.Text = "ไม่อนุมัติใบสั่งซื้อ";
             this.chkRejected.UseVisualStyleBackColor = true;

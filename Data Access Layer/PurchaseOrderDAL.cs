@@ -100,7 +100,7 @@ namespace JRSApplication.Data_Access_Layer
             var orders = new List<PurchaseOrder>();
             string query = @"SELECT order_id, order_number, order_detail, order_date,
                             order_status, order_duedate, order_remark,
-                            emp_id, approved_by_emp_id, approved_date
+                            emp_id, approved_by_emp_id, approved_date,pro_id
                      FROM purchaseorder
                      ORDER BY order_date DESC";
 
@@ -116,6 +116,7 @@ namespace JRSApplication.Data_Access_Layer
                         {
                             OrderId = reader.GetInt32("order_id"),
                             OrderNumber = reader.GetString("order_number"),
+                            ProId = reader.GetInt32("pro_id"),
                             OrderDetail = reader.GetString("order_detail"),
                             OrderDate = reader.GetDateTime("order_date"),
                             OrderStatus = reader.GetString("order_status"),

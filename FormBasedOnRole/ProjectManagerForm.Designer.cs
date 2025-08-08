@@ -216,7 +216,7 @@
             this.btnPurchaseOrder.Name = "btnPurchaseOrder";
             this.btnPurchaseOrder.Size = new System.Drawing.Size(336, 80);
             this.btnPurchaseOrder.TabIndex = 4;
-            this.btnPurchaseOrder.Text = "อนุมัตใบสั่งซื้อ";
+            this.btnPurchaseOrder.Text = "อนุมัติใบสั่งซื้อ";
             this.btnPurchaseOrder.UseVisualStyleBackColor = false;
             this.btnPurchaseOrder.Click += new System.EventHandler(this.btnPurchaseOrder_Click);
             // 

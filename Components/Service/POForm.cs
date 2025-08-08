@@ -254,21 +254,41 @@ namespace JRSApplication.Components.Service
 
             return prompt.ShowDialog() == DialogResult.OK ? txtInput.Text : null;
         }
-        private void btnApproved_Click(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            // รับ remark ได้ทั้งกรอกหรือไม่กรอก
-            string remark = txtRemark.Text.Trim(); // สมมุติ textbox ชื่อ txtRemark
+            string remark = txtRemark.Text.Trim();
 
-            DialogResult result = MessageBox.Show(
-                "คุณยืนยันที่จะอนุมัติใบสั่งซื้อฉบับนี้หรือไม่?",
-                "ยืนยันการอนุมัติ",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
+            if (chkApproved.Checked && !chkRejected.Checked)
             {
-                UpdateOrderStatus("approved", remark);
+                DialogResult result = MessageBox.Show(
+                    "คุณยืนยันที่จะอนุมัติใบสั่งซื้อนี้หรือไม่?",
+                    "ยืนยันการอนุมัติ",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    UpdateOrderStatus("approved", remark);
+                }
             }
+            else if (!chkApproved.Checked && chkRejected.Checked)
+            {
+                DialogResult result = MessageBox.Show(
+                    "คุณแน่ใจหรือไม่ที่จะ 'ไม่อนุมัติ' ใบสั่งซื้อนี้?",
+                    "ยืนยันไม่อนุมัติ",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Yes)
+                {
+                    UpdateOrderStatus("rejected", remark);
+                }
+            }
+            else
+            {
+                MessageBox.Show("กรุณาเลือกสถานะการอนุมัติใบสั่งซื้อก่อนบันทึก", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            
         }
 
         //private void btnRejected_Click(object sender, EventArgs e)
