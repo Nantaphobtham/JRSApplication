@@ -136,6 +136,7 @@ namespace JRSApplication.Accountant
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dgvInvoices.Rows[e.RowIndex];
+                InvoiceDAL dal = new InvoiceDAL(); // ✅ ประกาศตัวแปรก่อนใช้
 
                 string invNo = row.Cells["inv_no"].Value?.ToString() ?? "";
                 string invDate = row.Cells["inv_date"].Value?.ToString() ?? "";
@@ -145,7 +146,7 @@ namespace JRSApplication.Accountant
 
                 // ✅ ดึง phase_id และ query phase_no
                 int phaseId = Convert.ToInt32(row.Cells["phase_id"].Value);
-                //string phaseNo = dal.GetPhaseNoById(phaseId);
+                string phaseNo = dal.GetPhaseNoById(phaseId);
 
                 // ✅ แสดงค่าบนฟอร์ม
                 txtInvoiceNumber.Text = invNo;

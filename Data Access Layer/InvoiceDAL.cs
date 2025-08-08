@@ -279,7 +279,7 @@ namespace JRSApplication.Data_Access_Layer
         public string GetPhaseNoById(int phaseId)
         {
             string phaseNo = "";
-            string query = "SELECT phase_no FROM phase WHERE phase_id = @PhaseId";
+            string query = "SELECT phase_no FROM project_phase WHERE phase_id = @PhaseId";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
