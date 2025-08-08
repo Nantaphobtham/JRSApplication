@@ -276,6 +276,23 @@ namespace JRSApplication.Data_Access_Layer
             return dt;
         }
 
+        public string GetPhaseNoById(int phaseId)
+        {
+            string phaseNo = "";
+            string query = "SELECT phase_no FROM phase WHERE phase_id = @PhaseId";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@PhaseId", phaseId);
+                conn.Open();
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                    phaseNo = result.ToString();
+            }
+
+            return phaseNo;
+        }
 
 
 

@@ -201,7 +201,7 @@
             this.btnWorkResponse.Name = "btnWorkResponse";
             this.btnWorkResponse.Size = new System.Drawing.Size(336, 80);
             this.btnWorkResponse.TabIndex = 2;
-            this.btnWorkResponse.Text = "ผลการอนุมติ";
+            this.btnWorkResponse.Text = "ผลการอนุมัติ";
             this.btnWorkResponse.UseVisualStyleBackColor = false;
             this.btnWorkResponse.Click += new System.EventHandler(this.btnWorkResponse_Click);
             // 
