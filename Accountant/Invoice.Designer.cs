@@ -65,12 +65,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.cmbPhase = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.dtgvCustomer = new System.Windows.Forms.DataGridView();
+            this.dtgvInvoice = new System.Windows.Forms.DataGridView();
             this.lblToppic2 = new System.Windows.Forms.Label();
             this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.label17 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvCustomer)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -490,13 +490,13 @@
             this.label11.TabIndex = 30;
             this.label11.Text = "กำหนดชำระเงิน(วัน)";
             // 
-            // dtgvCustomer
+            // dtgvInvoice
             // 
-            this.dtgvCustomer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvCustomer.Location = new System.Drawing.Point(35, 628);
-            this.dtgvCustomer.Name = "dtgvCustomer";
-            this.dtgvCustomer.Size = new System.Drawing.Size(1501, 484);
-            this.dtgvCustomer.TabIndex = 15;
+            this.dtgvInvoice.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvInvoice.Location = new System.Drawing.Point(35, 628);
+            this.dtgvInvoice.Name = "dtgvInvoice";
+            this.dtgvInvoice.Size = new System.Drawing.Size(1501, 484);
+            this.dtgvInvoice.TabIndex = 15;
             // 
             // lblToppic2
             // 
@@ -540,13 +540,13 @@
             this.Controls.Add(this.label17);
             this.Controls.Add(this.lblToppic2);
             this.Controls.Add(this.searchboxControl1);
-            this.Controls.Add(this.dtgvCustomer);
+            this.Controls.Add(this.dtgvInvoice);
             this.Controls.Add(this.panel1);
             this.Name = "Invoice";
-            this.Size = new System.Drawing.Size(1482, 1072);
+            this.Size = new System.Drawing.Size(1465, 1055);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgvCustomer)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -595,7 +595,7 @@
         private System.Windows.Forms.DateTimePicker dtpDueDate;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.DataGridView dtgvCustomer;
+        private System.Windows.Forms.DataGridView dtgvInvoice;
         private SearchboxControl searchboxControl1;
         private System.Windows.Forms.Label lblToppic2;
         private System.Windows.Forms.Label label17;

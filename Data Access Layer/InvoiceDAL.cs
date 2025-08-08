@@ -235,6 +235,47 @@ namespace JRSApplication.Data_Access_Layer
             return dt;
         }
 
+        public DataTable GetAllInvoicesByProjectId(string projectId)
+        {
+            DataTable dt = new DataTable();
+            string query = @"
+                SELECT 
+                    invoice.inv_id,
+                    invoice.inv_no,
+                    invoice.inv_date,
+                    invoice.inv_duedate,
+                    invoice.inv_status,
+                    invoice.inv_method,
+                    invoice.paid_date,
+                    invoice.emp_id,
+                    CONCAT(employee.emp_name, ' ', employee.emp_lname) AS emp_fullname,
+                    invoice.pro_id,
+                    project.pro_name,
+                    CONCAT(customer.cus_name, ' ', customer.cus_lname) AS cus_fullname,
+                    customer.cus_id_card,
+                    customer.cus_address,
+                    invoice.phase_id
+                FROM invoice
+                JOIN project ON invoice.pro_id = project.pro_id
+                JOIN customer ON project.cus_id = customer.cus_id
+                LEFT JOIN employee ON invoice.emp_id = employee.emp_id
+                WHERE invoice.pro_id = @ProjectId
+                ORDER BY invoice.inv_date DESC";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@ProjectId", projectId);
+                conn.Open();
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                {
+                    adapter.Fill(dt);
+                }
+            }
+
+            return dt;
+        }
+
 
 
 
