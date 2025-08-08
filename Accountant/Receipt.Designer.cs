@@ -460,13 +460,14 @@
             // 
             // btn1
             // 
+            this.btn1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
             this.btn1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold);
             this.btn1.Location = new System.Drawing.Point(1232, 55);
             this.btn1.Name = "btn1";
             this.btn1.Size = new System.Drawing.Size(181, 51);
             this.btn1.TabIndex = 83;
             this.btn1.Text = "ค้นหาโครงการ";
-            this.btn1.UseVisualStyleBackColor = true;
+            this.btn1.UseVisualStyleBackColor = false;
             this.btn1.Click += new System.EventHandler(this.btnSearchProject_Click);
             // 
             // contextMenuStrip1
@@ -536,7 +537,7 @@
             this.Controls.Add(this.dtgvInvoice);
             this.Controls.Add(this.Topic1);
             this.Name = "Receipt";
-            this.Size = new System.Drawing.Size(1447, 645);
+            this.Size = new System.Drawing.Size(1430, 628);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvReceiptDetail)).EndInit();
             this.panel4.ResumeLayout(false);

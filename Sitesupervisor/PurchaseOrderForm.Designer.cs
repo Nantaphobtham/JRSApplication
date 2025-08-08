@@ -133,7 +133,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1279, 555);
+            this.panel1.Size = new System.Drawing.Size(1262, 555);
             this.panel1.TabIndex = 0;
             // 
             // cmbUnit
@@ -143,7 +143,7 @@
             this.cmbUnit.FormattingEnabled = true;
             this.cmbUnit.IntegralHeight = false;
             this.cmbUnit.ItemHeight = 30;
-            this.cmbUnit.Location = new System.Drawing.Point(604, 384);
+            this.cmbUnit.Location = new System.Drawing.Point(604, 386);
             this.cmbUnit.Name = "cmbUnit";
             this.cmbUnit.Size = new System.Drawing.Size(138, 38);
             this.cmbUnit.TabIndex = 14;
@@ -210,7 +210,7 @@
             // btnAddMaterial
             // 
             this.btnAddMaterial.AutoSize = true;
-            this.btnAddMaterial.BackColor = System.Drawing.Color.White;
+            this.btnAddMaterial.BackColor = System.Drawing.Color.Lime;
             this.btnAddMaterial.Enabled = false;
             this.btnAddMaterial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddMaterial.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -225,7 +225,7 @@
             // btnEditMaterial
             // 
             this.btnEditMaterial.AutoSize = true;
-            this.btnEditMaterial.BackColor = System.Drawing.Color.White;
+            this.btnEditMaterial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.btnEditMaterial.Enabled = false;
             this.btnEditMaterial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEditMaterial.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -390,7 +390,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(471, 351);
+            this.label11.Location = new System.Drawing.Point(424, 353);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(68, 30);
             this.label11.TabIndex = 5;
@@ -462,9 +462,9 @@
             this.txtQuantity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtQuantity.Enabled = false;
             this.txtQuantity.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtQuantity.Location = new System.Drawing.Point(476, 384);
+            this.txtQuantity.Location = new System.Drawing.Point(429, 386);
             this.txtQuantity.Name = "txtQuantity";
-            this.txtQuantity.Size = new System.Drawing.Size(118, 35);
+            this.txtQuantity.Size = new System.Drawing.Size(161, 35);
             this.txtQuantity.TabIndex = 4;
             this.txtQuantity.TextChanged += new System.EventHandler(this.txtQuantity_TextChanged);
             // 
@@ -576,7 +576,7 @@
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 555);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1279, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1262, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDeleteOrder
@@ -594,6 +594,7 @@
             // 
             // btnEditOrder
             // 
+            this.btnEditOrder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.btnEditOrder.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnEditOrder.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOrange;
             this.btnEditOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -603,10 +604,11 @@
             this.btnEditOrder.Size = new System.Drawing.Size(175, 58);
             this.btnEditOrder.TabIndex = 8;
             this.btnEditOrder.Text = "แก้ไขข้อมูล";
-            this.btnEditOrder.UseVisualStyleBackColor = true;
+            this.btnEditOrder.UseVisualStyleBackColor = false;
             // 
             // btnAddOrder
             // 
+            this.btnAddOrder.BackColor = System.Drawing.Color.Lime;
             this.btnAddOrder.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnAddOrder.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnAddOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -616,7 +618,7 @@
             this.btnAddOrder.Size = new System.Drawing.Size(175, 58);
             this.btnAddOrder.TabIndex = 9;
             this.btnAddOrder.Text = "เพิ่มข้อมูล";
-            this.btnAddOrder.UseVisualStyleBackColor = true;
+            this.btnAddOrder.UseVisualStyleBackColor = false;
             this.btnAddOrder.Click += new System.EventHandler(this.btnAddOrder_Click);
             // 
             // btnPrintOrder
@@ -634,6 +636,7 @@
             // 
             // btnSaveOrder
             // 
+            this.btnSaveOrder.BackColor = System.Drawing.Color.Lime;
             this.btnSaveOrder.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnSaveOrder.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnSaveOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -643,7 +646,7 @@
             this.btnSaveOrder.Size = new System.Drawing.Size(175, 58);
             this.btnSaveOrder.TabIndex = 6;
             this.btnSaveOrder.Text = "บันทึกข้อมูล";
-            this.btnSaveOrder.UseVisualStyleBackColor = true;
+            this.btnSaveOrder.UseVisualStyleBackColor = false;
             this.btnSaveOrder.Click += new System.EventHandler(this.btnSaveOrder_Click);
             // 
             // pnlStep2
@@ -652,7 +655,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 649);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1279, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1262, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // panel4
@@ -664,7 +667,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel4.Location = new System.Drawing.Point(0, 659);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1279, 305);
+            this.panel4.Size = new System.Drawing.Size(1262, 305);
             this.panel4.TabIndex = 3;
             // 
             // dtgvPurchaseOrderList
@@ -705,7 +708,7 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.panel1);
             this.Name = "PurchaseOrderForm";
-            this.Size = new System.Drawing.Size(1279, 915);
+            this.Size = new System.Drawing.Size(1262, 915);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvMaterialList)).EndInit();
