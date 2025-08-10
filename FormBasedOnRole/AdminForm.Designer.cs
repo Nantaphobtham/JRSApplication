@@ -39,7 +39,6 @@ namespace JRSApplication
             this.btnManageUser = new System.Windows.Forms.Button();
             this.Header = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
-            this.btnMaximize = new System.Windows.Forms.Button();
             this.btnMinimize = new System.Windows.Forms.Button();
             this.txtFunctionname = new System.Windows.Forms.Label();
             this.txtPosition = new System.Windows.Forms.Label();
@@ -155,7 +154,6 @@ namespace JRSApplication
             // 
             this.Header.BackgroundImage = global::JRSApplication.Properties.Resources.header;
             this.Header.Controls.Add(this.btnClose);
-            this.Header.Controls.Add(this.btnMaximize);
             this.Header.Controls.Add(this.btnMinimize);
             this.Header.Controls.Add(this.txtFunctionname);
             this.Header.Controls.Add(this.txtPosition);
@@ -181,24 +179,12 @@ namespace JRSApplication
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // btnMaximize
-            // 
-            this.btnMaximize.BackColor = System.Drawing.Color.Transparent;
-            this.btnMaximize.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnMaximize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMaximize.Location = new System.Drawing.Point(1759, 3);
-            this.btnMaximize.Name = "btnMaximize";
-            this.btnMaximize.Size = new System.Drawing.Size(75, 23);
-            this.btnMaximize.TabIndex = 5;
-            this.btnMaximize.Text = "☐";
-            this.btnMaximize.UseVisualStyleBackColor = false;
-            // 
             // btnMinimize
             // 
             this.btnMinimize.BackColor = System.Drawing.Color.Transparent;
             this.btnMinimize.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMinimize.Location = new System.Drawing.Point(1676, 3);
+            this.btnMinimize.Location = new System.Drawing.Point(1761, 3);
             this.btnMinimize.Name = "btnMinimize";
             this.btnMinimize.Size = new System.Drawing.Size(75, 23);
             this.btnMinimize.TabIndex = 5;
@@ -286,7 +272,6 @@ namespace JRSApplication
         private System.Windows.Forms.Button btnManageProject;
         private System.Windows.Forms.Button btnRegisSupplier;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Button btnMaximize;
         private System.Windows.Forms.Button btnMinimize;
         private System.Windows.Forms.PictureBox PicLogo;
     }

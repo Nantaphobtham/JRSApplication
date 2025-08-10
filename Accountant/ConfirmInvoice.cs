@@ -136,27 +136,33 @@ namespace JRSApplication.Accountant
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dgvInvoices.Rows[e.RowIndex];
+                InvoiceDAL dal = new InvoiceDAL(); // ✅ ประกาศตัวแปรก่อนใช้
 
                 string invNo = row.Cells["inv_no"].Value?.ToString() ?? "";
                 string invDate = row.Cells["inv_date"].Value?.ToString() ?? "";
                 string invDueDate = row.Cells["inv_duedate"].Value?.ToString() ?? "";
                 string proId = row.Cells["pro_id"].Value?.ToString() ?? "";
-                string cusId = row.Cells["cus_id"].Value?.ToString() ?? ""; // still needed for lookup
+                string cusId = row.Cells["cus_id"].Value?.ToString() ?? "";
 
-                // Fill invoice section
+                // ✅ ดึง phase_id และ query phase_no
+                int phaseId = Convert.ToInt32(row.Cells["phase_id"].Value);
+                string phaseNo = dal.GetPhaseNoById(phaseId);
+
+                // ✅ แสดงค่าบนฟอร์ม
                 txtInvoiceNumber.Text = invNo;
                 dtpInvoiceDate.Value = Convert.ToDateTime(invDate);
                 txtDueDate.Text = invDueDate;
                 txtProjectID.Text = proId;
+                textBox7.Text = phaseNo; // ✅ แก้ตรงนี้
 
-                // Fill project & customer details
                 LoadProjectDetails(proId);
                 LoadCustomerDetails(cusId);
                 int invId = Convert.ToInt32(row.Cells["inv_id"].Value);
-                LoadInvoiceDetails(invId);  // Show invoice detail in bottom-right
-
+                LoadInvoiceDetails(invId);
+                
             }
         }
+
 
         private void LoadInvoiceDetails(int invId)
         {
@@ -192,7 +198,6 @@ namespace JRSApplication.Accountant
             comboPaymentMethod.Items.Add("เงินสด");
             comboPaymentMethod.Items.Add("โอนผ่านธนาคาร");
             comboPaymentMethod.Items.Add("เช็ค");
-            comboPaymentMethod.Items.Add("QR Code");
             comboPaymentMethod.SelectedIndex = 0; // Default to first
         }
         private void SaveProofOfPayment(int invoiceId, string filePath)
@@ -274,6 +279,9 @@ namespace JRSApplication.Accountant
                     if (dgvInvoices.Columns.Contains("inv_no")) dgvInvoices.Columns["inv_no"].HeaderText = "เลขที่ใบแจ้งหนี้";
                     if (dgvInvoices.Columns.Contains("inv_date")) dgvInvoices.Columns["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
                     if (dgvInvoices.Columns.Contains("inv_duedate")) dgvInvoices.Columns["inv_duedate"].HeaderText = "กำหนดชำระ";
+                    if (dgvInvoices.Columns.Contains("pro_id")) dgvInvoices.Columns["pro_id"].HeaderText = "รหัสโครงการ";
+                    if (dgvInvoices.Columns.Contains("phase_id")) dgvInvoices.Columns["phase_id"].HeaderText = "เฟสที่";
+                    if (dgvInvoices.Columns.Contains("cus_id")) dgvInvoices.Columns["cus_id"].HeaderText = "รหัสลูกค้า";
                 }
             }
         }

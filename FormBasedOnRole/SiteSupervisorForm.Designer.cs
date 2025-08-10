@@ -30,7 +30,6 @@
         {
             this.Header = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
-            this.btnMaximize = new System.Windows.Forms.Button();
             this.btnMinimize = new System.Windows.Forms.Button();
             this.txtsubFunctionname = new System.Windows.Forms.Label();
             this.txtFunctionname = new System.Windows.Forms.Label();
@@ -55,7 +54,6 @@
             // 
             this.Header.BackgroundImage = global::JRSApplication.Properties.Resources.header;
             this.Header.Controls.Add(this.btnClose);
-            this.Header.Controls.Add(this.btnMaximize);
             this.Header.Controls.Add(this.btnMinimize);
             this.Header.Controls.Add(this.txtsubFunctionname);
             this.Header.Controls.Add(this.txtFunctionname);
@@ -82,24 +80,12 @@
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // btnMaximize
-            // 
-            this.btnMaximize.BackColor = System.Drawing.Color.Transparent;
-            this.btnMaximize.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnMaximize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMaximize.Location = new System.Drawing.Point(1743, 3);
-            this.btnMaximize.Name = "btnMaximize";
-            this.btnMaximize.Size = new System.Drawing.Size(75, 23);
-            this.btnMaximize.TabIndex = 5;
-            this.btnMaximize.Text = "☐";
-            this.btnMaximize.UseVisualStyleBackColor = false;
-            // 
             // btnMinimize
             // 
             this.btnMinimize.BackColor = System.Drawing.Color.Transparent;
             this.btnMinimize.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMinimize.Location = new System.Drawing.Point(1660, 3);
+            this.btnMinimize.Location = new System.Drawing.Point(1745, 3);
             this.btnMinimize.Name = "btnMinimize";
             this.btnMinimize.Size = new System.Drawing.Size(75, 23);
             this.btnMinimize.TabIndex = 5;
@@ -201,7 +187,7 @@
             this.btnWorkResponse.Name = "btnWorkResponse";
             this.btnWorkResponse.Size = new System.Drawing.Size(336, 80);
             this.btnWorkResponse.TabIndex = 2;
-            this.btnWorkResponse.Text = "ผลการอนุมติ";
+            this.btnWorkResponse.Text = "ผลการอนุมัติ";
             this.btnWorkResponse.UseVisualStyleBackColor = false;
             this.btnWorkResponse.Click += new System.EventHandler(this.btnWorkResponse_Click);
             // 
@@ -283,7 +269,6 @@
 
         private System.Windows.Forms.Panel Header;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Button btnMaximize;
         private System.Windows.Forms.Button btnMinimize;
         private System.Windows.Forms.Label txtFunctionname;
         private System.Windows.Forms.Label txtPosition;

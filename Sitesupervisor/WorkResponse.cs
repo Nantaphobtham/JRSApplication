@@ -12,9 +12,12 @@ namespace JRSApplication.Sitesupervisor
 {
     public partial class WorkResponse : UserControl
     {
+        private readonly string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+        
         public WorkResponse()
         {
             InitializeComponent();
         }
+
     }
 }

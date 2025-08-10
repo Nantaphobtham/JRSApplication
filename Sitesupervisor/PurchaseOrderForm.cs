@@ -1,10 +1,12 @@
 ﻿using JRSApplication.Components;
 using JRSApplication.Components.Models;
 using JRSApplication.Data_Access_Layer;
+using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -16,7 +18,16 @@ namespace JRSApplication
 {
     public partial class PurchaseOrderForm : UserControl
     {
+        private readonly string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         private readonly string _empId; // 👈 เก็บ empId จาก Form หลัก
+        //list item หน่วยนับ สำหรับ txtunite
+        List<string> unitList = new List<string> { 
+            "--เลือก--",
+            "เส้น", "ก้อน", "แผ่น", "กล่อง", "โหล", "หลอด", 
+            "ถุง", "ถัง", "ชิ้น", "กก." , "ใบ", "อัน", "ขด", 
+            "บาน", "แพ็ค" ,"เครื่อง","กล.","ดอก","มัด","ม้วน",
+            "ตัว","ท่อน","วง","บาน","เมตร","ตร.ม.","ลบ.ม.",
+            "ลัง","แกลลอน","ถ้วย","คู่","เม็ด","ฟุต","ตัน","ชั้น","ช่อง"}; //,"คิว"
 
         //ให้ DataGrid รู้จักการเปลี่ยนแปลงอัตโนมัติ
         private BindingList<MaterialDetail> materialList = new BindingList<MaterialDetail>(); // mat_list
@@ -35,8 +46,85 @@ namespace JRSApplication
 
             dtgvMaterialList.DataSource = materialList;
             dtgvMaterialList.ClearSelection(); // ❌ ไม่ให้เลือกแถวทันที
+                                               // เพิ่มรายการใน ComboBox
+            cmbUnit.DataSource = unitList;
+            cmbUnit.SelectedIndex = 0;
+            cmbUnit.AutoCompleteMode = AutoCompleteMode.None;
+            cmbUnit.AutoCompleteSource = AutoCompleteSource.None;
 
             LoadAllPurchaseOrders();
+        }
+        private string GenerateNextOrderNumber()
+        {
+            string prefix = "PO";
+            DateTime now = DateTime.Now;
+            int year = now.Year + 543; // ปี พ.ศ.
+            string yy = year.ToString().Substring(2, 2); // เอาแค่ 2 หลักท้าย
+            string mm = now.Month.ToString("D2");
+
+            string baseKey = $"{prefix}{yy}{mm}";
+
+            string query = $@"
+                    SELECT order_number
+                    FROM purchaseorder
+                    WHERE order_number LIKE '{baseKey}-%'
+                    ORDER BY order_number DESC
+                    LIMIT 1;";
+
+            string lastOrderNo = null;
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    var result = cmd.ExecuteScalar();
+                    if (result != null)
+                        lastOrderNo = result.ToString();
+                }
+            }
+
+            string nextRunning = "0001";
+            string dash = "-";
+
+            if (!string.IsNullOrEmpty(lastOrderNo))
+            {
+                // Check if lastOrderNo is like POyyMM-9999 or POyyMM-A9999
+                string[] parts = lastOrderNo.Split('-');
+                if (parts.Length == 2)
+                {
+                    string runningPart = parts[1];
+                    // Check for A prefix (eg. A0001)
+                    if (runningPart.StartsWith("A"))
+                    {
+                        int num = int.Parse(runningPart.Substring(1));
+                        if (num >= 9999)
+                        {
+                            dash = "-A";
+                            nextRunning = "0001";
+                        }
+                        else
+                        {
+                            nextRunning = (num + 1).ToString("D4");
+                            dash = "-A";
+                        }
+                    }
+                    else
+                    {
+                        int num = int.Parse(runningPart);
+                        if (num >= 9999)
+                        {
+                            dash = "-A";
+                            nextRunning = "0001";
+                        }
+                        else
+                        {
+                            nextRunning = (num + 1).ToString("D4");
+                        }
+                    }
+                }
+            }
+            // Return
+            return $"{baseKey}{dash}{nextRunning}";
         }
 
         private void InitializeGridColumns()
@@ -48,6 +136,7 @@ namespace JRSApplication
             dtgvMaterialList.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "MatNo",
+                Name = "MatNo",
                 HeaderText = "ลำดับ",
                 Width = 60,
                 ReadOnly = true,
@@ -61,6 +150,7 @@ namespace JRSApplication
             dtgvMaterialList.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "MatDetail",
+                Name = "MatDetail",
                 HeaderText = "ชื่อวัสดุ",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             });
@@ -69,6 +159,7 @@ namespace JRSApplication
             dtgvMaterialList.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "MatPrice",
+                Name = "MatPrice",
                 HeaderText = "ราคาต่อหน่วย",
                 DefaultCellStyle = new DataGridViewCellStyle
                 {
@@ -81,6 +172,7 @@ namespace JRSApplication
             dtgvMaterialList.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "MatQuantity",
+                Name = "MatQuantity",
                 HeaderText = "จำนวน",
                 DefaultCellStyle = new DataGridViewCellStyle
                 {
@@ -92,6 +184,7 @@ namespace JRSApplication
             dtgvMaterialList.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "MatUnit",
+                Name = "MatUnit",
                 HeaderText = "หน่วย",
                 DefaultCellStyle = new DataGridViewCellStyle
                 {
@@ -103,6 +196,7 @@ namespace JRSApplication
             dtgvMaterialList.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "MatAmount",
+                Name = "MatAmount",
                 HeaderText = "ราคารวม",
                 DefaultCellStyle = new DataGridViewCellStyle
                 {
@@ -242,10 +336,10 @@ namespace JRSApplication
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtUnit.Text))
+            if (string.IsNullOrWhiteSpace(cmbUnit.Text) || cmbUnit.Text == "--เลือก--")
             {
                 MessageBox.Show("กรุณาระบุหน่วยของวัสดุ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtUnit.Focus();
+                cmbUnit.Focus();
                 return false;
             }
 
@@ -293,38 +387,65 @@ namespace JRSApplication
             if (!ValidateMaterialData())
                 return;
 
-            // ✅ แปลงค่าจาก TextBox
+            // รับค่าจาก input
             string matName = txtMaterialName.Text.Trim();
-            string unit = txtUnit.Text.Trim();
+            string unit = cmbUnit.Text.Trim();
             decimal qty = decimal.Parse(txtQuantity.Text.Trim());
             decimal price = decimal.Parse(txtUnitPrice.Text.Trim());
             decimal amount = qty * price;
 
-            // ✅ สร้าง MaterialDetail ใหม่
-            var material = new MaterialDetail
+            if (editingRowIndex != null)
             {
-                MatNo = materialList.Count + 1,
-                MatDetail = matName,
-                MatQuantity = qty,
-                MatPrice = price,
-                MatAmount = amount,
-                MatUnit = unit
-            };
+                // 🟠 "โหมดแก้ไข"
+                var material = materialList[editingRowIndex.Value];
+                material.MatDetail = matName;
+                material.MatQuantity = qty;
+                material.MatPrice = price;
+                material.MatAmount = amount;
+                material.MatUnit = unit;
 
-            // ✅ เพิ่มเข้ารายการ
-            materialList.Add(material);
+                // รีเฟรช Grid
+                dtgvMaterialList.DataSource = null;
+                dtgvMaterialList.DataSource = materialList;
+                dtgvMaterialList.ClearSelection();
 
-            // ✅ แสดงผลใน DataGridView
-            dtgvMaterialList.DataSource = null;
-            dtgvMaterialList.DataSource = materialList;
-            dtgvMaterialList.ClearSelection();
+                // Reset โหมด
+                editingRowIndex = null;
+                btnAddMaterial.Text = "เพิ่ม";
+                btnAddMaterial.BackColor = Color.LightGreen;
+            }
+            else
+            {
+                // 🟢 "โหมดเพิ่มใหม่"
+                var material = new MaterialDetail
+                {
+                    MatNo = materialList.Count + 1,
+                    MatDetail = matName,
+                    MatQuantity = qty,
+                    MatPrice = price,
+                    MatAmount = amount,
+                    MatUnit = unit
+                };
+                materialList.Add(material);
 
-            // ✅ ล้างช่อง input
+                dtgvMaterialList.DataSource = null;
+                dtgvMaterialList.DataSource = materialList;
+                dtgvMaterialList.ClearSelection();
+            }
+
+            // ล้าง input
             ClearMaterialForm();
-
-            // ✅ สรุปรวมยอดรายการ
             UpdateMaterialSummary();
+
+            cmbUnit.SelectedIndex = 0; // รีเซ็ต ComboBox หน่วย
+            // ปลด ReadOnly ทุก field หลังจากเพิ่ม/แก้ไขเสร็จ
+            txtMaterialName.ReadOnly = false;
+            txtUnitPrice.ReadOnly = false;
+            txtQuantity.ReadOnly = false;
+            cmbUnit.Enabled = true;
+            btnEditMaterial.Enabled = false;
         }
+
 
         private void btnAddOrder_Click(object sender, EventArgs e)
         {
@@ -350,10 +471,11 @@ namespace JRSApplication
             btnEditMaterial.Text = "แก้ไข";
             btnAddMaterial.Text = "เพิ่ม";
             currentEditingMaterial = null;
-
+            txtOrderNO.Text = GenerateNextOrderNumber(); // ✅ สร้างเลขที่ใบสั่งซื้อใหม่อัตโนมัติ
             // ✅ กำหนดค่า default เช่น วันที่
             dtpOrderDate.Value = DateTime.Today;
             cmbDueDate.SelectedIndex = -1;
+
 
             // ✅ [Option] ถ้าคุณใช้เลขใบสั่งอัตโนมัติ
             // txtOrderNO.Text = GenerateNextOrderNumber();
@@ -396,7 +518,7 @@ namespace JRSApplication
             // ฟอร์มวัสดุ
             txtMaterialName.Enabled = true;
             txtQuantity.Enabled = true;
-            txtUnit.Enabled = true;
+            cmbUnit.Enabled = true;
             txtUnitPrice.Enabled = true;
             txtTotalPrice.Enabled = true;
 
@@ -656,6 +778,71 @@ namespace JRSApplication
                 txtProjectNumber.Text = searchForm.SelectedContract; // หรือใช้ชื่อ property ที่คุณส่งกลับ
                 txtProjectName.Text = searchForm.SelectedName;
             }
+        }
+
+        private void txtUnit_TextUpdate(object sender, EventArgs e)
+        {
+            string filterParam = cmbUnit.Text.Trim();
+
+            // อย่า filter "--เลือก--"
+            var filtered = unitList
+                .Skip(1) // ข้าม index 0 ("--เลือก--")
+                .Where(x => x.Contains(filterParam))
+                .ToList();
+
+            // เพิ่ม "--เลือก--" กลับไปที่ index 0
+            filtered.Insert(0, "--เลือก--");
+
+            // ถ้าไม่เหลือรายการเลย ให้แสดง "--เลือก--" กับทั้งหมด
+            if (filtered.Count == 1)
+                filtered = new List<string>(unitList);
+
+            // suspend event เพื่อไม่ให้เกิด loop
+            cmbUnit.DataSource = null;
+            cmbUnit.DataSource = filtered;
+            cmbUnit.Text = filterParam;
+            cmbUnit.SelectionStart = cmbUnit.Text.Length;
+            cmbUnit.DroppedDown = true;
+        }
+
+        private void dtgvMaterialList_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.RowIndex < dtgvMaterialList.Rows.Count)
+            {
+                // ดึงข้อมูลจาก DataGridViewRow ที่ถูกเลือก
+                DataGridViewRow row = dtgvMaterialList.Rows[e.RowIndex];
+
+                // สมมุติ ColumnNames ตาม code คุณ: MatDetail, MatPrice, MatQuantity, MatUnit
+                txtMaterialName.Text = row.Cells["MatDetail"].Value?.ToString();
+                txtUnitPrice.Text = row.Cells["MatPrice"].Value?.ToString();
+                txtQuantity.Text = row.Cells["MatQuantity"].Value?.ToString();
+                cmbUnit.Text = row.Cells["MatUnit"].Value?.ToString();
+
+                // คำนวณราคาสุทธิใหม่ (option)
+                CalculateTotalPrice();
+                // 🟡 จำ index ไว้
+                editingRowIndex = e.RowIndex;
+
+                // เก็บ material ที่เลือกไว้สำหรับแก้ไข (option)
+                // currentEditingMaterial = ... หาได้จาก BindingList ถ้ามี Primary Key หรือ index
+                txtMaterialName.ReadOnly = true; // ป้องกันการแก้ไขโดยตรง
+                txtUnitPrice.ReadOnly = true; // ป้องกันการแก้ไขโดยตรง
+                txtQuantity.ReadOnly = true; // ป้องกันการแก้ไขโดยตรง
+                cmbUnit.Enabled = false; // ป้องกันการเปลี่ยนแปลงหน่วย
+
+                btnAddMaterial.Text = "บันทึกแก้ไข";
+                btnAddMaterial.BackColor = Color.Orange; // สีแยก (option)
+                btnEditMaterial.Enabled = true; // ให้ user ปลด ReadOnly ได้
+            }
+        }
+        private int? editingRowIndex = null; // index ของแถวที่กำลังแก้ไข (null = เพิ่มใหม่)
+
+        private void btnEditMaterial_Click(object sender, EventArgs e)
+        {
+            txtMaterialName.ReadOnly = false; // เปลี่ยนแปลงหน่วย
+            txtUnitPrice.ReadOnly = false; // เปลี่ยนแปลงหน่วย
+            txtQuantity.ReadOnly = false; // เปลี่ยนแปลงหน่วย
+            cmbUnit.Enabled = true; // เปลี่ยนแปลงหน่วย
         }
     }
 }

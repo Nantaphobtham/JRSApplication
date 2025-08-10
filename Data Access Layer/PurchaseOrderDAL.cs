@@ -15,31 +15,6 @@ namespace JRSApplication.Data_Access_Layer
     {
         private readonly string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
-        public string GenerateNextOrderNumber()
-        {
-            string today = DateTime.Now.ToString("yyyyMMdd");
-            int runningNumber = 1;
-
-            string prefix = $"PO{today}";
-            string query = "SELECT COUNT(*) FROM purchaseorder WHERE order_number LIKE @PrefixPattern";
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            using (MySqlCommand cmd = new MySqlCommand(query, conn))
-            {
-                cmd.Parameters.AddWithValue("@PrefixPattern", prefix + "%");
-                conn.Open();
-
-                object result = cmd.ExecuteScalar();
-                if (result != null && int.TryParse(result.ToString(), out int count))
-                {
-                    runningNumber = count + 1;
-                }
-            }
-
-            return $"{prefix}-{runningNumber.ToString("D3")}";
-        }
-
-
         public int InsertFullPurchaseOrder(POModel order)
         {
             int newOrderId = -1;
@@ -125,7 +100,7 @@ namespace JRSApplication.Data_Access_Layer
             var orders = new List<PurchaseOrder>();
             string query = @"SELECT order_id, order_number, order_detail, order_date,
                             order_status, order_duedate, order_remark,
-                            emp_id, approved_by_emp_id, approved_date
+                            emp_id, approved_by_emp_id, approved_date,pro_id
                      FROM purchaseorder
                      ORDER BY order_date DESC";
 
@@ -141,6 +116,7 @@ namespace JRSApplication.Data_Access_Layer
                         {
                             OrderId = reader.GetInt32("order_id"),
                             OrderNumber = reader.GetString("order_number"),
+                            ProId = reader.GetInt32("pro_id"),
                             OrderDetail = reader.GetString("order_detail"),
                             OrderDate = reader.GetDateTime("order_date"),
                             OrderStatus = reader.GetString("order_status"),
