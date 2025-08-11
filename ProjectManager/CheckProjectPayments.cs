@@ -79,7 +79,7 @@ namespace JRSApplication
                 {
                     txtContractNumber.Text = project.ProjectNumber;
                     txtProjectName2.Text = project.ProjectName;
-                    txtPhase.Text = project.CurrentPhaseNumber.ToString();
+                    //txtPhase.Text = project.CurrentPhaseNumber.ToString();
                 }
 
                 // =========================
@@ -125,18 +125,17 @@ namespace JRSApplication
             dtgvInvoice.AllowUserToResizeRows = false;
         }
 
-        private void LoadPaidInvoices()
-        {
-            SearchService service = new SearchService();
-            DataTable dt = service.GetPaidInvoices();
-            dtgvInvoice.DataSource = dt;
-        }
+
 
         private void dtgvInvoice_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dtgvInvoice.Rows[e.RowIndex];
+                InvoiceDAL dal = new InvoiceDAL();
+
+                int phaseId = Convert.ToInt32(row.Cells["phase_id"].Value);
+                string phaseNo = dal.GetPhaseNoById(phaseId);
 
                 // 🔹 Invoice info
                 txtInvoiceNo.Text = row.Cells["inv_no"].Value?.ToString();
@@ -164,7 +163,7 @@ namespace JRSApplication
                 txtEmpName.Text = $"{empName} {empLname}";
 
                 // 🔹 Phase (optional)
-                txtPhase.Text = row.Cells["phase_id"].Value?.ToString();
+                txtPhase.Text = row.Cells["phase_no"].Value?.ToString();
 
                 // 🔹 Load Image
                 int invId = Convert.ToInt32(row.Cells["inv_id"].Value);
