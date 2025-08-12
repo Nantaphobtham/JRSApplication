@@ -315,7 +315,7 @@
             this.pnlProjetDetail.Controls.Add(this.label14);
             this.pnlProjetDetail.Controls.Add(this.lblProjectDetail);
             this.pnlProjetDetail.Controls.Add(this.txtProjectDetail);
-            this.pnlProjetDetail.Location = new System.Drawing.Point(471, 581);
+            this.pnlProjetDetail.Location = new System.Drawing.Point(471, 577);
             this.pnlProjetDetail.Margin = new System.Windows.Forms.Padding(2);
             this.pnlProjetDetail.Name = "pnlProjetDetail";
             this.pnlProjetDetail.Size = new System.Drawing.Size(395, 143);
@@ -466,7 +466,7 @@
             this.pnlRemark.Controls.Add(this.label12);
             this.pnlRemark.Controls.Add(this.lblRemark);
             this.pnlRemark.Controls.Add(this.txtRemark);
-            this.pnlRemark.Location = new System.Drawing.Point(471, 466);
+            this.pnlRemark.Location = new System.Drawing.Point(471, 464);
             this.pnlRemark.Margin = new System.Windows.Forms.Padding(2);
             this.pnlRemark.Name = "pnlRemark";
             this.pnlRemark.Size = new System.Drawing.Size(395, 111);
