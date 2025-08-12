@@ -106,7 +106,7 @@ namespace JRSApplication
                 {
                     query = @"
                 SELECT 
-                    inv_id, inv_no, inv_date, inv_duedate, 
+                    inv_id, inv_date, inv_duedate, 
                     pro_id, cus_id, emp_id, inv_method, inv_status
                 FROM invoice
                 WHERE (inv_status IS NULL OR inv_status = 'Draft')

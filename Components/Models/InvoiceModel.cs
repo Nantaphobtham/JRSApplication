@@ -17,7 +17,8 @@ namespace JRSApplication.Components
         public string PhaseDetail { get; set; }
         public string InvId { get; set; }
         public string Detail { get; set; }
-        public int Quantity { get; set; }
+        public string Quantity { get; set; }
         public decimal Price { get; set; }
+        public string InvRemark { get; set; }
     }
 }
