@@ -323,7 +323,7 @@ namespace JRSApplication
             dtgvPhase.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dtgvPhase.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dtgvPhase.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dtgvPhase.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            dtgvPhase.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
             dtgvPhase.ColumnHeadersHeight = 30;
 
             dtgvPhase.DefaultCellStyle.Font = new Font("Segoe UI", 12);
@@ -1425,6 +1425,6 @@ namespace JRSApplication
             }
         }
 
-
+        
     }
 }
