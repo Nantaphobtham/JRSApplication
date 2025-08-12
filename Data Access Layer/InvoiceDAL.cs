@@ -17,33 +17,55 @@ namespace JRSApplication.Data_Access_Layer
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
-        public int InsertInvoice(InvoiceModel invoice)
+        // InvoiceDAL.cs
+        public string InsertInvoice(InvoiceModel invoice)
         {
-            int insertedId = 0;
-
-            string sql = @"
-        INSERT INTO invoice (inv_no, inv_date, inv_duedate, cus_id, pro_id, phase_id)
-        VALUES
-        (@InvNo, @InvDate, @DueDate, @CusId, @ProId, @PhaseId);
-        SELECT LAST_INSERT_ID();
-    ";
-
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+            string newInvId = "INV_0001";
+            using (var conn = new MySqlConnection(connectionString))
             {
-                cmd.Parameters.AddWithValue("@InvNo", invoice.InvNo);
-                cmd.Parameters.AddWithValue("@InvDate", invoice.InvDate);
-                cmd.Parameters.AddWithValue("@DueDate", invoice.InvDueDate);
-                cmd.Parameters.AddWithValue("@CusId", invoice.CusId);
-                cmd.Parameters.AddWithValue("@ProId", invoice.ProId);
-                cmd.Parameters.AddWithValue("@PhaseId", invoice.PhaseId);
-
                 conn.Open();
-                insertedId = Convert.ToInt32(cmd.ExecuteScalar());
-            }
+                using (var tx = conn.BeginTransaction())
+                {
+                    // 1) Get last id and lock it to avoid race conditions
+                    const string sqlGetLast = @"
+                SELECT inv_id
+                FROM invoice
+                WHERE inv_id LIKE 'INV\_%'
+                ORDER BY CAST(SUBSTRING(inv_id, 5) AS UNSIGNED) DESC
+                LIMIT 1
+                FOR UPDATE;";
+                    using (var cmdGet = new MySqlCommand(sqlGetLast, conn, tx))
+                    {
+                        var last = cmdGet.ExecuteScalar();
+                        if (last != null)
+                        {
+                            int n = int.Parse(last.ToString().Substring(4));
+                            newInvId = $"INV_{(n + 1):D4}";
+                        }
+                    }
 
-            return insertedId;
+                    // 2) Insert
+                    const string sqlInsert = @"
+                INSERT INTO invoice (inv_id, inv_date, inv_duedate, inv_remark,  cus_id, pro_id, phase_id)
+                VALUES (@Id, @InvDate, @DueDate, @Remark, @CusId, @ProId, @PhaseId);";
+                    using (var cmd = new MySqlCommand(sqlInsert, conn, tx))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", newInvId);
+                        cmd.Parameters.AddWithValue("@InvDate", invoice.InvDate);
+                        cmd.Parameters.AddWithValue("@DueDate", invoice.InvDueDate);
+                        cmd.Parameters.AddWithValue("@Remark", invoice.InvRemark ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@CusId", invoice.CusId);
+                        cmd.Parameters.AddWithValue("@ProId", invoice.ProId);
+                        cmd.Parameters.AddWithValue("@PhaseId", string.IsNullOrEmpty(invoice.PhaseId) ? (object)DBNull.Value : invoice.PhaseId);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    tx.Commit();
+                }
+            }
+            return newInvId;
         }
+
         public DataTable GetAllInvoices()
         {
             DataTable dt = new DataTable();
@@ -110,10 +132,12 @@ namespace JRSApplication.Data_Access_Layer
                             CONCAT(customer.cus_name, ' ', customer.cus_lname) AS cus_fullname,
                             customer.cus_id_card,
                             customer.cus_address,
-                            invoice.phase_id
+                            invoice.phase_id,
+                            project_phase.phase_no      as phase_no
                             FROM invoice
                             JOIN project ON invoice.pro_id = project.pro_id
                             JOIN customer ON project.cus_id = customer.cus_id
+                            JOIN project_phase ON project_phase.phase_id = invoice.phase_id
                             LEFT JOIN employee ON invoice.emp_id = employee.emp_id
                             WHERE invoice.inv_status = 'ชำระแล้ว'
                             AND invoice.pro_id = @ProjectId";
@@ -198,9 +222,10 @@ namespace JRSApplication.Data_Access_Layer
             string query = @"
         SELECT 
             i.inv_id,
-            i.inv_no,
+            i.inv_id AS inv_no,
             i.inv_date,
             i.inv_duedate,
+            i.inv_remark,
             p.pro_id,
             p.pro_name,
             p.pro_number,
@@ -209,6 +234,7 @@ namespace JRSApplication.Data_Access_Layer
             c.cus_id_card,
             c.cus_address,
             ph.phase_id,
+            ph.phase_no        AS phase_no,
             ph.phase_budget,
             ph.phase_detail,
             d.inv_detail,
@@ -234,6 +260,28 @@ namespace JRSApplication.Data_Access_Layer
 
             return dt;
         }
+        public string PeekNextInvoiceId()
+        {
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                const string sql = @"
+            SELECT inv_id
+            FROM invoice
+            WHERE inv_id LIKE 'INV\_%'
+            ORDER BY CAST(SUBSTRING(inv_id, 5) AS UNSIGNED) DESC
+            LIMIT 1;";
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    var last = cmd.ExecuteScalar();
+                    if (last == null || last == DBNull.Value) return "INV_0001";
+                    int n = 0; int.TryParse(last.ToString().Substring(4), out n);
+                    return $"INV_{(n + 1):D4}";
+                }
+            }
+        }
+
+
 
         public DataTable GetAllInvoicesByProjectId(string projectId)
         {
@@ -241,7 +289,6 @@ namespace JRSApplication.Data_Access_Layer
             string query = @"
                 SELECT 
                     invoice.inv_id,
-                    invoice.inv_no,
                     invoice.inv_date,
                     invoice.inv_duedate,
                     invoice.inv_status,
@@ -254,10 +301,12 @@ namespace JRSApplication.Data_Access_Layer
                     CONCAT(customer.cus_name, ' ', customer.cus_lname) AS cus_fullname,
                     customer.cus_id_card,
                     customer.cus_address,
-                    invoice.phase_id
+                    invoice.phase_id,
+                    project_phase.phase_no      as phase_no
                 FROM invoice
                 JOIN project ON invoice.pro_id = project.pro_id
                 JOIN customer ON project.cus_id = customer.cus_id
+                JOIN project_phase ON project_phase.phase_id = invoice.phase_id 
                 LEFT JOIN employee ON invoice.emp_id = employee.emp_id
                 WHERE invoice.pro_id = @ProjectId
                 ORDER BY invoice.inv_date DESC";

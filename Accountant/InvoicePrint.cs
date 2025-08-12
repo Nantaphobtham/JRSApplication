@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -87,35 +88,69 @@ namespace JRSApplication.Accountant
         }
         public void SetInvoiceDetails(DataTable invoiceDetailTable)
         {
+            // Faster refresh while rebuilding
+            tblReceiptItems.SuspendLayout();
+
             tblReceiptItems.Controls.Clear();
             tblReceiptItems.RowStyles.Clear();
             tblReceiptItems.RowCount = 0;
 
-            // Add header row
+            // Header
             string[] headers = { "ลำดับ", "รายการ", "จำนวน", "ราคา", "ราคารวม" };
             for (int i = 0; i < headers.Length; i++)
                 AddCell(tblReceiptItems, headers[i], i, 0, true);
 
             int row = 1;
+
             foreach (DataRow dr in invoiceDetailTable.Rows)
             {
-                string detail = dr["inv_detail"].ToString();
+                // Read values
+                string detail = dr["inv_detail"]?.ToString() ?? string.Empty;
+                string qtyText = dr["inv_quantity"]?.ToString() ?? string.Empty; // <-- show as-typed
 
-                decimal qty, price;
-                decimal.TryParse(CleanNumericString(dr["inv_quantity"]), out qty);
-                decimal.TryParse(CleanNumericString(dr["inv_price"]), out price);
+                // Parse *price only* (money)
+                decimal price = 0m;
+                decimal.TryParse(
+                    CleanNumericString(dr["inv_price"]),       // if CleanNumericString exists in your codebase
+                    NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
+                    CultureInfo.CurrentCulture,
+                    out price
+                );
 
-                decimal total = qty * price;
+                // Skip a completely empty row (optional)
+                if (string.IsNullOrWhiteSpace(detail) &&
+                    string.IsNullOrWhiteSpace(qtyText) &&
+                    price == 0m)
+                {
+                    continue;
+                }
 
+                // Total = price (no multiply by quantity)
+                decimal total = price;
+
+                // Add row
                 AddCell(tblReceiptItems, row.ToString(), 0, row);
                 AddCell(tblReceiptItems, detail, 1, row);
-                AddCell(tblReceiptItems, qty.ToString(), 2, row);
+                AddCell(tblReceiptItems, qtyText, 2, row);           // <-- show raw qty text
                 AddCell(tblReceiptItems, price.ToString("N2"), 3, row);
                 AddCell(tblReceiptItems, total.ToString("N2"), 4, row);
 
                 row++;
             }
+
+            tblReceiptItems.ResumeLayout();
         }
+        decimal SafeMoney(object v)
+        {
+            if (v == null || v == DBNull.Value) return 0m;
+            var s = v.ToString();
+            decimal d;
+            if (decimal.TryParse(s, NumberStyles.Number | NumberStyles.AllowCurrencySymbol, CultureInfo.CurrentCulture, out d)) return d;
+            if (decimal.TryParse(s, NumberStyles.Number | NumberStyles.AllowCurrencySymbol, CultureInfo.InvariantCulture, out d)) return d;
+            return 0m;
+        }
+        // then: decimal price = SafeMoney(dr["inv_price"]);
+
         private string CleanNumericString(object value)
         {
             return value?.ToString().Replace(",", "").Replace("บาท", "").Trim() ?? "0";
