@@ -61,6 +61,11 @@
             this.starPhone = new System.Windows.Forms.Label();
             this.lblPhone = new System.Windows.Forms.Label();
             this.txtPhone = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.pnlIdCompany.SuspendLayout();
             this.pnlName.SuspendLayout();
             this.pnlAddress.SuspendLayout();
@@ -75,6 +80,7 @@
             // 
             // pnlIdCompany
             // 
+            this.pnlIdCompany.Controls.Add(this.label1);
             this.pnlIdCompany.Controls.Add(this.starIdCompany);
             this.pnlIdCompany.Controls.Add(this.lblIdCompany);
             this.pnlIdCompany.Controls.Add(this.txtJuristic);
@@ -123,6 +129,7 @@
             // 
             // pnlName
             // 
+            this.pnlName.Controls.Add(this.label3);
             this.pnlName.Controls.Add(this.starCompanyName);
             this.pnlName.Controls.Add(this.lblCompanyName);
             this.pnlName.Controls.Add(this.txtName);
@@ -219,6 +226,7 @@
             // 
             // pnlAddress
             // 
+            this.pnlAddress.Controls.Add(this.label5);
             this.pnlAddress.Controls.Add(this.starAddress);
             this.pnlAddress.Controls.Add(this.lblAddress);
             this.pnlAddress.Controls.Add(this.txtAddress);
@@ -378,6 +386,7 @@
             // 
             // pnlEmail
             // 
+            this.pnlEmail.Controls.Add(this.label4);
             this.pnlEmail.Controls.Add(this.starEmail);
             this.pnlEmail.Controls.Add(this.lblEmail);
             this.pnlEmail.Controls.Add(this.txtEmail);
@@ -426,6 +435,7 @@
             // 
             // pnlPhone
             // 
+            this.pnlPhone.Controls.Add(this.label2);
             this.pnlPhone.Controls.Add(this.starPhone);
             this.pnlPhone.Controls.Add(this.lblPhone);
             this.pnlPhone.Controls.Add(this.txtPhone);
@@ -471,6 +481,61 @@
             this.txtPhone.Size = new System.Drawing.Size(329, 36);
             this.txtPhone.TabIndex = 2;
             this.txtPhone.TextChanged += new System.EventHandler(this.txtPhone_TextChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.Red;
+            this.label3.Location = new System.Drawing.Point(83, 7);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(21, 25);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "*";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(192, 7);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(21, 25);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "*";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(124, 7);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(21, 25);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "*";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.Red;
+            this.label4.Location = new System.Drawing.Point(51, 7);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(21, 25);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "*";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.Red;
+            this.label5.Location = new System.Drawing.Point(48, 7);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(21, 25);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "*";
             // 
             // SupplierRegistration
             // 
@@ -538,5 +603,10 @@
         private System.Windows.Forms.Label starPhone;
         private System.Windows.Forms.Label lblPhone;
         private System.Windows.Forms.TextBox txtPhone;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label2;
     }
 }
