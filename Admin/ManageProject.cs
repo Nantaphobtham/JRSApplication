@@ -1181,19 +1181,19 @@ namespace JRSApplication
             {
                 MessageBox.Show("กรุณากรอกชื่อโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtProjectName.Focus();
-                starProjectName.Visible = true;
+                
                 return false;
             }
             else
             {
-                starProjectName.Visible = false;
+                
             }
 
             if (string.IsNullOrWhiteSpace(txtNumber.Text))
             {
                 MessageBox.Show("กรุณากรอกเลขที่สัญญา", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtNumber.Focus();
-                starNumber.Visible = true;
+                
                 return false;
             }
             else
@@ -1205,7 +1205,7 @@ namespace JRSApplication
             {
                 MessageBox.Show("กรุณาระบุจำนวนเฟส", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cmbCurrentPhaseNumber.Focus();
-                starPhase.Visible = true;
+                
                 return false;
             }
             else
@@ -1217,8 +1217,7 @@ namespace JRSApplication
             {
                 MessageBox.Show("วันที่สิ้นสุดโครงการต้องไม่น้อยกว่าวันที่เริ่มต้น", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 dtpkEndDate.Focus();
-                starStartDate.Visible = true;
-                starWorkingDate.Visible = true;
+                
                 return false;
             }
             else
@@ -1230,71 +1229,72 @@ namespace JRSApplication
             {
                 MessageBox.Show("กรุณากรอกจำนวนเงินจ้างที่ถูกต้อง", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtBudget.Focus();
-                starBudget.Visible = true;
+                
                 return false;
             }
             else
             {
-                starBudget.Visible = false;
+                
             }
 
             if (string.IsNullOrWhiteSpace(selectedCustomerID))
             {
                 MessageBox.Show("กรุณาเลือกข้อมูลลูกค้า", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                starCustomer.Visible = true;
+                
                 return false;
             }
             else
             {
-                starCustomer.Visible = false;
+               
             }
 
             if (string.IsNullOrWhiteSpace(selectedEmployeeID))
             {
                 MessageBox.Show("กรุณาเลือกข้อมูลผู้ดูแลโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                starProjectManager.Visible = true;
+                
                 return false;
             }
             else
             {
-                starProjectManager.Visible = false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtProjectDetail.Text))
-            {
-                MessageBox.Show("กรุณากรอกข้อมูลโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtProjectDetail.Focus();
-                starProjectDetail.Visible = true;
-                return false;
-            }
-            else
-            {
-                starProjectDetail.Visible = false;
+                
             }
 
             if (string.IsNullOrWhiteSpace(txtProjectAddress.Text))
             {
                 MessageBox.Show("กรุณากรอกที่อยู่โครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtProjectAddress.Focus();
-                starProjectAddress.Visible = true;
+                
                 return false;
             }
             else 
             {
-                starProjectAddress.Visible = false;
+               
             }
 
             if (string.IsNullOrWhiteSpace(txtRemark.Text))
             {
                 MessageBox.Show("กรุณากรอกหมายเหตุที่เกี่ยวข้องกับโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtRemark.Focus();
-                starRemark.Visible = true;
+               
                 return false;
             }
             else
             {
-                starRemark.Visible = false;
+               
             }
+
+            if (string.IsNullOrWhiteSpace(txtProjectDetail.Text))
+            {
+                MessageBox.Show("กรุณากรอกรายละเอียดโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtProjectDetail.Focus();
+
+                return false;
+            }
+            else
+            {
+
+            }
+
             // ✅ ตรวจสอบว่ามีไฟล์ blueprint หรือไม่
             if (fileConstructionBytes == null)
             {
@@ -1309,7 +1309,7 @@ namespace JRSApplication
 
             else
             {
-                starBlueprint.Visible = false;
+               
             }
             // ✅ ตรวจสอบความถูกต้องของ % และงบประมาณรวมของเฟส
             decimal totalBudget = 0;
