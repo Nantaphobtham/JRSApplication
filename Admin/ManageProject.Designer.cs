@@ -36,6 +36,10 @@
             this.lblPhaseData = new System.Windows.Forms.Label();
             this.dtgvPhase = new System.Windows.Forms.DataGridView();
             this.btnEditPhase = new System.Windows.Forms.Button();
+            this.pnlProjetDetail = new System.Windows.Forms.Panel();
+            this.starProjectDetail = new System.Windows.Forms.Label();
+            this.lblProjectDetail = new System.Windows.Forms.Label();
+            this.txtProjectDetail = new System.Windows.Forms.TextBox();
             this.btnAddPhase = new System.Windows.Forms.Button();
             this.pnlPhaseDetail = new System.Windows.Forms.Panel();
             this.starPhaseDetail = new System.Windows.Forms.Label();
@@ -80,10 +84,6 @@
             this.starProjectAddress = new System.Windows.Forms.Label();
             this.lblProjectAddress = new System.Windows.Forms.Label();
             this.txtProjectAddress = new System.Windows.Forms.TextBox();
-            this.pnlProjetDetail = new System.Windows.Forms.Panel();
-            this.starProjectDetail = new System.Windows.Forms.Label();
-            this.lblProjectDetail = new System.Windows.Forms.Label();
-            this.txtProjectDetail = new System.Windows.Forms.TextBox();
             this.pnlCustomer = new System.Windows.Forms.Panel();
             this.lblCustomerEmail = new System.Windows.Forms.Label();
             this.txtCustomerEmail = new System.Windows.Forms.TextBox();
@@ -140,6 +140,7 @@
             this.subInfo.SuspendLayout();
             this.pnlPhaseData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPhase)).BeginInit();
+            this.pnlProjetDetail.SuspendLayout();
             this.pnlPhaseDetail.SuspendLayout();
             this.pnlcompletionPercentage.SuspendLayout();
             this.pnlboqPercentage.SuspendLayout();
@@ -149,7 +150,6 @@
             this.pnlBlueprint.SuspendLayout();
             this.pnlProjectManager.SuspendLayout();
             this.pnlProjectAddress.SuspendLayout();
-            this.pnlProjetDetail.SuspendLayout();
             this.pnlCustomer.SuspendLayout();
             this.pnlPhase.SuspendLayout();
             this.pnlBudget.SuspendLayout();
@@ -169,7 +169,7 @@
             this.pnlInfomation.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInfomation.Location = new System.Drawing.Point(0, 0);
             this.pnlInfomation.Name = "pnlInfomation";
-            this.pnlInfomation.Size = new System.Drawing.Size(1535, 738);
+            this.pnlInfomation.Size = new System.Drawing.Size(1484, 738);
             this.pnlInfomation.TabIndex = 0;
             // 
             // subInfo
@@ -178,6 +178,7 @@
             this.subInfo.Controls.Add(this.btnTurnoffEditing);
             this.subInfo.Controls.Add(this.pnlPhaseData);
             this.subInfo.Controls.Add(this.btnEditPhase);
+            this.subInfo.Controls.Add(this.pnlProjetDetail);
             this.subInfo.Controls.Add(this.btnAddPhase);
             this.subInfo.Controls.Add(this.pnlPhaseDetail);
             this.subInfo.Controls.Add(this.pnlcompletionPercentage);
@@ -188,7 +189,6 @@
             this.subInfo.Controls.Add(this.pnlBlueprint);
             this.subInfo.Controls.Add(this.pnlProjectManager);
             this.subInfo.Controls.Add(this.pnlProjectAddress);
-            this.subInfo.Controls.Add(this.pnlProjetDetail);
             this.subInfo.Controls.Add(this.pnlCustomer);
             this.subInfo.Controls.Add(this.pnlStep1);
             this.subInfo.Controls.Add(this.pnlPhase);
@@ -200,7 +200,7 @@
             this.subInfo.Controls.Add(this.pnlProjectName);
             this.subInfo.Location = new System.Drawing.Point(19, 9);
             this.subInfo.Name = "subInfo";
-            this.subInfo.Size = new System.Drawing.Size(1528, 721);
+            this.subInfo.Size = new System.Drawing.Size(1528, 726);
             this.subInfo.TabIndex = 0;
             // 
             // btnTurnoffEditing
@@ -210,7 +210,7 @@
             this.btnTurnoffEditing.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnTurnoffEditing.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTurnoffEditing.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTurnoffEditing.Location = new System.Drawing.Point(985, 252);
+            this.btnTurnoffEditing.Location = new System.Drawing.Point(904, 252);
             this.btnTurnoffEditing.Name = "btnTurnoffEditing";
             this.btnTurnoffEditing.Size = new System.Drawing.Size(132, 41);
             this.btnTurnoffEditing.TabIndex = 30;
@@ -224,9 +224,9 @@
             this.pnlPhaseData.Controls.Add(this.lblTotalPercentage);
             this.pnlPhaseData.Controls.Add(this.lblPhaseData);
             this.pnlPhaseData.Controls.Add(this.dtgvPhase);
-            this.pnlPhaseData.Location = new System.Drawing.Point(985, 299);
+            this.pnlPhaseData.Location = new System.Drawing.Point(905, 299);
             this.pnlPhaseData.Name = "pnlPhaseData";
-            this.pnlPhaseData.Size = new System.Drawing.Size(535, 419);
+            this.pnlPhaseData.Size = new System.Drawing.Size(623, 419);
             this.pnlPhaseData.TabIndex = 29;
             // 
             // lblTotalPercentage
@@ -255,7 +255,7 @@
             this.dtgvPhase.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgvPhase.Location = new System.Drawing.Point(6, 43);
             this.dtgvPhase.Name = "dtgvPhase";
-            this.dtgvPhase.Size = new System.Drawing.Size(526, 249);
+            this.dtgvPhase.Size = new System.Drawing.Size(600, 249);
             this.dtgvPhase.TabIndex = 5;
             this.dtgvPhase.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvPhase_CellClick);
             // 
@@ -267,13 +267,61 @@
             this.btnEditPhase.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOrange;
             this.btnEditPhase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEditPhase.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEditPhase.Location = new System.Drawing.Point(1421, 252);
+            this.btnEditPhase.Location = new System.Drawing.Point(1429, 252);
             this.btnEditPhase.Name = "btnEditPhase";
             this.btnEditPhase.Size = new System.Drawing.Size(99, 41);
             this.btnEditPhase.TabIndex = 27;
             this.btnEditPhase.Text = "แก้ไข";
             this.btnEditPhase.UseVisualStyleBackColor = false;
             this.btnEditPhase.Click += new System.EventHandler(this.btnEditPhase_Click);
+            // 
+            // pnlProjetDetail
+            // 
+            this.pnlProjetDetail.Controls.Add(this.starProjectDetail);
+            this.pnlProjetDetail.Controls.Add(this.lblProjectDetail);
+            this.pnlProjetDetail.Controls.Add(this.txtProjectDetail);
+            this.pnlProjetDetail.Location = new System.Drawing.Point(471, 581);
+            this.pnlProjetDetail.Margin = new System.Windows.Forms.Padding(2);
+            this.pnlProjetDetail.Name = "pnlProjetDetail";
+            this.pnlProjetDetail.Size = new System.Drawing.Size(395, 143);
+            this.pnlProjetDetail.TabIndex = 17;
+            // 
+            // starProjectDetail
+            // 
+            this.starProjectDetail.AutoSize = true;
+            this.starProjectDetail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starProjectDetail.ForeColor = System.Drawing.Color.Red;
+            this.starProjectDetail.Location = new System.Drawing.Point(182, 5);
+            this.starProjectDetail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starProjectDetail.Name = "starProjectDetail";
+            this.starProjectDetail.Size = new System.Drawing.Size(22, 30);
+            this.starProjectDetail.TabIndex = 2;
+            this.starProjectDetail.Text = "*";
+            this.starProjectDetail.Visible = false;
+            // 
+            // lblProjectDetail
+            // 
+            this.lblProjectDetail.AutoSize = true;
+            this.lblProjectDetail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProjectDetail.Location = new System.Drawing.Point(2, 3);
+            this.lblProjectDetail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblProjectDetail.Name = "lblProjectDetail";
+            this.lblProjectDetail.Size = new System.Drawing.Size(176, 30);
+            this.lblProjectDetail.TabIndex = 2;
+            this.lblProjectDetail.Text = "รายละเอียดโครงการ";
+            // 
+            // txtProjectDetail
+            // 
+            this.txtProjectDetail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtProjectDetail.Enabled = false;
+            this.txtProjectDetail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtProjectDetail.Location = new System.Drawing.Point(2, 35);
+            this.txtProjectDetail.Margin = new System.Windows.Forms.Padding(2);
+            this.txtProjectDetail.Multiline = true;
+            this.txtProjectDetail.Name = "txtProjectDetail";
+            this.txtProjectDetail.ReadOnly = true;
+            this.txtProjectDetail.Size = new System.Drawing.Size(387, 106);
+            this.txtProjectDetail.TabIndex = 2;
             // 
             // btnAddPhase
             // 
@@ -283,7 +331,7 @@
             this.btnAddPhase.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnAddPhase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddPhase.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddPhase.Location = new System.Drawing.Point(1316, 252);
+            this.btnAddPhase.Location = new System.Drawing.Point(1324, 252);
             this.btnAddPhase.Name = "btnAddPhase";
             this.btnAddPhase.Size = new System.Drawing.Size(99, 41);
             this.btnAddPhase.TabIndex = 28;
@@ -296,10 +344,10 @@
             this.pnlPhaseDetail.Controls.Add(this.starPhaseDetail);
             this.pnlPhaseDetail.Controls.Add(this.lblPhaseDetail);
             this.pnlPhaseDetail.Controls.Add(this.txtPhaseDetail);
-            this.pnlPhaseDetail.Location = new System.Drawing.Point(986, 127);
+            this.pnlPhaseDetail.Location = new System.Drawing.Point(902, 127);
             this.pnlPhaseDetail.Margin = new System.Windows.Forms.Padding(2);
             this.pnlPhaseDetail.Name = "pnlPhaseDetail";
-            this.pnlPhaseDetail.Size = new System.Drawing.Size(537, 120);
+            this.pnlPhaseDetail.Size = new System.Drawing.Size(609, 120);
             this.pnlPhaseDetail.TabIndex = 26;
             // 
             // starPhaseDetail
@@ -336,7 +384,7 @@
             this.txtPhaseDetail.Multiline = true;
             this.txtPhaseDetail.Name = "txtPhaseDetail";
             this.txtPhaseDetail.ReadOnly = true;
-            this.txtPhaseDetail.Size = new System.Drawing.Size(533, 80);
+            this.txtPhaseDetail.Size = new System.Drawing.Size(607, 80);
             this.txtPhaseDetail.TabIndex = 2;
             // 
             // pnlcompletionPercentage
@@ -344,10 +392,10 @@
             this.pnlcompletionPercentage.Controls.Add(this.starcompletionPercentage);
             this.pnlcompletionPercentage.Controls.Add(this.lblcompletionPercentage);
             this.pnlcompletionPercentage.Controls.Add(this.txtcompletionPercentage);
-            this.pnlcompletionPercentage.Location = new System.Drawing.Point(1164, 12);
+            this.pnlcompletionPercentage.Location = new System.Drawing.Point(1104, 9);
             this.pnlcompletionPercentage.Margin = new System.Windows.Forms.Padding(2);
             this.pnlcompletionPercentage.Name = "pnlcompletionPercentage";
-            this.pnlcompletionPercentage.Size = new System.Drawing.Size(171, 114);
+            this.pnlcompletionPercentage.Size = new System.Drawing.Size(190, 114);
             this.pnlcompletionPercentage.TabIndex = 25;
             // 
             // starcompletionPercentage
@@ -382,7 +430,7 @@
             this.txtcompletionPercentage.Margin = new System.Windows.Forms.Padding(2);
             this.txtcompletionPercentage.Name = "txtcompletionPercentage";
             this.txtcompletionPercentage.ReadOnly = true;
-            this.txtcompletionPercentage.Size = new System.Drawing.Size(167, 36);
+            this.txtcompletionPercentage.Size = new System.Drawing.Size(186, 36);
             this.txtcompletionPercentage.TabIndex = 2;
             // 
             // pnlboqPercentage
@@ -390,7 +438,7 @@
             this.pnlboqPercentage.Controls.Add(this.starboqPercentage);
             this.pnlboqPercentage.Controls.Add(this.lblboqPercentage);
             this.pnlboqPercentage.Controls.Add(this.txtboqPercentage);
-            this.pnlboqPercentage.Location = new System.Drawing.Point(1351, 12);
+            this.pnlboqPercentage.Location = new System.Drawing.Point(1309, 9);
             this.pnlboqPercentage.Margin = new System.Windows.Forms.Padding(2);
             this.pnlboqPercentage.Name = "pnlboqPercentage";
             this.pnlboqPercentage.Size = new System.Drawing.Size(171, 114);
@@ -436,10 +484,10 @@
             this.pnlPhaseNumber.Controls.Add(this.cmbPhaseNumber);
             this.pnlPhaseNumber.Controls.Add(this.starPhaseNumber);
             this.pnlPhaseNumber.Controls.Add(this.lblPhaseNumber);
-            this.pnlPhaseNumber.Location = new System.Drawing.Point(985, 12);
+            this.pnlPhaseNumber.Location = new System.Drawing.Point(902, 49);
             this.pnlPhaseNumber.Margin = new System.Windows.Forms.Padding(2);
             this.pnlPhaseNumber.Name = "pnlPhaseNumber";
-            this.pnlPhaseNumber.Size = new System.Drawing.Size(166, 74);
+            this.pnlPhaseNumber.Size = new System.Drawing.Size(184, 74);
             this.pnlPhaseNumber.TabIndex = 24;
             // 
             // cmbPhaseNumber
@@ -449,7 +497,7 @@
             this.cmbPhaseNumber.FormattingEnabled = true;
             this.cmbPhaseNumber.Location = new System.Drawing.Point(3, 33);
             this.cmbPhaseNumber.Name = "cmbPhaseNumber";
-            this.cmbPhaseNumber.Size = new System.Drawing.Size(159, 38);
+            this.cmbPhaseNumber.Size = new System.Drawing.Size(178, 38);
             this.cmbPhaseNumber.TabIndex = 3;
             // 
             // starPhaseNumber
@@ -481,10 +529,10 @@
             this.pnlRemark.Controls.Add(this.starRemark);
             this.pnlRemark.Controls.Add(this.lblRemark);
             this.pnlRemark.Controls.Add(this.txtRemark);
-            this.pnlRemark.Location = new System.Drawing.Point(473, 405);
+            this.pnlRemark.Location = new System.Drawing.Point(471, 466);
             this.pnlRemark.Margin = new System.Windows.Forms.Padding(2);
             this.pnlRemark.Name = "pnlRemark";
-            this.pnlRemark.Size = new System.Drawing.Size(485, 111);
+            this.pnlRemark.Size = new System.Drawing.Size(395, 111);
             this.pnlRemark.TabIndex = 23;
             // 
             // starRemark
@@ -516,12 +564,12 @@
             this.txtRemark.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtRemark.Enabled = false;
             this.txtRemark.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRemark.Location = new System.Drawing.Point(6, 37);
+            this.txtRemark.Location = new System.Drawing.Point(0, 37);
             this.txtRemark.Margin = new System.Windows.Forms.Padding(2);
             this.txtRemark.Multiline = true;
             this.txtRemark.Name = "txtRemark";
             this.txtRemark.ReadOnly = true;
-            this.txtRemark.Size = new System.Drawing.Size(473, 72);
+            this.txtRemark.Size = new System.Drawing.Size(389, 72);
             this.txtRemark.TabIndex = 2;
             // 
             // pnlDemolition
@@ -529,7 +577,7 @@
             this.pnlDemolition.Controls.Add(this.label2);
             this.pnlDemolition.Controls.Add(this.btnInsertDemolitionFile);
             this.pnlDemolition.Controls.Add(this.lblDemolition);
-            this.pnlDemolition.Location = new System.Drawing.Point(243, 547);
+            this.pnlDemolition.Location = new System.Drawing.Point(239, 562);
             this.pnlDemolition.Margin = new System.Windows.Forms.Padding(2);
             this.pnlDemolition.Name = "pnlDemolition";
             this.pnlDemolition.Size = new System.Drawing.Size(226, 114);
@@ -578,7 +626,7 @@
             this.pnlBlueprint.Controls.Add(this.btnInsertBlueprintFile);
             this.pnlBlueprint.Controls.Add(this.starBlueprint);
             this.pnlBlueprint.Controls.Add(this.lblBlueprint);
-            this.pnlBlueprint.Location = new System.Drawing.Point(11, 547);
+            this.pnlBlueprint.Location = new System.Drawing.Point(11, 562);
             this.pnlBlueprint.Margin = new System.Windows.Forms.Padding(2);
             this.pnlBlueprint.Name = "pnlBlueprint";
             this.pnlBlueprint.Size = new System.Drawing.Size(226, 114);
@@ -645,7 +693,7 @@
             this.pnlProjectManager.Controls.Add(this.starProjectManager);
             this.pnlProjectManager.Controls.Add(this.lblProjectManager);
             this.pnlProjectManager.Controls.Add(this.txtEmployeeName);
-            this.pnlProjectManager.Location = new System.Drawing.Point(11, 327);
+            this.pnlProjectManager.Location = new System.Drawing.Point(11, 342);
             this.pnlProjectManager.Margin = new System.Windows.Forms.Padding(2);
             this.pnlProjectManager.Name = "pnlProjectManager";
             this.pnlProjectManager.Size = new System.Drawing.Size(458, 216);
@@ -770,10 +818,10 @@
             this.pnlProjectAddress.Controls.Add(this.starProjectAddress);
             this.pnlProjectAddress.Controls.Add(this.lblProjectAddress);
             this.pnlProjectAddress.Controls.Add(this.txtProjectAddress);
-            this.pnlProjectAddress.Location = new System.Drawing.Point(473, 327);
+            this.pnlProjectAddress.Location = new System.Drawing.Point(471, 342);
             this.pnlProjectAddress.Margin = new System.Windows.Forms.Padding(2);
             this.pnlProjectAddress.Name = "pnlProjectAddress";
-            this.pnlProjectAddress.Size = new System.Drawing.Size(485, 74);
+            this.pnlProjectAddress.Size = new System.Drawing.Size(393, 120);
             this.pnlProjectAddress.TabIndex = 18;
             // 
             // starProjectAddress
@@ -807,58 +855,11 @@
             this.txtProjectAddress.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProjectAddress.Location = new System.Drawing.Point(2, 34);
             this.txtProjectAddress.Margin = new System.Windows.Forms.Padding(2);
+            this.txtProjectAddress.Multiline = true;
             this.txtProjectAddress.Name = "txtProjectAddress";
             this.txtProjectAddress.ReadOnly = true;
-            this.txtProjectAddress.Size = new System.Drawing.Size(477, 36);
+            this.txtProjectAddress.Size = new System.Drawing.Size(385, 72);
             this.txtProjectAddress.TabIndex = 2;
-            // 
-            // pnlProjetDetail
-            // 
-            this.pnlProjetDetail.Controls.Add(this.starProjectDetail);
-            this.pnlProjetDetail.Controls.Add(this.lblProjectDetail);
-            this.pnlProjetDetail.Controls.Add(this.txtProjectDetail);
-            this.pnlProjetDetail.Location = new System.Drawing.Point(473, 520);
-            this.pnlProjetDetail.Margin = new System.Windows.Forms.Padding(2);
-            this.pnlProjetDetail.Name = "pnlProjetDetail";
-            this.pnlProjetDetail.Size = new System.Drawing.Size(485, 143);
-            this.pnlProjetDetail.TabIndex = 17;
-            // 
-            // starProjectDetail
-            // 
-            this.starProjectDetail.AutoSize = true;
-            this.starProjectDetail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starProjectDetail.ForeColor = System.Drawing.Color.Red;
-            this.starProjectDetail.Location = new System.Drawing.Point(182, 5);
-            this.starProjectDetail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starProjectDetail.Name = "starProjectDetail";
-            this.starProjectDetail.Size = new System.Drawing.Size(22, 30);
-            this.starProjectDetail.TabIndex = 2;
-            this.starProjectDetail.Text = "*";
-            this.starProjectDetail.Visible = false;
-            // 
-            // lblProjectDetail
-            // 
-            this.lblProjectDetail.AutoSize = true;
-            this.lblProjectDetail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProjectDetail.Location = new System.Drawing.Point(2, 3);
-            this.lblProjectDetail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblProjectDetail.Name = "lblProjectDetail";
-            this.lblProjectDetail.Size = new System.Drawing.Size(176, 30);
-            this.lblProjectDetail.TabIndex = 2;
-            this.lblProjectDetail.Text = "รายละเอียดโครงการ";
-            // 
-            // txtProjectDetail
-            // 
-            this.txtProjectDetail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtProjectDetail.Enabled = false;
-            this.txtProjectDetail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtProjectDetail.Location = new System.Drawing.Point(2, 35);
-            this.txtProjectDetail.Margin = new System.Windows.Forms.Padding(2);
-            this.txtProjectDetail.Multiline = true;
-            this.txtProjectDetail.Name = "txtProjectDetail";
-            this.txtProjectDetail.ReadOnly = true;
-            this.txtProjectDetail.Size = new System.Drawing.Size(477, 106);
-            this.txtProjectDetail.TabIndex = 2;
             // 
             // pnlCustomer
             // 
@@ -878,14 +879,14 @@
             this.pnlCustomer.Location = new System.Drawing.Point(11, 169);
             this.pnlCustomer.Margin = new System.Windows.Forms.Padding(2);
             this.pnlCustomer.Name = "pnlCustomer";
-            this.pnlCustomer.Size = new System.Drawing.Size(947, 154);
+            this.pnlCustomer.Size = new System.Drawing.Size(855, 169);
             this.pnlCustomer.TabIndex = 16;
             // 
             // lblCustomerEmail
             // 
             this.lblCustomerEmail.AutoSize = true;
             this.lblCustomerEmail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCustomerEmail.Location = new System.Drawing.Point(702, 79);
+            this.lblCustomerEmail.Location = new System.Drawing.Point(611, 79);
             this.lblCustomerEmail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCustomerEmail.Name = "lblCustomerEmail";
             this.lblCustomerEmail.Size = new System.Drawing.Size(55, 30);
@@ -899,18 +900,18 @@
             this.txtCustomerEmail.Enabled = false;
             this.txtCustomerEmail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCustomerEmail.ForeColor = System.Drawing.Color.Black;
-            this.txtCustomerEmail.Location = new System.Drawing.Point(707, 111);
+            this.txtCustomerEmail.Location = new System.Drawing.Point(386, 37);
             this.txtCustomerEmail.Margin = new System.Windows.Forms.Padding(2);
             this.txtCustomerEmail.Name = "txtCustomerEmail";
             this.txtCustomerEmail.ReadOnly = true;
-            this.txtCustomerEmail.Size = new System.Drawing.Size(234, 36);
+            this.txtCustomerEmail.Size = new System.Drawing.Size(232, 36);
             this.txtCustomerEmail.TabIndex = 11;
             // 
             // lblCustomerPhone
             // 
             this.lblCustomerPhone.AutoSize = true;
             this.lblCustomerPhone.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCustomerPhone.Location = new System.Drawing.Point(433, 79);
+            this.lblCustomerPhone.Location = new System.Drawing.Point(376, 79);
             this.lblCustomerPhone.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCustomerPhone.Name = "lblCustomerPhone";
             this.lblCustomerPhone.Size = new System.Drawing.Size(125, 30);
@@ -924,18 +925,18 @@
             this.txtCustomerPhone.Enabled = false;
             this.txtCustomerPhone.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCustomerPhone.ForeColor = System.Drawing.Color.Black;
-            this.txtCustomerPhone.Location = new System.Drawing.Point(438, 111);
+            this.txtCustomerPhone.Location = new System.Drawing.Point(386, 111);
             this.txtCustomerPhone.Margin = new System.Windows.Forms.Padding(2);
             this.txtCustomerPhone.Name = "txtCustomerPhone";
             this.txtCustomerPhone.ReadOnly = true;
-            this.txtCustomerPhone.Size = new System.Drawing.Size(234, 36);
+            this.txtCustomerPhone.Size = new System.Drawing.Size(224, 36);
             this.txtCustomerPhone.TabIndex = 9;
             // 
             // lblCustomerLastName
             // 
             this.lblCustomerLastName.AutoSize = true;
             this.lblCustomerLastName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCustomerLastName.Location = new System.Drawing.Point(433, 5);
+            this.lblCustomerLastName.Location = new System.Drawing.Point(386, 5);
             this.lblCustomerLastName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCustomerLastName.Name = "lblCustomerLastName";
             this.lblCustomerLastName.Size = new System.Drawing.Size(85, 30);
@@ -949,18 +950,18 @@
             this.txtCustomerLastName.Enabled = false;
             this.txtCustomerLastName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCustomerLastName.ForeColor = System.Drawing.Color.Black;
-            this.txtCustomerLastName.Location = new System.Drawing.Point(438, 37);
+            this.txtCustomerLastName.Location = new System.Drawing.Point(156, 37);
             this.txtCustomerLastName.Margin = new System.Windows.Forms.Padding(2);
             this.txtCustomerLastName.Name = "txtCustomerLastName";
             this.txtCustomerLastName.ReadOnly = true;
-            this.txtCustomerLastName.Size = new System.Drawing.Size(234, 36);
+            this.txtCustomerLastName.Size = new System.Drawing.Size(226, 36);
             this.txtCustomerLastName.TabIndex = 7;
             // 
             // lblCustomerIDCard
             // 
             this.lblCustomerIDCard.AutoSize = true;
             this.lblCustomerIDCard.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCustomerIDCard.Location = new System.Drawing.Point(151, 75);
+            this.lblCustomerIDCard.Location = new System.Drawing.Point(156, 79);
             this.lblCustomerIDCard.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCustomerIDCard.Name = "lblCustomerIDCard";
             this.lblCustomerIDCard.Size = new System.Drawing.Size(158, 30);
@@ -1004,7 +1005,7 @@
             this.txtCustomerIDCard.Margin = new System.Windows.Forms.Padding(2);
             this.txtCustomerIDCard.Name = "txtCustomerIDCard";
             this.txtCustomerIDCard.ReadOnly = true;
-            this.txtCustomerIDCard.Size = new System.Drawing.Size(240, 36);
+            this.txtCustomerIDCard.Size = new System.Drawing.Size(225, 36);
             this.txtCustomerIDCard.TabIndex = 3;
             // 
             // starCustomer
@@ -1038,19 +1039,19 @@
             this.txtCustomerName.Enabled = false;
             this.txtCustomerName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCustomerName.ForeColor = System.Drawing.Color.Black;
-            this.txtCustomerName.Location = new System.Drawing.Point(156, 37);
+            this.txtCustomerName.Location = new System.Drawing.Point(614, 111);
             this.txtCustomerName.Margin = new System.Windows.Forms.Padding(2);
             this.txtCustomerName.Name = "txtCustomerName";
             this.txtCustomerName.ReadOnly = true;
-            this.txtCustomerName.Size = new System.Drawing.Size(240, 36);
+            this.txtCustomerName.Size = new System.Drawing.Size(225, 36);
             this.txtCustomerName.TabIndex = 2;
             // 
             // pnlStep1
             // 
             this.pnlStep1.BackColor = System.Drawing.Color.Black;
-            this.pnlStep1.Location = new System.Drawing.Point(970, 3);
+            this.pnlStep1.Location = new System.Drawing.Point(879, 3);
             this.pnlStep1.Name = "pnlStep1";
-            this.pnlStep1.Size = new System.Drawing.Size(10, 717);
+            this.pnlStep1.Size = new System.Drawing.Size(10, 726);
             this.pnlStep1.TabIndex = 15;
             // 
             // pnlPhase
@@ -1058,10 +1059,10 @@
             this.pnlPhase.Controls.Add(this.cmbCurrentPhaseNumber);
             this.pnlPhase.Controls.Add(this.starPhase);
             this.pnlPhase.Controls.Add(this.lblPhase);
-            this.pnlPhase.Location = new System.Drawing.Point(743, 12);
+            this.pnlPhase.Location = new System.Drawing.Point(687, 12);
             this.pnlPhase.Margin = new System.Windows.Forms.Padding(2);
             this.pnlPhase.Name = "pnlPhase";
-            this.pnlPhase.Size = new System.Drawing.Size(215, 74);
+            this.pnlPhase.Size = new System.Drawing.Size(179, 74);
             this.pnlPhase.TabIndex = 14;
             // 
             // cmbCurrentPhaseNumber
@@ -1069,18 +1070,18 @@
             this.cmbCurrentPhaseNumber.Enabled = false;
             this.cmbCurrentPhaseNumber.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbCurrentPhaseNumber.FormattingEnabled = true;
-            this.cmbCurrentPhaseNumber.Location = new System.Drawing.Point(3, 33);
+            this.cmbCurrentPhaseNumber.Location = new System.Drawing.Point(1, 33);
             this.cmbCurrentPhaseNumber.Name = "cmbCurrentPhaseNumber";
-            this.cmbCurrentPhaseNumber.Size = new System.Drawing.Size(206, 38);
+            this.cmbCurrentPhaseNumber.Size = new System.Drawing.Size(170, 38);
             this.cmbCurrentPhaseNumber.TabIndex = 3;
             this.cmbCurrentPhaseNumber.SelectedIndexChanged += new System.EventHandler(this.cmbCurrentPhaseNumber_SelectedIndexChanged);
             // 
             // starPhase
             // 
             this.starPhase.AutoSize = true;
-            this.starPhase.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starPhase.Font = new System.Drawing.Font("Segoe UI", 16.2F);
             this.starPhase.ForeColor = System.Drawing.Color.Red;
-            this.starPhase.Location = new System.Drawing.Point(139, 5);
+            this.starPhase.Location = new System.Drawing.Point(128, 5);
             this.starPhase.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.starPhase.Name = "starPhase";
             this.starPhase.Size = new System.Drawing.Size(22, 30);
@@ -1104,10 +1105,10 @@
             this.pnlBudget.Controls.Add(this.starBudget);
             this.pnlBudget.Controls.Add(this.lblBudget);
             this.pnlBudget.Controls.Add(this.txtBudget);
-            this.pnlBudget.Location = new System.Drawing.Point(633, 90);
+            this.pnlBudget.Location = new System.Drawing.Point(617, 91);
             this.pnlBudget.Margin = new System.Windows.Forms.Padding(2);
             this.pnlBudget.Name = "pnlBudget";
-            this.pnlBudget.Size = new System.Drawing.Size(325, 74);
+            this.pnlBudget.Size = new System.Drawing.Size(249, 74);
             this.pnlBudget.TabIndex = 13;
             // 
             // starBudget
@@ -1143,7 +1144,7 @@
             this.txtBudget.Margin = new System.Windows.Forms.Padding(2);
             this.txtBudget.Name = "txtBudget";
             this.txtBudget.ReadOnly = true;
-            this.txtBudget.Size = new System.Drawing.Size(319, 36);
+            this.txtBudget.Size = new System.Drawing.Size(243, 36);
             this.txtBudget.TabIndex = 2;
             this.txtBudget.Enter += new System.EventHandler(this.txtBudget_Enter);
             this.txtBudget.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBudget_KeyPress);
@@ -1157,7 +1158,7 @@
             this.pnlSumDate.Location = new System.Drawing.Point(199, 90);
             this.pnlSumDate.Margin = new System.Windows.Forms.Padding(2);
             this.pnlSumDate.Name = "pnlSumDate";
-            this.pnlSumDate.Size = new System.Drawing.Size(245, 75);
+            this.pnlSumDate.Size = new System.Drawing.Size(227, 75);
             this.pnlSumDate.TabIndex = 12;
             // 
             // lblWorkingDate
@@ -1194,7 +1195,7 @@
             this.txtWorkingDate.Margin = new System.Windows.Forms.Padding(2);
             this.txtWorkingDate.Name = "txtWorkingDate";
             this.txtWorkingDate.ReadOnly = true;
-            this.txtWorkingDate.Size = new System.Drawing.Size(243, 36);
+            this.txtWorkingDate.Size = new System.Drawing.Size(220, 36);
             this.txtWorkingDate.TabIndex = 2;
             this.txtWorkingDate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtWorkingDate.TextChanged += new System.EventHandler(this.txtWorkingDate_TextChanged);
@@ -1203,7 +1204,7 @@
             // 
             this.panel3.Controls.Add(this.dtpkEndDate);
             this.panel3.Controls.Add(this.lblEndDate);
-            this.panel3.Location = new System.Drawing.Point(446, 90);
+            this.panel3.Location = new System.Drawing.Point(430, 93);
             this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(183, 75);
@@ -1284,7 +1285,7 @@
             this.pnlNumber.Location = new System.Drawing.Point(377, 12);
             this.pnlNumber.Margin = new System.Windows.Forms.Padding(2);
             this.pnlNumber.Name = "pnlNumber";
-            this.pnlNumber.Size = new System.Drawing.Size(362, 74);
+            this.pnlNumber.Size = new System.Drawing.Size(306, 74);
             this.pnlNumber.TabIndex = 9;
             // 
             // starNumber
@@ -1319,7 +1320,7 @@
             this.txtNumber.Location = new System.Drawing.Point(0, 37);
             this.txtNumber.Margin = new System.Windows.Forms.Padding(2);
             this.txtNumber.Name = "txtNumber";
-            this.txtNumber.Size = new System.Drawing.Size(358, 36);
+            this.txtNumber.Size = new System.Drawing.Size(300, 36);
             this.txtNumber.TabIndex = 2;
             // 
             // pnlProjectName
@@ -1378,7 +1379,7 @@
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 738);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1535, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1484, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDelete
@@ -1388,7 +1389,7 @@
             this.btnDelete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDelete.Location = new System.Drawing.Point(1355, 20);
+            this.btnDelete.Location = new System.Drawing.Point(1355, 21);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(175, 58);
             this.btnDelete.TabIndex = 7;
@@ -1403,7 +1404,7 @@
             this.btnEdit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOrange;
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEdit.Location = new System.Drawing.Point(1138, 20);
+            this.btnEdit.Location = new System.Drawing.Point(1138, 21);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(175, 58);
             this.btnEdit.TabIndex = 8;
@@ -1418,7 +1419,7 @@
             this.btnAdd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAdd.Location = new System.Drawing.Point(921, 20);
+            this.btnAdd.Location = new System.Drawing.Point(921, 21);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(175, 58);
             this.btnAdd.TabIndex = 9;
@@ -1433,7 +1434,7 @@
             this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(704, 20);
+            this.btnSave.Location = new System.Drawing.Point(704, 21);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(175, 58);
             this.btnSave.TabIndex = 6;
@@ -1447,7 +1448,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 832);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1535, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1484, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // pnlProjectdata
@@ -1458,13 +1459,13 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 842);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1535, 371);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1484, 371);
             this.pnlProjectdata.TabIndex = 3;
             // 
             // dtgvProject
             // 
             this.dtgvProject.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvProject.Location = new System.Drawing.Point(16, 79);
+            this.dtgvProject.Location = new System.Drawing.Point(16, 85);
             this.dtgvProject.Name = "dtgvProject";
             this.dtgvProject.Size = new System.Drawing.Size(1514, 270);
             this.dtgvProject.TabIndex = 5;
@@ -1474,7 +1475,7 @@
             // 
             this.lblToppic1.AutoSize = true;
             this.lblToppic1.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblToppic1.Location = new System.Drawing.Point(12, 24);
+            this.lblToppic1.Location = new System.Drawing.Point(9, 40);
             this.lblToppic1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblToppic1.Name = "lblToppic1";
             this.lblToppic1.Size = new System.Drawing.Size(201, 37);
@@ -1484,7 +1485,7 @@
             // searchboxProject
             // 
             this.searchboxProject.BackColor = System.Drawing.Color.White;
-            this.searchboxProject.Location = new System.Drawing.Point(880, 24);
+            this.searchboxProject.Location = new System.Drawing.Point(880, 27);
             this.searchboxProject.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.searchboxProject.Name = "searchboxProject";
             this.searchboxProject.Size = new System.Drawing.Size(650, 50);
@@ -1500,12 +1501,14 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.pnlInfomation);
             this.Name = "ManageProject";
-            this.Size = new System.Drawing.Size(1535, 954);
+            this.Size = new System.Drawing.Size(1484, 954);
             this.pnlInfomation.ResumeLayout(false);
             this.subInfo.ResumeLayout(false);
             this.pnlPhaseData.ResumeLayout(false);
             this.pnlPhaseData.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPhase)).EndInit();
+            this.pnlProjetDetail.ResumeLayout(false);
+            this.pnlProjetDetail.PerformLayout();
             this.pnlPhaseDetail.ResumeLayout(false);
             this.pnlPhaseDetail.PerformLayout();
             this.pnlcompletionPercentage.ResumeLayout(false);
@@ -1524,8 +1527,6 @@
             this.pnlProjectManager.PerformLayout();
             this.pnlProjectAddress.ResumeLayout(false);
             this.pnlProjectAddress.PerformLayout();
-            this.pnlProjetDetail.ResumeLayout(false);
-            this.pnlProjetDetail.PerformLayout();
             this.pnlCustomer.ResumeLayout(false);
             this.pnlCustomer.PerformLayout();
             this.pnlPhase.ResumeLayout(false);
