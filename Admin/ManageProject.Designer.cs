@@ -37,28 +37,22 @@
             this.dtgvPhase = new System.Windows.Forms.DataGridView();
             this.btnEditPhase = new System.Windows.Forms.Button();
             this.pnlProjetDetail = new System.Windows.Forms.Panel();
-            this.starProjectDetail = new System.Windows.Forms.Label();
             this.lblProjectDetail = new System.Windows.Forms.Label();
             this.txtProjectDetail = new System.Windows.Forms.TextBox();
             this.btnAddPhase = new System.Windows.Forms.Button();
             this.pnlPhaseDetail = new System.Windows.Forms.Panel();
-            this.starPhaseDetail = new System.Windows.Forms.Label();
             this.lblPhaseDetail = new System.Windows.Forms.Label();
             this.txtPhaseDetail = new System.Windows.Forms.TextBox();
             this.pnlcompletionPercentage = new System.Windows.Forms.Panel();
-            this.starcompletionPercentage = new System.Windows.Forms.Label();
             this.lblcompletionPercentage = new System.Windows.Forms.Label();
             this.txtcompletionPercentage = new System.Windows.Forms.TextBox();
             this.pnlboqPercentage = new System.Windows.Forms.Panel();
-            this.starboqPercentage = new System.Windows.Forms.Label();
             this.lblboqPercentage = new System.Windows.Forms.Label();
             this.txtboqPercentage = new System.Windows.Forms.TextBox();
             this.pnlPhaseNumber = new System.Windows.Forms.Panel();
             this.cmbPhaseNumber = new System.Windows.Forms.ComboBox();
-            this.starPhaseNumber = new System.Windows.Forms.Label();
             this.lblPhaseNumber = new System.Windows.Forms.Label();
             this.pnlRemark = new System.Windows.Forms.Panel();
-            this.starRemark = new System.Windows.Forms.Label();
             this.lblRemark = new System.Windows.Forms.Label();
             this.txtRemark = new System.Windows.Forms.TextBox();
             this.pnlDemolition = new System.Windows.Forms.Panel();
@@ -68,7 +62,6 @@
             this.pnlBlueprint = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.btnInsertBlueprintFile = new System.Windows.Forms.Button();
-            this.starBlueprint = new System.Windows.Forms.Label();
             this.lblBlueprint = new System.Windows.Forms.Label();
             this.pnlProjectManager = new System.Windows.Forms.Panel();
             this.lblRole = new System.Windows.Forms.Label();
@@ -77,11 +70,9 @@
             this.lblEmployeeName = new System.Windows.Forms.Label();
             this.btnSearchEmployee = new System.Windows.Forms.Button();
             this.txtEmployeeLastName = new System.Windows.Forms.TextBox();
-            this.starProjectManager = new System.Windows.Forms.Label();
             this.lblProjectManager = new System.Windows.Forms.Label();
             this.txtEmployeeName = new System.Windows.Forms.TextBox();
             this.pnlProjectAddress = new System.Windows.Forms.Panel();
-            this.starProjectAddress = new System.Windows.Forms.Label();
             this.lblProjectAddress = new System.Windows.Forms.Label();
             this.txtProjectAddress = new System.Windows.Forms.TextBox();
             this.pnlCustomer = new System.Windows.Forms.Panel();
@@ -95,35 +86,28 @@
             this.lblCustomerName = new System.Windows.Forms.Label();
             this.btnSearchCustomer = new System.Windows.Forms.Button();
             this.txtCustomerIDCard = new System.Windows.Forms.TextBox();
-            this.starCustomer = new System.Windows.Forms.Label();
             this.lblCustomer = new System.Windows.Forms.Label();
             this.txtCustomerName = new System.Windows.Forms.TextBox();
             this.pnlStep1 = new System.Windows.Forms.Panel();
             this.pnlPhase = new System.Windows.Forms.Panel();
             this.cmbCurrentPhaseNumber = new System.Windows.Forms.ComboBox();
-            this.starPhase = new System.Windows.Forms.Label();
             this.lblPhase = new System.Windows.Forms.Label();
             this.pnlBudget = new System.Windows.Forms.Panel();
-            this.starBudget = new System.Windows.Forms.Label();
             this.lblBudget = new System.Windows.Forms.Label();
             this.txtBudget = new System.Windows.Forms.TextBox();
             this.pnlSumDate = new System.Windows.Forms.Panel();
             this.lblWorkingDate = new System.Windows.Forms.Label();
-            this.starWorkingDate = new System.Windows.Forms.Label();
             this.txtWorkingDate = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dtpkEndDate = new System.Windows.Forms.DateTimePicker();
             this.lblEndDate = new System.Windows.Forms.Label();
             this.pnlStartDate = new System.Windows.Forms.Panel();
             this.dtpkStartDate = new System.Windows.Forms.DateTimePicker();
-            this.starStartDate = new System.Windows.Forms.Label();
             this.lblStartDate = new System.Windows.Forms.Label();
             this.pnlNumber = new System.Windows.Forms.Panel();
-            this.starNumber = new System.Windows.Forms.Label();
             this.lblNumber = new System.Windows.Forms.Label();
             this.txtNumber = new System.Windows.Forms.TextBox();
             this.pnlProjectName = new System.Windows.Forms.Panel();
-            this.starProjectName = new System.Windows.Forms.Label();
             this.lblProjectName = new System.Windows.Forms.Label();
             this.txtProjectName = new System.Windows.Forms.TextBox();
             this.pnlActionMenu = new System.Windows.Forms.Panel();
@@ -135,6 +119,22 @@
             this.pnlProjectdata = new System.Windows.Forms.Panel();
             this.dtgvProject = new System.Windows.Forms.DataGridView();
             this.lblToppic1 = new System.Windows.Forms.Label();
+            this.starBlueprint = new System.Windows.Forms.Label();
+            this.starProjectDetail = new System.Windows.Forms.Label();
+            this.starRemark = new System.Windows.Forms.Label();
+            this.starProjectAddress = new System.Windows.Forms.Label();
+            this.starProjectManager = new System.Windows.Forms.Label();
+            this.starCustomer = new System.Windows.Forms.Label();
+            this.starStartDate = new System.Windows.Forms.Label();
+            this.starWorkingDate = new System.Windows.Forms.Label();
+            this.starProjectName = new System.Windows.Forms.Label();
+            this.starNumber = new System.Windows.Forms.Label();
+            this.starBudget = new System.Windows.Forms.Label();
+            this.starPhase = new System.Windows.Forms.Label();
+            this.starPhaseDetail = new System.Windows.Forms.Label();
+            this.starPhaseNumber = new System.Windows.Forms.Label();
+            this.starcompletionPercentage = new System.Windows.Forms.Label();
+            this.starboqPercentage = new System.Windows.Forms.Label();
             this.searchboxProject = new JRSApplication.SearchboxControl();
             this.pnlInfomation.SuspendLayout();
             this.subInfo.SuspendLayout();
@@ -169,7 +169,7 @@
             this.pnlInfomation.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInfomation.Location = new System.Drawing.Point(0, 0);
             this.pnlInfomation.Name = "pnlInfomation";
-            this.pnlInfomation.Size = new System.Drawing.Size(1484, 738);
+            this.pnlInfomation.Size = new System.Drawing.Size(1450, 738);
             this.pnlInfomation.TabIndex = 0;
             // 
             // subInfo
@@ -267,7 +267,7 @@
             this.btnEditPhase.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOrange;
             this.btnEditPhase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEditPhase.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEditPhase.Location = new System.Drawing.Point(1429, 252);
+            this.btnEditPhase.Location = new System.Drawing.Point(1414, 252);
             this.btnEditPhase.Name = "btnEditPhase";
             this.btnEditPhase.Size = new System.Drawing.Size(99, 41);
             this.btnEditPhase.TabIndex = 27;
@@ -285,19 +285,6 @@
             this.pnlProjetDetail.Name = "pnlProjetDetail";
             this.pnlProjetDetail.Size = new System.Drawing.Size(395, 143);
             this.pnlProjetDetail.TabIndex = 17;
-            // 
-            // starProjectDetail
-            // 
-            this.starProjectDetail.AutoSize = true;
-            this.starProjectDetail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starProjectDetail.ForeColor = System.Drawing.Color.Red;
-            this.starProjectDetail.Location = new System.Drawing.Point(182, 5);
-            this.starProjectDetail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starProjectDetail.Name = "starProjectDetail";
-            this.starProjectDetail.Size = new System.Drawing.Size(22, 30);
-            this.starProjectDetail.TabIndex = 2;
-            this.starProjectDetail.Text = "*";
-            this.starProjectDetail.Visible = false;
             // 
             // lblProjectDetail
             // 
@@ -331,7 +318,7 @@
             this.btnAddPhase.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnAddPhase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddPhase.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddPhase.Location = new System.Drawing.Point(1324, 252);
+            this.btnAddPhase.Location = new System.Drawing.Point(1309, 252);
             this.btnAddPhase.Name = "btnAddPhase";
             this.btnAddPhase.Size = new System.Drawing.Size(99, 41);
             this.btnAddPhase.TabIndex = 28;
@@ -349,19 +336,6 @@
             this.pnlPhaseDetail.Name = "pnlPhaseDetail";
             this.pnlPhaseDetail.Size = new System.Drawing.Size(609, 120);
             this.pnlPhaseDetail.TabIndex = 26;
-            // 
-            // starPhaseDetail
-            // 
-            this.starPhaseDetail.AutoSize = true;
-            this.starPhaseDetail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starPhaseDetail.ForeColor = System.Drawing.Color.Red;
-            this.starPhaseDetail.Location = new System.Drawing.Point(232, 3);
-            this.starPhaseDetail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starPhaseDetail.Name = "starPhaseDetail";
-            this.starPhaseDetail.Size = new System.Drawing.Size(22, 30);
-            this.starPhaseDetail.TabIndex = 2;
-            this.starPhaseDetail.Text = "*";
-            this.starPhaseDetail.Visible = false;
             // 
             // lblPhaseDetail
             // 
@@ -398,19 +372,6 @@
             this.pnlcompletionPercentage.Size = new System.Drawing.Size(190, 114);
             this.pnlcompletionPercentage.TabIndex = 25;
             // 
-            // starcompletionPercentage
-            // 
-            this.starcompletionPercentage.AutoSize = true;
-            this.starcompletionPercentage.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starcompletionPercentage.ForeColor = System.Drawing.Color.Red;
-            this.starcompletionPercentage.Location = new System.Drawing.Point(147, 23);
-            this.starcompletionPercentage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starcompletionPercentage.Name = "starcompletionPercentage";
-            this.starcompletionPercentage.Size = new System.Drawing.Size(22, 30);
-            this.starcompletionPercentage.TabIndex = 2;
-            this.starcompletionPercentage.Text = "*";
-            this.starcompletionPercentage.Visible = false;
-            // 
             // lblcompletionPercentage
             // 
             this.lblcompletionPercentage.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -443,19 +404,6 @@
             this.pnlboqPercentage.Name = "pnlboqPercentage";
             this.pnlboqPercentage.Size = new System.Drawing.Size(171, 114);
             this.pnlboqPercentage.TabIndex = 25;
-            // 
-            // starboqPercentage
-            // 
-            this.starboqPercentage.AutoSize = true;
-            this.starboqPercentage.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starboqPercentage.ForeColor = System.Drawing.Color.Red;
-            this.starboqPercentage.Location = new System.Drawing.Point(138, 23);
-            this.starboqPercentage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starboqPercentage.Name = "starboqPercentage";
-            this.starboqPercentage.Size = new System.Drawing.Size(22, 30);
-            this.starboqPercentage.TabIndex = 2;
-            this.starboqPercentage.Text = "*";
-            this.starboqPercentage.Visible = false;
             // 
             // lblboqPercentage
             // 
@@ -500,19 +448,6 @@
             this.cmbPhaseNumber.Size = new System.Drawing.Size(178, 38);
             this.cmbPhaseNumber.TabIndex = 3;
             // 
-            // starPhaseNumber
-            // 
-            this.starPhaseNumber.AutoSize = true;
-            this.starPhaseNumber.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starPhaseNumber.ForeColor = System.Drawing.Color.Red;
-            this.starPhaseNumber.Location = new System.Drawing.Point(95, 5);
-            this.starPhaseNumber.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starPhaseNumber.Name = "starPhaseNumber";
-            this.starPhaseNumber.Size = new System.Drawing.Size(22, 30);
-            this.starPhaseNumber.TabIndex = 2;
-            this.starPhaseNumber.Text = "*";
-            this.starPhaseNumber.Visible = false;
-            // 
             // lblPhaseNumber
             // 
             this.lblPhaseNumber.AutoSize = true;
@@ -534,19 +469,6 @@
             this.pnlRemark.Name = "pnlRemark";
             this.pnlRemark.Size = new System.Drawing.Size(395, 111);
             this.pnlRemark.TabIndex = 23;
-            // 
-            // starRemark
-            // 
-            this.starRemark.AutoSize = true;
-            this.starRemark.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starRemark.ForeColor = System.Drawing.Color.Red;
-            this.starRemark.Location = new System.Drawing.Point(98, 5);
-            this.starRemark.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starRemark.Name = "starRemark";
-            this.starRemark.Size = new System.Drawing.Size(22, 30);
-            this.starRemark.TabIndex = 2;
-            this.starRemark.Text = "*";
-            this.starRemark.Visible = false;
             // 
             // lblRemark
             // 
@@ -658,19 +580,6 @@
             this.btnInsertBlueprintFile.Click += new System.EventHandler(this.btnInsertBlueprintFile_Click);
             this.btnInsertBlueprintFile.MouseEnter += new System.EventHandler(this.btnInsertBlueprintFile_MouseEnter);
             // 
-            // starBlueprint
-            // 
-            this.starBlueprint.AutoSize = true;
-            this.starBlueprint.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starBlueprint.ForeColor = System.Drawing.Color.Red;
-            this.starBlueprint.Location = new System.Drawing.Point(113, 5);
-            this.starBlueprint.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starBlueprint.Name = "starBlueprint";
-            this.starBlueprint.Size = new System.Drawing.Size(22, 30);
-            this.starBlueprint.TabIndex = 2;
-            this.starBlueprint.Text = "*";
-            this.starBlueprint.Visible = false;
-            // 
             // lblBlueprint
             // 
             this.lblBlueprint.AutoSize = true;
@@ -775,19 +684,6 @@
             this.txtEmployeeLastName.Size = new System.Drawing.Size(288, 36);
             this.txtEmployeeLastName.TabIndex = 3;
             // 
-            // starProjectManager
-            // 
-            this.starProjectManager.AutoSize = true;
-            this.starProjectManager.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starProjectManager.ForeColor = System.Drawing.Color.Red;
-            this.starProjectManager.Location = new System.Drawing.Point(130, 5);
-            this.starProjectManager.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starProjectManager.Name = "starProjectManager";
-            this.starProjectManager.Size = new System.Drawing.Size(22, 30);
-            this.starProjectManager.TabIndex = 2;
-            this.starProjectManager.Text = "*";
-            this.starProjectManager.Visible = false;
-            // 
             // lblProjectManager
             // 
             this.lblProjectManager.AutoSize = true;
@@ -823,19 +719,6 @@
             this.pnlProjectAddress.Name = "pnlProjectAddress";
             this.pnlProjectAddress.Size = new System.Drawing.Size(393, 120);
             this.pnlProjectAddress.TabIndex = 18;
-            // 
-            // starProjectAddress
-            // 
-            this.starProjectAddress.AutoSize = true;
-            this.starProjectAddress.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starProjectAddress.ForeColor = System.Drawing.Color.Red;
-            this.starProjectAddress.Location = new System.Drawing.Point(128, 3);
-            this.starProjectAddress.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starProjectAddress.Name = "starProjectAddress";
-            this.starProjectAddress.Size = new System.Drawing.Size(22, 30);
-            this.starProjectAddress.TabIndex = 2;
-            this.starProjectAddress.Text = "*";
-            this.starProjectAddress.Visible = false;
             // 
             // lblProjectAddress
             // 
@@ -1008,19 +891,6 @@
             this.txtCustomerIDCard.Size = new System.Drawing.Size(225, 36);
             this.txtCustomerIDCard.TabIndex = 3;
             // 
-            // starCustomer
-            // 
-            this.starCustomer.AutoSize = true;
-            this.starCustomer.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starCustomer.ForeColor = System.Drawing.Color.Red;
-            this.starCustomer.Location = new System.Drawing.Point(78, 5);
-            this.starCustomer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starCustomer.Name = "starCustomer";
-            this.starCustomer.Size = new System.Drawing.Size(22, 30);
-            this.starCustomer.TabIndex = 2;
-            this.starCustomer.Text = "*";
-            this.starCustomer.Visible = false;
-            // 
             // lblCustomer
             // 
             this.lblCustomer.AutoSize = true;
@@ -1076,19 +946,6 @@
             this.cmbCurrentPhaseNumber.TabIndex = 3;
             this.cmbCurrentPhaseNumber.SelectedIndexChanged += new System.EventHandler(this.cmbCurrentPhaseNumber_SelectedIndexChanged);
             // 
-            // starPhase
-            // 
-            this.starPhase.AutoSize = true;
-            this.starPhase.Font = new System.Drawing.Font("Segoe UI", 16.2F);
-            this.starPhase.ForeColor = System.Drawing.Color.Red;
-            this.starPhase.Location = new System.Drawing.Point(128, 5);
-            this.starPhase.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starPhase.Name = "starPhase";
-            this.starPhase.Size = new System.Drawing.Size(22, 30);
-            this.starPhase.TabIndex = 2;
-            this.starPhase.Text = "*";
-            this.starPhase.Visible = false;
-            // 
             // lblPhase
             // 
             this.lblPhase.AutoSize = true;
@@ -1110,19 +967,6 @@
             this.pnlBudget.Name = "pnlBudget";
             this.pnlBudget.Size = new System.Drawing.Size(249, 74);
             this.pnlBudget.TabIndex = 13;
-            // 
-            // starBudget
-            // 
-            this.starBudget.AutoSize = true;
-            this.starBudget.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starBudget.ForeColor = System.Drawing.Color.Red;
-            this.starBudget.Location = new System.Drawing.Point(184, 5);
-            this.starBudget.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starBudget.Name = "starBudget";
-            this.starBudget.Size = new System.Drawing.Size(22, 30);
-            this.starBudget.TabIndex = 2;
-            this.starBudget.Text = "*";
-            this.starBudget.Visible = false;
             // 
             // lblBudget
             // 
@@ -1171,19 +1015,6 @@
             this.lblWorkingDate.Size = new System.Drawing.Size(143, 30);
             this.lblWorkingDate.TabIndex = 2;
             this.lblWorkingDate.Text = "ระยะเวลาทำงาน";
-            // 
-            // starWorkingDate
-            // 
-            this.starWorkingDate.AutoSize = true;
-            this.starWorkingDate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starWorkingDate.ForeColor = System.Drawing.Color.Red;
-            this.starWorkingDate.Location = new System.Drawing.Point(147, 3);
-            this.starWorkingDate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starWorkingDate.Name = "starWorkingDate";
-            this.starWorkingDate.Size = new System.Drawing.Size(22, 30);
-            this.starWorkingDate.TabIndex = 2;
-            this.starWorkingDate.Text = "*";
-            this.starWorkingDate.Visible = false;
             // 
             // txtWorkingDate
             // 
@@ -1253,19 +1084,6 @@
             this.dtpkStartDate.TabIndex = 3;
             this.dtpkStartDate.ValueChanged += new System.EventHandler(this.dtpkStartDate_ValueChanged);
             // 
-            // starStartDate
-            // 
-            this.starStartDate.AutoSize = true;
-            this.starStartDate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starStartDate.ForeColor = System.Drawing.Color.Red;
-            this.starStartDate.Location = new System.Drawing.Point(151, 3);
-            this.starStartDate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starStartDate.Name = "starStartDate";
-            this.starStartDate.Size = new System.Drawing.Size(22, 30);
-            this.starStartDate.TabIndex = 2;
-            this.starStartDate.Text = "*";
-            this.starStartDate.Visible = false;
-            // 
             // lblStartDate
             // 
             this.lblStartDate.AutoSize = true;
@@ -1287,19 +1105,6 @@
             this.pnlNumber.Name = "pnlNumber";
             this.pnlNumber.Size = new System.Drawing.Size(306, 74);
             this.pnlNumber.TabIndex = 9;
-            // 
-            // starNumber
-            // 
-            this.starNumber.AutoSize = true;
-            this.starNumber.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starNumber.ForeColor = System.Drawing.Color.Red;
-            this.starNumber.Location = new System.Drawing.Point(113, 5);
-            this.starNumber.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starNumber.Name = "starNumber";
-            this.starNumber.Size = new System.Drawing.Size(22, 30);
-            this.starNumber.TabIndex = 2;
-            this.starNumber.Text = "*";
-            this.starNumber.Visible = false;
             // 
             // lblNumber
             // 
@@ -1334,19 +1139,6 @@
             this.pnlProjectName.Size = new System.Drawing.Size(362, 74);
             this.pnlProjectName.TabIndex = 8;
             // 
-            // starProjectName
-            // 
-            this.starProjectName.AutoSize = true;
-            this.starProjectName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starProjectName.ForeColor = System.Drawing.Color.Red;
-            this.starProjectName.Location = new System.Drawing.Point(113, 5);
-            this.starProjectName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.starProjectName.Name = "starProjectName";
-            this.starProjectName.Size = new System.Drawing.Size(22, 30);
-            this.starProjectName.TabIndex = 2;
-            this.starProjectName.Text = "*";
-            this.starProjectName.Visible = false;
-            // 
             // lblProjectName
             // 
             this.lblProjectName.AutoSize = true;
@@ -1379,7 +1171,7 @@
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 738);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1484, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1450, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDelete
@@ -1448,7 +1240,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 832);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1484, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1450, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // pnlProjectdata
@@ -1459,7 +1251,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 842);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1484, 371);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1450, 371);
             this.pnlProjectdata.TabIndex = 3;
             // 
             // dtgvProject
@@ -1482,6 +1274,214 @@
             this.lblToppic1.TabIndex = 3;
             this.lblToppic1.Text = "โครงการทั้งหมด";
             // 
+            // starBlueprint
+            // 
+            this.starBlueprint.AutoSize = true;
+            this.starBlueprint.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starBlueprint.ForeColor = System.Drawing.Color.Red;
+            this.starBlueprint.Location = new System.Drawing.Point(113, 5);
+            this.starBlueprint.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starBlueprint.Name = "starBlueprint";
+            this.starBlueprint.Size = new System.Drawing.Size(22, 30);
+            this.starBlueprint.TabIndex = 2;
+            this.starBlueprint.Text = "*";
+            this.starBlueprint.Visible = false;
+            // 
+            // starProjectDetail
+            // 
+            this.starProjectDetail.AutoSize = true;
+            this.starProjectDetail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starProjectDetail.ForeColor = System.Drawing.Color.Red;
+            this.starProjectDetail.Location = new System.Drawing.Point(182, 5);
+            this.starProjectDetail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starProjectDetail.Name = "starProjectDetail";
+            this.starProjectDetail.Size = new System.Drawing.Size(22, 30);
+            this.starProjectDetail.TabIndex = 2;
+            this.starProjectDetail.Text = "*";
+            this.starProjectDetail.Visible = false;
+            // 
+            // starRemark
+            // 
+            this.starRemark.AutoSize = true;
+            this.starRemark.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starRemark.ForeColor = System.Drawing.Color.Red;
+            this.starRemark.Location = new System.Drawing.Point(98, 5);
+            this.starRemark.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starRemark.Name = "starRemark";
+            this.starRemark.Size = new System.Drawing.Size(22, 30);
+            this.starRemark.TabIndex = 2;
+            this.starRemark.Text = "*";
+            this.starRemark.Visible = false;
+            // 
+            // starProjectAddress
+            // 
+            this.starProjectAddress.AutoSize = true;
+            this.starProjectAddress.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starProjectAddress.ForeColor = System.Drawing.Color.Red;
+            this.starProjectAddress.Location = new System.Drawing.Point(128, 3);
+            this.starProjectAddress.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starProjectAddress.Name = "starProjectAddress";
+            this.starProjectAddress.Size = new System.Drawing.Size(22, 30);
+            this.starProjectAddress.TabIndex = 2;
+            this.starProjectAddress.Text = "*";
+            this.starProjectAddress.Visible = false;
+            // 
+            // starProjectManager
+            // 
+            this.starProjectManager.AutoSize = true;
+            this.starProjectManager.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starProjectManager.ForeColor = System.Drawing.Color.Red;
+            this.starProjectManager.Location = new System.Drawing.Point(130, 5);
+            this.starProjectManager.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starProjectManager.Name = "starProjectManager";
+            this.starProjectManager.Size = new System.Drawing.Size(22, 30);
+            this.starProjectManager.TabIndex = 2;
+            this.starProjectManager.Text = "*";
+            this.starProjectManager.Visible = false;
+            // 
+            // starCustomer
+            // 
+            this.starCustomer.AutoSize = true;
+            this.starCustomer.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starCustomer.ForeColor = System.Drawing.Color.Red;
+            this.starCustomer.Location = new System.Drawing.Point(78, 5);
+            this.starCustomer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starCustomer.Name = "starCustomer";
+            this.starCustomer.Size = new System.Drawing.Size(22, 30);
+            this.starCustomer.TabIndex = 2;
+            this.starCustomer.Text = "*";
+            this.starCustomer.Visible = false;
+            // 
+            // starStartDate
+            // 
+            this.starStartDate.AutoSize = true;
+            this.starStartDate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starStartDate.ForeColor = System.Drawing.Color.Red;
+            this.starStartDate.Location = new System.Drawing.Point(151, 3);
+            this.starStartDate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starStartDate.Name = "starStartDate";
+            this.starStartDate.Size = new System.Drawing.Size(22, 30);
+            this.starStartDate.TabIndex = 2;
+            this.starStartDate.Text = "*";
+            this.starStartDate.Visible = false;
+            // 
+            // starWorkingDate
+            // 
+            this.starWorkingDate.AutoSize = true;
+            this.starWorkingDate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starWorkingDate.ForeColor = System.Drawing.Color.Red;
+            this.starWorkingDate.Location = new System.Drawing.Point(147, 3);
+            this.starWorkingDate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starWorkingDate.Name = "starWorkingDate";
+            this.starWorkingDate.Size = new System.Drawing.Size(22, 30);
+            this.starWorkingDate.TabIndex = 2;
+            this.starWorkingDate.Text = "*";
+            this.starWorkingDate.Visible = false;
+            // 
+            // starProjectName
+            // 
+            this.starProjectName.AutoSize = true;
+            this.starProjectName.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starProjectName.ForeColor = System.Drawing.Color.Red;
+            this.starProjectName.Location = new System.Drawing.Point(113, 5);
+            this.starProjectName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starProjectName.Name = "starProjectName";
+            this.starProjectName.Size = new System.Drawing.Size(22, 30);
+            this.starProjectName.TabIndex = 2;
+            this.starProjectName.Text = "*";
+            this.starProjectName.Visible = false;
+            // 
+            // starNumber
+            // 
+            this.starNumber.AutoSize = true;
+            this.starNumber.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starNumber.ForeColor = System.Drawing.Color.Red;
+            this.starNumber.Location = new System.Drawing.Point(113, 5);
+            this.starNumber.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starNumber.Name = "starNumber";
+            this.starNumber.Size = new System.Drawing.Size(22, 30);
+            this.starNumber.TabIndex = 2;
+            this.starNumber.Text = "*";
+            this.starNumber.Visible = false;
+            // 
+            // starBudget
+            // 
+            this.starBudget.AutoSize = true;
+            this.starBudget.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starBudget.ForeColor = System.Drawing.Color.Red;
+            this.starBudget.Location = new System.Drawing.Point(184, 5);
+            this.starBudget.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starBudget.Name = "starBudget";
+            this.starBudget.Size = new System.Drawing.Size(22, 30);
+            this.starBudget.TabIndex = 2;
+            this.starBudget.Text = "*";
+            this.starBudget.Visible = false;
+            // 
+            // starPhase
+            // 
+            this.starPhase.AutoSize = true;
+            this.starPhase.Font = new System.Drawing.Font("Segoe UI", 16.2F);
+            this.starPhase.ForeColor = System.Drawing.Color.Red;
+            this.starPhase.Location = new System.Drawing.Point(128, 5);
+            this.starPhase.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starPhase.Name = "starPhase";
+            this.starPhase.Size = new System.Drawing.Size(22, 30);
+            this.starPhase.TabIndex = 2;
+            this.starPhase.Text = "*";
+            this.starPhase.Visible = false;
+            // 
+            // starPhaseDetail
+            // 
+            this.starPhaseDetail.AutoSize = true;
+            this.starPhaseDetail.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starPhaseDetail.ForeColor = System.Drawing.Color.Red;
+            this.starPhaseDetail.Location = new System.Drawing.Point(232, 3);
+            this.starPhaseDetail.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starPhaseDetail.Name = "starPhaseDetail";
+            this.starPhaseDetail.Size = new System.Drawing.Size(22, 30);
+            this.starPhaseDetail.TabIndex = 2;
+            this.starPhaseDetail.Text = "*";
+            this.starPhaseDetail.Visible = false;
+            // 
+            // starPhaseNumber
+            // 
+            this.starPhaseNumber.AutoSize = true;
+            this.starPhaseNumber.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starPhaseNumber.ForeColor = System.Drawing.Color.Red;
+            this.starPhaseNumber.Location = new System.Drawing.Point(95, 5);
+            this.starPhaseNumber.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starPhaseNumber.Name = "starPhaseNumber";
+            this.starPhaseNumber.Size = new System.Drawing.Size(22, 30);
+            this.starPhaseNumber.TabIndex = 2;
+            this.starPhaseNumber.Text = "*";
+            this.starPhaseNumber.Visible = false;
+            // 
+            // starcompletionPercentage
+            // 
+            this.starcompletionPercentage.AutoSize = true;
+            this.starcompletionPercentage.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starcompletionPercentage.ForeColor = System.Drawing.Color.Red;
+            this.starcompletionPercentage.Location = new System.Drawing.Point(147, 23);
+            this.starcompletionPercentage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starcompletionPercentage.Name = "starcompletionPercentage";
+            this.starcompletionPercentage.Size = new System.Drawing.Size(22, 30);
+            this.starcompletionPercentage.TabIndex = 2;
+            this.starcompletionPercentage.Text = "*";
+            this.starcompletionPercentage.Visible = false;
+            // 
+            // starboqPercentage
+            // 
+            this.starboqPercentage.AutoSize = true;
+            this.starboqPercentage.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starboqPercentage.ForeColor = System.Drawing.Color.Red;
+            this.starboqPercentage.Location = new System.Drawing.Point(138, 23);
+            this.starboqPercentage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starboqPercentage.Name = "starboqPercentage";
+            this.starboqPercentage.Size = new System.Drawing.Size(22, 30);
+            this.starboqPercentage.TabIndex = 2;
+            this.starboqPercentage.Text = "*";
+            this.starboqPercentage.Visible = false;
+            // 
             // searchboxProject
             // 
             this.searchboxProject.BackColor = System.Drawing.Color.White;
@@ -1501,7 +1501,7 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.pnlInfomation);
             this.Name = "ManageProject";
-            this.Size = new System.Drawing.Size(1484, 954);
+            this.Size = new System.Drawing.Size(1450, 954);
             this.pnlInfomation.ResumeLayout(false);
             this.subInfo.ResumeLayout(false);
             this.pnlPhaseData.ResumeLayout(false);
@@ -1565,11 +1565,9 @@
         private System.Windows.Forms.Panel subInfo;
         private System.Windows.Forms.Label lblToppic1;
         private System.Windows.Forms.Panel pnlNumber;
-        private System.Windows.Forms.Label starNumber;
         private System.Windows.Forms.Label lblNumber;
         private System.Windows.Forms.TextBox txtNumber;
         private System.Windows.Forms.Panel pnlProjectName;
-        private System.Windows.Forms.Label starProjectName;
         private System.Windows.Forms.Label lblProjectName;
         private System.Windows.Forms.TextBox txtProjectName;
         private System.Windows.Forms.Panel pnlSumDate;
@@ -1577,22 +1575,17 @@
         private System.Windows.Forms.TextBox txtWorkingDate;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.DateTimePicker dtpkEndDate;
-        private System.Windows.Forms.Label starWorkingDate;
         private System.Windows.Forms.Label lblEndDate;
         private System.Windows.Forms.Panel pnlStartDate;
         private System.Windows.Forms.DateTimePicker dtpkStartDate;
-        private System.Windows.Forms.Label starStartDate;
         private System.Windows.Forms.Label lblStartDate;
         private System.Windows.Forms.Panel pnlPhase;
-        private System.Windows.Forms.Label starPhase;
         private System.Windows.Forms.Label lblPhase;
         private System.Windows.Forms.Panel pnlBudget;
-        private System.Windows.Forms.Label starBudget;
         private System.Windows.Forms.Label lblBudget;
         private System.Windows.Forms.TextBox txtBudget;
         private System.Windows.Forms.Panel pnlCustomer;
         private System.Windows.Forms.TextBox txtCustomerIDCard;
-        private System.Windows.Forms.Label starCustomer;
         private System.Windows.Forms.Label lblCustomer;
         private System.Windows.Forms.TextBox txtCustomerName;
         private System.Windows.Forms.Panel pnlStep1;
@@ -1613,15 +1606,12 @@
         private System.Windows.Forms.Label lblEmployeeName;
         private System.Windows.Forms.Button btnSearchEmployee;
         private System.Windows.Forms.TextBox txtEmployeeLastName;
-        private System.Windows.Forms.Label starProjectManager;
         private System.Windows.Forms.Label lblProjectManager;
         private System.Windows.Forms.TextBox txtEmployeeName;
         private System.Windows.Forms.Panel pnlProjectAddress;
-        private System.Windows.Forms.Label starProjectAddress;
         private System.Windows.Forms.Label lblProjectAddress;
         private System.Windows.Forms.TextBox txtProjectAddress;
         private System.Windows.Forms.Panel pnlProjetDetail;
-        private System.Windows.Forms.Label starProjectDetail;
         private System.Windows.Forms.Label lblProjectDetail;
         private System.Windows.Forms.TextBox txtProjectDetail;
         private System.Windows.Forms.Panel pnlDemolition;
@@ -1629,24 +1619,19 @@
         private System.Windows.Forms.Label lblDemolition;
         private System.Windows.Forms.Panel pnlBlueprint;
         private System.Windows.Forms.Button btnInsertBlueprintFile;
-        private System.Windows.Forms.Label starBlueprint;
         private System.Windows.Forms.Label lblBlueprint;
         private System.Windows.Forms.Panel pnlPhaseNumber;
         private System.Windows.Forms.ComboBox cmbPhaseNumber;
-        private System.Windows.Forms.Label starPhaseNumber;
         private System.Windows.Forms.Label lblPhaseNumber;
         private System.Windows.Forms.Panel pnlRemark;
-        private System.Windows.Forms.Label starRemark;
         private System.Windows.Forms.Label lblRemark;
         private System.Windows.Forms.TextBox txtRemark;
         private System.Windows.Forms.Button btnEditPhase;
         private System.Windows.Forms.Button btnAddPhase;
         private System.Windows.Forms.Panel pnlPhaseDetail;
-        private System.Windows.Forms.Label starPhaseDetail;
         private System.Windows.Forms.Label lblPhaseDetail;
         private System.Windows.Forms.TextBox txtPhaseDetail;
         private System.Windows.Forms.Panel pnlboqPercentage;
-        private System.Windows.Forms.Label starboqPercentage;
         private System.Windows.Forms.Label lblboqPercentage;
         private System.Windows.Forms.TextBox txtboqPercentage;
         private System.Windows.Forms.Panel pnlPhaseData;
@@ -1658,8 +1643,23 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnlcompletionPercentage;
-        private System.Windows.Forms.Label starcompletionPercentage;
         private System.Windows.Forms.Label lblcompletionPercentage;
         private System.Windows.Forms.TextBox txtcompletionPercentage;
+        private System.Windows.Forms.Label starProjectDetail;
+        private System.Windows.Forms.Label starPhaseDetail;
+        private System.Windows.Forms.Label starcompletionPercentage;
+        private System.Windows.Forms.Label starboqPercentage;
+        private System.Windows.Forms.Label starPhaseNumber;
+        private System.Windows.Forms.Label starRemark;
+        private System.Windows.Forms.Label starBlueprint;
+        private System.Windows.Forms.Label starProjectManager;
+        private System.Windows.Forms.Label starProjectAddress;
+        private System.Windows.Forms.Label starCustomer;
+        private System.Windows.Forms.Label starPhase;
+        private System.Windows.Forms.Label starBudget;
+        private System.Windows.Forms.Label starWorkingDate;
+        private System.Windows.Forms.Label starStartDate;
+        private System.Windows.Forms.Label starNumber;
+        private System.Windows.Forms.Label starProjectName;
     }
 }
