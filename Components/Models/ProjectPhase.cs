@@ -9,6 +9,7 @@ namespace JRSApplication.Components
     public class ProjectPhase
     {
         public int PhaseID { get; set; }
+        public int ProID { get; set; }
         public int PhaseNumber { get; set; }  // phase_no
         public string PhaseDetail { get; set; }  // phase_detail
         public decimal PhaseBudget { get; set; }  // phase_budget

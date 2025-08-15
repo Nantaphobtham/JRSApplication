@@ -203,6 +203,48 @@ namespace JRSApplication.Data_Access_Layer
             }
             return null;
         }
+        public List<ProjectPhase> GetAllProjectPhase()
+        {
+            List<ProjectPhase> phases = new List<ProjectPhase>();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string sql = @"
+            SELECT 
+                phase_id, 
+                pro_id, 
+                phase_no, 
+                phase_detail, 
+                phase_budget, 
+                phase_percent, 
+                phase_status
+            FROM project_phase
+            ORDER BY pro_id, phase_no";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    conn.Open();
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            phases.Add(new ProjectPhase
+                            {
+                                PhaseID = reader.GetInt32("phase_id"),
+                                ProID = reader.GetInt32("pro_id"),
+                                PhaseNumber = reader.GetInt32("phase_no"),
+                                PhaseDetail = reader.GetString("phase_detail"),
+                                PhaseBudget = reader.GetDecimal("phase_budget"),
+                                PhasePercent = reader.GetDecimal("phase_percent"),
+                                PhaseStatus = reader.GetString("phase_status"),
+                            });
+                        }
+                    }
+                }
+            }
+
+            return phases;
+        }
 
 
     }

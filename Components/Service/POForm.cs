@@ -23,6 +23,7 @@ namespace JRSApplication.Components.Service
             _orderId = orderId;
             currentUserId = empId;  // ✅ เก็บไว้ใช้อัปเดตฐานข้อมูล
             InitializeGridColumns();
+            LoadOrderData(); // โหลดข้อมูลใบสั่งซื้อ
             LoadMaterialData(); // โหลดวัสดุตาม orderId
             CustomizeMaterialGridStyling();
 
@@ -153,22 +154,25 @@ namespace JRSApplication.Components.Service
         }
         //โหลดข้อมูมใบ PO มาแสดงที่ textbox ต่าง ๆ จากฐานข้อมูล
 
-        //private void LoadOrderData()
-        //{
-        //    var dal = new PurchaseOrderDAL();
-        //    var order = dal.GetPurchaseOrderById(_orderId); // ต้องมีฟังก์ชันนี้ใน DAL
+        private void LoadOrderData()
+        {
+            var dal = new PurchaseOrderDAL();
+            var order = dal.GetPurchaseOrderById(_orderId); // ต้องมีฟังก์ชันนี้ใน DAL
 
-        //    if (order != null)
-        //    {
-        //        txtPONumber.Text = order.OrderNumber;          // เลขที่ใบสั่งซื้อ
-        //        txtProjectNumber.Text = order.ProId.ToString(); // หรือจะแสดง ProjectNumber จริงก็ได้ถ้ามี JOIN
-
-        //        // ตัวอื่น ๆ ตามช่อง textbox ของคุณ
-        //        txtOrderDetail.Text = order.OrderDetail;
-        //        dtpOrderDate.Value = order.OrderDate;
-        //        // ...
-        //    }
-        //}
+            if (order != null)
+            {
+                txtPONumber.Text = order.OrderNumber;          // เลขที่ใบสั่งซื้อ
+                txtProjectNumber.Text = order.ProId.ToString(); // หรือจะแสดง ProjectNumber จริงก็ได้ถ้ามี JOIN
+                txtEmpName.Text = order.EmpId; // หรือจะแสดงชื่อพนักงานจริงก็ได้ถ้ามี JOIN
+                txtEmpApprove.Text = order.ApprovedByEmpId; // พนักงานที่อนุมัติ
+                txtDate.Text = order.OrderDate.ToString("dd/MM/yyyy"); // วันที่ใบสั่งซื้อ
+                txtApproveDate.Text = order.ApprovedDate.HasValue 
+                    ? order.ApprovedDate.Value.ToString("dd/MM/yyyy") 
+                    : "ยังไม่อนุมัติ"; // วันที่อนุมัติ ถ้าไม่มีให้แสดงข้อความว่า "ยังไม่อนุมัติ"
+                txtDetail.Text = order.OrderDetail; // รายละเอียดใบสั่งซื้อ
+               
+            }
+        }
         private void LoadMaterialData()
         {
             MaterialDetailDAL dal = new MaterialDetailDAL();

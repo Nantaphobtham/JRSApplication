@@ -164,5 +164,40 @@ namespace JRSApplication.Data_Access_Layer
             }
         }
 
+        public PurchaseOrder GetPurchaseOrderById(int orderId)
+        {
+            PurchaseOrder order = null;
+
+            string sql = @"SELECT * FROM purchaseorder WHERE order_id = @OrderId";
+
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("@OrderId", orderId);
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        order = new PurchaseOrder
+                        {
+                            OrderId = reader.GetInt32("order_id"),
+                            OrderNumber = reader.GetString("order_number"),
+                            OrderDetail = reader.IsDBNull(reader.GetOrdinal("order_detail")) ? null : reader.GetString("order_detail"),
+                            OrderDate = reader.IsDBNull(reader.GetOrdinal("order_date")) ? DateTime.MinValue : reader.GetDateTime("order_date"),
+                            OrderStatus = reader.IsDBNull(reader.GetOrdinal("order_status")) ? null : reader.GetString("order_status"),
+                            OrderDueDate = reader.IsDBNull(reader.GetOrdinal("order_duedate")) ? DateTime.MinValue : reader.GetDateTime("order_duedate"),
+                            OrderRemark = reader.IsDBNull(reader.GetOrdinal("order_remark")) ? null : reader.GetString("order_remark"),
+                            EmpId = reader.IsDBNull(reader.GetOrdinal("emp_id")) ? null : reader.GetString("emp_id"),
+                            ApprovedByEmpId = reader.IsDBNull(reader.GetOrdinal("approved_by_emp_id")) ? null : reader.GetString("approved_by_emp_id"),
+                            ApprovedDate = reader.IsDBNull(reader.GetOrdinal("approved_date")) ? (DateTime?)null : reader.GetDateTime("approved_date"),
+                            ProId = reader.IsDBNull(reader.GetOrdinal("pro_id")) ? 0 : reader.GetInt32("pro_id") // เปลี่ยนเป็น (int?)null ถ้าใช้ int?
+                        };
+                    }
+                }
+            }
+            return order;
+        }
+
     }
 }

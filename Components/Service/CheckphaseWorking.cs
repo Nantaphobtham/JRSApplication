@@ -93,7 +93,7 @@ namespace JRSApplication.Components.Service
             container.Controls.Add(CreateTextbox(work.WorkStatus, new Point(121, 50), new Size(237, 35), f));
 
             // 🔹 Start/End Dates
-            container.Controls.Add(CreateLabel("วันที่เริ่ม", new Point(457, 10), f));
+            container.Controls.Add(CreateLabel("วันที่ดำเนินการ", new Point(402, 10), f));
             container.Controls.Add(CreateTextbox(work.WorkDate.ToString("yyyy-MM-dd"), new Point(538, 8), new Size(237, 35), f));
 
             container.Controls.Add(CreateLabel("วันที่สิ้นสุด", new Point(439, 57), f));
