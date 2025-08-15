@@ -57,6 +57,7 @@ namespace JRSApplication
         }
         private void LoadSearchData(string keywordOrProjectId)
         {
+            dtgvAlldata.AutoGenerateColumns = true;
             // For unpaid invoices by project, we use the project ID as input
             if (SearchMode == "UnpaidInvoiceByProject")
                 dtgvAlldata.DataSource = searchService.SearchData(SearchMode, keywordOrProjectId);
@@ -67,8 +68,35 @@ namespace JRSApplication
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            LoadSearchData(txtSearch.Text);
+            if (SearchMode == "UnpaidInvoiceByProject")
+            {
+                // Local filter on the in-memory table
+                if (dtgvAlldata.DataSource is DataTable table)
+                {
+                    var dv = table.DefaultView;
+                    string q = txtSearch.Text.Trim().Replace("'", "''");
+
+                    if (string.IsNullOrEmpty(q))
+                    {
+                        dv.RowFilter = string.Empty;
+                    }
+                    else
+                    {
+                        // Filter by a few useful columns
+                        dv.RowFilter =
+                            $"CONVERT(inv_id, 'System.String') LIKE '%{q}%' " +
+                            $"OR CONVERT(inv_status, 'System.String') LIKE '%{q}%' " +
+                            $"OR CONVERT(cus_id, 'System.String') LIKE '%{q}%'";
+                    }
+                }
+            }
+            else
+            {
+                // All other modes keep DB-backed searching
+                LoadSearchData(txtSearch.Text);
+            }
         }
+
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {

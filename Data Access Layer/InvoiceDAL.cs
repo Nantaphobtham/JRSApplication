@@ -89,6 +89,40 @@ namespace JRSApplication.Data_Access_Layer
             return dt;
         }
 
+        public DataTable GetUnpaidInvoicesByProject(string proId)
+        {
+            var dt = new DataTable();
+
+            const string sql = @"
+        SELECT
+            i.inv_id,
+            i.inv_date,
+            i.inv_duedate,
+            i.pro_id,
+            i.cus_id,
+            i.emp_id,
+            i.inv_method,
+            i.inv_status
+        FROM invoice i
+        WHERE i.pro_id = @ProId
+          AND (
+               i.paid_date IS NULL
+               OR i.inv_status IS NULL
+               OR i.inv_status NOT IN ('ชำระแล้ว','paid','ชำระเงินแล้ว')
+          )
+        ORDER BY i.inv_date DESC, i.inv_id DESC;";
+
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, conn))
+            using (var da = new MySqlDataAdapter(cmd))
+            {
+                cmd.Parameters.AddWithValue("@ProId", proId);
+                conn.Open();
+                da.Fill(dt);
+            }
+            return dt;
+        }
+
         public Image GetPaymentProofImage(int invId)
         {
             string query = "SELECT file_data FROM payment_proof WHERE inv_id = @invId";
