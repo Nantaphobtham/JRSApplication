@@ -346,50 +346,53 @@ namespace JRSApplication.Accountant
         }
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtProjectID.Text))
+            // ต้องมีรหัสโครงการก่อน
+            var projectId = txtProjectID.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(projectId))
             {
-                MessageBox.Show("กรุณาเลือกโครงการก่อน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกโครงการก่อน", "แจ้งเตือน",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            using (var searchForm = new SearchForm("UnpaidInvoiceByProject", txtProjectID.Text))
+            // เปิดหน้าค้นหา: ใบแจ้งหนี้สถานะ 'รอชำระเงิน' ของโครงการนี้
+            using (var searchForm = new SearchForm("UnpaidInvoiceByProject", projectId))
             {
-                if (searchForm.ShowDialog() == DialogResult.OK)
+                if (searchForm.ShowDialog() != DialogResult.OK) return;
+
+                var selectedInvoiceId = searchForm.SelectedID;
+                if (string.IsNullOrWhiteSpace(selectedInvoiceId))
                 {
-                    string selectedInvoiceId = searchForm.SelectedID;
-                    InvoiceDAL invoiceDAL = new InvoiceDAL();
-                    DataTable dt = invoiceDAL.GetInvoiceID(selectedInvoiceId); // ✅ Use new merged method
+                    MessageBox.Show("ไม่พบเลขที่ใบแจ้งหนี้ที่เลือก", "แจ้งเตือน",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-                    if (dt.Rows.Count > 0)
+                // โหลดข้อมูลใบแจ้งหนี้ลงฟอร์ม
+                try
+                {
+                    // ถ้าคอมโบเฟสยังไม่ได้โหลด (หรือโครงการเปลี่ยน) ให้โหลดเฟสของโครงการก่อน
+                    if (cmbPhase.DataSource == null ||
+                        (cmbPhase.DataSource as DataTable)?.Rows.Count == 0)
                     {
-                        DataRow row = dt.Rows[0];
-
-                        // Header
-                        txtInvNo.Text = row["inv_no"].ToString();
-                        dtpInvDate.Value = Convert.ToDateTime(row["inv_date"]);
-                        dtpDueDate.Value = Convert.ToDateTime(row["inv_duedate"]);
-
-                        // Project
-                        txtProjectID.Text = row["pro_number"].ToString();
-                        txtContractNumber.Text = row["pro_id"].ToString();
-                        txtProjectName.Text = row["pro_name"].ToString();
-                        cmbPhase.SelectedValue = row["phase_id"];
-                        txtPhaseBudget.Text = row["phase_budget"].ToString();
-                        txtPhaseDetail.Text = row["phase_detail"].ToString();
-
-                        // Customer
-                        txtCusID.Text = row["cus_id"].ToString();
-                        txtCusName.Text = row["cus_fullname"].ToString();
-
-                        // Detail (first row)
-                        txtDetail.Text = row["inv_detail"].ToString();
-                        txtQuantity.Text = row["inv_quantity"].ToString();
-                        txtPrice.Text = row["inv_price"].ToString();
-                        txtRemark.Text = row["inv_remark"].ToString();
+                        LoadPhasesToComboBox(projectId);
                     }
+
+                    // โหลดหัวใบแจ้งหนี้ + รายการ มาใส่กล่อง (ใช้เมธอดที่คุณมีอยู่)
+                    LoadInvoiceById(selectedInvoiceId);
+
+                    // ถ้าต้องการ…โฟกัสไปช่อง remark เพื่อแก้ไขต่อ
+                    txtRemark.Focus();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("โหลดข้อมูลใบแจ้งหนี้ไม่สำเร็จ: " + ex.Message,
+                        "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
+
+
 
 
         private void CustomizeInvoiceGrid()

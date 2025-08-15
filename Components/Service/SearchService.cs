@@ -107,10 +107,13 @@ namespace JRSApplication
                     query = @"
                 SELECT 
                     inv_id, inv_date, inv_duedate, 
-                    pro_id, cus_id, emp_id, inv_method, inv_status
+                    pro_id, cus_id, emp_id, inv_method, COALESCE(inv_status, '') AS inv_status
                 FROM invoice
-                WHERE (inv_status IS NULL OR inv_status = 'Draft')
-                AND pro_id = @projectId";
+                WHERE pro_id = @projectId
+                AND inv_status = 'รอชำระเงิน'
+                ORDER BY inv_date DESC, inv_id DESC;
+                ";
+
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@projectId", keyword); // ✅ use direct ID match
@@ -178,14 +181,14 @@ namespace JRSApplication
             string query = @"
         SELECT 
             i.inv_id,
-            i.inv_no,
+            
             i.inv_date,
             i.inv_duedate,
             i.pro_id,
             i.phase_id,
             i.cus_id
         FROM invoice i
-        WHERE (i.inv_status IS NULL OR i.inv_status = 'Draft')
+        WHERE (i.inv_status IS NULL OR i.inv_status = 'รอการชำระเงิน')
         AND i.pro_id = @projectId
         ORDER BY i.inv_date DESC";
 
