@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,10 +17,11 @@ namespace JRSApplication.Accountant
 {
     public partial class ConfirmInvoice : UserControl
     {
-
+        private string _currentInvId;   // when we navigate directly from Invoice
         private string empId;
         private string fullName;
         private string role;
+        public ConfirmInvoice() : this(fullName: "", role: "", empId: "") { }
         public ConfirmInvoice(string fullName, string role, string empId)
         {
             InitializeComponent();
@@ -34,6 +36,37 @@ namespace JRSApplication.Accountant
             this.empId = empId;
         }
 
+
+        private static decimal ToMoney(object val)
+        {
+            if (val == null || val == DBNull.Value) return 0m;
+
+            // keep only digits, dot, comma
+            var s = new string(val.ToString().Where(ch => char.IsDigit(ch) || ch == '.' || ch == ',').ToArray());
+            if (string.IsNullOrWhiteSpace(s)) return 0m;
+
+            if (decimal.TryParse(s, NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
+                                 CultureInfo.CurrentCulture, out var d)) return d;
+            if (decimal.TryParse(s, NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
+                                 CultureInfo.InvariantCulture, out d)) return d;
+
+            return 0m;
+        }
+
+        private static bool TryParseDecimal(object val, out decimal d)
+        {
+            d = 0m;
+            if (val == null || val == DBNull.Value) return false;
+
+            // reject if contains letters (e.g. "1 cm")
+            var s = val.ToString();
+            if (s.Any(char.IsLetter)) return false;
+
+            if (decimal.TryParse(s, NumberStyles.Number, CultureInfo.CurrentCulture, out d)) return true;
+            if (decimal.TryParse(s, NumberStyles.Number, CultureInfo.InvariantCulture, out d)) return true;
+
+            return false;
+        }
 
         private void CustomizeDataGridView()
         {
@@ -138,7 +171,10 @@ namespace JRSApplication.Accountant
                 DataGridViewRow row = dgvInvoices.Rows[e.RowIndex];
                 InvoiceDAL dal = new InvoiceDAL();
 
-                string invNo = row.Cells["inv_no"].Value?.ToString() ?? "";
+                //string helper
+                //string CellText(string col) => row.Cells[col]?.Value?.ToString() ?? "";
+
+                string invNo = row.Cells["inv_id"].Value?.ToString() ?? "";
                 string invDate = row.Cells["inv_date"].Value?.ToString() ?? "";
                 string invDueDate = row.Cells["inv_duedate"].Value?.ToString() ?? "";
                 string proId = row.Cells["pro_id"].Value?.ToString() ?? "";
@@ -157,50 +193,56 @@ namespace JRSApplication.Accountant
 
                 LoadProjectDetails(proId);
                 LoadCustomerDetails(cusId);
-                int invId = Convert.ToInt32(row.Cells["inv_id"].Value);
+                string invId = row.Cells["inv_id"]?.Value?.ToString();
+                if (string.IsNullOrWhiteSpace(invId))
+                {
+                    MessageBox.Show("ไม่พบเลขที่ใบแจ้งหนี้ (inv_id).", "แจ้งเตือน",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 LoadInvoiceDetails(invId);
-                
+
+
             }
         }
 
-
-        private void LoadInvoiceDetails(int invId)
+        private void LoadInvoiceDetails(string invId)
         {
             SetupInvoiceDetailGrid();
 
-            DataTable dt = InvoiceDAL.GetInvoiceDetail(invId);
+            var dal = new InvoiceDetailDAL();
+            DataTable dt = dal.GetInvoiceDetailByInvId(invId);
 
-            decimal total = 0;
-            foreach (DataRow row in dt.Rows)
+            // running total that matches the grid's subtotal rule
+            decimal total = 0m;
+            foreach (DataRow r in dt.Rows)
             {
-                if (decimal.TryParse(row["inv_quantity"].ToString(), out decimal qty) &&
-                    decimal.TryParse(row["inv_price"].ToString(), out decimal price))
-                {
+                decimal price = ToMoney(r["inv_price"]);
+                if (TryParseDecimal(r["inv_quantity"], out var qty))
                     total += qty * price;
-                }
+                else
+                    total += price;
             }
 
-            // ✅ Add final "total row"
+            // add "รวม" row at the end
             DataRow totalRow = dt.NewRow();
             totalRow["inv_detail"] = "รวม";
             dt.Rows.Add(totalRow);
 
             dgvInvoiceDetails.DataSource = dt;
 
-            // ✅ Pass total into Tag so we can format later
+            // stash total for the CellFormatting of the last row
             dgvInvoiceDetails.Tag = total;
         }
-
 
         private void PopulatePaymentMethod()
         {
             comboPaymentMethod.Items.Clear();
-            comboPaymentMethod.Items.Add("เงินสด");
             comboPaymentMethod.Items.Add("โอนผ่านธนาคาร");
             comboPaymentMethod.Items.Add("เช็ค");
             comboPaymentMethod.SelectedIndex = 0; // Default to first
         }
-        private void SaveProofOfPayment(int invoiceId, string filePath)
+        private void SaveProofOfPayment(string invoiceId, string filePath)
         {
             if (string.IsNullOrEmpty(filePath)) return;
 
@@ -223,7 +265,7 @@ namespace JRSApplication.Accountant
             }
         }
 
-        private void UpdateInvoice(int invId)
+        private void UpdateInvoice(string invId)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
@@ -351,50 +393,61 @@ namespace JRSApplication.Accountant
 
         private void dgvInvoiceDetails_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            var row = dgvInvoiceDetails.Rows[e.RowIndex];
+            if (e.RowIndex < 0) return;
+            var grid = dgvInvoiceDetails;
+            var row = grid.Rows[e.RowIndex];
 
-            // ✅ Detect last row: "รวม"
+            // -- Last row ("รวม")
             if (row.Cells["inv_detail"].Value?.ToString() == "รวม")
             {
-                if (dgvInvoiceDetails.Columns[e.ColumnIndex].Name == "subtotal")
+                if (grid.Columns[e.ColumnIndex].Name == "subtotal")
                 {
-                    decimal total = dgvInvoiceDetails.Tag != null ? (decimal)dgvInvoiceDetails.Tag : 0;
+                    decimal total = grid.Tag is decimal d ? d : 0m;
                     e.Value = total.ToString("N2") + " บาท";
                     e.CellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
                     e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }
-                else if (dgvInvoiceDetails.Columns[e.ColumnIndex].Name == "inv_detail")
+                else if (grid.Columns[e.ColumnIndex].Name == "inv_detail")
                 {
                     e.CellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
-                    e.CellStyle.ForeColor = Color.Black;
                     e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 }
                 else
                 {
-                    e.Value = ""; // Empty other cells
+                    e.Value = ""; // clear other cells on the total row
                 }
 
                 e.CellStyle.BackColor = Color.LightYellow;
+                e.FormattingApplied = true;
                 return;
             }
 
-            // 🧮 Calculate Subtotal Normally
-            if (dgvInvoiceDetails.Columns[e.ColumnIndex].Name == "subtotal")
+            // -- Subtotal for normal rows
+            if (grid.Columns[e.ColumnIndex].Name == "subtotal")
             {
-                if (row.Cells["inv_quantity"].Value != null && row.Cells["inv_price"].Value != null)
-                {
-                    decimal qty = Convert.ToDecimal(row.Cells["inv_quantity"].Value);
-                    decimal price = Convert.ToDecimal(row.Cells["inv_price"].Value);
+                var qObj = row.Cells["inv_quantity"].Value;
+                var pObj = row.Cells["inv_price"].Value;
+
+                decimal price = ToMoney(pObj);
+
+                // if quantity is numeric, use qty * price; otherwise just price (ignore qty)
+                if (TryParseDecimal(qObj, out var qty))
                     e.Value = (qty * price).ToString("N2");
-                }
+                else
+                    e.Value = price.ToString("N2");
+
+                e.FormattingApplied = true;
+                return;
             }
 
-            // ➕ Add "No" column auto numbering
-            if (dgvInvoiceDetails.Columns[e.ColumnIndex].Name == "No")
+            // -- Auto number
+            if (grid.Columns[e.ColumnIndex].Name == "No")
             {
                 e.Value = (e.RowIndex + 1).ToString();
+                e.FormattingApplied = true;
             }
         }
+
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
@@ -429,7 +482,19 @@ namespace JRSApplication.Accountant
                 return;
             }
 
-            int invId = Convert.ToInt32(dgvInvoices.SelectedRows[0].Cells["inv_id"].Value);
+            string invId =
+                !string.IsNullOrWhiteSpace(_currentInvId) ? _currentInvId :
+                (dgvInvoices.SelectedRows.Count > 0
+                    ? dgvInvoices.SelectedRows[0].Cells["inv_id"].Value?.ToString()
+                    : txtInvoiceNumber.Text?.Trim());
+
+            if (string.IsNullOrWhiteSpace(invId))
+            {
+                MessageBox.Show("ไม่พบเลขที่ใบแจ้งหนี้", "แจ้งเตือน",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             string filePath = txtFilePath.Text; // Set by file dialog when uploading proof
 
             UpdateInvoice(invId);
@@ -439,6 +504,7 @@ namespace JRSApplication.Accountant
 
             LoadInvoiceData(); // Refresh grid
             dgvInvoices.ClearSelection();
+
         }
         private void btnChooseFile_Click(object sender, EventArgs e)
         {
@@ -448,6 +514,46 @@ namespace JRSApplication.Accountant
             {
                 txtFilePath.Text = ofd.FileName;
             }
+        }
+
+        public void InitFromInvoiceId(string invId)
+        {
+            if (string.IsNullOrWhiteSpace(invId)) return;
+            _currentInvId = invId;
+
+            var dal = new InvoiceDAL();
+            DataTable dt = dal.GetInvoiceID(invId);
+            if (dt.Rows.Count == 0) return;
+
+            var r = dt.Rows[0];
+
+            // Header
+            txtInvoiceNumber.Text = invId;
+            if (r.Table.Columns.Contains("inv_date") && r["inv_date"] != DBNull.Value)
+                dtpInvoiceDate.Value = Convert.ToDateTime(r["inv_date"]);
+
+            txtDueDate.Text = r["inv_duedate"]?.ToString() ?? "";
+
+            // Project / phase
+            txtProjectID.Text = r["pro_id"]?.ToString() ?? "";
+            txtProjectName.Text = r["pro_name"]?.ToString() ?? "";
+            // use your phase display control here (you used textBox7 for phase_no)
+            if (r.Table.Columns.Contains("phase_no"))
+                textBox7.Text = r["phase_no"]?.ToString() ?? "";
+            else if (r.Table.Columns.Contains("phase_id"))
+                textBox7.Text = r["phase_id"]?.ToString() ?? "";
+
+            // Customer (you already have LoadCustomerDetails, but we can fill directly)
+            txtCustomerName.Text = r["cus_fullname"]?.ToString() ?? "";
+            txtCustomerIDCard.Text = r["cus_id_card"]?.ToString() ?? "";
+            txtCustomerAddress.Text = r["cus_address"]?.ToString() ?? "";
+
+            // Load detail rows into the right grid and compute total row
+            LoadInvoiceDetails(invId);
+
+            // Enable the grid (you disabled it in ctor)
+            dgvInvoices.Enabled = true;
+            dgvInvoices.BackgroundColor = Color.White;
         }
 
         private void panel3_Paint(object sender, PaintEventArgs e)

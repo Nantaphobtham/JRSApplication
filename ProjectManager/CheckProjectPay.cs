@@ -38,10 +38,30 @@ namespace JRSApplication.ProjectManager
         private void LoadPaidInvoicesByProject(string projectId)
         {
             DataTable dt = searchService.GetPaidInvoicesByProject(projectId);
+
+            // ---- ensure we have phase_no; if not, derive it from phase_id ----
+            if (!dt.Columns.Contains("phase_no") && dt.Columns.Contains("phase_id"))
+            {
+                dt.Columns.Add("phase_no", typeof(string));
+                var dal = new InvoiceDAL();
+
+                foreach (DataRow r in dt.Rows)
+                {
+                    if (r["phase_id"] != DBNull.Value)
+                    {
+                        if (int.TryParse(Convert.ToString(r["phase_id"]), out int pid))
+                        {
+                            r["phase_no"] = dal.GetPhaseNoById(pid); // e.g. "50"
+                        }
+                    }
+                }
+            }
+
             dtgvInvoice.DataSource = dt;
             RenameInvoiceGridHeaders();
             CustomizeInvoiceGridStyle();
         }
+
 
         private void btnSearchPayment_Click(object sender, EventArgs e)
         {
@@ -110,39 +130,47 @@ namespace JRSApplication.ProjectManager
 
                 txtPhase.Text = row.Cells["phase_id"].Value?.ToString();
 
-                int invId = Convert.ToInt32(row.Cells["inv_id"].Value);
-                LoadPaymentProofImage(invId);
+                string invId = row.Cells["inv_id"]?.Value?.ToString();
+                if (!string.IsNullOrWhiteSpace(invId))
+                {
+                    LoadPaymentProofImage(invId);
+                }
+                else
+                {
+                    pictureBoxProof.Image = null;
+                }
             }
         }
 
-        private void LoadPaymentProofImage(int invId)
+        private void LoadPaymentProofImage(string invId)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (var conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
-                string query = "SELECT file_data FROM payment_proof WHERE inv_id = @invId LIMIT 1";
+                const string query = "SELECT file_data FROM payment_proof WHERE inv_id = @invId LIMIT 1";
 
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (var cmd = new MySqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@invId", invId);
-                    object result = cmd.ExecuteScalar();
+                    cmd.Parameters.AddWithValue("@invId", invId ?? (object)DBNull.Value);
+
+                    var result = cmd.ExecuteScalar();
 
                     if (result != null && result != DBNull.Value)
                     {
-                        byte[] imageBytes = (byte[])result;
-                        using (MemoryStream ms = new MemoryStream(imageBytes))
+                        var imageBytes = (byte[])result;
+                        using (var ms = new MemoryStream(imageBytes))
                         {
                             pictureBoxProof.Image = Image.FromStream(ms);
                             pictureBoxProof.SizeMode = PictureBoxSizeMode.Zoom;
-
                         }
                     }
                     else
                     {
                         pictureBoxProof.Image = null;
-                        MessageBox.Show("ไม่พบหลักฐานการชำระเงิน", "ไม่มีไฟล์", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("ไม่พบหลักฐานการชำระเงิน", "ไม่มีไฟล์",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
@@ -151,17 +179,17 @@ namespace JRSApplication.ProjectManager
         // ✅ เปลี่ยนชื่อหัวตารางให้เป็นไทย
         private void RenameInvoiceGridHeaders()
         {
-            
             if (dtgvInvoice.Columns.Contains("inv_id")) dtgvInvoice.Columns["inv_id"].HeaderText = "รหัสงาน";
-            if (dtgvInvoice.Columns.Contains("inv_no")) dtgvInvoice.Columns["inv_no"].HeaderText = "เลขที่ใบแจ้งหนี้";
             if (dtgvInvoice.Columns.Contains("inv_date")) dtgvInvoice.Columns["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
             if (dtgvInvoice.Columns.Contains("inv_duedate")) dtgvInvoice.Columns["inv_duedate"].HeaderText = "วันครบกำหนด";
             if (dtgvInvoice.Columns.Contains("inv_status")) dtgvInvoice.Columns["inv_status"].HeaderText = "สถานะใบแจ้งหนี้";
             if (dtgvInvoice.Columns.Contains("inv_method")) dtgvInvoice.Columns["inv_method"].HeaderText = "วิธีชำระเงิน";
             if (dtgvInvoice.Columns.Contains("paid_date")) dtgvInvoice.Columns["paid_date"].HeaderText = "วันที่บันทึก";
 
-            
-            if (dtgvInvoice.Columns.Contains("phase_id")) dtgvInvoice.Columns["phase_id"].HeaderText = "เฟสงาน";
+            // 🔻 show phase_no and hide phase_id
+            if (dtgvInvoice.Columns.Contains("phase_no")) dtgvInvoice.Columns["phase_no"].HeaderText = "เฟสงาน";
+            if (dtgvInvoice.Columns.Contains("phase_id")) dtgvInvoice.Columns["phase_id"].Visible = false;
+
             if (dtgvInvoice.Columns.Contains("cus_name")) dtgvInvoice.Columns["cus_name"].HeaderText = "ชื่อลูกค้า";
             if (dtgvInvoice.Columns.Contains("cus_id_card")) dtgvInvoice.Columns["cus_id_card"].HeaderText = "เลขบัตรประชาชน";
             if (dtgvInvoice.Columns.Contains("cus_address")) dtgvInvoice.Columns["cus_address"].HeaderText = "ที่อยู่";
@@ -169,12 +197,12 @@ namespace JRSApplication.ProjectManager
             if (dtgvInvoice.Columns.Contains("pro_number")) dtgvInvoice.Columns["pro_number"].HeaderText = "เลขที่สัญญา";
             if (dtgvInvoice.Columns.Contains("emp_name")) dtgvInvoice.Columns["emp_name"].HeaderText = "ชื่อพนักงาน";
 
-            
             if (dtgvInvoice.Columns.Contains("cus_id")) dtgvInvoice.Columns["cus_id"].HeaderText = "รหัสลูกค้า";
             if (dtgvInvoice.Columns.Contains("pro_id")) dtgvInvoice.Columns["pro_id"].HeaderText = "รหัสโครงการ";
             if (dtgvInvoice.Columns.Contains("emp_id")) dtgvInvoice.Columns["emp_id"].HeaderText = "รหัสพนักงาน";
             if (dtgvInvoice.Columns.Contains("emp_lname")) dtgvInvoice.Columns["emp_lname"].HeaderText = "นามสกุลพนักงาน";
         }
+
 
 
         // ✅ ปรับสไตล์ DataGridView
@@ -235,10 +263,10 @@ namespace JRSApplication.ProjectManager
                 // ✅ กรอกข้อมูลโครงการ
                 txtContractNumber.Text = row.Cells["pro_number"].Value?.ToString();
                 txtProjectName2.Text = row.Cells["pro_name"].Value?.ToString();
-                txtPhase.Text = row.Cells["phase_id"].Value?.ToString();
+                txtPhase.Text = row.Cells["phase_no"].Value?.ToString();
 
                 // ✅ กรอกข้อมูลการชำระเงิน
-                txtInvoiceNo.Text = row.Cells["inv_no"].Value?.ToString();
+                txtInvoiceNo.Text = row.Cells["inv_id"].Value?.ToString();
                 txtPaymentMethod.Text = row.Cells["inv_method"].Value?.ToString();
 
                 if (row.Cells["paid_date"].Value != DBNull.Value)
@@ -252,8 +280,15 @@ namespace JRSApplication.ProjectManager
                 txtEmpName.Text = $"{empName} {empLname}";
 
                 // ✅ โหลดรูปภาพ
-                int invId = Convert.ToInt32(row.Cells["inv_id"].Value);
-                LoadPaymentProofImage(invId);
+                string invId = row.Cells["inv_id"]?.Value?.ToString();
+                if (!string.IsNullOrWhiteSpace(invId))
+                {
+                    LoadPaymentProofImage(invId);
+                }
+                else
+                {
+                    pictureBoxProof.Image = null;
+                }
             }
         }
 

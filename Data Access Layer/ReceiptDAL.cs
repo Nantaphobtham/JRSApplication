@@ -18,20 +18,20 @@ namespace JRSApplication.Data_Access_Layer
     {
         private readonly string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
-        public int InsertReceipt(string receiptNo, DateTime receiptDate, string remark, int invId)
+        public int InsertReceipt(string receiptNo /* now receiptId */, DateTime receiptDate, string remark, string invId)
         {
             int result = 0;
 
-            string query = @"
-                INSERT INTO receipt (receipt_no, receipt_date, remark, inv_id)
-                VALUES (@receipt_no, @receipt_date, @remark, @inv_id)";
+            const string query = @"
+                INSERT INTO receipt (receipt_id, receipt_date, remark, inv_id)
+                VALUES (@receipt_id, @receipt_date, @remark, @inv_id);";
 
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(query, conn))
             {
-                cmd.Parameters.AddWithValue("@receipt_no", receiptNo);
+                cmd.Parameters.AddWithValue("@receipt_id", receiptNo ?? string.Empty); // pass your auto-generated REC_0001
                 cmd.Parameters.AddWithValue("@receipt_date", receiptDate);
-                cmd.Parameters.AddWithValue("@remark", remark);
+                cmd.Parameters.AddWithValue("@remark", string.IsNullOrWhiteSpace(remark) ? (object)DBNull.Value : remark);
                 cmd.Parameters.AddWithValue("@inv_id", invId);
 
                 conn.Open();
@@ -40,10 +40,14 @@ namespace JRSApplication.Data_Access_Layer
 
             return result;
         }
-        public string GetReceiptNoByInvId(int invId)
+        public string GetReceiptNoByInvId(string invId)
         {
-            string receiptNo = "";
-            string query = "SELECT receipt_no FROM receipt WHERE inv_id = @inv_id";
+            const string query = @"
+                SELECT receipt_id
+                FROM receipt
+                WHERE inv_id = @inv_id
+                ORDER BY receipt_date DESC, receipt_id DESC
+                LIMIT 1;";
 
             using (var conn = new MySqlConnection(connectionString))
             using (var cmd = new MySqlCommand(query, conn))
@@ -51,11 +55,25 @@ namespace JRSApplication.Data_Access_Layer
                 cmd.Parameters.AddWithValue("@inv_id", invId);
                 conn.Open();
                 var result = cmd.ExecuteScalar();
-                if (result != null)
-                    receiptNo = result.ToString();
+                return result?.ToString() ?? string.Empty;
             }
-
-            return receiptNo;
+        }
+        public string GetReceiptRemarkByInvId(string invId)
+        {
+            const string sql = @"
+        SELECT remark
+        FROM receipt
+        WHERE inv_id = @invId
+        ORDER BY receipt_date DESC
+        LIMIT 1;";
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("@invId", invId);
+                conn.Open();
+                var o = cmd.ExecuteScalar();
+                return (o == null || o == DBNull.Value) ? "" : o.ToString();
+            }
         }
 
     }

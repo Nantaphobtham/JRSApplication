@@ -65,6 +65,28 @@ namespace JRSApplication.Data_Access_Layer
             }
             return newInvId;
         }
+        public void UpdateInvoiceAmounts(string invId, decimal total, decimal vat, decimal grand)
+        {
+            const string sql = @"
+        UPDATE invoice
+           SET inv_total_amount = @total,
+               inv_vat_amount   = @vat,
+               inv_grand_total  = @grand
+         WHERE inv_id = @inv_id;";
+
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("@total", total);
+                cmd.Parameters.AddWithValue("@vat", vat);
+                cmd.Parameters.AddWithValue("@grand", grand);
+                cmd.Parameters.AddWithValue("@inv_id", invId);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
 
         public DataTable GetAllInvoices()
         {
@@ -153,7 +175,6 @@ namespace JRSApplication.Data_Access_Layer
             string query = @"
                             SELECT 
                             invoice.inv_id,
-                            invoice.inv_no,
                             invoice.inv_date,
                             invoice.inv_duedate,
                             invoice.inv_status,
@@ -190,7 +211,7 @@ namespace JRSApplication.Data_Access_Layer
             return dt;
         }
 
-        public static DataTable GetInvoiceDetail(int invoiceId)
+        public static DataTable GetInvoiceDetail(string invoiceId)
         {
             string connStr = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
             DataTable dt = new DataTable();
@@ -231,7 +252,7 @@ namespace JRSApplication.Data_Access_Layer
                 return cmd.ExecuteNonQuery(); // return rows affected
             }
         }
-        public string GetInvoiceRemark(int invId)
+        public string GetInvoiceRemark(string invId)
         {
             string remark = "";
             string sql = "SELECT inv_remark FROM invoice WHERE inv_id = @invId";

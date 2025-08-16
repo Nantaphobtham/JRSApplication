@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,13 +46,31 @@ namespace JRSApplication.Accountant
                 }
             }
         }
-
-        // ✅ ซ้ายบน: ข้อมูลลูกค้า
-        public void SetCustomerBox(string name, string address, string invNo)
+        private decimal SafeParse(object value, decimal fallback = 0m)
         {
-            string content = $"ลูกค้า: {name}\nที่อยู่: {address}\nใบแจ้งหนี้: {invNo}";
+            var s = Convert.ToString(value);
+            if (string.IsNullOrWhiteSpace(s)) return fallback;
 
-            Label lbl = new Label
+            var cleaned = new string(s.Where(ch => char.IsDigit(ch) || ch == '.' || ch == ',').ToArray());
+            if (string.IsNullOrWhiteSpace(cleaned)) return fallback;
+
+            if (decimal.TryParse(cleaned,
+                NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
+                CultureInfo.CurrentCulture, out var v)) return v;
+
+            if (decimal.TryParse(cleaned,
+                NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
+                CultureInfo.InvariantCulture, out v)) return v;
+
+            return fallback;
+        }
+
+        // ✅ LEFT: customer box (name + address only)
+        public void SetCustomerBox(string name, string address)
+        {
+            string content = $"ลูกค้า: {name}\nที่อยู่: {address}";
+
+            var lbl = new Label
             {
                 Text = content,
                 Dock = DockStyle.Fill,
@@ -64,6 +83,11 @@ namespace JRSApplication.Accountant
             tblHeader.Controls.Clear();
             tblHeader.Controls.Add(lbl, 0, 0);
         }
+
+        // keep compatibility but IGNORE invNo
+        public void SetCustomerBox(string name, string address, string invNo)
+            => SetCustomerBox(name, address);
+
 
         // ✅ ขวาบน: ReceiptNo, วันที่, InvoiceNo
         public void SetReceiptHeader(string receiptNo, string date, string invoiceNo)
@@ -94,85 +118,54 @@ namespace JRSApplication.Accountant
         }
 
         // ✅ กลาง: ตารางรายการสินค้า
-        public void SetInvoiceDetails(DataTable invoiceDetailTable)
+        public void SetInvoiceDetails(DataTable items)
         {
+            tblReceiptItems.SuspendLayout();
+
             tblReceiptItems.Controls.Clear();
+            tblReceiptItems.ColumnStyles.Clear();
             tblReceiptItems.RowStyles.Clear();
+
+            // 5 columns: No | Detail | Qty | Price | Total
+            tblReceiptItems.ColumnCount = 5;
+            tblReceiptItems.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10f)); // No
+            tblReceiptItems.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50f)); // Detail
+            tblReceiptItems.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10f)); // Qty
+            tblReceiptItems.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15f)); // Price
+            tblReceiptItems.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15f)); // Total
             tblReceiptItems.RowCount = 0;
 
-            // Header row
-            string[] headers = { "ลำดับ", "รายละเอียด", "จำนวน", "ราคา", "ราคารวม" };
-            for (int i = 0; i < headers.Length; i++)
+            const int RH = 38; // uniform row height
+
+            // Header row (row 0)
+            AddCell(tblReceiptItems, "ลำดับ", 0, 0, ContentAlignment.MiddleCenter, true, RH);
+            AddCell(tblReceiptItems, "รายละเอียด", 1, 0, ContentAlignment.MiddleLeft, true, RH);
+            AddCell(tblReceiptItems, "จำนวน", 2, 0, ContentAlignment.MiddleCenter, true, RH);
+            AddCell(tblReceiptItems, "ราคา", 3, 0, ContentAlignment.MiddleRight, true, RH);
+            AddCell(tblReceiptItems, "ราคารวม", 4, 0, ContentAlignment.MiddleRight, true, RH);
+
+            // data rows start at 1
+            int r = 1;
+            foreach (DataRow dr in items.Rows)
             {
-                AddCell(tblReceiptItems, headers[i], i, 0, true);
+                string detail = Convert.ToString(dr["inv_detail"]);
+                decimal qty = SafeParse(dr["inv_quantity"], 1m);
+                decimal price = SafeParse(dr["inv_price"], 0m);
+                decimal total = qty * price;
+
+                AddCell(tblReceiptItems, r.ToString(), 0, r, ContentAlignment.MiddleCenter, false, RH);
+                AddCell(tblReceiptItems, detail, 1, r, ContentAlignment.MiddleLeft, false, RH);
+                AddCell(tblReceiptItems,
+                        (qty == Math.Truncate(qty) ? ((int)qty).ToString() : qty.ToString("N2")),
+                                                                               2, r, ContentAlignment.MiddleCenter, false, RH);
+                AddCell(tblReceiptItems, price.ToString("N2"), 3, r, ContentAlignment.MiddleRight, false, RH);
+                AddCell(tblReceiptItems, total.ToString("N2"), 4, r, ContentAlignment.MiddleRight, false, RH);
+                r++;
             }
 
-            int row = 1;
-            foreach (DataRow dr in invoiceDetailTable.Rows)
-            {
-                string detail = dr["inv_detail"].ToString();
-                decimal quantity = Convert.ToDecimal(dr["inv_quantity"]);
-                decimal price = Convert.ToDecimal(dr["inv_price"]);
-                decimal total = quantity * price;
-
-                AddCell(tblReceiptItems, row.ToString(), 0, row);
-                AddCell(tblReceiptItems, detail, 1, row);
-                AddCell(tblReceiptItems, quantity.ToString(), 2, row);
-                AddCell(tblReceiptItems, price.ToString("N2"), 3, row);
-                AddCell(tblReceiptItems, total.ToString("N2"), 4, row);
-
-                row++;
-            }
+            tblReceiptItems.ResumeLayout();
         }
 
-        // ✅ สรุปรายการด้านขวาล่าง - ใส่ข้อความบาทไทยใต้จำนวนเงินใน cell เดียวกัน
-        public void SetReceiptSummary(decimal subtotal, decimal vat, decimal grandTotal)
-        {
-            tblBottomRight.Controls.Clear();
-            tblBottomRight.RowStyles.Clear();
-            tblBottomRight.RowCount = 0;
-
-            tblBottomRight.ColumnCount = 2;
-            tblBottomRight.ColumnStyles.Clear();
-            tblBottomRight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tblBottomRight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-
-            AddRowToSummary(tblBottomRight, "รวมเป็นเงิน", subtotal.ToString("N2") + " บาท", 0);
-            AddRowToSummary(tblBottomRight, "จำนวนภาษีมูลค่าเพิ่ม 7%", vat.ToString("N2") + " บาท", 1);
-            AddRowToSummary(tblBottomRight, "จำนวนเงินทั้งสิ้น", $"( {ConvertToThaiBahtText(grandTotal)} )", 2, isBahtText: true);
-        } 
-
-
-
-        // ✅ เพิ่ม row โดยจัดชิดบนเพื่อรองรับข้อความหลายบรรทัดใน cell เดียว
-        private void AddRowToSummary(TableLayoutPanel tbl, string leftText, string rightText, int row, bool isBahtText = false)
-        {
-            tbl.RowCount++;
-            tbl.RowStyles.Add(new RowStyle(SizeType.Absolute, 33f));
-
-            Label lblLeft = new Label
-            {
-                Text = leftText,
-                Dock = DockStyle.Fill,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Font = new Font("Tahoma", 10),
-                Padding = new Padding(5),
-                BorderStyle = BorderStyle.FixedSingle
-            };
-
-            Label lblRight = new Label
-            {
-                Text = rightText,
-                Dock = DockStyle.Fill,
-                TextAlign = isBahtText ? ContentAlignment.MiddleRight : ContentAlignment.MiddleRight,
-                Font = new Font("Tahoma", 10, isBahtText ? FontStyle.Italic : FontStyle.Regular),
-                Padding = new Padding(5),
-                BorderStyle = BorderStyle.FixedSingle
-            };
-
-            tbl.Controls.Add(lblLeft, 0, row);
-            tbl.Controls.Add(lblRight, 1, row);
-        }
 
         // ✅ แปลงตัวเลขเป็นข้อความบาทไทย
         private string ConvertToThaiBahtText(decimal amount)
@@ -182,28 +175,38 @@ namespace JRSApplication.Accountant
         }
 
 
-        private void AddCell(TableLayoutPanel tbl, string text, int col, int row, bool bold = false)
+        // One place to create uniform bordered cells
+        private void AddCell(
+            TableLayoutPanel tbl,
+            string text,
+            int col,
+            int row,
+            ContentAlignment align = ContentAlignment.MiddleCenter,
+            bool bold = false,
+            int rowHeight = 38)   // <- uniform height here
         {
-            Label lbl = new Label
+            var lbl = new Label
             {
                 Text = text,
-                AutoSize = false,
                 Dock = DockStyle.Fill,
-                TextAlign = ContentAlignment.MiddleCenter,
+                AutoSize = false,
+                TextAlign = align,
                 Font = new Font("Tahoma", 10, bold ? FontStyle.Bold : FontStyle.Regular),
-                Padding = new Padding(2),
-                Margin = new Padding(0),
+                Padding = new Padding(6),
+                Margin = Padding.Empty,
                 BorderStyle = BorderStyle.FixedSingle
             };
 
-            if (tbl.RowCount <= row)
+            // make sure the row exists and has a fixed height
+            while (tbl.RowCount <= row)
             {
-                tbl.RowCount = row + 1;
-                tbl.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
+                tbl.RowStyles.Add(new RowStyle(SizeType.Absolute, rowHeight));
+                tbl.RowCount++;
             }
 
             tbl.Controls.Add(lbl, col, row);
         }
+
         public void SetInvoiceRemark(string remark)
         {
             Label lbl = new Label
@@ -220,8 +223,33 @@ namespace JRSApplication.Accountant
             tblLeftBottom.Controls.Add(lbl);
         }
 
+        // ReceiptPrint.cs  (inside the ReceiptPrint user control class)
+        public void SetReceiptSummary(decimal subtotal, decimal vat, decimal grandTotal)
+        {
+            tblBottomRight.SuspendLayout();
 
+            tblBottomRight.Controls.Clear();
+            tblBottomRight.ColumnStyles.Clear();
+            tblBottomRight.RowStyles.Clear();
 
+            tblBottomRight.ColumnCount = 2;
+            tblBottomRight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60f));
+            tblBottomRight.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40f));
+
+            const int RH = 36;
+            tblBottomRight.RowCount = 0;
+
+            AddCell(tblBottomRight, "รวมเป็นเงิน", 0, 0, ContentAlignment.MiddleLeft, true, RH);
+            AddCell(tblBottomRight, subtotal.ToString("N2"), 1, 0, ContentAlignment.MiddleRight, true, RH);
+
+            AddCell(tblBottomRight, "จำนวนภาษีมูลค่าเพิ่ม 7%", 0, 1, ContentAlignment.MiddleLeft, false, RH);
+            AddCell(tblBottomRight, vat.ToString("N2"), 1, 1, ContentAlignment.MiddleRight, false, RH);
+
+            AddCell(tblBottomRight, "จำนวนเงินทั้งสิ้น", 0, 2, ContentAlignment.MiddleLeft, true, RH);
+            AddCell(tblBottomRight, grandTotal.ToString("N2"), 1, 2, ContentAlignment.MiddleRight, true, RH);
+
+            tblBottomRight.ResumeLayout();
+        }
 
     }
 }

@@ -102,12 +102,21 @@ namespace JRSApplication
                 FROM invoice
                 WHERE pro_id LIKE @Keyword OR inv_no LIKE @Keyword";
                 }
+
                 else if (searchType == "UnpaidInvoiceByProject")
                 {
+                    // ✅ Only invoices that are "รอชำระเงิน" for the given project
+                    //    Also format dates as text to avoid 0000-00-00 -> DateTime crashes.
                     query = @"
                 SELECT 
-                    inv_id, inv_date, inv_duedate, 
-                    pro_id, cus_id, emp_id, inv_method, COALESCE(inv_status, '') AS inv_status
+                    inv_id,
+                    DATE_FORMAT(inv_date,'%Y-%m-%d')   AS inv_date,
+                    DATE_FORMAT(inv_duedate,'%Y-%m-%d') AS inv_duedate,
+                    pro_id,
+                    cus_id,
+                    emp_id,
+                    inv_method,
+                    inv_status
                 FROM invoice
                 WHERE pro_id = @projectId
                 AND inv_status = 'รอชำระเงิน'
@@ -116,16 +125,15 @@ namespace JRSApplication
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@projectId", keyword); // ✅ use direct ID match
-
+                        cmd.Parameters.AddWithValue("@projectId", keyword);   // keyword is pro_id here
                         using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                         {
                             adapter.Fill(dt);
                         }
                     }
-
-                    return dt; // ✅ exit early here
+                    return dt;   // ⬅️ exit early
                 }
+
 
                 if (string.IsNullOrWhiteSpace(query))
                         return dt; // or throw new Exception("Invalid search type");
@@ -153,7 +161,6 @@ namespace JRSApplication
                 string query = @"
             SELECT 
                 i.inv_id,
-                i.inv_no,
                 i.inv_date,
                 i.inv_duedate,
                 i.inv_status,
@@ -162,7 +169,7 @@ namespace JRSApplication
                 i.cus_id,
                 i.phase_id
             FROM invoice i
-            WHERE i.inv_status = 'Draft' OR i.inv_status IS NULL
+            WHERE i.inv_status = 'รอชำระเงิน' OR i.inv_status IS NULL
             
         ";
 
@@ -181,14 +188,13 @@ namespace JRSApplication
             string query = @"
         SELECT 
             i.inv_id,
-            
             i.inv_date,
             i.inv_duedate,
             i.pro_id,
             i.phase_id,
             i.cus_id
         FROM invoice i
-        WHERE (i.inv_status IS NULL OR i.inv_status = 'รอการชำระเงิน')
+        WHERE (i.inv_status IS NULL OR i.inv_status = 'รอชำระเงิน')
         AND i.pro_id = @projectId
         ORDER BY i.inv_date DESC";
 
@@ -232,7 +238,6 @@ namespace JRSApplication
             string query = @"
         SELECT 
             i.inv_id,
-            i.inv_no,
             i.inv_date,
             i.inv_duedate,
             i.inv_status,

@@ -112,7 +112,6 @@ namespace JRSApplication.Accountant
             txtInvNo.Text = new InvoiceDAL().PeekNextInvoiceId();
 
         }
-
         private void btnAdd_Click(object sender, EventArgs e)
         {
             // ต้องเลือกโครงการและลูกค้าก่อนบันทึก
@@ -125,6 +124,32 @@ namespace JRSApplication.Accountant
 
             try
             {
+                string proId = txtProjectID.Text.Trim();
+
+                // ❗ ต้องเลือกเฟสก่อนบันทึก (ไม่ auto-select)
+                string phaseIdFromUI = cmbPhase.SelectedValue?.ToString()?.Trim();
+                if (string.IsNullOrWhiteSpace(phaseIdFromUI))
+                {
+                    MessageBox.Show("กรุณาเลือกเฟสงานก่อนบันทึกใบแจ้งหนี้", "แจ้งเตือน",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    cmbPhase.Focus();
+                    cmbPhase.DroppedDown = true;
+                    return;
+                }
+
+                // (ทางเลือก) ตรวจสอบว่า phase นี้อยู่ในโครงการเดียวกัน
+                var searchSvc = new SearchService();
+                var phases = searchSvc.GetPhasesByProjectId(proId);
+                bool belongs = phases.AsEnumerable().Any(r => r["phase_id"]?.ToString() == phaseIdFromUI);
+                if (!belongs)
+                {
+                    MessageBox.Show("เฟสงานที่เลือกไม่ตรงกับโครงการ กรุณาเลือกใหม่", "แจ้งเตือน",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    cmbPhase.Focus();
+                    cmbPhase.DroppedDown = true;
+                    return;
+                }
+
                 // ✅ เตรียม model หลัก (ไม่ต้องใช้ InvNo แล้ว)
                 InvoiceModel model = new InvoiceModel
                 {
@@ -132,40 +157,64 @@ namespace JRSApplication.Accountant
                     InvDueDate = dtpDueDate.Value,
                     CusId = txtCusID.Text.Trim(),
                     CusName = txtCusName.Text.Trim(),
-                    ProId = txtProjectID.Text.Trim(),
+                    ProId = proId,
                     ProNumber = txtContractNumber.Text.Trim(),
                     ProName = txtProjectName.Text.Trim(),
-                    PhaseId = cmbPhase.SelectedValue?.ToString(),
+                    PhaseId = phaseIdFromUI,             // <-- now guaranteed
                     PhaseBudget = txtPhaseBudget.Text.Trim(),
                     PhaseDetail = txtPhaseDetail.Text.Trim(),
                     InvRemark = txtRemark.Text.Trim(),
                     Quantity = txtQuantity.Text.Trim()
                 };
 
-                InvoiceDAL dal = new InvoiceDAL();
-
-                // 🔁 ตอนนี้ InsertInvoice() จะคืนค่า inv_id แบบ "INV_0001"
+                var dal = new InvoiceDAL();
+                // InsertInvoice() คืนค่า inv_id รูปแบบ "INV_0001"
                 string newInvId = dal.InsertInvoice(model);
 
                 if (!string.IsNullOrWhiteSpace(newInvId))
                 {
-                    // ✅ เก็บ inv_id ที่สร้างไว้เพื่อแสดง/ใช้งานต่อ
-                    txtInvNo.Text = newInvId;
+                    txtInvNo.Text = newInvId; // แสดงเลขที่ใบแจ้งหนี้ที่สร้าง
 
-                    // ✅ จากฝั่งขวา: บันทึกรายการแรกลง invoice_detail (FK = inv_id แบบสตริง)
+                    // รายการฝั่งขวา (invoice_detail)
                     string detail = txtDetail.Text.Trim();
-                    string Quantity = txtQuantity.Text.Trim();
+                    string quantityText = txtQuantity.Text.Trim();  // เก็บเป็น string ตามที่ออกแบบ
                     if (!decimal.TryParse(txtPrice.Text.Trim(), out decimal price)) price = 0m;
-                    decimal vatRate = 7m; // ปรับได้
+                    decimal vatRate = 7m;
 
-                    InvoiceDetailDAL detailDal = new InvoiceDetailDAL();
-                    detailDal.InsertInvoiceDetail(newInvId, detail, price, Quantity, vatRate);
+                    var detailDal = new InvoiceDetailDAL();
+                    detailDal.InsertInvoiceDetail(newInvId, detail, price, quantityText, vatRate);
+
+                    // ------------------- NEW: อัปเดตยอดรวมในตาราง invoice -------------------
+                    // เหมือนการคำนวณในหน้าพิมพ์: phase_budget + extra price (จำนวนเป็นข้อความ ไม่คูณ)
+                    decimal ParseMoney(string s)
+                    {
+                        if (string.IsNullOrWhiteSpace(s)) return 0m;
+
+                        if (decimal.TryParse(s,
+                            NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
+                            CultureInfo.CurrentCulture, out var v)) return v;
+
+                        if (decimal.TryParse(s,
+                            NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
+                            CultureInfo.InvariantCulture, out v)) return v;
+
+                        return 0m;
+                    }
+
+                    decimal phaseBudget = ParseMoney(txtPhaseBudget.Text);
+                    decimal extraPrice = price;                         // จากกล่องราคา
+                    decimal subtotal = phaseBudget + extraPrice;
+                    decimal vat = Math.Round(subtotal * 0.07m, 2, MidpointRounding.AwayFromZero);
+                    decimal grand = subtotal + vat;
+
+                    // อัปเดตคอลัมน์: inv_total_amount, inv_vat_amount, inv_grand_total
+                    dal.UpdateInvoiceAmounts(newInvId, subtotal, vat, grand);
+                    // -------------------------------------------------------------------------
 
                     MessageBox.Show("บันทึกข้อมูลสำเร็จ! เลขที่ใบแจ้งหนี้: " + newInvId,
                         "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // ✅ ล้างค่าอื่น ๆ แต่คงเลขที่ใบแจ้งหนี้ไว้ให้ผู้ใช้เห็น
-                    // (ถ้าต้องการล้างด้วย ให้ใส่ txtInvNo.Text = "" เพิ่มเองได้)
+                    // ล้างค่าอื่น ๆ แต่คงเลขที่ใบแจ้งหนี้ไว้ให้ผู้ใช้เห็น
                     txtCusID.Text = "";
                     txtCusName.Text = "";
                     txtProjectID.Text = "";
@@ -190,6 +239,7 @@ namespace JRSApplication.Accountant
                     "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void btnPrintInvoice_Click(object sender, EventArgs e)
         {
@@ -253,7 +303,8 @@ namespace JRSApplication.Accountant
                 ? ("รหัสลูกค้า: " + txtCusID.Text)
                 : ("ที่อยู่: " + custAddress);
             invoicePrint.SetCustomerBox(txtCusName.Text, line2);
-            invoicePrint.SetInvoiceHeader(invId, dtpInvDate.Value);
+            var printDate = DateTime.Now;   // or DateTime.Today
+            invoicePrint.SetInvoiceHeader(invId, printDate);
 
             // Helpers
             decimal ParseMoney(string s)
@@ -314,9 +365,6 @@ namespace JRSApplication.Accountant
             invoiceForm.Controls.Add(invoicePrint);
             invoiceForm.ShowDialog();
         }
-
-
-
 
         private void cmbPhase_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -391,7 +439,6 @@ namespace JRSApplication.Accountant
                 }
             }
         }
-
 
         private void CustomizeInvoiceGrid()
         {
@@ -595,19 +642,21 @@ namespace JRSApplication.Accountant
                 catch { /* ignore */ }
             }
         }
-
-
         private void GoToConfirmPaymentForSelected()
         {
             if (dtgvInvoice.SelectedRows.Count == 0) return;
-            var row = dtgvInvoice.SelectedRows[0];
-            string invId = row.Cells["inv_id"]?.Value?.ToString();
+
+            var invId = dtgvInvoice.SelectedRows[0].Cells["inv_id"]?.Value?.ToString();
             if (string.IsNullOrWhiteSpace(invId)) return;
 
-            // TODO: เปิดฟอร์ม/หน้า ยืนยันการรับชำระเงิน พร้อมส่ง invId ไป
-            // new ConfirmPaymentForm(invId).ShowDialog();
-            MessageBox.Show($"(ตัวอย่าง) ไปหน้ายืนยันการรับชำระเงินสำหรับใบแจ้งหนี้ #{invId}");
+            // ask the main host form to switch page
+            var host = this.FindForm() as AccountantForm;
+            if (host != null)
+            {
+                host.ShowConfirmInvoice(invId);
+            }
         }
+
 
         private void ShowInvoiceActionPopup()
         {

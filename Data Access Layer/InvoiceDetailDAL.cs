@@ -92,6 +92,27 @@ namespace JRSApplication.Data_Access_Layer
             return null;
         }
 
+        public DataTable GetInvoiceDetailByInvId(string invId)
+        {
+            var dt = new DataTable();
+            const string sql = @"
+        SELECT inv_detail, inv_quantity, inv_price, inv_vat_rate
+        FROM invoice_detail
+        WHERE inv_id = @InvId
+        ORDER BY inv_detail_id;
+    ";
+
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, conn))
+            using (var ad = new MySqlDataAdapter(cmd))
+            {
+                cmd.Parameters.AddWithValue("@InvId", invId);
+                ad.Fill(dt);
+            }
+
+            return dt;
+        }
+
     }
 }
                       
