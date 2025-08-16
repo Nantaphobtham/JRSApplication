@@ -393,8 +393,6 @@ namespace JRSApplication.Accountant
         }
 
 
-
-
         private void CustomizeInvoiceGrid()
         {
             dtgvInvoice.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
