@@ -45,7 +45,7 @@ namespace JRSApplication.Sitesupervisor
             {
                 Name = "colOrderNo",
                 HeaderText = "รหัสรายการ",
-                DataPropertyName = "order_no"
+                DataPropertyName = "order_no" // ควรเป็น order_id และ phase_id
             });
 
             // 🧭 รหัสโครงการ
