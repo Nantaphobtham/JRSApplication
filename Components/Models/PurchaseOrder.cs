@@ -18,7 +18,7 @@ namespace JRSApplication.Components.Models
         public string EmpId { get; set; }           // emp_id (VARCHAR(20))
         public string ApprovedByEmpId { get; set; } // approved_by_emp_id (VARCHAR(20))
         public DateTime? ApprovedDate { get; set; } // approved_date (nullable)
-        public int ProId { get; set; }          // pro_id (int, foreign key to product table)
+        public int ProId { get; set; }              // pro_id (int, foreign key to product table)
 
         // Navigation property (optional, if using EF)
         public List<MaterialDetail> MaterialDetails { get; set; } = new List<MaterialDetail>();
