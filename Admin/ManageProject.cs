@@ -41,7 +41,7 @@ namespace JRSApplication
         //PDFPreview
         private FormPDFPreview pdfPreviewForm = null; // ✅ ฟอร์ม Preview
         private Timer hoverCheckTimer;                // ✅ Timer เช็กเมาส์ออก
-        private bool isPreviewingDemolition = false;  // ✅ Flag บอกว่าปุ่มไหน trigger
+        private bool isPreviewingDemolition = false;  // ✅ Flag บอกว่าปุ่มไหน trigger  //ไม่ได้ใช้
 
         private int? selectedProjectID = null; // null = ยังไม่มีการเลือก
 

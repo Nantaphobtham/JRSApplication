@@ -61,7 +61,7 @@ namespace JRSApplication.Sitesupervisor
             {
                 Name = "colPhase",
                 HeaderText = "เฟสที่",
-                DataPropertyName = "phase_name"
+                DataPropertyName = "phase_id"
             });
 
             // 📝 รายละเอียด

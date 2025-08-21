@@ -19,8 +19,8 @@ namespace JRSApplication.Accountant
     {
         private string _currentInvId;   // when we navigate directly from Invoice
         private string empId;
-        private string fullName;
-        private string role;
+        private string fullName; //ไม่ได้ใช้ในที่นี้ แต่ถ้าใช้ในอนาคตอาจจะมีประโยชน์
+        private string role;  //ไม่ได้ใช้ในที่นี้ แต่ถ้าใช้ในอนาคตอาจจะมีประโยชน์
         public ConfirmInvoice() : this(fullName: "", role: "", empId: "") { }
         public ConfirmInvoice(string fullName, string role, string empId)
         {
