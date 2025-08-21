@@ -32,7 +32,7 @@ namespace JRSApplication
         //ให้ DataGrid รู้จักการเปลี่ยนแปลงอัตโนมัติ
         private BindingList<MaterialDetail> materialList = new BindingList<MaterialDetail>(); // mat_list
 
-        private MaterialDetail currentEditingMaterial = null; //เพิ่มตัวแปรและโหมดแก้ไข
+        private MaterialDetail currentEditingMaterial = null; //เพิ่มตัวแปรและโหมดแก้ไข  //ไม่ได้ใช้ในที่นี้ แต่สามารถเก็บข้อมูลทั้งหมดได้ถ้าต้องการ
         public PurchaseOrderForm(string empId)
         {
             InitializeComponent();

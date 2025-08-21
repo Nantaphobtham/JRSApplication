@@ -17,9 +17,9 @@ namespace JRSApplication
         private bool isEditMode = false;  // ตรวจสอบโหมด เพิ่ม/แก้ไข
         private string selectedCustomerID = "";  // เก็บรหัสลูกค้าที่เลือก
         private string originalEmail = "";
-        private string originalPhone = "";
-        private string originalAddress = "";
-        private string originalName = "";
+        private string originalPhone = "";  //ไม่ได้ใช้ในที่นี้ แต่สามารถเก็บข้อมูลเดิมได้ถ้าต้องการ
+        private string originalAddress = ""; //ไม่ได้ใช้ในที่นี้ แต่สามารถเก็บข้อมูลเดิมได้ถ้าต้องการ
+        private string originalName = "";  //ไม่ได้ใช้ในที่นี้ แต่สามารถเก็บข้อมูลเดิมได้ถ้าต้องการ
         private string originalIdCard = "";
 
 

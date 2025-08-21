@@ -15,7 +15,7 @@ namespace JRSApplication
 {
     public partial class ProjectPhaseListRequestsforApproval : UserControl
     {
-        private List<PhaseWorking> allPhaseWorkingList;
+        private List<PhaseWorking> allPhaseWorkingList; //ไม่ได้ใช้ในที่นี้ แต่สามารถเก็บข้อมูลทั้งหมดได้ถ้าต้องการ
         // สร้างคลาส Model สำหรับแสดงข้อมูลใน Grid
         private class ProjectPhaseWithWorkCount
         {

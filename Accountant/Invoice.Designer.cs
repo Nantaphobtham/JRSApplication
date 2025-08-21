@@ -566,7 +566,7 @@
 
         #endregion
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel panel4; //ไม่ได้ใช้
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtInvNo;
         private System.Windows.Forms.Label label8;
@@ -574,10 +574,10 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.DateTimePicker dtpInvDate;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button6; //ไม่ได้ใช้
+        private System.Windows.Forms.Button button5; //ไม่ได้ใช้
+        private System.Windows.Forms.Button button4; //ไม่ได้ใช้
+        private System.Windows.Forms.Button button3; //ไม่ได้ใช้
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtProjectID;
         private System.Windows.Forms.Label label5;
