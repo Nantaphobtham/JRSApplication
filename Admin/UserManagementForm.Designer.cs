@@ -85,6 +85,8 @@
             this.lblToppic3 = new System.Windows.Forms.Label();
             this.dtgvEmployee = new System.Windows.Forms.DataGridView();
             this.searchboxUserData = new JRSApplication.SearchboxControl();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.pnlInformation.SuspendLayout();
             this.subInfo.SuspendLayout();
             this.pnlRole.SuspendLayout();
@@ -417,6 +419,7 @@
             // 
             // pnlPhone
             // 
+            this.pnlPhone.Controls.Add(this.label2);
             this.pnlPhone.Controls.Add(this.starPhone);
             this.pnlPhone.Controls.Add(this.lblPhone);
             this.pnlPhone.Controls.Add(this.txtPhone);
@@ -463,6 +466,7 @@
             // 
             // pnlIdcard
             // 
+            this.pnlIdcard.Controls.Add(this.label1);
             this.pnlIdcard.Controls.Add(this.starIdcard);
             this.pnlIdcard.Controls.Add(this.lblIdcard);
             this.pnlIdcard.Controls.Add(this.txtIdcard);
@@ -777,6 +781,30 @@
             this.searchboxUserData.Size = new System.Drawing.Size(650, 50);
             this.searchboxUserData.TabIndex = 0;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(288, 16);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(80, 17);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "(ตัวเลขเท่านั้น)";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(286, 16);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(80, 17);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "(ตัวเลขเท่านั้น)";
+            // 
             // UserManagementForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -878,5 +906,7 @@
         private System.Windows.Forms.Label starPassword;
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
