@@ -220,95 +220,97 @@ namespace JRSApplication
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // 1) รัน Validating ของทุก control (รวม txtEmail.Validating)
-            if (!this.ValidateChildren(ValidationConstraints.Enabled))
-                return;
-
-            // 2) ตรวจความถูกต้องรวม + Normalize
+            if (!this.ValidateChildren(ValidationConstraints.Enabled)) return;
             if (!ValidateSupplierData()) return;
 
-            // 3) ค่าที่ผ่านการ Normalize แล้ว
             string name = txtName.Text.Trim();
-            string juristic = txtJuristic.Text.Trim(); // 13 digits
-            string phone = txtPhone.Text.Trim();    // 0XXXXXXXXX
-            string email = txtEmail.Text.Trim();    // normalized domain
+            string juristic = txtJuristic.Text.Trim();
+            string phone = txtPhone.Text.Trim();
+            string email = txtEmail.Text.Trim();
             string address = txtAddress.Text.Trim();
 
-            SupplierDAL dal = new SupplierDAL();
+            var dal = new SupplierDAL();
+            string excludeId = isEditMode ? selectedSupplierID : "";
 
-            if (isEditMode)
+            // ✅ เช็คซ้ำแบบรายช่องก่อนบันทึก
+            if (!CheckAndWarnDuplicate(email, phone, juristic, name, excludeId))
+                return;
+
+            try
             {
-                // ถ้ามีการแก้ไขฟิลด์สำคัญ ค่อยเช็คซ้ำ
-                if (email != originalEmail || phone != originalPhone ||
-                    juristic != originalJuristic || name != originalName)
+                if (isEditMode)
                 {
-                    if (dal.CheckDuplicateSupplier(email, phone, juristic, name, selectedSupplierID))
+                    bool ok = dal.UpdateSupplier(selectedSupplierID, name, juristic, phone, email, address);
+                    if (ok)
                     {
-                        MessageBox.Show("ข้อมูลที่กรอกมีอยู่แล้วในระบบ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
+                        MessageBox.Show("อัปเดตข้อมูลสำเร็จ!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadSupplierData();
+                        ClearForm(); ClearErrors();
+                        ReadOnlyControls_close(); EnableControls_close();
+                        isEditMode = false; selectedSupplierID = "";
+
+                        originalEmail = email; originalPhone = phone;
+                        originalJuristic = juristic; originalName = name;
+                    }
+                    else
+                    {
+                        MessageBox.Show("เกิดข้อผิดพลาดในการอัปเดตข้อมูล!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-
-                bool ok = dal.UpdateSupplier(selectedSupplierID, name, juristic, phone, email, address);
-                if (ok)
-                {
-                    MessageBox.Show("อัปเดตข้อมูลสำเร็จ!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    LoadSupplierData();
-                    ClearForm();
-                    ClearErrors();
-                    ReadOnlyControls_close();
-                    EnableControls_close();
-                    isEditMode = false;
-                    selectedSupplierID = "";
-
-                    // อัปเดตค่าเดิม
-                    originalEmail = email;
-                    originalPhone = phone;
-                    originalJuristic = juristic;
-                    originalName = name;
-                }
                 else
                 {
-                    MessageBox.Show("เกิดข้อผิดพลาดในการอัปเดตข้อมูล!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    var sup = new Supplier
+                    {
+                        Name = name,
+                        Juristic = juristic,
+                        Phone = phone,
+                        Email = email,
+                        Address = address
+                    };
+
+                    bool ok = dal.InsertSupplier(sup);
+                    if (ok)
+                    {
+                        MessageBox.Show("บันทึกข้อมูลสำเร็จ!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadSupplierData();
+                        ClearForm(); ClearErrors();
+                        ReadOnlyControls_close(); EnableControls_close();
+                        isEditMode = false; selectedSupplierID = "";
+                    }
+                    else
+                    {
+                        MessageBox.Show("เกิดข้อผิดพลาดในการบันทึกข้อมูล!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
-            else
+            // ✅ กันกรณีชน UNIQUE KEY จาก DB (เช่น emp_uq_email อะไรทำนองนี้)
+            catch (MySql.Data.MySqlClient.MySqlException ex) when (ex.Number == 1062) // Duplicate entry
             {
-                // โหมดเพิ่ม: เช็คซ้ำทั้งหมด
-                if (dal.CheckDuplicateSupplier(email, phone, juristic, name, ""))
-                {
-                    MessageBox.Show("ข้อมูลที่กรอกมีอยู่แล้วในระบบ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                // ระบุ index name ของตาราง supplier ให้ตรงกับ DB คุณ
+                string msg = "ข้อมูลซ้ำในระบบ";
+                if (ex.Message.Contains("uq_supplier_email") || ex.Message.Contains("supplier_email"))
+                    msg = "อีเมลนี้มีอยู่แล้วในระบบ";
+                else if (ex.Message.Contains("uq_supplier_phone") || ex.Message.Contains("supplier_phone"))
+                    msg = "เบอร์โทรนี้มีอยู่แล้วในระบบ";
+                else if (ex.Message.Contains("uq_supplier_juristic") || ex.Message.Contains("supplier_juristic"))
+                    msg = "เลขนิติบุคคล/ภาษีนี้มีอยู่แล้วในระบบ";
+                else if (ex.Message.Contains("uq_supplier_name") || ex.Message.Contains("supplier_name"))
+                    msg = "ชื่อบริษัทนี้มีอยู่แล้วในระบบ";
 
-                Supplier sup = new Supplier
-                {
-                    Name = name,
-                    Juristic = juristic,
-                    Phone = phone,
-                    Email = email,
-                    Address = address
-                };
+                MessageBox.Show(msg, "ข้อมูลซ้ำ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                bool ok = dal.InsertSupplier(sup);
-                if (ok)
-                {
-                    MessageBox.Show("บันทึกข้อมูลสำเร็จ!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadSupplierData();
-                    ClearForm();
-                    ClearErrors();
-                    ReadOnlyControls_close();
-                    EnableControls_close();
-                    isEditMode = false;
-                    selectedSupplierID = "";
-                }
-                else
-                {
-                    MessageBox.Show("เกิดข้อผิดพลาดในการบันทึกข้อมูล!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                // โฟกัสที่ช่องที่คาดว่าน่าจะซ้ำ
+                if (msg.Contains("อีเมล")) { txtEmail.Focus(); txtEmail.SelectAll(); }
+                else if (msg.Contains("เบอร์โทร")) { txtPhone.Focus(); txtPhone.SelectAll(); }
+                else if (msg.Contains("เลขนิติบุคคล")) { txtJuristic.Focus(); txtJuristic.SelectAll(); }
+                else if (msg.Contains("ชื่อบริษัท")) { txtName.Focus(); txtName.SelectAll(); }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("เกิดข้อผิดพลาด: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         // ===== UI enable/disable helpers =====
         private void ReadOnlyControls_Open()
@@ -457,6 +459,72 @@ namespace JRSApplication
 
             return true; // ผ่านหมด
         }
+
+        /// เช็คซ้ำแบบรายช่องด้วย SupplierDAL และแจ้งเตือน + โฟกัสช่องที่ซ้ำ
+        private bool CheckAndWarnDuplicate(string email, string phone, string juristic, string name, string excludeSupplierId)
+        {
+            var dal = new SupplierDAL();
+
+            // ถ้าใน DAL ของคุณ "ยังไม่มี" ExistsXXX ให้ข้ามไปใช้ fallback ด้านล่าง
+            // ===== ทางเลือกที่แนะนำ: เช็คเป็นรายช่อง =====
+            try
+            {
+                if (dal.ExistsEmail != null && !string.IsNullOrEmpty(email) &&
+                    dal.ExistsEmail(email, excludeSupplierId))
+                    return ShowDupError(txtEmail, "อีเมลนี้มีอยู่แล้วในระบบ");
+
+                if (dal.ExistsPhone != null && !string.IsNullOrEmpty(phone) &&
+                    dal.ExistsPhone(phone, excludeSupplierId))
+                    return ShowDupError(txtPhone, "เบอร์โทรนี้มีอยู่แล้วในระบบ");
+
+                if (dal.ExistsJuristic != null && !string.IsNullOrEmpty(juristic) &&
+                    dal.ExistsJuristic(juristic, excludeSupplierId))
+                    return ShowDupError(txtJuristic, "เลขนิติบุคคล/ภาษีนี้มีอยู่แล้วในระบบ");
+
+                if (dal.ExistsSupplierName != null && !string.IsNullOrEmpty(name) &&
+                    dal.ExistsSupplierName(name, excludeSupplierId))
+                    return ShowDupError(txtName, "ชื่อบริษัทนี้มีอยู่แล้วในระบบ");
+
+                // ถ้าไม่มี ExistsXXX ให้ใช้ fallback: รวมชุดเดียว
+                if ((dal.ExistsEmail == null && dal.ExistsPhone == null &&
+                     dal.ExistsJuristic == null && dal.ExistsSupplierName == null))
+                {
+                    // ใช้เมธอดเดิมที่คุณมีอยู่แล้ว
+                    if (dal.CheckDuplicateSupplier(email, phone, juristic, name, excludeSupplierId))
+                    {
+                        MessageBox.Show("ข้อมูลที่กรอกมีอยู่แล้วในระบบ!", "ข้อมูลซ้ำ",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
+                    }
+                }
+
+                return true; // ไม่ซ้ำ
+            }
+            catch
+            {
+                // ถ้าเรียกเจอ method ไม่พบ (null) หรือ DAL ยังไม่รองรับ ExistsXXX ให้ใช้ fallback
+                if (dal.CheckDuplicateSupplier(email, phone, juristic, name, excludeSupplierId))
+                {
+                    MessageBox.Show("ข้อมูลที่กรอกมีอยู่แล้วในระบบ!", "ข้อมูลซ้ำ",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        /// แสดงข้อความซ้ำเฉพาะช่อง + โฟกัส + เลือกข้อความ
+        private bool ShowDupError(TextBox tb, string message)
+        {
+            MessageBox.Show(message, "ข้อมูลซ้ำ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (tb != null)
+            {
+                tb.Focus();
+                tb.SelectAll();
+            }
+            return false;
+        }
+
 
         // โชว์ข้อความผิดเฉพาะช่อง + โฟกัส + เลือกข้อความให้แก้ทันที
         private bool ShowFieldError(TextBox tb, string message)
