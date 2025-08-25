@@ -465,53 +465,31 @@ namespace JRSApplication
         {
             var dal = new SupplierDAL();
 
-            // ถ้าใน DAL ของคุณ "ยังไม่มี" ExistsXXX ให้ข้ามไปใช้ fallback ด้านล่าง
-            // ===== ทางเลือกที่แนะนำ: เช็คเป็นรายช่อง =====
-            try
+            // เรียกเช็คทีละช่อง
+            if (!string.IsNullOrEmpty(email) && dal.ExistsEmail(email, excludeSupplierId))
+                return ShowDupError(txtEmail, "อีเมลนี้มีอยู่แล้วในระบบ");
+
+            if (!string.IsNullOrEmpty(phone) && dal.ExistsPhone(phone, excludeSupplierId))
+                return ShowDupError(txtPhone, "เบอร์โทรนี้มีอยู่แล้วในระบบ");
+
+            if (!string.IsNullOrEmpty(juristic) && dal.ExistsJuristic(juristic, excludeSupplierId))
+                return ShowDupError(txtJuristic, "เลขนิติบุคคล/ภาษีนี้มีอยู่แล้วในระบบ");
+
+            if (!string.IsNullOrEmpty(name) && dal.ExistsSupplierName(name, excludeSupplierId))
+                return ShowDupError(txtName, "ชื่อบริษัทนี้มีอยู่แล้วในระบบ");
+
+            // ถ้าคุณยังอยากมี fallback แบบเช็ครวม (ในกรณีที่เมธอดด้านบนยังไม่ได้ทำ)
+            // ให้คงเมธอดนี้ไว้ใน DAL
+            if (dal.CheckDuplicateSupplier(email, phone, juristic, name, excludeSupplierId))
             {
-                if (dal.ExistsEmail != null && !string.IsNullOrEmpty(email) &&
-                    dal.ExistsEmail(email, excludeSupplierId))
-                    return ShowDupError(txtEmail, "อีเมลนี้มีอยู่แล้วในระบบ");
-
-                if (dal.ExistsPhone != null && !string.IsNullOrEmpty(phone) &&
-                    dal.ExistsPhone(phone, excludeSupplierId))
-                    return ShowDupError(txtPhone, "เบอร์โทรนี้มีอยู่แล้วในระบบ");
-
-                if (dal.ExistsJuristic != null && !string.IsNullOrEmpty(juristic) &&
-                    dal.ExistsJuristic(juristic, excludeSupplierId))
-                    return ShowDupError(txtJuristic, "เลขนิติบุคคล/ภาษีนี้มีอยู่แล้วในระบบ");
-
-                if (dal.ExistsSupplierName != null && !string.IsNullOrEmpty(name) &&
-                    dal.ExistsSupplierName(name, excludeSupplierId))
-                    return ShowDupError(txtName, "ชื่อบริษัทนี้มีอยู่แล้วในระบบ");
-
-                // ถ้าไม่มี ExistsXXX ให้ใช้ fallback: รวมชุดเดียว
-                if ((dal.ExistsEmail == null && dal.ExistsPhone == null &&
-                     dal.ExistsJuristic == null && dal.ExistsSupplierName == null))
-                {
-                    // ใช้เมธอดเดิมที่คุณมีอยู่แล้ว
-                    if (dal.CheckDuplicateSupplier(email, phone, juristic, name, excludeSupplierId))
-                    {
-                        MessageBox.Show("ข้อมูลที่กรอกมีอยู่แล้วในระบบ!", "ข้อมูลซ้ำ",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return false;
-                    }
-                }
-
-                return true; // ไม่ซ้ำ
+                MessageBox.Show("ข้อมูลที่กรอกมีอยู่แล้วในระบบ!", "ข้อมูลซ้ำ",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
             }
-            catch
-            {
-                // ถ้าเรียกเจอ method ไม่พบ (null) หรือ DAL ยังไม่รองรับ ExistsXXX ให้ใช้ fallback
-                if (dal.CheckDuplicateSupplier(email, phone, juristic, name, excludeSupplierId))
-                {
-                    MessageBox.Show("ข้อมูลที่กรอกมีอยู่แล้วในระบบ!", "ข้อมูลซ้ำ",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return false;
-                }
-                return true;
-            }
+
+            return true; // ไม่ซ้ำ
         }
+
 
         /// แสดงข้อความซ้ำเฉพาะช่อง + โฟกัส + เลือกข้อความ
         private bool ShowDupError(TextBox tb, string message)
