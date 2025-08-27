@@ -294,23 +294,38 @@ namespace JRSApplication
         // ปุ่ม นี้จะเป็นยกเลิกการจ้างแทน
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(currentAssignmentId))
+            {
+                MessageBox.Show("กรุณาเลือกรายการก่อน", "เตือน",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            //if (string.IsNullOrEmpty(currentAssignmentId))
-            //{
-            //    MessageBox.Show("กรุณาเลือกรายการที่ต้องการลบ", "คำเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    return;
-            //}
+            if (MessageBox.Show("ยืนยันการลบรายการนี้หรือไม่?", "ยืนยัน",
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
 
-            //DialogResult result = MessageBox.Show("คุณต้องการลบรายการนี้หรือไม่?", "ยืนยัน", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            //if (result == DialogResult.Yes)
-            //{
-            //    SupplierWorkAssignmentDAL dal = new SupplierWorkAssignmentDAL();
-            //    cmd.Parameters.AddWithValue("@AssignmentId", assignmentId);
-            //    MessageBox.Show("ลบข้อมูลสำเร็จ", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //    ClearandClossForm();
-            //    LoadAssignments();
-            //}
+            try
+            {
+                // ลบไฟล์แนบก่อน (ถ้ามี)
+                var fileDal = new SupplierAssignmentFileDAL();
+                fileDal.DeleteByAssignmentId(currentAssignmentId);
+
+                // ลบตัว assignment
+                var dal = new SupplierWorkAssignmentDAL();
+                dal.Delete(currentAssignmentId);
+
+                MessageBox.Show("ลบข้อมูลสำเร็จ", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClearandClossForm();
+                LoadAssignments();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("เกิดข้อผิดพลาดในการลบ: " + ex.Message, "ข้อผิดพลาด",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+
 
         // เมื่อคลิกตาราง เพื่อโหลดข้อมูลขึ้นฟอร์ม (แต่ยังไม่ให้แก้ไข)
         private void dtgvAssignment_CellClick(object sender, DataGridViewCellEventArgs e)
