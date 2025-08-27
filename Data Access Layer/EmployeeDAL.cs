@@ -8,85 +8,125 @@ namespace JRSApplication.Components
 {
     public class EmployeeDAL
     {
-        private string connectionString;
+        private readonly string connectionString;
 
         public EmployeeDAL()
         {
             connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         }
 
+        // ====== Exists Helpers (กันข้อมูลซ้ำ) ======
+        public bool ExistsEmail(string email, string excludeEmployeeId = null)
+        {
+            if (string.IsNullOrWhiteSpace(email)) return false;
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                string sql = @"
+                SELECT 1
+                FROM employee
+                WHERE LOWER(TRIM(emp_email)) = LOWER(TRIM(@Email)) " +
+                (excludeEmployeeId != null ? "AND emp_id <> @EmpID " : "") +
+                "LIMIT 1;";
+
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    if (excludeEmployeeId != null) cmd.Parameters.AddWithValue("@EmpID", excludeEmployeeId);
+                    conn.Open();
+                    return cmd.ExecuteScalar() != null;
+                }
+            }
+        }
+
+
+        public bool ExistsUsername(string username, string excludeEmployeeId = null)
+        {
+            if (string.IsNullOrWhiteSpace(username)) return false;
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                string sql = @"
+                SELECT 1
+                FROM employee
+                WHERE LOWER(TRIM(emp_username)) = LOWER(TRIM(@Username)) " +
+                (excludeEmployeeId != null ? "AND emp_id <> @EmpID " : "") +
+                "LIMIT 1;";
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Username", username);
+                    if (excludeEmployeeId != null) cmd.Parameters.AddWithValue("@EmpID", excludeEmployeeId);
+                    conn.Open();
+                    return cmd.ExecuteScalar() != null;
+                }
+            }
+        }
+
+        public bool ExistsIDCard(string idCard, string excludeEmployeeId = null)
+        {
+            if (string.IsNullOrWhiteSpace(idCard)) return false;
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                string sql = @"
+                SELECT 1
+                FROM employee
+                WHERE emp_identification = @IDCard " +
+                (excludeEmployeeId != null ? "AND emp_id <> @EmpID " : "") +
+                "LIMIT 1;";
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@IDCard", idCard);
+                    if (excludeEmployeeId != null) cmd.Parameters.AddWithValue("@EmpID", excludeEmployeeId);
+                    conn.Open();
+                    return cmd.ExecuteScalar() != null;
+                }
+            }
+        }
+
+        private bool EmpIdExists(string employeeID)
+        {
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand("SELECT 1 FROM employee WHERE emp_id = @EmployeeID LIMIT 1;", conn))
+            {
+                cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
+                conn.Open();
+                return cmd.ExecuteScalar() != null;
+            }
+        }
+
         private string GenerateEmployeeID(string role)
         {
-            string prefix = "";
-
+            string prefix;
             switch (role)
             {
-                case "Admin":
-                    prefix = "A";
-                    break;
+                case "Admin": prefix = "A"; break;
                 case "Projectmanager":
-                case "Sitesupervisor":
-                    prefix = "E";
-                    break;
-                case "Accountant":
-                    prefix = "F";
-                    break;
-                default:
-                    prefix = "X";
-                    break;
+                case "Sitesupervisor": prefix = "E"; break;
+                case "Accountant": prefix = "F"; break;
+                default: prefix = "X"; break;
             }
-            
 
-            // ปีปัจจุบันเป็น 2 หลัก (เช่น 2024 -> 64)
-            string year = (DateTime.Now.Year - 2000).ToString();
-
-            // สุ่มเลข 3 หลัก
+            string year2 = (DateTime.Now.Year % 100).ToString("D2");
+            var rnd = new Random();
             string newID;
-            Random rnd = new Random();
-            EmployeeDAL dal = new EmployeeDAL();  // ✅ สร้างอ็อบเจ็กต์ EmployeeDAL
-
             do
             {
-                string randoms = rnd.Next(0, 999).ToString("D3");
-                newID = prefix + year + randoms;
-            } while (dal.CheckDuplicateEmployee(newID, "", "", ""));  // ✅ เรียกใช้ผ่าน `dal`
-
+                string randoms = rnd.Next(0, 1000).ToString("D3"); // 000-999
+                newID = prefix + year2 + randoms;
+            } while (EmpIdExists(newID));
             return newID;
         }
 
-        public bool CheckDuplicateEmployee(string employeeID, string username, string email, string idCard)
-        {
-            bool exists = false;
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                string sql = "SELECT COUNT(*) FROM employee WHERE emp_id = @EmployeeID OR emp_username = @Username OR emp_email = @Email OR emp_identification = @IDCard";
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
-                    cmd.Parameters.AddWithValue("@Username", username);
-                    cmd.Parameters.AddWithValue("@Email", email);
-                    cmd.Parameters.AddWithValue("@IDCard", idCard);
-
-                    conn.Open();
-                    int count = Convert.ToInt32(cmd.ExecuteScalar());
-                    exists = count > 0;
-                }
-            }
-            return exists;
-        }
-
-
+        // ====== CRUD ======
         public bool InsertEmployee(Employee emp)
         {
-            bool isSuccess = false;
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (var conn = new MySqlConnection(connectionString))
             {
-                string employeeID = GenerateEmployeeID(emp.Role); // ✅ สร้าง emp_id แบบไม่ซ้ำ
-
-                string sql = "INSERT INTO employee (emp_id, emp_username, emp_password, emp_name, emp_lname, emp_tel, emp_address, emp_email, emp_identification, emp_pos) " +
-                             "VALUES (@EmployeeID, @Username, @Password, @FirstName, @LastName, @Phone, @Address, @Email, @IDCard, @Role)";
-
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                string employeeID = GenerateEmployeeID(emp.Role);
+                const string sql = @"
+                INSERT INTO employee
+                (emp_id, emp_username, emp_password, emp_name, emp_lname, emp_tel, emp_address, emp_email, emp_identification, emp_pos)
+                VALUES
+                (@EmployeeID, @Username, @Password, @FirstName, @LastName, @Phone, @Address, @Email, @IDCard, @Role);";
+                using (var cmd = new MySqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
                     cmd.Parameters.AddWithValue("@Username", emp.Username);
@@ -98,25 +138,30 @@ namespace JRSApplication.Components
                     cmd.Parameters.AddWithValue("@Email", emp.Email);
                     cmd.Parameters.AddWithValue("@IDCard", emp.IDCard);
                     cmd.Parameters.AddWithValue("@Role", emp.Role);
-
                     conn.Open();
-                    int rows = cmd.ExecuteNonQuery();
-                    isSuccess = rows > 0;
+                    return cmd.ExecuteNonQuery() > 0;
                 }
             }
-            return isSuccess;
         }
+
         public bool UpdateEmployee(Employee emp)
         {
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (var conn = new MySqlConnection(connectionString))
             {
-                string sql = "SELECT emp_id, emp_name AS 'ชื่อ', emp_lname AS 'นามสกุล', emp_username AS 'ชื่อผู้ใช้', " +
-                             "emp_password AS 'รหัสผ่าน', emp_tel AS 'เบอร์โทร', emp_email AS 'อีเมล', emp_pos AS 'ตำแหน่ง', " +
-                             "emp_identification AS 'เลขบัตรประชาชน', emp_address AS 'ที่อยู่' " +
-                             "FROM employee WHERE emp_id = @EmployeeID";
-
-
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                const string sql = @"
+                UPDATE employee
+                SET
+                    emp_name           = @FirstName,
+                    emp_lname          = @LastName,
+                    emp_username       = @Username,
+                    emp_password       = @Password,
+                    emp_tel            = @Phone,
+                    emp_email          = @Email,
+                    emp_pos            = @Role,
+                    emp_identification = @IDCard,
+                    emp_address        = @Address
+                WHERE emp_id = @EmployeeID;";
+                using (var cmd = new MySqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@EmployeeID", emp.EmployeeID);
                     cmd.Parameters.AddWithValue("@FirstName", emp.FirstName);
@@ -126,45 +171,49 @@ namespace JRSApplication.Components
                     cmd.Parameters.AddWithValue("@Phone", emp.Phone);
                     cmd.Parameters.AddWithValue("@Email", emp.Email);
                     cmd.Parameters.AddWithValue("@Role", emp.Role);
-
+                    cmd.Parameters.AddWithValue("@IDCard", emp.IDCard);
+                    cmd.Parameters.AddWithValue("@Address", emp.Address);
                     conn.Open();
-                    int rows = cmd.ExecuteNonQuery();
-                    return rows > 0;
+                    return cmd.ExecuteNonQuery() > 0;
                 }
             }
         }
 
         public bool DeleteEmployee(string employeeID)
         {
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand("DELETE FROM employee WHERE emp_id = @EmployeeID;", conn))
             {
-                string sql = "DELETE FROM employee WHERE emp_id = @EmployeeID";
-
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
-                    conn.Open();
-                    return cmd.ExecuteNonQuery() > 0;
-                }
+                cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
+                conn.Open();
+                return cmd.ExecuteNonQuery() > 0;
             }
         }
-        //GetEmployeeByIDtoUsermanagementForm
+
         public DataTable GetEmployeeByIDtoUMNGT(string employeeID)
         {
-            DataTable dt = new DataTable();
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            var dt = new DataTable();
+            using (var conn = new MySqlConnection(connectionString))
             {
-                string sql = "SELECT emp_id, emp_name AS 'ชื่อ', emp_lname AS 'นามสกุล', emp_username AS 'ชื่อผู้ใช้', " +
-                             "emp_tel AS 'เบอร์โทร', emp_email AS 'อีเมล', emp_pos AS 'ตำแหน่ง', emp_identification AS 'เลขบัตรประชาชน', " +
-                             "emp_address AS 'ที่อยู่', emp_password AS 'รหัสผ่าน' " +  
-                             "FROM employee WHERE emp_id = @EmployeeID";
-
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                const string sql = @"
+                SELECT
+                    emp_id,
+                    emp_name            AS 'ชื่อ',
+                    emp_lname           AS 'นามสกุล',
+                    emp_username        AS 'ชื่อผู้ใช้',
+                    emp_tel             AS 'เบอร์โทร',
+                    emp_email           AS 'อีเมล',
+                    emp_pos             AS 'ตำแหน่ง',
+                    emp_identification  AS 'เลขบัตรประชาชน',
+                    emp_address         AS 'ที่อยู่',
+                    emp_password        AS 'รหัสผ่าน'
+                FROM employee
+                WHERE emp_id = @EmployeeID;";
+                using (var cmd = new MySqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
                     conn.Open();
-
-                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                    using (var adapter = new MySqlDataAdapter(cmd))
                     {
                         adapter.Fill(dt);
                     }
@@ -175,15 +224,22 @@ namespace JRSApplication.Components
 
         public DataTable GetAllEmployees()
         {
-            DataTable dt = new DataTable();
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            var dt = new DataTable();
+            using (var conn = new MySqlConnection(connectionString))
             {
                 try
                 {
-                    string sql = "SELECT emp_id AS 'รหัสพนักงาน', emp_username AS 'ชื่อผู้ใช้', emp_name AS 'ชื่อ', emp_lname AS 'นามสกุล', " +
-                                 "emp_tel AS 'เบอร์โทร', emp_email AS 'อีเมล', emp_pos AS 'ตำแหน่ง' FROM employee";
-
-                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(sql, conn))
+                    const string sql = @"
+                    SELECT
+                        emp_id       AS 'รหัสพนักงาน',
+                        emp_username AS 'ชื่อผู้ใช้',
+                        emp_name     AS 'ชื่อ',
+                        emp_lname    AS 'นามสกุล',
+                        emp_tel      AS 'เบอร์โทร',
+                        emp_email    AS 'อีเมล',
+                        emp_pos      AS 'ตำแหน่ง'
+                    FROM employee;";
+                    using (var adapter = new MySqlDataAdapter(sql, conn))
                     {
                         conn.Open();
                         adapter.Fill(dt);
@@ -191,7 +247,8 @@ namespace JRSApplication.Components
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("เกิดข้อผิดพลาดในการดึงข้อมูล: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("เกิดข้อผิดพลาดในการดึงข้อมูล: " + ex.Message, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             return dt;
@@ -200,27 +257,41 @@ namespace JRSApplication.Components
         public string GetEmployeeFullNameById(string empId)
         {
             string fullName = "";
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand("SELECT emp_name, emp_lname FROM employee WHERE emp_id = @EmpID;", conn))
             {
-                string sql = "SELECT emp_name, emp_lname FROM employee WHERE emp_id = @EmpID";
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                cmd.Parameters.AddWithValue("@EmpID", empId);
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
                 {
-                    cmd.Parameters.AddWithValue("@EmpID", empId);
-                    conn.Open();
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            string firstName = reader["emp_name"].ToString();
-                            string lastName = reader["emp_lname"].ToString();
-                            fullName = $"{firstName} {lastName}";
-                        }
-                    }
+                    if (reader.Read())
+                        fullName = $"{reader["emp_name"]} {reader["emp_lname"]}";
                 }
             }
             return fullName;
         }
 
-
+        // (ยังคงไว้ถ้าต้องการ)
+        public bool CheckDuplicateEmployee(string employeeID, string username, string email, string idCard)
+        {
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                const string sql = @"
+                SELECT COUNT(*) FROM employee
+                    WHERE emp_id = @EmployeeID
+                    OR emp_username = @Username
+                    OR emp_email = @Email
+                    OR emp_identification = @IDCard;";
+                using (var cmd = new MySqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
+                    cmd.Parameters.AddWithValue("@Username", username);
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@IDCard", idCard);
+                    conn.Open();
+                    return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                }
+            }
+        }
     }
 }

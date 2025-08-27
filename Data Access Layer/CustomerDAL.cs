@@ -4,36 +4,42 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace JRSApplication.Data_Access_Layer
 {
     public class CustomerDAL
     {
-        private string connectionString;
+        private readonly string connectionString;
+        private readonly Random rnd = new Random();
 
         public CustomerDAL()
         {
             connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         }
 
-        // ✅  ดึงข้อมูลลูกค้าทั้งหมด
+        // ✅ ดึงข้อมูลลูกค้าทั้งหมด (คอลัมน์ alias เป็นภาษาไทย ใช้กับ Grid ได้ทันที)
         public DataTable GetAllCustomers()
         {
             DataTable dt = new DataTable();
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (var conn = new MySqlConnection(connectionString))
             {
                 try
                 {
-                    string sql = "SELECT cus_id AS 'รหัสลูกค้า', cus_name AS 'ชื่อ', cus_lname AS 'นามสกุล', " +
-                                 "cus_id_card AS 'เลขบัตรประชาชน', cus_tel AS 'เบอร์โทร', cus_email AS 'อีเมล', cus_address AS 'ที่อยู่' " +
-                                 "FROM customer";
+                    string sql =
+                        @"SELECT 
+                            cus_id      AS 'รหัสลูกค้า',
+                            cus_name    AS 'ชื่อ',
+                            cus_lname   AS 'นามสกุล',
+                            cus_id_card AS 'เลขบัตรประชาชน',
+                            cus_tel     AS 'เบอร์โทร',
+                            cus_email   AS 'อีเมล',
+                            cus_address AS 'ที่อยู่'
+                          FROM customer";
 
-                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(sql, conn))
+                    using (var adapter = new MySqlDataAdapter(sql, conn))
                     {
                         conn.Open();
                         adapter.Fill(dt);
@@ -41,105 +47,108 @@ namespace JRSApplication.Data_Access_Layer
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("เกิดข้อผิดพลาดในการดึงข้อมูล: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("เกิดข้อผิดพลาดในการดึงข้อมูล: " + ex.Message, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             return dt;
         }
-        //รอเรียก
-        //public Customer GetCustomerByIdtoProjectdata(int customerId)
-        //{
-        //    Customer customer = null;
-        //    using (MySqlConnection conn = new MySqlConnection(connectionString))
-        //    {
-        //        string sql = "SELECT * FROM customer WHERE cus_id = @CustomerID";
-        //        using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-        //        {
-        //            cmd.Parameters.AddWithValue("@CustomerID", customerId);
-        //            conn.Open();
-        //            using (MySqlDataReader reader = cmd.ExecuteReader())
-        //            {
-        //                if (reader.Read())
-        //                {
-        //                    customer = new Customer
-        //                    {
-        //                        CustomerID = reader.GetInt32("cus_id"),
-        //                        FirstName = reader.GetString("cus_name"),
-        //                        LastName = reader.GetString("cus_lname"),
-        //                        Email = reader.GetString("cus_email"),
-        //                        Phone = reader.GetString("cus_tel"),
-        //                        Address = reader.GetString("cus_address")
-        //                    };
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return customer;
-        //}
 
+        // ✅ เช็คว่ามี cus_id นี้อยู่แล้วหรือไม่ (ใช้กับการออกเลขไอดีใหม่)
+        private bool CustomerIdExists(string customerID)
+        {
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "SELECT COUNT(*) FROM customer WHERE cus_id = @id";
+                cmd.Parameters.AddWithValue("@id", customerID);
+                conn.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+            }
+        }
+
+        // ✅ ออกเลขรหัสลูกค้า: YY + MM + (สุ่ม 3 หลัก) และเช็คไม่ให้ซ้ำจริง ๆ ที่ cus_id
         public string GenerateCustomerID()
         {
-            string year = (DateTime.Now.Year - 2000).ToString(); // ปี 2 หลัก เช่น 2025 -> "25"
-            string month = DateTime.Now.Month.ToString("D2"); // เดือน 2 หลัก เช่น "09"
+            string year = (DateTime.Now.Year - 2000).ToString("D2"); // 2025 -> 25
+            string month = DateTime.Now.Month.ToString("D2");        // 09
             string newID;
-            Random rnd = new Random();
-            CustomerDAL dal = new CustomerDAL(); // ✅ สร้างอ็อบเจ็กต์เพื่อเช็คซ้ำ
 
             do
             {
-                string randoms = rnd.Next(0, 999).ToString("D3"); // ✅ เลขสุ่ม 3 หลัก
+                string randoms = rnd.Next(0, 1000).ToString("D3");    // 000-999
                 newID = year + month + randoms;
-            } while (dal.CheckDuplicateCustomer(newID,"","")); // ✅ ตรวจสอบว่ามีในฐานข้อมูลหรือไม่
+            } while (CustomerIdExists(newID));
 
             return newID;
         }
 
-
-        // ✅  ตรวจสอบว่า Email หรือ ID Card ซ้ำหรือไม่
+        // ✅ ตรวจซ้ำ Email หรือ ID Card (ข้ามเงื่อนไขที่เป็นค่าว่าง) – เทียบอีเมลแบบ case-insensitive
         public bool CheckDuplicateCustomer(string customerID, string email, string idCard)
         {
-            bool exists = false;
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            bool emailGiven = !string.IsNullOrWhiteSpace(email);
+            bool idGiven = !string.IsNullOrWhiteSpace(idCard);
+
+            if (!emailGiven && !idGiven) return false;
+
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = conn.CreateCommand())
             {
-                string sql = @"SELECT COUNT(*) FROM customer 
-                       WHERE (cus_email = @Email OR cus_id_card = @IDCard) 
-                       AND cus_id != @CustomerID";  // ✅ ยกเว้นตัวเอง
+                var sb = new StringBuilder();
+                sb.AppendLine("SELECT COUNT(*) FROM customer WHERE 1=1");
 
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                // ยกเว้นแถวของตัวเองเมื่อแก้ไข
+                if (!string.IsNullOrWhiteSpace(customerID))
                 {
+                    sb.AppendLine("  AND cus_id <> @CustomerID");
                     cmd.Parameters.AddWithValue("@CustomerID", customerID);
-                    cmd.Parameters.AddWithValue("@Email", email);
-                    cmd.Parameters.AddWithValue("@IDCard", idCard);
-
-                    conn.Open();
-                    int count = Convert.ToInt32(cmd.ExecuteScalar());
-                    exists = count > 0;
                 }
+
+                // (email OR idcard)
+                sb.Append("  AND (0");
+                if (emailGiven)
+                {
+                    sb.Append(" OR LOWER(cus_email) = LOWER(@Email)");
+                    cmd.Parameters.AddWithValue("@Email", email);
+                }
+                if (idGiven)
+                {
+                    sb.Append(" OR cus_id_card = @IDCard");
+                    cmd.Parameters.AddWithValue("@IDCard", idCard);
+                }
+                sb.Append(")");
+
+                cmd.CommandText = sb.ToString();
+                conn.Open();
+                int count = Convert.ToInt32(cmd.ExecuteScalar());
+                return count > 0;
             }
-            return exists;
         }
 
-
-        // ✅  เพิ่มลูกค้าใหม่
+        // ✅ เพิ่มลูกค้า
         public bool InsertCustomer(Customer cus)
         {
-            bool isSuccess = false;
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            try
             {
-                string customerID = GenerateCustomerID(); // ✅ สร้างรหัสลูกค้าอัตโนมัติ
-
-                // ✅ ตรวจสอบว่ามีข้อมูลซ้ำหรือไม่
-                if (CheckDuplicateCustomer(customerID, cus.Email, cus.IDCard))
+                using (var conn = new MySqlConnection(connectionString))
+                using (var cmd = conn.CreateCommand())
                 {
-                    MessageBox.Show("หมายเลขลูกค้า, อีเมล หรือเลขบัตรประชาชนซ้ำ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return false;
-                }
+                    string customerID = GenerateCustomerID();
 
-                string sql = "INSERT INTO customer (cus_id, cus_name, cus_lname, cus_id_card, cus_tel, cus_address, cus_email) " +
-                             "VALUES (@CustomerID, @FirstName, @LastName, @IDCard, @Phone, @Address, @Email)";
+                    // เช็คซ้ำ (email OR idcard) – ไม่ต้องยกเว้น cus_id เพราะยังไม่มีใน DB
+                    if (CheckDuplicateCustomer(null, cus.Email, cus.IDCard))
+                    {
+                        MessageBox.Show("อีเมลหรือเลขบัตรประชาชนซ้ำ!", "แจ้งเตือน",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
+                    }
 
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-                {
+                    cmd.CommandText =
+                        @"INSERT INTO customer
+                          (cus_id, cus_name, cus_lname, cus_id_card, cus_tel, cus_address, cus_email)
+                          VALUES
+                          (@CustomerID, @FirstName, @LastName, @IDCard, @Phone, @Address, @Email)";
+
                     cmd.Parameters.AddWithValue("@CustomerID", customerID);
                     cmd.Parameters.AddWithValue("@FirstName", cus.FirstName);
                     cmd.Parameters.AddWithValue("@LastName", cus.LastName);
@@ -149,26 +158,53 @@ namespace JRSApplication.Data_Access_Layer
                     cmd.Parameters.AddWithValue("@Email", cus.Email);
 
                     conn.Open();
-                    int rows = cmd.ExecuteNonQuery();
-                    isSuccess = rows > 0;
+                    return cmd.ExecuteNonQuery() > 0;
                 }
             }
-            return isSuccess;
+            catch (MySqlException mex) when (mex.Number == 1062) // Duplicate entry
+            {
+                string msg = "ข้อมูลซ้ำในระบบ";
+                if (mex.Message.Contains("cus_email")) msg = "อีเมลนี้มีอยู่แล้วในระบบ";
+                else if (mex.Message.Contains("cus_id_card")) msg = "เลขบัตรประชาชนนี้มีอยู่แล้วในระบบ";
+                else if (mex.Message.Contains("PRIMARY") || mex.Message.Contains("cus_id")) msg = "รหัสลูกค้าซ้ำในระบบ";
+
+                MessageBox.Show(msg, "ข้อมูลซ้ำ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("InsertCustomer Error: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
 
-
-        // ✅  แก้ไขข้อมูลลูกค้า 
+        // ✅ แก้ไขลูกค้า
         public bool UpdateCustomer(Customer cus)
         {
-            bool isSuccess = false;
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            try
             {
-                string sql = "UPDATE customer SET cus_name = @FirstName, cus_lname = @LastName, " +
-                             "cus_id_card = @IDCard, cus_tel = @Phone, cus_address = @Address, cus_email = @Email " +
-                             "WHERE cus_id = @CustomerID";
-
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                using (var conn = new MySqlConnection(connectionString))
+                using (var cmd = conn.CreateCommand())
                 {
+                    // ยกเว้นแถวตัวเองตอนเช็คซ้ำ
+                    if (CheckDuplicateCustomer(cus.CustomerID.ToString(), cus.Email, cus.IDCard))
+                    {
+                        MessageBox.Show("อีเมลหรือเลขบัตรประชาชนซ้ำ!", "แจ้งเตือน",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
+                    }
+
+                    cmd.CommandText =
+                        @"UPDATE customer
+                             SET cus_name    = @FirstName,
+                                 cus_lname   = @LastName,
+                                 cus_id_card = @IDCard,
+                                 cus_tel     = @Phone,
+                                 cus_address = @Address,
+                                 cus_email   = @Email
+                           WHERE cus_id = @CustomerID";
+
                     cmd.Parameters.AddWithValue("@CustomerID", cus.CustomerID);
                     cmd.Parameters.AddWithValue("@FirstName", cus.FirstName);
                     cmd.Parameters.AddWithValue("@LastName", cus.LastName);
@@ -178,113 +214,213 @@ namespace JRSApplication.Data_Access_Layer
                     cmd.Parameters.AddWithValue("@Email", cus.Email);
 
                     conn.Open();
-                    int rows = cmd.ExecuteNonQuery();
-                    isSuccess = rows > 0;
+                    return cmd.ExecuteNonQuery() > 0;
                 }
             }
-            return isSuccess;
+            catch (MySqlException mex) when (mex.Number == 1062) // Duplicate entry
+            {
+                string msg = "ข้อมูลซ้ำในระบบ";
+                if (mex.Message.Contains("cus_email")) msg = "อีเมลนี้มีอยู่แล้วในระบบ";
+                else if (mex.Message.Contains("cus_id_card")) msg = "เลขบัตรประชาชนนี้มีอยู่แล้วในระบบ";
+                MessageBox.Show(msg, "ข้อมูลซ้ำ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("UpdateCustomer Error: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
 
-        // ✅  ลบลูกค้า  
+        // ✅ ลบลูกค้า (แนะนำให้เรียก IsCustomerReferenced ก่อนเสมอ)
         public bool DeleteCustomer(int customerID)
         {
-            bool isSuccess = false;
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            try
             {
-                string sql = "DELETE FROM customer WHERE cus_id = @CustomerID";
-
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                using (var conn = new MySqlConnection(connectionString))
+                using (var cmd = conn.CreateCommand())
                 {
+                    cmd.CommandText = "DELETE FROM customer WHERE cus_id = @CustomerID";
                     cmd.Parameters.AddWithValue("@CustomerID", customerID);
-
                     conn.Open();
-                    int rows = cmd.ExecuteNonQuery();
-                    isSuccess = rows > 0;
+                    return cmd.ExecuteNonQuery() > 0;
                 }
             }
-            return isSuccess;
+            catch (MySqlException mex)
+            {
+                // ถ้ามี FK constraint จะมาลงเคสนี้
+                MessageBox.Show("DeleteCustomer Error: " + mex.Message, "Database Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("DeleteCustomer Error: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
+
+        // ✅ ค้นหาลูกค้า: คืนนิยามคอลัมน์ alias ให้เหมือน GetAllCustomers
         public DataTable SearchCustomer(string searchBy, string keyword)
         {
             DataTable dt = new DataTable();
-            string query = "SELECT * FROM customer WHERE ";
+            string where = "";
+            string col;
 
-            // ตรวจสอบตัวเลือกที่ใช้ค้นหา
             switch (searchBy)
             {
                 case "ชื่อ":
-                    query += "cus_name LIKE @Keyword";
+                    col = "cus_name";
                     break;
                 case "เลขบัตรประชาชน":
-                    query += "cus_id_card LIKE @Keyword";
+                    col = "cus_id_card";
                     break;
                 case "อีเมล":
-                    query += "cus_email LIKE @Keyword";
+                    col = "cus_email";
                     break;
                 default:
-                    query = "SELECT * FROM customer";
+                    col = ""; // คืนทั้งหมด
                     break;
             }
 
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            if (!string.IsNullOrWhiteSpace(col) && !string.IsNullOrWhiteSpace(keyword))
             {
-                conn.Open();
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@Keyword", "%" + keyword + "%");
-                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
-                    {
-                        adapter.Fill(dt);
-                    }
-                }
+                where = $" WHERE {col} LIKE @kw ";
             }
+
+            string sql =
+                $@"SELECT 
+                    cus_id      AS 'รหัสลูกค้า',
+                    cus_name    AS 'ชื่อ',
+                    cus_lname   AS 'นามสกุล',
+                    cus_id_card AS 'เลขบัตรประชาชน',
+                    cus_tel     AS 'เบอร์โทร',
+                    cus_email   AS 'อีเมล',
+                    cus_address AS 'ที่อยู่'
+                  FROM customer
+                  {where}";
+
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, conn))
+            using (var adapter = new MySqlDataAdapter(cmd))
+            {
+                if (!string.IsNullOrWhiteSpace(where))
+                    cmd.Parameters.AddWithValue("@kw", "%" + keyword + "%");
+
+                conn.Open();
+                adapter.Fill(dt);
+            }
+
             return dt;
         }
 
+        // ===== Helper: อ่านชื่อฐานข้อมูลจากคอนเนคชันปัจจุบัน =====
+        private string GetCurrentDatabaseName()
+        {
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "SELECT DATABASE()";
+                conn.Open();
+                return Convert.ToString(cmd.ExecuteScalar());
+            }
+        }
+
+        // ===== Helper: หา "ชื่อคอลัมน์ลูกค้า" ที่มีอยู่จริงในตาราง =====
+        private string TryGetCustomerColumn(string tableName)
+        {
+            string[] candidates = { "cus_id", "customer_id", "CustomerID", "cusid", "customerid" };
+
+            string db = GetCurrentDatabaseName();
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = @"
+                    SELECT COLUMN_NAME
+                    FROM INFORMATION_SCHEMA.COLUMNS
+                    WHERE TABLE_SCHEMA = @db AND TABLE_NAME = @table 
+                          AND COLUMN_NAME IN (" + string.Join(",", candidates.Select((_, i) => "@c" + i)) + ")";
+                cmd.Parameters.AddWithValue("@db", db);
+                cmd.Parameters.AddWithValue("@table", tableName);
+                for (int i = 0; i < candidates.Length; i++)
+                    cmd.Parameters.AddWithValue("@c" + i, candidates[i]);
+
+                conn.Open();
+                using (var r = cmd.ExecuteReader())
+                {
+                    if (r.Read())
+                        return r.GetString(0); // คืนชื่อคอลัมน์ที่พบตัวแรก
+                }
+            }
+            return null; // ไม่พบคอลัมน์ลูกค้าในตารางนี้
+        }
+
+        // ✅ เช็คการอ้างอิงแบบยืดหยุ่นชื่อคอลัมน์ (project/invoice/purchaseorder)
         public bool IsCustomerReferenced(int customerId)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            string[] tables = { "project", "invoice", "purchaseorder" };
+
+            var sqlParts = new List<string>();
+            var parameters = new List<MySqlParameter>();
+
+            for (int i = 0; i < tables.Length; i++)
             {
-                string sql = "SELECT COUNT(*) FROM Projects WHERE CustomerID = @CustomerID";
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@CustomerID", customerId);
+                string table = tables[i];
+                string col = TryGetCustomerColumn(table);
+                if (!string.IsNullOrEmpty(col))
+                {
+                    string p = "@cid_" + i;
+                    sqlParts.Add($"(SELECT COUNT(*) FROM `{table}` WHERE `{col}` = {p})");
+                    parameters.Add(new MySqlParameter(p, customerId));
+                }
+            }
+
+            if (sqlParts.Count == 0) return false;
+
+            string finalSql = "SELECT " + string.Join(" + ", sqlParts) + " AS ref_count;";
+
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = finalSql;
+                cmd.Parameters.AddRange(parameters.ToArray());
                 conn.Open();
-                int count = (int)cmd.ExecuteScalar();
+                int count = Convert.ToInt32(cmd.ExecuteScalar());
                 return count > 0;
             }
         }
 
+        // ✅ ดึงลูกค้าตามรหัส (ใช้ในฟอร์ม)
         public Customer GetCustomerById(string customerId)
         {
             Customer customer = null;
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = conn.CreateCommand())
             {
-                string sql = "SELECT * FROM customer WHERE cus_id = @CustomerID";
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                cmd.CommandText = "SELECT * FROM customer WHERE cus_id = @CustomerID";
+                cmd.Parameters.AddWithValue("@CustomerID", customerId);
+
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
                 {
-                    cmd.Parameters.AddWithValue("@CustomerID", customerId);
-                    conn.Open();
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    if (reader.Read())
                     {
-                        if (reader.Read())
+                        customer = new Customer
                         {
-                            customer = new Customer
-                            {
-                                CustomerID = reader.GetInt32("cus_id"),
-                                FirstName = reader.GetString("cus_name"),
-                                LastName = reader.GetString("cus_lname"),
-                                Email = reader.GetString("cus_email"),
-                                Phone = reader.GetString("cus_tel"),
-                                Address = reader.GetString("cus_address"),
-                                IDCard = reader.GetString("cus_id_card")
-                            };
-                        }
+                            CustomerID = reader.GetInt32("cus_id"),
+                            FirstName = reader.GetString("cus_name"),
+                            LastName = reader.GetString("cus_lname"),
+                            Email = reader.GetString("cus_email"),
+                            Phone = reader.GetString("cus_tel"),
+                            Address = reader.GetString("cus_address"),
+                            IDCard = reader.GetString("cus_id_card")
+                        };
                     }
                 }
             }
             return customer;
         }
-
-
     }
 }

@@ -1,32 +1,108 @@
 ﻿using JRSApplication.Components;
-using MySql.Data.MySqlClient;
-using Org.BouncyCastle.Crypto.Generators;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
+using System.Net.Mail;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using BCrypt.Net;
+using MySql.Data.MySqlClient;
 
 namespace JRSApplication
 {
     public partial class UserManagementForm : UserControl
     {
-        private bool isEditMode = false; // ✅ เช็คว่ากำลังแก้ไขหรือไม่
-        private string selectedEmployeeID = ""; // ✅ เก็บรหัสพนักงานที่ถูกเลือก
-        private string currentHashedPassword = ""; // ✅ เก็บ Hash เดิมของ Password
+        private bool isEditMode = false;
+        private string selectedEmployeeID = "";
+        private string currentHashedPassword = "";
+        private bool passwordEdited = false;
+
+        private string originalUsername = "";
+        private string originalEmail = "";
+        private string originalIDCard = "";
 
         public UserManagementForm()
         {
             InitializeComponent();
+
+            // ===== Input filters =====
+            // บัตรประชาชน: ตัวเลขล้วน + 13 หลัก (ไม่ตรวจ checksum)
+            txtIdcard.MaxLength = 13;
+            txtIdcard.KeyPress += (s, e) =>
+            {
+                e.Handled = !(char.IsControl(e.KeyChar) || char.IsDigit(e.KeyChar));
+            };
+            txtIdcard.Validating += (s, e) =>
+            {
+                string digits = Regex.Replace(txtIdcard.Text ?? "", @"\D", "");
+                if (digits.Length != 13)
+                {
+                    e.Cancel = true;
+                    MessageBox.Show("เลขบัตรประชาชนต้องเป็นตัวเลข 13 หลัก!",
+                        "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtIdcard.SelectAll();
+                }
+                else
+                {
+                    txtIdcard.Text = digits; // normalize เป็นตัวเลขล้วน
+                }
+            };
+
+            // โทรศัพท์: ยอมให้กดเฉพาะตัวเลข/สัญลักษณ์ทั่วไป และ normalize ให้เหลือ 10 หลักขึ้นต้น 0
+            txtPhone.MaxLength = 12;
+            txtPhone.KeyPress += (s, e) =>
+            {
+                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && "+-() ".IndexOf(e.KeyChar) < 0)
+                    e.Handled = true;
+            };
+            txtPhone.Validating += (s, e) =>
+            {
+                string normalized = NormalizeThaiMobile10(txtPhone.Text);
+                if (string.IsNullOrEmpty(normalized))
+                {
+                    e.Cancel = true;
+                    MessageBox.Show("เบอร์โทรต้องเป็นตัวเลข 10 หลักเท่านั้น\nตัวอย่าง: 0812345678 หรือ +66812345678",
+                        "กรุณากรอกเบอร์โทรให้ถูกต้อง!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtPhone.SelectAll();
+                }
+                else
+                {
+                    txtPhone.Text = normalized;
+                }
+            };
+
+            // อีเมล: รูปแบบเข้มงวด + normalize domain เป็นตัวพิมพ์เล็ก
+            txtEmail.Validating += (s, e) =>
+            {
+                string email = (txtEmail.Text ?? "").Trim();
+                if (!IsValidEmailStrict(email))
+                {
+                    e.Cancel = true;
+                    MessageBox.Show("อีเมลไม่ถูกต้อง\nตัวอย่างที่ถูกต้อง: name@example.com",
+                        "กรุณากรอกอีเมลให้ถูกต้อง!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtEmail.SelectAll();
+                }
+                else
+                {
+                    txtEmail.Text = NormalizeEmail(email);
+                }
+            };
+
+            // แสดง/ซ่อนรหัสผ่าน (สำหรับกรณีไฟล์ Designer ผูกอีเวนต์ไว้แล้ว ก็มีเมธอดด้านล่างให้เรียกได้)
+            txtPassword.UseSystemPasswordChar = true;
+            txtConfirmPassword.UseSystemPasswordChar = true;
+            txtPassword.TextChanged += (s, e) => { if (isEditMode) passwordEdited = true; };
+            txtConfirmPassword.TextChanged += (s, e) => { if (isEditMode) passwordEdited = true; };
+
+            // grid + data
             CustomizeDataGridView();
+            dtgvEmployee.CellClick += dtgvEmployee_CellClick;
+
             LoadEmployeeData();
             LoadRoles();
 
+            ReadOnlyControlsOff();
+            EnableControlsOff();
         }
 
         private void LoadRoles()
@@ -36,256 +112,311 @@ namespace JRSApplication
             cmbRole.Items.Add("Projectmanager");
             cmbRole.Items.Add("Sitesupervisor");
             cmbRole.Items.Add("Accountant");
-
             cmbRole.SelectedIndex = -1;
         }
 
-
-        //ตาราง
         private void LoadEmployeeData()
         {
-            EmployeeDAL dal = new EmployeeDAL();
-            DataTable dt = dal.GetAllEmployees(); // ✅ ดึงข้อมูลจาก MySQL
-            dtgvEmployee.DataSource = dt; // ✅ แสดงข้อมูลใน DataGridView
+            var dal = new EmployeeDAL();
+            dtgvEmployee.DataSource = dal.GetAllEmployees();
         }
 
         private void dtgvEmployee_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
+            if (e.RowIndex < 0) return;
+
+            DataGridViewRow row = dtgvEmployee.Rows[e.RowIndex];
+            selectedEmployeeID = row.Cells["รหัสพนักงาน"].Value?.ToString();
+
+            var dal = new EmployeeDAL();
+            DataTable dt = dal.GetEmployeeByIDtoUMNGT(selectedEmployeeID);
+            if (dt.Rows.Count == 0)
             {
-                DataGridViewRow row = dtgvEmployee.Rows[e.RowIndex];
-
-                // ✅ เก็บรหัสพนักงานที่เลือก
-                selectedEmployeeID = row.Cells["รหัสพนักงาน"].Value?.ToString();
-
-                // ✅ โหลดข้อมูลจาก DB เพื่อให้ได้ข้อมูลที่สมบูรณ์
-                EmployeeDAL dal = new EmployeeDAL();
-                DataTable dt = dal.GetEmployeeByIDtoUMNGT(selectedEmployeeID);
-
-                if (dt.Rows.Count > 0)
-                {
-                    DataRow dr = dt.Rows[0];
-
-                    txtName.Text = dr["ชื่อ"].ToString();
-                    txtLastname.Text = dr["นามสกุล"].ToString();
-                    txtUsername.Text = dr["ชื่อผู้ใช้"].ToString();
-                    txtPhone.Text = dr["เบอร์โทร"].ToString();
-                    txtEmail.Text = dr["อีเมล"].ToString();
-                    txtIdcard.Text = dr["เลขบัตรประชาชน"].ToString();
-                    txtAddress.Text = dr["ที่อยู่"].ToString();
-
-                    // ✅ โหลดตำแหน่งแบบปลอดภัย
-                    string role = dr["ตำแหน่ง"].ToString().Trim();
-                    if (cmbRole.Items.Contains(role))
-                    {
-                        cmbRole.SelectedItem = role;
-                    }
-                    else
-                    {
-                        cmbRole.SelectedIndex = -1;
-                    }
-
-                    ReadOnlyControlsOff();
-                    EnableControlsOff();
-
-                    txtPassword.Text = "********";
-                    txtConfirmPassword.Text = "********";
-
-                    originalUsername = txtUsername.Text.Trim();
-                    originalEmail = txtEmail.Text.Trim();
-                    originalIDCard = txtIdcard.Text.Trim();
-                }
-                else
-                {
-                    MessageBox.Show("ไม่สามารถโหลดข้อมูลพนักงานได้", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                MessageBox.Show("ไม่สามารถโหลดข้อมูลพนักงานได้!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
+
+            DataRow dr = dt.Rows[0];
+            txtName.Text = dr["ชื่อ"].ToString();
+            txtLastname.Text = dr["นามสกุล"].ToString();
+            txtUsername.Text = dr["ชื่อผู้ใช้"].ToString();
+            txtPhone.Text = dr["เบอร์โทร"].ToString();
+            txtEmail.Text = dr["อีเมล"].ToString();
+            txtIdcard.Text = dr["เลขบัตรประชาชน"].ToString();
+            txtAddress.Text = dr["ที่อยู่"].ToString();
+
+            string role = dr["ตำแหน่ง"].ToString().Trim();
+            cmbRole.SelectedItem = cmbRole.Items.Contains(role) ? role : null;
+
+            // เก็บค่าเดิม
+            originalUsername = txtUsername.Text.Trim();
+            originalEmail = txtEmail.Text.Trim();
+            originalIDCard = txtIdcard.Text.Trim();
+
+            ReadOnlyControlsOff();
+            EnableControlsOff();
         }
-
-
 
         private void CustomizeDataGridView()
         {
-            // ✅ ตั้งค่าพื้นฐาน
             dtgvEmployee.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dtgvEmployee.BorderStyle = BorderStyle.None;
-            dtgvEmployee.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray; // ✅ แถวเว้นแถวสีเทา
+            dtgvEmployee.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
             dtgvEmployee.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dtgvEmployee.DefaultCellStyle.SelectionBackColor = Color.DarkBlue; // ✅ สีพื้นหลังของแถวที่เลือก
-            dtgvEmployee.DefaultCellStyle.SelectionForeColor = Color.White; // ✅ สีตัวอักษรของแถวที่เลือก
+            dtgvEmployee.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
+            dtgvEmployee.DefaultCellStyle.SelectionForeColor = Color.White;
             dtgvEmployee.BackgroundColor = Color.White;
 
-            // ✅ ตั้งค่าหัวตาราง (Header)
             dtgvEmployee.EnableHeadersVisualStyles = false;
             dtgvEmployee.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dtgvEmployee.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dtgvEmployee.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dtgvEmployee.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 16, FontStyle.Bold);
-            dtgvEmployee.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter; // ✅ จัดหัวตารางให้อยู่กึ่งกลาง
-            dtgvEmployee.ColumnHeadersHeight = 30; // ✅ ความสูงของหัวตาราง
+            dtgvEmployee.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvEmployee.ColumnHeadersHeight = 30;
 
-            // ✅ ตั้งค่าแถวข้อมูล
             dtgvEmployee.DefaultCellStyle.Font = new Font("Segoe UI", 15);
-            dtgvEmployee.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter; // ✅ จัดข้อมูลให้อยู่กึ่งกลาง
-            dtgvEmployee.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3); // ✅ ปรับ Padding
+            dtgvEmployee.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvEmployee.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
 
-            // ✅ ปรับขนาดคอลัมน์และแถว
-            dtgvEmployee.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // ✅ ปรับให้คอลัมน์ขยายเต็ม
-            dtgvEmployee.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells; // ✅ ปรับขนาดแถวอัตโนมัติ
-            dtgvEmployee.RowTemplate.Height = 30; // ✅ กำหนดความสูงของแถวให้เหมาะสม
+            dtgvEmployee.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgvEmployee.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dtgvEmployee.RowTemplate.Height = 30;
 
-            // ✅ ซ่อนเส้นตารางแนวตั้ง
             dtgvEmployee.GridColor = Color.LightGray;
-            dtgvEmployee.RowHeadersVisible = false; // ✅ ซ่อนหมายเลขแถว
-
-            // ✅ ปิดการแก้ไขข้อมูลโดยตรง
+            dtgvEmployee.RowHeadersVisible = false;
             dtgvEmployee.ReadOnly = true;
             dtgvEmployee.AllowUserToAddRows = false;
             dtgvEmployee.AllowUserToResizeRows = false;
         }
 
-        // ✅ ฟังก์ชันตรวจสอบค่าที่กรอกครบถ้วน
+        // ===== Validation รวม =====
         private bool ValidateEmployeeData()
         {
-            bool hasError = false;
+            // required
+            if (string.IsNullOrWhiteSpace(txtName.Text)) { MessageBox.Show("กรุณากรอกชื่อก่อนบันทึก!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+            if (string.IsNullOrWhiteSpace(txtLastname.Text)) { MessageBox.Show("กรุณากรอกนามสกุลก่อนบันทึก!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+            if (string.IsNullOrWhiteSpace(txtIdcard.Text)) { MessageBox.Show("กรุณากรอกเลขบัตรประชาชนก่อนบันทึก!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+            if (string.IsNullOrWhiteSpace(txtPhone.Text)) { MessageBox.Show("กรุณากรอกเบอร์โทรศัพท์ก่อนบันทึก!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+            if (string.IsNullOrWhiteSpace(txtAddress.Text)) { MessageBox.Show("กรุณากรอกที่อยู่ก่อนบันทึก!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+            if (string.IsNullOrWhiteSpace(txtEmail.Text)) { MessageBox.Show("กรุณากรอกอีเมลก่อนบันทึก!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+            if (string.IsNullOrWhiteSpace(txtUsername.Text)) { MessageBox.Show("กรุณากรอกชื่อผู้ใช้ก่อนบันทึก!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
 
-            if (string.IsNullOrWhiteSpace(txtName.Text)) 
-            { 
-                starName.Visible = true; hasError = true; 
-            }
-            else 
-            { 
-                starName.Visible = false; 
-            }
-
-            if (string.IsNullOrWhiteSpace(txtLastname.Text)) 
-            { 
-                starLastname.Visible = true; hasError = true; 
-            }
-            else 
-            { 
-                starLastname.Visible = false; 
-            }
-
-            if (string.IsNullOrWhiteSpace(txtUsername.Text)) 
-            { 
-                starUsername.Visible = true; hasError = true; 
-            }
-            else 
-            { 
-                starUsername.Visible = false; 
-            }
-
-            if (string.IsNullOrWhiteSpace(txtPassword.Text)) 
-            { 
-                starPassword.Visible = true; hasError = true; 
-            }
-            else 
-            { 
-                starPassword.Visible = false; 
-            }
-
-            if (string.IsNullOrWhiteSpace(txtConfirmPassword.Text)) 
-            { 
-                starConfirmPassword.Visible = true; hasError = true; 
-            }
-            else 
-            { 
-                starConfirmPassword.Visible = false; 
-            }
-
-            if (string.IsNullOrWhiteSpace(txtPhone.Text)) 
-            { 
-                starPhone.Visible = true; hasError = true; 
-            }
-            else 
-            { 
-                starPhone.Visible = false; 
-            }
-
-            if (string.IsNullOrWhiteSpace(txtEmail.Text)) 
+            if (cmbRole.SelectedIndex == -1)
             {
-                starEmail.Visible = true; hasError = true; 
+                if (starRole != null) starRole.Visible = true;
+                MessageBox.Show("กรุณาเลือกบทบาทก่อนบันทึก!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cmbRole.Focus(); cmbRole.DroppedDown = true; return false;
             }
-            else 
+            else if (starRole != null) starRole.Visible = false;
+
+            // password: เพิ่ม vs แก้ไข
+            if (!isEditMode)
             {
-                starEmail.Visible = false; 
+                if (string.IsNullOrWhiteSpace(txtPassword.Text)) { MessageBox.Show("กรุณากรอกรหัสผ่านก่อนบันทึก!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+                if (string.IsNullOrWhiteSpace(txtConfirmPassword.Text)) { MessageBox.Show("ยืนยันรหัสผ่านก่อนบันทึก!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+                if (txtPassword.Text.Length < 8) { MessageBox.Show("รหัสผ่านอย่างน้อย 8 ตัวอักษร", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+                if (txtPassword.Text != txtConfirmPassword.Text) { MessageBox.Show("รหัสผ่านและยืนยันรหัสผ่านไม่ตรงกัน!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+            }
+            else
+            {
+                bool anyFilled = !string.IsNullOrWhiteSpace(txtPassword.Text) || !string.IsNullOrWhiteSpace(txtConfirmPassword.Text);
+                if (anyFilled)
+                {
+                    if (string.IsNullOrWhiteSpace(txtPassword.Text)) { MessageBox.Show("กรอกรหัสผ่านใหม่", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+                    if (string.IsNullOrWhiteSpace(txtConfirmPassword.Text)) { MessageBox.Show("ยืนยันรหัสผ่านใหม่", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+                    if (txtPassword.Text.Length < 8) { MessageBox.Show("รหัสผ่านอย่างน้อย 8 ตัวอักษร", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+                    if (txtPassword.Text != txtConfirmPassword.Text) { MessageBox.Show("รหัสผ่านใหม่และยืนยันไม่ตรงกัน", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
+                    passwordEdited = true;
+                }
+                else passwordEdited = false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtAddress.Text))
+            // Thai ID: ต้องเป็น "ตัวเลข 13 หลัก" เท่านั้น (ไม่ตรวจ checksum)
+            string id = Regex.Replace(txtIdcard.Text ?? "", @"\D", "");
+            if (id.Length != 13)
             {
-                MessageBox.Show("กรุณากรอกที่อยู่ก่อนบันทึก!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false; // ❌ หยุดการทำงานถ้าไม่ได้กรอกที่อยู่
+                MessageBox.Show("เลขบัตรประชาชนต้องเป็นตัวเลข 13 หลัก",
+                    "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtIdcard.Focus(); txtIdcard.SelectAll(); return false;
             }
+            txtIdcard.Text = id; // normalize
 
-            if (cmbRole.SelectedIndex == -1) 
+            // Phone: 10 digits (normalize +66 → 0XXXXXXXXX)
+            string phone10 = NormalizeThaiMobile10(txtPhone.Text);
+            if (string.IsNullOrEmpty(phone10))
             {
-                starRole.Visible = true; hasError = true; 
+                MessageBox.Show("เบอร์โทรต้องเป็นตัวเลข 10 หลักเท่านั้น\nตัวอย่าง: 0812345678 หรือ +66812345678",
+                    "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPhone.Focus(); txtPhone.SelectAll(); return false;
             }
-            else { starRole.Visible = false; }
+            txtPhone.Text = phone10;
 
-            return !hasError;
+            // Email strict
+            string email = (txtEmail.Text ?? "").Trim();
+            if (!IsValidEmailStrict(email))
+            {
+                MessageBox.Show("รูปแบบอีเมลไม่ถูกต้อง!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtEmail.Focus(); txtEmail.SelectAll(); return false;
+            }
+            txtEmail.Text = NormalizeEmail(email);
+
+            return true;
         }
 
 
+        // ===== Buttons =====
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            isEditMode = false;
+            ClearForm();
             EnableControlsOn();
             ReadOnlyControlsOn();
+
+            txtPassword.UseSystemPasswordChar = true;
+            txtConfirmPassword.UseSystemPasswordChar = true;
+            cbxShowPassword1.Checked = false;
+            cbxShowPassword2.Checked = false;
+            passwordEdited = false;
+
             txtName.Focus();
-            ClearForm();
         }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(selectedEmployeeID))
+            {
+                MessageBox.Show("กรุณาเลือกพนักงานที่ต้องการแก้ไข!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            isEditMode = true;
+            EnableControlsOn();
+            ReadOnlyControlsOn();
+
+            var dal = new EmployeeDAL();
+            DataTable dt = dal.GetEmployeeByIDtoUMNGT(selectedEmployeeID);
+            if (dt.Rows.Count > 0)
+            {
+                currentHashedPassword = dt.Rows[0]["รหัสผ่าน"].ToString();
+            }
+
+            txtPassword.Clear();
+            txtConfirmPassword.Clear();
+            passwordEdited = false;
+
+            txtPassword.UseSystemPasswordChar = true;
+            txtConfirmPassword.UseSystemPasswordChar = true;
+            cbxShowPassword1.Checked = false;
+            cbxShowPassword2.Checked = false;
+
+            txtName.Focus();
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (!ValidateEmployeeData()) return;
 
-            EmployeeDAL dal = new EmployeeDAL();
-            // ✅ ตรวจสอบว่ามีการเปลี่ยน password หรือไม่
-            bool isPasswordChanged = txtPassword.Text != "********";
-            string finalPassword = isPasswordChanged || !isEditMode
+            var dal = new EmployeeDAL();
+            string excludeId = (isEditMode && !string.IsNullOrEmpty(selectedEmployeeID))
+                                ? selectedEmployeeID : null;
+
+            // Normalize/Trim ก่อนเช็ค & บันทึก
+            string emailToSave = NormalizeEmail((txtEmail.Text ?? "").Trim());
+            string usernameToSave = (txtUsername.Text ?? "").Trim();
+            string idcardToSave = (txtIdcard.Text ?? "").Trim();
+
+            // ===== กันข้อมูลซ้ำด้วยการเช็คจากแอปก่อน =====
+            if (dal.ExistsEmail(emailToSave, excludeId))
+            {
+                MessageBox.Show("อีเมลนี้ถูกใช้งานแล้วในระบบ!", "ข้อมูลซ้ำ",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtEmail.Focus(); txtEmail.SelectAll(); return;
+            }
+            if (dal.ExistsUsername(usernameToSave, excludeId))
+            {
+                MessageBox.Show("ชื่อผู้ใช้นี้ถูกใช้งานแล้วในระบบ!", "ข้อมูลซ้ำ",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtUsername.Focus(); txtUsername.SelectAll(); return;
+            }
+            if (dal.ExistsIDCard(idcardToSave, excludeId))
+            {
+                MessageBox.Show("เลขบัตรประชาชนนี้ถูกใช้งานแล้วในระบบ!", "ข้อมูลซ้ำ",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtIdcard.Focus(); txtIdcard.SelectAll(); return;
+            }
+
+            // ===== ตัดสินรหัสผ่านที่จะบันทึก =====
+            string finalPassword = !isEditMode
                 ? BCrypt.Net.BCrypt.HashPassword(txtPassword.Text)
-                : currentHashedPassword;
+                : (passwordEdited ? BCrypt.Net.BCrypt.HashPassword(txtPassword.Text) : currentHashedPassword);
 
-
-            Employee emp = new Employee
+            var emp = new Employee
             {
                 FirstName = txtName.Text.Trim(),
                 LastName = txtLastname.Text.Trim(),
-                Username = txtUsername.Text.Trim(),
+                Username = usernameToSave,
                 Password = finalPassword,
                 Phone = txtPhone.Text.Trim(),
-                Email = txtEmail.Text.Trim(),
+                Email = emailToSave,
                 Address = txtAddress.Text.Trim(),
-                IDCard = txtIdcard.Text.Trim(),
-                Role = cmbRole.SelectedItem.ToString()
+                IDCard = idcardToSave,
+                Role = cmbRole.SelectedItem?.ToString() ?? ""
             };
+            if (isEditMode) emp.EmployeeID = selectedEmployeeID;
 
+            try
+            {
+                bool ok = isEditMode ? dal.UpdateEmployee(emp) : dal.InsertEmployee(emp);
 
-            bool success;
-            if (isEditMode)
-            {
-                emp.EmployeeID = selectedEmployeeID;
-                success = dal.UpdateEmployee(emp);
-            }
-            else
-            {
-                success = dal.InsertEmployee(emp);
-            }
+                if (ok)
+                {
+                    MessageBox.Show("บันทึกข้อมูลสำเร็จ!", "Success",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            if (success)
-            {
-                MessageBox.Show("บันทึกข้อมูลสำเร็จ!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadEmployeeData();
-                ReadOnlyControlsOff();
-                EnableControlsOff();
-                ClearForm();
+                    LoadEmployeeData();
+                    ReadOnlyControlsOff();
+                    EnableControlsOff();
+                    ClearForm();
+                    isEditMode = false;
+                    passwordEdited = false;
+                    currentHashedPassword = "";
+                }
+                else
+                {
+                    MessageBox.Show("เกิดข้อผิดพลาดในการบันทึกข้อมูล!",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            else
+            // ===== ดักซ้ำจาก UNIQUE index ของ DB =====
+            catch (MySqlException ex) when (ex.Number == 1062) // Duplicate entry
             {
-                MessageBox.Show("เกิดข้อผิดพลาดในการบันทึกข้อมูล!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                string msg = "ข้อมูลซ้ำกับรายการเดิมในระบบ!";
+                if (ex.Message.Contains("emp_email")) // ชื่อคอลัมน์/ดัชนี
+                {
+                    msg = "อีเมลนี้ถูกใช้งานแล้วในระบบ!";
+                    txtEmail.Focus(); txtEmail.SelectAll();
+                }
+                else if (ex.Message.Contains("emp_username"))
+                {
+                    msg = "ชื่อผู้ใช้นี้ถูกใช้งานแล้วในระบบ!";
+                    txtUsername.Focus(); txtUsername.SelectAll();
+                }
+                else if (ex.Message.Contains("emp_identification") || ex.Message.Contains("uq_employee_idcard"))
+                {
+                    msg = "เลขบัตรประชาชนนี้ถูกใช้งานแล้วในระบบ!";
+                    txtIdcard.Focus(); txtIdcard.SelectAll();
+                }
 
+                MessageBox.Show(msg, "ข้อมูลซ้ำ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("เกิดข้อผิดพลาด: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
@@ -295,10 +426,11 @@ namespace JRSApplication
                 return;
             }
 
-            DialogResult result = MessageBox.Show("คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?", "ยืนยันการลบ", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            var result = MessageBox.Show("คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?", "ยืนยันการลบ",
+                                         MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (result != DialogResult.Yes) return;
 
-            EmployeeDAL dal = new EmployeeDAL();
+            var dal = new EmployeeDAL();
             bool success = dal.DeleteEmployee(selectedEmployeeID);
 
             if (success)
@@ -308,6 +440,9 @@ namespace JRSApplication
                 ReadOnlyControlsOff();
                 EnableControlsOff();
                 ClearForm();
+                isEditMode = false;
+                passwordEdited = false;
+                currentHashedPassword = "";
             }
             else
             {
@@ -315,156 +450,94 @@ namespace JRSApplication
             }
         }
 
-        // ✅ เก็บค่าดั้งเดิมของ Username, Email, และ ID Card เพื่อตรวจสอบการเปลี่ยนแปลง
-        private string originalUsername = "";
-        private string originalEmail = "";
-        private string originalIDCard = "";
+        // ===== Helpers =====
 
-        private void btnEdit_Click(object sender, EventArgs e)
+        private string NormalizeThaiMobile10(string raw)
         {
-            //แก้ไข
-            // ✅ ตรวจสอบว่ามีการเลือกพนักงานก่อนหรือไม่
-            if (string.IsNullOrEmpty(selectedEmployeeID))
+            if (string.IsNullOrWhiteSpace(raw)) return "";
+            string digits = Regex.Replace(raw, @"\D", "");
+            if (digits.StartsWith("66"))
             {
-                MessageBox.Show("กรุณาเลือกพนักงานที่ต้องการแก้ไข", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                string after = digits.Substring(2);
+                if (after.Length == 9) return "0" + after;
+                if (after.Length == 10 && after.StartsWith("0")) return after;
+                return "";
             }
-
-            // ✅ เปลี่ยนเป็นโหมดแก้ไข
-            isEditMode = true;
-
-            // ✅ เปิดให้แก้ไขฟอร์ม
-            EnableControlsOn();
-            ReadOnlyControlsOn();
-
-            // ✅ โหลดข้อมูลพนักงานที่เลือกมาใส่ในฟอร์ม
-            EmployeeDAL dal = new EmployeeDAL();
-            DataTable dt = dal.GetEmployeeByIDtoUMNGT(selectedEmployeeID);
-
-            if (dt.Rows.Count > 0)
-            {
-                DataRow row = dt.Rows[0];
-
-                txtName.Text = row["ชื่อ"].ToString();
-                txtLastname.Text = row["นามสกุล"].ToString();
-                txtUsername.Text = row["ชื่อผู้ใช้"].ToString();
-                txtPhone.Text = row["เบอร์โทร"].ToString();
-                txtEmail.Text = row["อีเมล"].ToString();
-                txtIdcard.Text = row["เลขบัตรประชาชน"].ToString();
-                txtAddress.Text = row["ที่อยู่"].ToString();
-                cmbRole.SelectedItem = row["ตำแหน่ง"].ToString();
-
-                // ✅ แสดง "********" แทน Hash จริง
-                txtPassword.Text = "********";
-                txtConfirmPassword.Text = "********";
-
-                // ✅ เก็บ Hash เดิมไว้ใน memory
-                currentHashedPassword = row["รหัสผ่าน"].ToString();
-
-                originalUsername = txtUsername.Text.Trim();
-                originalEmail = txtEmail.Text.Trim();
-                originalIDCard = txtIdcard.Text.Trim();
-            }
-
-
-            txtName.Focus(); // ✅ ให้โฟกัสไปที่ช่องชื่อ
+            return Regex.IsMatch(digits, @"^0\d{9}$") ? digits : "";
         }
 
-        //เปิด ปิด ล้าง ฟอร์ม
+        private bool IsValidEmailStrict(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email)) return false;
+            email = email.Trim();
+            if (email.Length > 254) return false;
+            if (email.Contains(" ") || email.Contains("..")) return false;
+
+            const string pattern =
+                @"^(?!\.)[A-Za-z0-9!#$%&'*+/=?^_`{|}~.-]{1,64}@" +
+                @"(?!-)(?:[A-Za-z0-9-]{1,63}\.)+[A-Za-z]{2,63}$";
+            if (!Regex.IsMatch(email, pattern)) return false;
+
+            try
+            {
+                var a = new MailAddress(email);
+                return string.Equals(a.Address, email, StringComparison.OrdinalIgnoreCase);
+            }
+            catch { return false; }
+        }
+
+        private string NormalizeEmail(string email)
+        {
+            email = (email ?? "").Trim();
+            int at = email.LastIndexOf('@');
+            if (at <= 0 || at == email.Length - 1) return email;
+            string local = email.Substring(0, at);
+            string domain = email.Substring(at + 1).ToLowerInvariant();
+            return $"{local}@{domain}";
+        }
+
+        // ===== UI enable/disable helpers =====
         private void ReadOnlyControlsOn()
         {
-            txtName.ReadOnly = false;
-            txtLastname.ReadOnly = false;
-            txtIdcard.ReadOnly = false;
-            txtEmail.ReadOnly = false;
-            txtPhone.ReadOnly = false;
-            txtAddress.ReadOnly = false;
-            txtUsername.ReadOnly = false;
-            txtPassword.ReadOnly = false;
-            txtConfirmPassword.ReadOnly = false;
-            cmbRole.SelectedIndex = 0;
+            txtName.ReadOnly = false; txtLastname.ReadOnly = false; txtIdcard.ReadOnly = false;
+            txtEmail.ReadOnly = false; txtPhone.ReadOnly = false; txtAddress.ReadOnly = false;
+            txtUsername.ReadOnly = false; txtPassword.ReadOnly = false; txtConfirmPassword.ReadOnly = false;
         }
         private void EnableControlsOn()
         {
-            txtName.Enabled = true;
-            txtLastname.Enabled = true;
-            txtIdcard.Enabled = true;
-            txtAddress.Enabled = true;
-            txtEmail.Enabled = true;
-            txtPhone.Enabled = true;
-            txtUsername.Enabled = true;
-            txtPassword.Enabled = true;
-            txtConfirmPassword.Enabled = true;
-            cmbRole.Enabled = true;
+            txtName.Enabled = true; txtLastname.Enabled = true; txtIdcard.Enabled = true; txtAddress.Enabled = true;
+            txtEmail.Enabled = true; txtPhone.Enabled = true; txtUsername.Enabled = true; txtPassword.Enabled = true;
+            txtConfirmPassword.Enabled = true; cmbRole.Enabled = true;
         }
         private void ReadOnlyControlsOff()
         {
-            txtName.ReadOnly = true;
-            txtLastname.ReadOnly = true;
-            txtIdcard.ReadOnly = true;
-            txtEmail.ReadOnly = true;
-            txtPhone.ReadOnly = true;
-            txtAddress.ReadOnly = true;
-            txtUsername.ReadOnly = true;
-            txtPassword.ReadOnly = true;
-            txtConfirmPassword.ReadOnly = true;
+            txtName.ReadOnly = true; txtLastname.ReadOnly = true; txtIdcard.ReadOnly = true;
+            txtEmail.ReadOnly = true; txtPhone.ReadOnly = true; txtAddress.ReadOnly = true;
+            txtUsername.ReadOnly = true; txtPassword.ReadOnly = true; txtConfirmPassword.ReadOnly = true;
             cmbRole.SelectedIndex = -1;
         }
         private void EnableControlsOff()
         {
-            txtName.Enabled = false;
-            txtLastname.Enabled = false;
-            txtIdcard.Enabled = false;
-            txtAddress.Enabled = false;
-            txtEmail.Enabled = false;
-            txtPhone.Enabled = false;
-            txtUsername.Enabled = false;
-            txtPassword.Enabled = false;
-            txtConfirmPassword.Enabled = false;
-            cmbRole.Enabled = false;
+            txtName.Enabled = false; txtLastname.Enabled = false; txtIdcard.Enabled = false; txtAddress.Enabled = false;
+            txtEmail.Enabled = false; txtPhone.Enabled = false; txtUsername.Enabled = false; txtPassword.Enabled = false;
+            txtConfirmPassword.Enabled = false; cmbRole.Enabled = false;
         }
         private void ClearForm()
         {
-            txtName.Clear();
-            txtLastname.Clear();
-            txtUsername.Clear();
-            txtPassword.Clear();
-            txtConfirmPassword.Clear();
-            txtPhone.Clear();
-            txtEmail.Clear();
-            txtIdcard.Clear();
-            txtAddress.Clear();
+            txtName.Clear(); txtLastname.Clear(); txtUsername.Clear();
+            txtPassword.Clear(); txtConfirmPassword.Clear();
+            txtPhone.Clear(); txtEmail.Clear(); txtIdcard.Clear(); txtAddress.Clear();
             cmbRole.SelectedIndex = -1;
         }
 
+        // ===== Event handlers wired from Designer =====
         private void cbxShowPassword1_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbxShowPassword1.Checked)
-            {
-                txtPassword.PasswordChar = '\0';
-                txtPassword.Text = currentHashedPassword;
-            }
-            else
-            {
-                txtPassword.PasswordChar = '*';
-                txtPassword.Text = "********";
-            }
+            txtPassword.UseSystemPasswordChar = !cbxShowPassword1.Checked;
         }
-
         private void cbxShowPassword2_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbxShowPassword2.Checked)
-            {
-                txtConfirmPassword.PasswordChar = '\0';
-                txtConfirmPassword.Text = currentHashedPassword;
-            }
-            else
-            {
-                txtConfirmPassword.PasswordChar = '*';
-                txtConfirmPassword.Text = "********";
-            }
+            txtConfirmPassword.UseSystemPasswordChar = !cbxShowPassword2.Checked;
         }
-
-
     }
 }

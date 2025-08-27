@@ -44,6 +44,7 @@
             this.lblToppic2 = new System.Windows.Forms.Label();
             this.dtgvSupplier = new System.Windows.Forms.DataGridView();
             this.pnlSuppilerdata = new System.Windows.Forms.Panel();
+            this.searchboxSuppiler = new JRSApplication.SearchboxControl();
             this.pnlStep = new System.Windows.Forms.Panel();
             this.pnlActionMenu = new System.Windows.Forms.Panel();
             this.btDelete = new System.Windows.Forms.Button();
@@ -60,7 +61,8 @@
             this.starPhone = new System.Windows.Forms.Label();
             this.lblPhone = new System.Windows.Forms.Label();
             this.txtPhone = new System.Windows.Forms.TextBox();
-            this.searchboxSuppiler = new JRSApplication.SearchboxControl();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.pnlIdCompany.SuspendLayout();
             this.pnlName.SuspendLayout();
             this.pnlAddress.SuspendLayout();
@@ -75,6 +77,7 @@
             // 
             // pnlIdCompany
             // 
+            this.pnlIdCompany.Controls.Add(this.label2);
             this.pnlIdCompany.Controls.Add(this.starIdCompany);
             this.pnlIdCompany.Controls.Add(this.lblIdCompany);
             this.pnlIdCompany.Controls.Add(this.txtJuristic);
@@ -257,6 +260,15 @@
             this.pnlSuppilerdata.Size = new System.Drawing.Size(1584, 611);
             this.pnlSuppilerdata.TabIndex = 7;
             // 
+            // searchboxSuppiler
+            // 
+            this.searchboxSuppiler.BackColor = System.Drawing.Color.White;
+            this.searchboxSuppiler.Location = new System.Drawing.Point(905, 22);
+            this.searchboxSuppiler.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxSuppiler.Name = "searchboxSuppiler";
+            this.searchboxSuppiler.Size = new System.Drawing.Size(650, 50);
+            this.searchboxSuppiler.TabIndex = 3;
+            // 
             // pnlStep
             // 
             this.pnlStep.BackColor = System.Drawing.Color.Black;
@@ -413,6 +425,7 @@
             // 
             // pnlPhone
             // 
+            this.pnlPhone.Controls.Add(this.label1);
             this.pnlPhone.Controls.Add(this.starPhone);
             this.pnlPhone.Controls.Add(this.lblPhone);
             this.pnlPhone.Controls.Add(this.txtPhone);
@@ -458,14 +471,29 @@
             this.txtPhone.TabIndex = 2;
             this.txtPhone.TextChanged += new System.EventHandler(this.txtPhone_TextChanged);
             // 
-            // searchboxSuppiler
+            // label2
             // 
-            this.searchboxSuppiler.BackColor = System.Drawing.Color.White;
-            this.searchboxSuppiler.Location = new System.Drawing.Point(905, 22);
-            this.searchboxSuppiler.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxSuppiler.Name = "searchboxSuppiler";
-            this.searchboxSuppiler.Size = new System.Drawing.Size(650, 50);
-            this.searchboxSuppiler.TabIndex = 3;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(249, 16);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(80, 17);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "(ตัวเลขเท่านั้น)";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(249, 18);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(80, 17);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "(ตัวเลขเท่านั้น)";
             // 
             // SupplierRegistration
             // 
@@ -533,5 +561,7 @@
         private System.Windows.Forms.Label starPhone;
         private System.Windows.Forms.Label lblPhone;
         private System.Windows.Forms.TextBox txtPhone;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
