@@ -193,7 +193,7 @@ namespace JRSApplication
 
             if (project == null)
             {
-                MessageBox.Show("ไม่พบข้อมูลโครงการที่เลือก", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("ไม่พบข้อมูลโครงการที่เลือก!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -575,7 +575,7 @@ namespace JRSApplication
             }
             else
             {
-                MessageBox.Show("กรุณาเลือกเฟสที่ต้องการแก้ไข", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกเฟสที่ต้องการแก้ไข!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -708,7 +708,7 @@ namespace JRSApplication
 
                 if (!success)
                 {
-                    MessageBox.Show("เกิดข้อผิดพลาดในการบันทึก", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("เกิดข้อผิดพลาดในการบันทึก!", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -758,7 +758,7 @@ namespace JRSApplication
             //แก้ไข
             if (selectedProjectID == null)
             {
-                MessageBox.Show("กรุณาเลือกโครงการก่อนแก้ไข", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกโครงการก่อนแก้ไข!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -774,7 +774,7 @@ namespace JRSApplication
             //ลบ
             if (dtgvProject.SelectedRows.Count == 0)
             {
-                MessageBox.Show("กรุณาเลือกโครงการที่ต้องการลบ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกโครงการที่ต้องการลบ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -789,12 +789,12 @@ namespace JRSApplication
 
                 if (success)
                 {
-                    MessageBox.Show("ลบโครงการเรียบร้อย", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("ลบโครงการเรียบร้อย!", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadProjectData(); // โหลดข้อมูลใหม่
                 }
                 else
                 {
-                    MessageBox.Show("เกิดข้อผิดพลาดในการลบโครงการ", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("เกิดข้อผิดพลาดในการลบโครงการ!", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -1055,7 +1055,7 @@ namespace JRSApplication
             // ตรวจสอบค่าที่ป้อน
             if (!int.TryParse(txtWorkingDate.Text.Trim(), out int workingDays) || workingDays <= 0)
             {
-                MessageBox.Show("กรุณากรอกจำนวนวันทำงานให้ถูกต้อง");
+                MessageBox.Show("กรุณากรอกจำนวนวันทำงานให้ถูกต้อง!");
                 return;
             }
 
@@ -1093,7 +1093,7 @@ namespace JRSApplication
                 else
                 {
                     // ❌ ไม่ยืนยัน -> ผู้ใช้แก้ไขเอง
-                    MessageBox.Show("กรุณาแก้ไขระยะเวลาทำงานเพื่อหลีกเลี่ยงวันอาทิตย์ก่อนบันทึก", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("กรุณาแก้ไขระยะเวลาทำงานเพื่อหลีกเลี่ยงวันอาทิตย์ก่อนบันทึก!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
             }
@@ -1161,7 +1161,7 @@ namespace JRSApplication
                         }
                         else
                         {
-                            MessageBox.Show("ขนาดไฟล์เกิน 50MB", "ขนาดไฟล์ไม่ถูกต้อง", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("ขนาดไฟล์เกิน 50MB!", "ขนาดไฟล์ไม่ถูกต้อง", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                     else
@@ -1193,68 +1193,68 @@ namespace JRSApplication
             // ✅ ตรวจสอบค่าที่จำเป็นต้องกรอก
             if (string.IsNullOrWhiteSpace(txtProjectName.Text))
             {
-                MessageBox.Show("กรุณากรอกชื่อโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกชื่อโครงการ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtProjectName.Focus();
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(txtNumber.Text))
             {
-                MessageBox.Show("กรุณากรอกเลขที่สัญญา", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกเลขที่สัญญา!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtNumber.Focus();
                 return false;
             }
 
             if (cmbCurrentPhaseNumber.SelectedItem == null)
             {
-                MessageBox.Show("กรุณาระบุจำนวนเฟส", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาระบุจำนวนเฟส!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cmbCurrentPhaseNumber.Focus();
                 return false;
             }
 
             if (dtpkStartDate.Value > dtpkEndDate.Value)
             {
-                MessageBox.Show("วันที่สิ้นสุดโครงการต้องไม่น้อยกว่าวันที่เริ่มต้น", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("วันที่สิ้นสุดโครงการต้องไม่น้อยกว่าวันที่เริ่มต้น!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 dtpkEndDate.Focus();
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(txtBudget.Text) || !decimal.TryParse(txtBudget.Text.Replace(",", ""), out _))
             {
-                MessageBox.Show("กรุณากรอกจำนวนเงินจ้างที่ถูกต้อง", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกจำนวนเงินจ้างที่ถูกต้อง!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtBudget.Focus();
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(selectedCustomerID))
             {
-                MessageBox.Show("กรุณาเลือกข้อมูลลูกค้า", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกข้อมูลลูกค้า!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(selectedEmployeeID))
             {
-                MessageBox.Show("กรุณาเลือกข้อมูลผู้ดูแลโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกข้อมูลผู้ดูแลโครงการ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(txtProjectAddress.Text))
             {
-                MessageBox.Show("กรุณากรอกที่อยู่โครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกที่อยู่โครงการ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtProjectAddress.Focus();
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(txtRemark.Text))
             {
-                MessageBox.Show("กรุณากรอกหมายเหตุที่เกี่ยวข้องกับโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกหมายเหตุที่เกี่ยวข้องกับโครงการ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtRemark.Focus();
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(txtProjectDetail.Text))
             {
-                MessageBox.Show("กรุณากรอกรายละเอียดโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกรายละเอียดโครงการ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtProjectDetail.Focus();
                 return false;
             }
@@ -1264,7 +1264,7 @@ namespace JRSApplication
             {
                 MessageBox.Show(
                     "กรุณาเลือกไฟล์แบบแปลนโครงการ (Blueprint) ก่อนบันทึก!",
-                    "ข้อมูลผิดพลาด",
+                    "ข้อมูลผิดพลาด!",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 );

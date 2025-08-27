@@ -82,7 +82,7 @@ namespace JRSApplication
                 if (!IsValidEmailStrict(email))
                 {
                     e.Cancel = true;
-                    MessageBox.Show("รูปแบบอีเมลไม่ถูกต้อง\nตัวอย่าง: name@example.com",
+                    MessageBox.Show("รูปแบบอีเมลไม่ถูกต้อง!\nตัวอย่าง: name@example.com",
                         "กรุณากรอกอีเมลให้ถูกต้อง", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtEmail.SelectAll();
                 }
@@ -243,17 +243,17 @@ namespace JRSApplication
             }
             catch (MySqlException ex) when (ex.Number == 1062) // Duplicate entry
             {
-                string msg = "ข้อมูลซ้ำในระบบ";
-                if (ex.Message.Contains("cus_email")) { msg = "อีเมลนี้มีอยู่แล้วในระบบ"; txtEmail.Focus(); txtEmail.SelectAll(); }
-                else if (ex.Message.Contains("cus_id_card")) { msg = "เลขบัตรประชาชนนี้มีอยู่แล้วในระบบ"; txtIdcard.Focus(); txtIdcard.SelectAll(); }
-                else if (ex.Message.Contains("PRIMARY") || ex.Message.Contains("cus_id")) { msg = "รหัสลูกค้าซ้ำในระบบ"; }
+                string msg = "ข้อมูลซ้ำในระบบ!";
+                if (ex.Message.Contains("cus_email")) { msg = "อีเมลนี้มีอยู่แล้วในระบบ!"; txtEmail.Focus(); txtEmail.SelectAll(); }
+                else if (ex.Message.Contains("cus_id_card")) { msg = "เลขบัตรประชาชนนี้มีอยู่แล้วในระบบ!"; txtIdcard.Focus(); txtIdcard.SelectAll(); }
+                else if (ex.Message.Contains("PRIMARY") || ex.Message.Contains("cus_id")) { msg = "รหัสลูกค้าซ้ำในระบบ!"; }
 
-                MessageBox.Show(msg, "ข้อมูลซ้ำ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(msg, "ข้อมูลซ้ำ!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("เกิดข้อผิดพลาด: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("เกิดข้อผิดพลาด!: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -290,7 +290,7 @@ namespace JRSApplication
         {
             if (string.IsNullOrEmpty(selectedCustomerID))
             {
-                MessageBox.Show("กรุณาเลือกลูกค้าก่อนแก้ไข", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกลูกค้าก่อนแก้ไข!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -447,7 +447,7 @@ namespace JRSApplication
         private bool AlertField(string message, TextBox tb, Label star)
         {
             if (star != null) star.Visible = true;
-            MessageBox.Show(message, "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(message, "แจ้งเตือน!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             if (tb != null) { tb.Focus(); tb.SelectAll(); }
             return false;
         }
@@ -457,40 +457,40 @@ namespace JRSApplication
         {
             // ชื่อ
             if (string.IsNullOrWhiteSpace((txtName.Text ?? "").Trim()))
-                return AlertField("กรุณากรอกชื่อ", txtName, starName);
+                return AlertField("กรุณากรอกชื่อ!", txtName, starName);
 
             // นามสกุล
             if (string.IsNullOrWhiteSpace((txtLastname.Text ?? "").Trim()))
-                return AlertField("กรุณากรอกนามสกุล", txtLastname, starLastname);
+                return AlertField("กรุณากรอกนามสกุล!", txtLastname, starLastname);
 
             // เลขบัตรประชาชน: ต้องเป็นตัวเลข 13 หลัก
             var idCard = Regex.Replace((txtIdcard.Text ?? "").Trim(), @"\D", "");
             if (string.IsNullOrWhiteSpace(idCard))
-                return AlertField("กรุณากรอกเลขบัตรประชาชน", txtIdcard, starIdcard);
+                return AlertField("กรุณากรอกเลขบัตรประชาชน!", txtIdcard, starIdcard);
             if (idCard.Length != 13)
-                return AlertField("เลขบัตรประชาชนต้องเป็นตัวเลข 13 หลัก", txtIdcard, starIdcard);
+                return AlertField("เลขบัตรประชาชนต้องเป็นตัวเลข 13 หลัก!", txtIdcard, starIdcard);
             txtIdcard.Text = idCard; // normalize
 
             // เบอร์โทร: ต้อง normalize ได้เป็น 0XXXXXXXXX (10 หลัก)
             var phoneRaw = (txtPhone.Text ?? "").Trim();
             if (string.IsNullOrWhiteSpace(phoneRaw))
-                return AlertField("กรุณากรอกเบอร์โทร", txtPhone, starPhone);
+                return AlertField("กรุณากรอกเบอร์โทร!", txtPhone, starPhone);
             var phoneNorm = NormalizeThaiMobile10(phoneRaw);
             if (string.IsNullOrEmpty(phoneNorm))
-                return AlertField("เบอร์โทรศัพท์ต้องเป็นตัวเลข 10 หลัก", txtPhone, starPhone);
+                return AlertField("เบอร์โทรศัพท์ต้องเป็นตัวเลข 10 หลัก!", txtPhone, starPhone);
             txtPhone.Text = phoneNorm;
 
             // อีเมล
             var emailRaw = (txtEmail.Text ?? "").Trim();
             if (string.IsNullOrWhiteSpace(emailRaw))
-                return AlertField("กรุณากรอกอีเมล", txtEmail, starEmail);
+                return AlertField("กรุณากรอกอีเมล!", txtEmail, starEmail);
             if (!IsValidEmailStrict(emailRaw))
-                return AlertField("รูปแบบอีเมลไม่ถูกต้อง", txtEmail, starEmail);
+                return AlertField("รูปแบบอีเมลไม่ถูกต้อง!", txtEmail, starEmail);
             txtEmail.Text = NormalizeEmail(emailRaw);
 
             // ที่อยู่
             if (string.IsNullOrWhiteSpace((txtAddress.Text ?? "").Trim()))
-                return AlertField("กรุณากรอกที่อยู่", txtAddress, starAddress);
+                return AlertField("กรุณากรอกที่อยู่!", txtAddress, starAddress);
 
             // ผ่านทุกช่อง -> ซ่อนดอกจัน
             starName.Visible = starLastname.Visible = starIdcard.Visible =

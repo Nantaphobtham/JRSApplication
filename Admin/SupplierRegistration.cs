@@ -175,7 +175,7 @@ namespace JRSApplication
         {
             if (string.IsNullOrEmpty(selectedSupplierID))
             {
-                MessageBox.Show("กรุณาเลือกซัพพลายเออร์ก่อนแก้ไข", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกซัพพลายเออร์ก่อนแก้ไข!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -287,17 +287,17 @@ namespace JRSApplication
             catch (MySql.Data.MySqlClient.MySqlException ex) when (ex.Number == 1062) // Duplicate entry
             {
                 // ระบุ index name ของตาราง supplier ให้ตรงกับ DB คุณ
-                string msg = "ข้อมูลซ้ำในระบบ";
+                string msg = "ข้อมูลซ้ำในระบบ!";
                 if (ex.Message.Contains("uq_supplier_email") || ex.Message.Contains("supplier_email"))
-                    msg = "อีเมลนี้มีอยู่แล้วในระบบ";
+                    msg = "อีเมลนี้มีอยู่แล้วในระบบ!";
                 else if (ex.Message.Contains("uq_supplier_phone") || ex.Message.Contains("supplier_phone"))
-                    msg = "เบอร์โทรนี้มีอยู่แล้วในระบบ";
+                    msg = "เบอร์โทรนี้มีอยู่แล้วในระบบ!";
                 else if (ex.Message.Contains("uq_supplier_juristic") || ex.Message.Contains("supplier_juristic"))
-                    msg = "เลขนิติบุคคล/ภาษีนี้มีอยู่แล้วในระบบ";
+                    msg = "เลขนิติบุคคล/ภาษีนี้มีอยู่แล้วในระบบ!";
                 else if (ex.Message.Contains("uq_supplier_name") || ex.Message.Contains("supplier_name"))
-                    msg = "ชื่อบริษัทนี้มีอยู่แล้วในระบบ";
+                    msg = "ชื่อบริษัทนี้มีอยู่แล้วในระบบ!";
 
-                MessageBox.Show(msg, "ข้อมูลซ้ำ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(msg, "ข้อมูลซ้ำ!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 // โฟกัสที่ช่องที่คาดว่าน่าจะซ้ำ
                 if (msg.Contains("อีเมล")) { txtEmail.Focus(); txtEmail.SelectAll(); }
@@ -407,7 +407,7 @@ namespace JRSApplication
             {
                 ep.SetError(txtName, "กรอกชื่อบริษัท");
                 starCompanyName.Visible = true;
-                return ShowFieldError(txtName, "กรุณากรอกชื่อบริษัท");
+                return ShowFieldError(txtName, "กรุณากรอกชื่อบริษัท!");
             }
             ep.SetError(txtName, "");
             starCompanyName.Visible = false;
@@ -416,9 +416,9 @@ namespace JRSApplication
             string juristicDigits = Regex.Replace(txtJuristic.Text, @"\D", "");
             if (juristicDigits.Length != 13)
             {
-                ep.SetError(txtJuristic, "เลขนิติบุคคล/ภาษี ต้องมี 13 หลัก");
+                ep.SetError(txtJuristic, "เลขนิติบุคคล/ภาษี ต้องมี 13 หลัก!");
                 starIdCompany.Visible = true;
-                return ShowFieldError(txtJuristic, "กรุณากรอกเลขนิติบุคคล/ผู้เสียภาษีให้ถูกต้อง (13 หลัก)");
+                return ShowFieldError(txtJuristic, "กรุณากรอกเลขนิติบุคคล/ผู้เสียภาษีให้ถูกต้อง (13 หลัก)!");
             }
             txtJuristic.Text = juristicDigits; // normalize
             ep.SetError(txtJuristic, "");
@@ -439,7 +439,7 @@ namespace JRSApplication
             // 4) อีเมล
             if (!IsValidEmailStrict(txtEmail.Text))
             {
-                ep.SetError(txtEmail, "อีเมลไม่ถูกต้อง");
+                ep.SetError(txtEmail, "อีเมลไม่ถูกต้อง!");
                 starEmail.Visible = true;
                 return ShowFieldError(txtEmail, "กรุณากรอกอีเมลให้ถูกต้อง เช่น name@example.com");
             }
@@ -452,7 +452,7 @@ namespace JRSApplication
             {
                 ep.SetError(txtAddress, "กรอกที่อยู่");
                 starAddress.Visible = true;
-                return ShowFieldError(txtAddress, "กรุณากรอกที่อยู่");
+                return ShowFieldError(txtAddress, "กรุณากรอกที่อยู่!");
             }
             ep.SetError(txtAddress, "");
             starAddress.Visible = false;
@@ -467,16 +467,16 @@ namespace JRSApplication
 
             // เรียกเช็คทีละช่อง
             if (!string.IsNullOrEmpty(email) && dal.ExistsEmail(email, excludeSupplierId))
-                return ShowDupError(txtEmail, "อีเมลนี้มีอยู่แล้วในระบบ");
+                return ShowDupError(txtEmail, "อีเมลนี้มีอยู่แล้วในระบบ!");
 
             if (!string.IsNullOrEmpty(phone) && dal.ExistsPhone(phone, excludeSupplierId))
-                return ShowDupError(txtPhone, "เบอร์โทรนี้มีอยู่แล้วในระบบ");
+                return ShowDupError(txtPhone, "เบอร์โทรนี้มีอยู่แล้วในระบบ!");
 
             if (!string.IsNullOrEmpty(juristic) && dal.ExistsJuristic(juristic, excludeSupplierId))
-                return ShowDupError(txtJuristic, "เลขนิติบุคคล/ภาษีนี้มีอยู่แล้วในระบบ");
+                return ShowDupError(txtJuristic, "เลขนิติบุคคล/ภาษีนี้มีอยู่แล้วในระบบ!");
 
             if (!string.IsNullOrEmpty(name) && dal.ExistsSupplierName(name, excludeSupplierId))
-                return ShowDupError(txtName, "ชื่อบริษัทนี้มีอยู่แล้วในระบบ");
+                return ShowDupError(txtName, "ชื่อบริษัทนี้มีอยู่แล้วในระบบ!");
 
             // ถ้าคุณยังอยากมี fallback แบบเช็ครวม (ในกรณีที่เมธอดด้านบนยังไม่ได้ทำ)
             // ให้คงเมธอดนี้ไว้ใน DAL
@@ -494,7 +494,7 @@ namespace JRSApplication
         /// แสดงข้อความซ้ำเฉพาะช่อง + โฟกัส + เลือกข้อความ
         private bool ShowDupError(TextBox tb, string message)
         {
-            MessageBox.Show(message, "ข้อมูลซ้ำ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(message, "ข้อมูลซ้ำ!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             if (tb != null)
             {
                 tb.Focus();

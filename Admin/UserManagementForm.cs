@@ -38,7 +38,7 @@ namespace JRSApplication
                 if (digits.Length != 13)
                 {
                     e.Cancel = true;
-                    MessageBox.Show("เลขบัตรประชาชนต้องเป็นตัวเลข 13 หลัก",
+                    MessageBox.Show("เลขบัตรประชาชนต้องเป็นตัวเลข 13 หลัก!",
                         "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtIdcard.SelectAll();
                 }
@@ -62,7 +62,7 @@ namespace JRSApplication
                 {
                     e.Cancel = true;
                     MessageBox.Show("เบอร์โทรต้องเป็นตัวเลข 10 หลักเท่านั้น\nตัวอย่าง: 0812345678 หรือ +66812345678",
-                        "กรุณากรอกเบอร์โทรให้ถูกต้อง", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        "กรุณากรอกเบอร์โทรให้ถูกต้อง!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtPhone.SelectAll();
                 }
                 else
@@ -79,7 +79,7 @@ namespace JRSApplication
                 {
                     e.Cancel = true;
                     MessageBox.Show("อีเมลไม่ถูกต้อง\nตัวอย่างที่ถูกต้อง: name@example.com",
-                        "กรุณากรอกอีเมลให้ถูกต้อง", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        "กรุณากรอกอีเมลให้ถูกต้อง!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     txtEmail.SelectAll();
                 }
                 else
@@ -132,7 +132,7 @@ namespace JRSApplication
             DataTable dt = dal.GetEmployeeByIDtoUMNGT(selectedEmployeeID);
             if (dt.Rows.Count == 0)
             {
-                MessageBox.Show("ไม่สามารถโหลดข้อมูลพนักงานได้", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("ไม่สามารถโหลดข้อมูลพนักงานได้!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -256,7 +256,7 @@ namespace JRSApplication
             string email = (txtEmail.Text ?? "").Trim();
             if (!IsValidEmailStrict(email))
             {
-                MessageBox.Show("รูปแบบอีเมลไม่ถูกต้อง", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("รูปแบบอีเมลไม่ถูกต้อง!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtEmail.Focus(); txtEmail.SelectAll(); return false;
             }
             txtEmail.Text = NormalizeEmail(email);
@@ -286,7 +286,7 @@ namespace JRSApplication
         {
             if (string.IsNullOrEmpty(selectedEmployeeID))
             {
-                MessageBox.Show("กรุณาเลือกพนักงานที่ต้องการแก้ไข", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกพนักงานที่ต้องการแก้ไข!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -329,19 +329,19 @@ namespace JRSApplication
             // ===== กันข้อมูลซ้ำด้วยการเช็คจากแอปก่อน =====
             if (dal.ExistsEmail(emailToSave, excludeId))
             {
-                MessageBox.Show("อีเมลนี้ถูกใช้งานแล้วในระบบ", "ข้อมูลซ้ำ",
+                MessageBox.Show("อีเมลนี้ถูกใช้งานแล้วในระบบ!", "ข้อมูลซ้ำ",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtEmail.Focus(); txtEmail.SelectAll(); return;
             }
             if (dal.ExistsUsername(usernameToSave, excludeId))
             {
-                MessageBox.Show("ชื่อผู้ใช้นี้ถูกใช้งานแล้วในระบบ", "ข้อมูลซ้ำ",
+                MessageBox.Show("ชื่อผู้ใช้นี้ถูกใช้งานแล้วในระบบ!", "ข้อมูลซ้ำ",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtUsername.Focus(); txtUsername.SelectAll(); return;
             }
             if (dal.ExistsIDCard(idcardToSave, excludeId))
             {
-                MessageBox.Show("เลขบัตรประชาชนนี้ถูกใช้งานแล้วในระบบ", "ข้อมูลซ้ำ",
+                MessageBox.Show("เลขบัตรประชาชนนี้ถูกใช้งานแล้วในระบบ!", "ข้อมูลซ้ำ",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtIdcard.Focus(); txtIdcard.SelectAll(); return;
             }
@@ -391,20 +391,20 @@ namespace JRSApplication
             // ===== ดักซ้ำจาก UNIQUE index ของ DB =====
             catch (MySqlException ex) when (ex.Number == 1062) // Duplicate entry
             {
-                string msg = "ข้อมูลซ้ำกับรายการเดิมในระบบ";
+                string msg = "ข้อมูลซ้ำกับรายการเดิมในระบบ!";
                 if (ex.Message.Contains("emp_email")) // ชื่อคอลัมน์/ดัชนี
                 {
-                    msg = "อีเมลนี้ถูกใช้งานแล้วในระบบ";
+                    msg = "อีเมลนี้ถูกใช้งานแล้วในระบบ!";
                     txtEmail.Focus(); txtEmail.SelectAll();
                 }
                 else if (ex.Message.Contains("emp_username"))
                 {
-                    msg = "ชื่อผู้ใช้นี้ถูกใช้งานแล้วในระบบ";
+                    msg = "ชื่อผู้ใช้นี้ถูกใช้งานแล้วในระบบ!";
                     txtUsername.Focus(); txtUsername.SelectAll();
                 }
                 else if (ex.Message.Contains("emp_identification") || ex.Message.Contains("uq_employee_idcard"))
                 {
-                    msg = "เลขบัตรประชาชนนี้ถูกใช้งานแล้วในระบบ";
+                    msg = "เลขบัตรประชาชนนี้ถูกใช้งานแล้วในระบบ!";
                     txtIdcard.Focus(); txtIdcard.SelectAll();
                 }
 
