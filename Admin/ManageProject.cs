@@ -60,6 +60,10 @@ namespace JRSApplication
             InitializePhaseDataGridView();   //ของ phase
             InitializeDataGridViewProject(); // ✅ กำหนดโครงสร้าง DataGridView
 
+            // ✅ โหลดข้อมูลโปรเจกต์ทันที
+            LoadProjectData();
+            this.Load += (s, e) => LoadProjectData();  // ✅
+
         }
 
         //การโหลดและจัดการตาราง Project
