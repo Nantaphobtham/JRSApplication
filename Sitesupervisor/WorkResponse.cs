@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,6 +19,7 @@ namespace JRSApplication.Sitesupervisor
         {
             InitializeComponent();
             SetupGrid();
+            LoadWorkResponse();
         }
         private void SetupGrid()
         {
@@ -31,7 +33,7 @@ namespace JRSApplication.Sitesupervisor
 
             dtgvWorkResponse.Columns.Clear();
 
-            // 🧮 ลำดับ (คอลัมน์ไม่ผูกข้อมูล)
+            // ลำดับ
             var colIndex = new DataGridViewTextBoxColumn
             {
                 Name = "colIndex",
@@ -40,12 +42,12 @@ namespace JRSApplication.Sitesupervisor
             };
             dtgvWorkResponse.Columns.Add(colIndex);
 
-            // 🏷️ รหัสรายการ
+            // 🏷️ รหัสรายการ (phase_no + order_number)
             dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "colOrderNo",
                 HeaderText = "รหัสรายการ",
-                DataPropertyName = "order_no" // ควรเป็น order_id และ phase_id
+                DataPropertyName = "display_key"
             });
 
             // 🧭 รหัสโครงการ
@@ -56,23 +58,23 @@ namespace JRSApplication.Sitesupervisor
                 DataPropertyName = "pro_id"
             });
 
-            // 🧩 เฟสที่
+            // 🧩 เฟสที่ (phase_no)
             dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "colPhase",
                 HeaderText = "เฟสที่",
-                DataPropertyName = "phase_id"
+                DataPropertyName = "phase_no"
             });
 
-            // 📝 รายละเอียด
+            // 📝 รายละเอียด (order_detail)
             dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "colDetail",
                 HeaderText = "รายละเอียด",
-                DataPropertyName = "detail"
+                DataPropertyName = "order_detail"
             });
 
-            // 📅 วันที่
+            // 📅 วันที่ (order_date)
             var colDate = new DataGridViewTextBoxColumn
             {
                 Name = "colOrderDate",
@@ -82,12 +84,12 @@ namespace JRSApplication.Sitesupervisor
             };
             dtgvWorkResponse.Columns.Add(colDate);
 
-            // 🚦 สถานะ
+            // 🚦 สถานะ (order_status)
             dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "colStatus",
                 HeaderText = "สถานะ",
-                DataPropertyName = "status"
+                DataPropertyName = "order_status"
             });
 
             // วาดเลขลำดับอัตโนมัติ
@@ -96,5 +98,43 @@ namespace JRSApplication.Sitesupervisor
                 dtgvWorkResponse.Rows[e.RowIndex].Cells["colIndex"].Value = (e.RowIndex + 1).ToString();
             };
         }
+        private void LoadWorkResponse()
+        {
+            string sql = @"
+                SELECT 
+                    po.order_id,
+                    po.order_number,
+                    po.order_detail,
+                    po.order_date,
+                    po.order_status,
+                    pp.phase_id,
+                    pp.phase_no,
+                    pp.phase_detail,
+                    pp.pro_id
+                FROM 
+                    purchaseorder po
+                INNER JOIN 
+                    project_phase pp ON po.pro_id = pp.pro_id
+                -- หากต้องการ Filter เฉพาะ เพิ่ม WHERE ได้
+            ";
+
+            using (var con = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, con))
+            using (var da = new MySqlDataAdapter(cmd))
+            {
+                var dt = new DataTable();
+                da.Fill(dt);
+
+                // สร้างคอลัมน์ "display_key" สำหรับโชว์รหัสรายการ (Phase + Order)
+                dt.Columns.Add("display_key", typeof(string));
+                foreach (DataRow row in dt.Rows)
+                {
+                    row["display_key"] = $"Phase: {row["phase_no"]} | Order: {row["order_number"]}";
+                }
+
+                dtgvWorkResponse.DataSource = dt;
+            }
+        }
+
     }
 }
