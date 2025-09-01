@@ -71,6 +71,7 @@
             this.Controls.Add(this.searchboxControl1);
             this.Name = "WorkResponse";
             this.Size = new System.Drawing.Size(1584, 954);
+            
             ((System.ComponentModel.ISupportInitialize)(this.dtgvWorkResponse)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
