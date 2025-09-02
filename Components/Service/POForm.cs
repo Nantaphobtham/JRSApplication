@@ -163,8 +163,16 @@ namespace JRSApplication.Components.Service
             {
                 txtPONumber.Text = order.OrderNumber;          // เลขที่ใบสั่งซื้อ
                 txtProjectNumber.Text = order.ProId.ToString(); // หรือจะแสดง ProjectNumber จริงก็ได้ถ้ามี JOIN
-                txtEmpName.Text = order.EmpId; // หรือจะแสดงชื่อพนักงานจริงก็ได้ถ้ามี JOIN
-                txtEmpApprove.Text = order.ApprovedByEmpId; // พนักงานที่อนุมัติ
+                // ผู้สร้างใบสั่งซื้อ (โชว์ชื่อ ถ้าไม่มีค่อยโชว์รหัส)
+                txtEmpName.Text = !string.IsNullOrWhiteSpace(order.EmpName)
+                    ? order.EmpName
+                    : (order.EmpId ?? "-");
+
+                // ✅ ผู้อนุมัติ (แสดงชื่อ; ถ้ายังไม่อนุมัติให้โชว์ "รออนุมัติ")
+                txtEmpApprove.Text = !string.IsNullOrWhiteSpace(order.ApprovedByName)
+                    ? order.ApprovedByName
+                    : "รออนุมัติ";
+
                 txtDate.Text = order.OrderDate.ToString("dd/MM/yyyy"); // วันที่ใบสั่งซื้อ
                 txtApproveDate.Text = order.ApprovedDate.HasValue 
                     ? order.ApprovedDate.Value.ToString("dd/MM/yyyy") 
