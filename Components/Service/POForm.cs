@@ -262,7 +262,7 @@ namespace JRSApplication.Components.Service
         {
             string remark = txtRemark.Text.Trim();
 
-            if (chkApproved.Checked && !chkRejected.Checked)
+            if (radioApproved.Checked)
             {
                 DialogResult result = MessageBox.Show(
                     "คุณยืนยันที่จะอนุมัติใบสั่งซื้อนี้หรือไม่?",
@@ -275,7 +275,7 @@ namespace JRSApplication.Components.Service
                     UpdateOrderStatus("approved", remark);
                 }
             }
-            else if (!chkApproved.Checked && chkRejected.Checked)
+            else if (radioRejected.Checked)
             {
                 DialogResult result = MessageBox.Show(
                     "คุณแน่ใจหรือไม่ที่จะ 'ไม่อนุมัติ' ใบสั่งซื้อนี้?",
@@ -290,10 +290,13 @@ namespace JRSApplication.Components.Service
             }
             else
             {
-                MessageBox.Show("กรุณาเลือกสถานะการอนุมัติใบสั่งซื้อก่อนบันทึก", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกสถานะการอนุมัติใบสั่งซื้อก่อนบันทึก",
+                                "แจ้งเตือน",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
             }
-            
         }
+
 
         //private void btnRejected_Click(object sender, EventArgs e)
         //{
