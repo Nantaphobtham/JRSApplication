@@ -280,7 +280,7 @@ namespace JRSApplication.Components.Service
 
                 if (result == DialogResult.Yes)
                 {
-                    UpdateOrderStatus("approved", remark);
+                    UpdateOrderStatus("อนุมัติ", remark);
                 }
             }
             else if (radioRejected.Checked)
@@ -293,7 +293,7 @@ namespace JRSApplication.Components.Service
 
                 if (result == DialogResult.Yes)
                 {
-                    UpdateOrderStatus("rejected", remark);
+                    UpdateOrderStatus("ไม่อนุมัติ", remark);
                 }
             }
             else
