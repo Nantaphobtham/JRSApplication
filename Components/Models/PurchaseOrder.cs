@@ -20,9 +20,12 @@ namespace JRSApplication.Components.Models
         public DateTime? ApprovedDate { get; set; } // approved_date (nullable)
         public int ProId { get; set; }              // pro_id (int, foreign key to product table)
 
+        // 👇 เพิ่ม property สำหรับเก็บชื่อ (JOIN มาจาก employee)
+        public string EmpName { get; set; }          // ชื่อผู้สร้างใบสั่งซื้อ
+        public string ApprovedByName { get; set; }   // ชื่อผู้อนุมัติ
+
         // Navigation property (optional, if using EF)
         public List<MaterialDetail> MaterialDetails { get; set; } = new List<MaterialDetail>();
-
         public PurchaseOrder() { }
     }
 }

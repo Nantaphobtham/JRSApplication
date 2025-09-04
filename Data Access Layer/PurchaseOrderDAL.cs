@@ -98,11 +98,17 @@ namespace JRSApplication.Data_Access_Layer
         public List<PurchaseOrder> GetAllPurchaseOrders()
         {
             var orders = new List<PurchaseOrder>();
-            string query = @"SELECT order_id, order_number, order_detail, order_date,
-                            order_status, order_duedate, order_remark,
-                            emp_id, approved_by_emp_id, approved_date,pro_id
-                     FROM purchaseorder
-                     ORDER BY order_date DESC";
+            string query = @"
+                SELECT 
+                    po.order_id, po.order_number, po.order_detail, po.order_date,
+                    po.order_status, po.order_duedate, po.order_remark,
+                    po.emp_id, po.approved_by_emp_id, po.approved_date, po.pro_id,
+                    e1.emp_name AS created_by_name,
+                    e2.emp_name AS approved_by_name
+                FROM purchaseorder po
+                LEFT JOIN employee e1 ON po.emp_id = e1.emp_id
+                LEFT JOIN employee e2 ON po.approved_by_emp_id = e2.emp_id
+                ORDER BY po.order_date DESC";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -112,34 +118,33 @@ namespace JRSApplication.Data_Access_Layer
                 {
                     while (reader.Read())
                     {
-                        var poForm = new PurchaseOrder
+                        var po = new PurchaseOrder
                         {
                             OrderId = reader.GetInt32("order_id"),
                             OrderNumber = reader.GetString("order_number"),
                             ProId = reader.GetInt32("pro_id"),
-                            OrderDetail = reader.GetString("order_detail"),
+                            OrderDetail = reader["order_detail"] == DBNull.Value ? null : reader.GetString("order_detail"),
                             OrderDate = reader.GetDateTime("order_date"),
-                            OrderStatus = reader.GetString("order_status"),
+                            OrderStatus = reader["order_status"] == DBNull.Value ? null : reader.GetString("order_status"),
                             OrderDueDate = reader.GetDateTime("order_duedate"),
-                            OrderRemark = reader["order_remark"] == DBNull.Value
-                                                                    ? null
-                                                                    : reader.GetString("order_remark"),
+                            OrderRemark = reader["order_remark"] == DBNull.Value ? null : reader.GetString("order_remark"),
                             EmpId = reader.GetString("emp_id"),
-                            ApprovedByEmpId = reader["approved_by_emp_id"] == DBNull.Value
-                                                                    ? null
-                                                                    : reader.GetString("approved_by_emp_id"),
-                            ApprovedDate = reader["approved_date"] == DBNull.Value
-                                                                    ? (DateTime?)null
-                                                                    : reader.GetDateTime("approved_date")
+                            ApprovedByEmpId = reader["approved_by_emp_id"] == DBNull.Value ? null : reader.GetString("approved_by_emp_id"),
+                            ApprovedDate = reader["approved_date"] == DBNull.Value ? (DateTime?)null : reader.GetDateTime("approved_date"),
+
+                            // ✅ ชื่อที่ JOIN มา
+                            EmpName = reader["created_by_name"] == DBNull.Value ? null : reader.GetString("created_by_name"),
+                            ApprovedByName = reader["approved_by_name"] == DBNull.Value ? null : reader.GetString("approved_by_name"),
                         };
 
-                        orders.Add(poForm);
+                        orders.Add(po);
                     }
                 }
             }
 
             return orders;
         }
+
 
 
         public void UpdateOrderStatus(int orderId, string status, string remark, string empId)
@@ -168,7 +173,17 @@ namespace JRSApplication.Data_Access_Layer
         {
             PurchaseOrder order = null;
 
-            string sql = @"SELECT * FROM purchaseorder WHERE order_id = @OrderId";
+            string sql = @"
+                SELECT 
+                    po.order_id, po.order_number, po.order_detail, po.order_date,
+                    po.order_status, po.order_duedate, po.order_remark,
+                    po.emp_id, po.approved_by_emp_id, po.approved_date, po.pro_id,
+                    e1.emp_name AS created_by_name,
+                    e2.emp_name AS approved_by_name
+                FROM purchaseorder po
+                LEFT JOIN employee e1 ON po.emp_id = e1.emp_id
+                LEFT JOIN employee e2 ON po.approved_by_emp_id = e2.emp_id
+                WHERE po.order_id = @OrderId";
 
             using (var conn = new MySqlConnection(connectionString))
             using (var cmd = new MySqlCommand(sql, conn))
@@ -183,21 +198,26 @@ namespace JRSApplication.Data_Access_Layer
                         {
                             OrderId = reader.GetInt32("order_id"),
                             OrderNumber = reader.GetString("order_number"),
-                            OrderDetail = reader.IsDBNull(reader.GetOrdinal("order_detail")) ? null : reader.GetString("order_detail"),
-                            OrderDate = reader.IsDBNull(reader.GetOrdinal("order_date")) ? DateTime.MinValue : reader.GetDateTime("order_date"),
-                            OrderStatus = reader.IsDBNull(reader.GetOrdinal("order_status")) ? null : reader.GetString("order_status"),
-                            OrderDueDate = reader.IsDBNull(reader.GetOrdinal("order_duedate")) ? DateTime.MinValue : reader.GetDateTime("order_duedate"),
-                            OrderRemark = reader.IsDBNull(reader.GetOrdinal("order_remark")) ? null : reader.GetString("order_remark"),
-                            EmpId = reader.IsDBNull(reader.GetOrdinal("emp_id")) ? null : reader.GetString("emp_id"),
-                            ApprovedByEmpId = reader.IsDBNull(reader.GetOrdinal("approved_by_emp_id")) ? null : reader.GetString("approved_by_emp_id"),
-                            ApprovedDate = reader.IsDBNull(reader.GetOrdinal("approved_date")) ? (DateTime?)null : reader.GetDateTime("approved_date"),
-                            ProId = reader.IsDBNull(reader.GetOrdinal("pro_id")) ? 0 : reader.GetInt32("pro_id") // เปลี่ยนเป็น (int?)null ถ้าใช้ int?
+                            OrderDetail = reader["order_detail"] == DBNull.Value ? null : reader.GetString("order_detail"),
+                            OrderDate = reader["order_date"] == DBNull.Value ? DateTime.MinValue : reader.GetDateTime("order_date"),
+                            OrderStatus = reader["order_status"] == DBNull.Value ? null : reader.GetString("order_status"),
+                            OrderDueDate = reader["order_duedate"] == DBNull.Value ? DateTime.MinValue : reader.GetDateTime("order_duedate"),
+                            OrderRemark = reader["order_remark"] == DBNull.Value ? null : reader.GetString("order_remark"),
+                            EmpId = reader["emp_id"] == DBNull.Value ? null : reader.GetString("emp_id"),
+                            ApprovedByEmpId = reader["approved_by_emp_id"] == DBNull.Value ? null : reader.GetString("approved_by_emp_id"),
+                            ApprovedDate = reader["approved_date"] == DBNull.Value ? (DateTime?)null : reader.GetDateTime("approved_date"),
+                            ProId = reader["pro_id"] == DBNull.Value ? 0 : reader.GetInt32("pro_id"),
+
+                            // ✅ ชื่อที่ JOIN มา
+                            EmpName = reader["created_by_name"] == DBNull.Value ? null : reader.GetString("created_by_name"),
+                            ApprovedByName = reader["approved_by_name"] == DBNull.Value ? null : reader.GetString("approved_by_name"),
                         };
                     }
                 }
             }
             return order;
         }
+
 
     }
 }

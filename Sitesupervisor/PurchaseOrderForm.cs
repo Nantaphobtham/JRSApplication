@@ -540,7 +540,7 @@ namespace JRSApplication
                     OrderDetail = txtOrderDetail.Text.Trim(),
                     OrderDate = dtpOrderDate.Value.Date,
                     OrderDueDate = CalculateDueDate(),
-                    OrderStatus = PurchaseOrderStatus.Submitted,
+                    OrderStatus = "รอดำเนินการ",   // ✅ กำหนดค่าเริ่มต้นเป็น "รอดำเนินการ"
                     ProId = int.Parse(txtProjectID.Text),
                     EmpId = _empId
 

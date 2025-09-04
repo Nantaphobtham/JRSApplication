@@ -49,8 +49,8 @@
             this.txtDate = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtApproveDate = new System.Windows.Forms.TextBox();
-            this.chkApproved = new System.Windows.Forms.CheckBox();
-            this.chkRejected = new System.Windows.Forms.CheckBox();
+            this.radioApproved = new System.Windows.Forms.RadioButton();
+            this.radioRejected = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvMaterial)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -272,31 +272,29 @@
             this.txtApproveDate.Size = new System.Drawing.Size(226, 35);
             this.txtApproveDate.TabIndex = 5;
             // 
-            // chkApproved
+            // radioApproved
             // 
-            this.chkApproved.AutoSize = true;
-            this.chkApproved.Checked = true;
-            this.chkApproved.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkApproved.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.chkApproved.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkApproved.Location = new System.Drawing.Point(413, 836);
-            this.chkApproved.Name = "chkApproved";
-            this.chkApproved.Size = new System.Drawing.Size(165, 35);
-            this.chkApproved.TabIndex = 7;
-            this.chkApproved.Text = "อนุมัติใบสั่งซื้อ";
-            this.chkApproved.UseVisualStyleBackColor = true;
+            this.radioApproved.AutoSize = true;
+            this.radioApproved.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.radioApproved.Location = new System.Drawing.Point(424, 845);
+            this.radioApproved.Name = "radioApproved";
+            this.radioApproved.Size = new System.Drawing.Size(58, 23);
+            this.radioApproved.TabIndex = 7;
+            this.radioApproved.TabStop = true;
+            this.radioApproved.Text = "อนุมัติ";
+            this.radioApproved.UseVisualStyleBackColor = true;
             // 
-            // chkRejected
+            // radioRejected
             // 
-            this.chkRejected.AutoSize = true;
-            this.chkRejected.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.chkRejected.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkRejected.Location = new System.Drawing.Point(413, 876);
-            this.chkRejected.Name = "chkRejected";
-            this.chkRejected.Size = new System.Drawing.Size(189, 35);
-            this.chkRejected.TabIndex = 7;
-            this.chkRejected.Text = "ไม่อนุมัติใบสั่งซื้อ";
-            this.chkRejected.UseVisualStyleBackColor = true;
+            this.radioRejected.AutoSize = true;
+            this.radioRejected.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.radioRejected.Location = new System.Drawing.Point(425, 879);
+            this.radioRejected.Name = "radioRejected";
+            this.radioRejected.Size = new System.Drawing.Size(72, 23);
+            this.radioRejected.TabIndex = 8;
+            this.radioRejected.TabStop = true;
+            this.radioRejected.Text = "ไม่อนุมัติ";
+            this.radioRejected.UseVisualStyleBackColor = true;
             // 
             // POForm
             // 
@@ -304,8 +302,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 933);
-            this.Controls.Add(this.chkRejected);
-            this.Controls.Add(this.chkApproved);
+            this.Controls.Add(this.radioRejected);
+            this.Controls.Add(this.radioApproved);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.txtRemark);
             this.Controls.Add(this.txtDetail);
@@ -359,7 +357,7 @@
         private System.Windows.Forms.TextBox txtDate;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtApproveDate;
-        private System.Windows.Forms.CheckBox chkApproved;
-        private System.Windows.Forms.CheckBox chkRejected;
+        private System.Windows.Forms.RadioButton radioApproved;
+        private System.Windows.Forms.RadioButton radioRejected;
     }
 }

@@ -163,8 +163,16 @@ namespace JRSApplication.Components.Service
             {
                 txtPONumber.Text = order.OrderNumber;          // เลขที่ใบสั่งซื้อ
                 txtProjectNumber.Text = order.ProId.ToString(); // หรือจะแสดง ProjectNumber จริงก็ได้ถ้ามี JOIN
-                txtEmpName.Text = order.EmpId; // หรือจะแสดงชื่อพนักงานจริงก็ได้ถ้ามี JOIN
-                txtEmpApprove.Text = order.ApprovedByEmpId; // พนักงานที่อนุมัติ
+                // ผู้สร้างใบสั่งซื้อ (โชว์ชื่อ ถ้าไม่มีค่อยโชว์รหัส)
+                txtEmpName.Text = !string.IsNullOrWhiteSpace(order.EmpName)
+                    ? order.EmpName
+                    : (order.EmpId ?? "-");
+
+                // ✅ ผู้อนุมัติ (แสดงชื่อ; ถ้ายังไม่อนุมัติให้โชว์ "รออนุมัติ")
+                txtEmpApprove.Text = !string.IsNullOrWhiteSpace(order.ApprovedByName)
+                    ? order.ApprovedByName
+                    : "รออนุมัติ";
+
                 txtDate.Text = order.OrderDate.ToString("dd/MM/yyyy"); // วันที่ใบสั่งซื้อ
                 txtApproveDate.Text = order.ApprovedDate.HasValue 
                     ? order.ApprovedDate.Value.ToString("dd/MM/yyyy") 
@@ -262,7 +270,7 @@ namespace JRSApplication.Components.Service
         {
             string remark = txtRemark.Text.Trim();
 
-            if (chkApproved.Checked && !chkRejected.Checked)
+            if (radioApproved.Checked)
             {
                 DialogResult result = MessageBox.Show(
                     "คุณยืนยันที่จะอนุมัติใบสั่งซื้อนี้หรือไม่?",
@@ -272,10 +280,10 @@ namespace JRSApplication.Components.Service
 
                 if (result == DialogResult.Yes)
                 {
-                    UpdateOrderStatus("approved", remark);
+                    UpdateOrderStatus("อนุมัติ", remark);
                 }
             }
-            else if (!chkApproved.Checked && chkRejected.Checked)
+            else if (radioRejected.Checked)
             {
                 DialogResult result = MessageBox.Show(
                     "คุณแน่ใจหรือไม่ที่จะ 'ไม่อนุมัติ' ใบสั่งซื้อนี้?",
@@ -285,15 +293,18 @@ namespace JRSApplication.Components.Service
 
                 if (result == DialogResult.Yes)
                 {
-                    UpdateOrderStatus("rejected", remark);
+                    UpdateOrderStatus("ไม่อนุมัติ", remark);
                 }
             }
             else
             {
-                MessageBox.Show("กรุณาเลือกสถานะการอนุมัติใบสั่งซื้อก่อนบันทึก", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกสถานะการอนุมัติใบสั่งซื้อก่อนบันทึก",
+                                "แจ้งเตือน",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
             }
-            
         }
+
 
         //private void btnRejected_Click(object sender, EventArgs e)
         //{

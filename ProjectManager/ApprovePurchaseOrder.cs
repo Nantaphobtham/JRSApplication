@@ -15,36 +15,41 @@ namespace JRSApplication.ProjectManager
     public partial class ApprovePurchaseOrder : UserControl
     {
         private readonly string _empId;
+
         public ApprovePurchaseOrder(string empId)
         {
             InitializeComponent();
-            _empId = empId; // 📌 เก็บไว้ใช้ภายใน UserControl
-            LoadAllPurchaseOrders();
-            InitializePOGridColumns();
+            _empId = empId;
+
+            InitializePOGridColumns();          // ✅ สร้างคอลัมน์ให้ชี้ DataPropertyName ถูกตั้งแต่แรก
             CustomizePOGridStyling();
+            dtgvListofPO.CellFormatting += dtgvListofPO_CellFormatting; // ✅ ใส่ fallback "รออนุมัติ"
+
+            LoadAllPurchaseOrders();            // ✅ โหลดข้อมูลหลังตั้งคอลัมน์แล้ว
         }
 
+        // -----------------------------
+        // Grid: Define Columns (ชื่อแทนรหัส)
+        // -----------------------------
         private void InitializePOGridColumns()
         {
             dtgvListofPO.AutoGenerateColumns = false;
 
-            // 🔒 ป้องกันซ้ำ: ถ้ามี column แล้ว ไม่ต้อง Add ซ้ำ
-            if (dtgvListofPO.Columns.Count > 0)
-                return;
+            dtgvListofPO.Columns.Clear();
 
-            // ✅ OrderId (ซ่อนไว้)
-            var colOrderId = new DataGridViewTextBoxColumn
+            // OrderId (ซ่อน)
+            dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = "OrderId", // 👈 สำคัญมาก!
+                Name = "OrderId",
                 DataPropertyName = "OrderId",
                 HeaderText = "#",
-                Width = 50,
-                Visible = false
-            };
-            dtgvListofPO.Columns.Add(colOrderId);
+                Visible = false,
+                Width = 50
+            });
 
             dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
             {
+                Name = "colOrderNumber",
                 DataPropertyName = "OrderNumber",
                 HeaderText = "เลขที่ใบสั่งซื้อ",
                 Width = 150
@@ -52,14 +57,16 @@ namespace JRSApplication.ProjectManager
 
             dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
             {
+                Name = "colOrderDate",
                 DataPropertyName = "OrderDate",
                 HeaderText = "วันที่สั่งซื้อ",
                 DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" },
-                Width = 100
+                Width = 110
             });
 
             dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
             {
+                Name = "colOrderDetail",
                 DataPropertyName = "OrderDetail",
                 HeaderText = "รายละเอียด",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
@@ -67,6 +74,7 @@ namespace JRSApplication.ProjectManager
 
             dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
             {
+                Name = "colDueDate",
                 DataPropertyName = "OrderDueDate",
                 HeaderText = "กำหนดส่งกลับ",
                 DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" },
@@ -75,27 +83,33 @@ namespace JRSApplication.ProjectManager
 
             dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
             {
+                Name = "colStatus",
                 DataPropertyName = "OrderStatus",
                 HeaderText = "สถานะใบสั่งซื้อ",
-                Width = 100
+                Width = 120
             });
 
+            // 👇 เปลี่ยนเป็นชื่อผู้ออกใบสั่งซื้อ
             dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
             {
-                DataPropertyName = "EmpId",
-                HeaderText = "รหัสผู้ออกใบสั่งซื้อ",
-                Width = 100
+                Name = "colCreator",
+                DataPropertyName = "EmpName",            // ✅ ชื่อผู้สร้าง (แทน EmpId)
+                HeaderText = "ผู้ออกใบสั่งซื้อ",
+                Width = 160
             });
 
+            // 👇 เปลี่ยนเป็นชื่อผู้อนุมัติ
             dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
             {
-                DataPropertyName = "ApprovedByEmpId",
+                Name = "colApprover",
+                DataPropertyName = "ApprovedByName",     // ✅ ชื่อผู้อนุมัติ (แทน ApprovedByEmpId)
                 HeaderText = "ผู้อนุมัติ",
-                Width = 100
+                Width = 160
             });
 
             dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
             {
+                Name = "colApprovedDate",
                 DataPropertyName = "ApprovedDate",
                 HeaderText = "วันที่อนุมัติ",
                 DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" },
@@ -103,68 +117,20 @@ namespace JRSApplication.ProjectManager
             });
         }
 
-        private void dtgvListofPO_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            if (dtgvListofPO.Columns[e.ColumnIndex].DataPropertyName == "ApprovedByEmpId")
-            {
-                if (e.Value == null || string.IsNullOrWhiteSpace(e.Value.ToString()))
-                {
-                    e.Value = "รออนุมัติ";
-                    e.CellStyle.ForeColor = Color.Gray;
-                }
-            }
-
-            if (dtgvListofPO.Columns[e.ColumnIndex].DataPropertyName == "ApprovedDate")
-            {
-                if (e.Value == null || e.Value == DBNull.Value)
-                {
-                    e.Value = "รออนุมัติ";
-                    e.CellStyle.ForeColor = Color.Gray;
-                }
-            }
-        }
-
-        private void LoadAllPurchaseOrders()
-        {
-            var dal = new PurchaseOrderDAL();
-            var orderList = dal.GetAllPurchaseOrders();
-
-            // 🔐 ป้องกันกรณีไม่มีข้อมูล
-            if (orderList == null || orderList.Count == 0)
-            {
-                MessageBox.Show("ไม่พบข้อมูลใบสั่งซื้อ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                dtgvListofPO.DataSource = null;
-                return;
-            }
-
-            // 🧱 ใช้ BindingSource เพื่อความยืดหยุ่น
-            var bindingSource = new BindingSource();
-            bindingSource.DataSource = orderList;
-
-            // 🧼 เคลียร์คอลัมน์เก่าหากมี (สำคัญมาก ถ้ามี reload หลายรอบ)
-            dtgvListofPO.Columns.Clear();
-            InitializePOGridColumns(); // 🏗️ สร้างคอลัมน์ใหม่
-
-            dtgvListofPO.AutoGenerateColumns = false;
-            dtgvListofPO.DataSource = bindingSource;
-            dtgvListofPO.ClearSelection();
-        }
+        // -----------------------------
+        // Grid: Styling
+        // -----------------------------
         private void CustomizePOGridStyling()
         {
             dtgvListofPO.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dtgvListofPO.BorderStyle = BorderStyle.None;
 
-            // 🪄 แถวสลับสี
             dtgvListofPO.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
-
-            // 🖌️ เส้นกรอบเซลล์
             dtgvListofPO.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
 
-            // 🎨 สีเมื่อเลือกแถว
             dtgvListofPO.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
             dtgvListofPO.DefaultCellStyle.SelectionForeColor = Color.White;
 
-            // 🎯 หัวตาราง
             dtgvListofPO.EnableHeadersVisualStyles = false;
             dtgvListofPO.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dtgvListofPO.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
@@ -173,41 +139,98 @@ namespace JRSApplication.ProjectManager
             dtgvListofPO.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dtgvListofPO.ColumnHeadersHeight = 32;
 
-            // 📄 เซลล์ทั่วไป
             dtgvListofPO.DefaultCellStyle.Font = new Font("Segoe UI", 12);
             dtgvListofPO.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dtgvListofPO.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
 
-            // 📏 ขนาดแถว
             dtgvListofPO.RowTemplate.Height = 30;
 
-            // ❌ ไม่ให้ resize
             dtgvListofPO.AllowUserToResizeRows = false;
             dtgvListofPO.AllowUserToAddRows = false;
             dtgvListofPO.ReadOnly = true;
 
-            // 🔲 ซ่อน Row Header
             dtgvListofPO.RowHeadersVisible = false;
 
-            // 🧲 ขนาดอัตโนมัติ
             dtgvListofPO.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dtgvListofPO.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
         }
 
-        private void dtgvListofPO_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        // -----------------------------
+        // Load Data
+        // -----------------------------
+        private void LoadAllPurchaseOrders()
         {
-            if (e.RowIndex >= 0)
+            try
             {
-                var selectedRow = dtgvListofPO.Rows[e.RowIndex];
-                int orderId = Convert.ToInt32(selectedRow.Cells["OrderId"].Value);
+                var dal = new PurchaseOrderDAL();
+                var orderList = dal.GetAllPurchaseOrders(); // ✅ มี EmpName และ ApprovedByName แล้ว
 
-                // เรียกฟอร์ม PO พร้อมส่ง orderId ไป
-                POForm poForm = new POForm(orderId, _empId);
-                poForm.ShowDialog();
+                if (orderList == null || orderList.Count == 0)
+                {
+                    dtgvListofPO.DataSource = null;
+                    return;
+                }
+
+                dtgvListofPO.AutoGenerateColumns = false;
+                dtgvListofPO.DataSource = orderList;
+                dtgvListofPO.ClearSelection();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("โหลดข้อมูลใบสั่งซื้อไม่สำเร็จ: " + ex.Message,
+                                "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        // -----------------------------
+        // Fallback: "รออนุมัติ"
+        // -----------------------------
+        private void dtgvListofPO_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
 
+            var col = dtgvListofPO.Columns[e.ColumnIndex].Name;
 
+            if (col == "colApprover")
+            {
+                if (e.Value == null || string.IsNullOrWhiteSpace(e.Value.ToString()))
+                {
+                    e.Value = "รออนุมัติ";
+                    e.CellStyle.ForeColor = Color.Gray;
+                    e.FormattingApplied = true;
+                }
+            }
+
+            if (col == "colApprovedDate")
+            {
+                if (e.Value == null || e.Value == DBNull.Value)
+                {
+                    e.Value = "รออนุมัติ";
+                    e.CellStyle.ForeColor = Color.Gray;
+                    e.FormattingApplied = true;
+                }
+            }
+        }
+
+        // -----------------------------
+        // Double Click -> Open POForm
+        // -----------------------------
+        private void dtgvListofPO_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            var selectedRow = dtgvListofPO.Rows[e.RowIndex];
+            if (selectedRow.Cells["OrderId"].Value == null) return;
+
+            int orderId = Convert.ToInt32(selectedRow.Cells["OrderId"].Value);
+
+            using (var poForm = new POForm(orderId, _empId))
+            {
+                poForm.ShowDialog();
+            }
+
+            // reload เพื่ออัปเดตสถานะ/ชื่อผู้อนุมัติทันทีหลังปิดฟอร์ม
+            LoadAllPurchaseOrders();
+        }
     }
 }
