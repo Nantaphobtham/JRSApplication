@@ -76,20 +76,23 @@ namespace JRSApplication
                                 string role = reader["emp_pos"].ToString();
                                 string empId = reader["emp_id"].ToString();
 
-                                // ✅ ตรวจสอบรหัสผ่านด้วย BCrypt
+                                 //✅ ตรวจสอบรหัสผ่านด้วย BCrypt
                                 if (BCrypt.Net.BCrypt.Verify(password, hashedPassword))
                                 {
-                                    MessageBox.Show($"เข้าสู่ระบบสำเร็จ! ตำแหน่ง: {role}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    MessageBox.Show($"ยินดีต้อยรับเข้าสู่ระบบ {fullName + " ตำแหน่ง :" + role}", "เข้าสู่ระบบสำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     NavigateToDashboard(role, fullName, empId);
                                 }
                                 else
                                 {
-                                    MessageBox.Show("รหัสผ่านไม่ถูกต้อง", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    MessageBox.Show("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้องกรุณาลองใหม่อีกครั้ง", "เข้าสู่ระบบล้มเหลว", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    txtUsername.Clear();
+                                    txtPassword.Clear();
+                                    txtUsername.Focus();
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("ไม่พบบัญชีผู้ใช้ในระบบ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้องกรุณาลองใหม่อีกครั้ง", "เข้าสู่ระบบล้มเหลว", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                     }
@@ -97,7 +100,7 @@ namespace JRSApplication
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"เกิดข้อผิดพลาด: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"เกิดข้อผิดพลาด: {ex.Message}", "เข้าสู่ระบบล้มเหลว", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

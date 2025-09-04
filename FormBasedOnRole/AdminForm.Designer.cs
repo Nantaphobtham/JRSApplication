@@ -30,6 +30,7 @@ namespace JRSApplication
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminForm));
             this.Body = new System.Windows.Forms.Panel();
             this.PicLogo = new System.Windows.Forms.PictureBox();
             this.Siderbar = new System.Windows.Forms.Panel();
@@ -148,7 +149,7 @@ namespace JRSApplication
             this.btnManageUser.TabIndex = 0;
             this.btnManageUser.Text = "จัดการบัญชีผู้ใช้";
             this.btnManageUser.UseVisualStyleBackColor = false;
-            this.btnManageUser.Click += new System.EventHandler(this.button1_Click);
+            this.btnManageUser.Click += new System.EventHandler(this.btnManageUser_Click);
             // 
             // Header
             // 
@@ -244,6 +245,7 @@ namespace JRSApplication
             this.Controls.Add(this.Siderbar);
             this.Controls.Add(this.Header);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AdminForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AdminForm";
