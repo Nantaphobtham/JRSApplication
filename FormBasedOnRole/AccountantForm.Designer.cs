@@ -42,7 +42,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.btnManageUser = new System.Windows.Forms.Button();
             this.Body = new System.Windows.Forms.Panel();
             this.PicLogo = new System.Windows.Forms.PictureBox();
             this.Header.SuspendLayout();
@@ -148,28 +147,27 @@
             this.Profile.TabIndex = 1;
             this.Profile.TabStop = false;
             // 
-            // Siderbar
+            // ---- Sidebar ----
             // 
             this.Siderbar.BackgroundImage = global::JRSApplication.Properties.Resources.sidebar;
             this.Siderbar.Controls.Add(this.panelReceivePaymentSub);
-            this.Siderbar.Controls.Add(this.btnManageUser);
             this.Siderbar.Dock = System.Windows.Forms.DockStyle.Left;
             this.Siderbar.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Siderbar.Location = new System.Drawing.Point(0, 126);
             this.Siderbar.Name = "Siderbar";
             this.Siderbar.Size = new System.Drawing.Size(336, 954);
             this.Siderbar.TabIndex = 2;
-            // 
-            // panelReceivePaymentSub
-            // 
+
+            // ---- panelReceivePaymentSub ----
             this.panelReceivePaymentSub.Controls.Add(this.button3);
             this.panelReceivePaymentSub.Controls.Add(this.button2);
             this.panelReceivePaymentSub.Controls.Add(this.button1);
-            this.panelReceivePaymentSub.Location = new System.Drawing.Point(0, 77);
+            this.panelReceivePaymentSub.Dock = System.Windows.Forms.DockStyle.Top;  // ✅ ปรับเป็น Dock ให้เรียงหัวข้อย่อยตรงๆ
+            this.panelReceivePaymentSub.Location = new System.Drawing.Point(0, 0);
             this.panelReceivePaymentSub.Name = "panelReceivePaymentSub";
             this.panelReceivePaymentSub.Size = new System.Drawing.Size(336, 159);
             this.panelReceivePaymentSub.TabIndex = 1;
-            this.panelReceivePaymentSub.Visible = false;
+            this.panelReceivePaymentSub.Visible = true; // ✅ ให้แสดงตลอด ไม่ต้องคลิกเปิด
             // 
             // button3
             // 
@@ -226,24 +224,7 @@
             this.button1.TabIndex = 4;
             this.button1.Text = "เรียกชำระเงิน";
             this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.btnInvoice_Click);
-            // 
-            // btnManageUser
-            // 
-            this.btnManageUser.BackColor = System.Drawing.Color.Transparent;
-            this.btnManageUser.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnManageUser.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnManageUser.FlatAppearance.BorderSize = 0;
-            this.btnManageUser.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.btnManageUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnManageUser.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnManageUser.Location = new System.Drawing.Point(0, 0);
-            this.btnManageUser.Name = "btnManageUser";
-            this.btnManageUser.Size = new System.Drawing.Size(336, 80);
-            this.btnManageUser.TabIndex = 0;
-            this.btnManageUser.Text = "รับชำระเงินตามโครงการ";
-            this.btnManageUser.UseVisualStyleBackColor = false;
-            this.btnManageUser.Click += new System.EventHandler(this.btnReceivePaymentMain_Click);
+            this.button1.Click += new System.EventHandler(this.btnInvoice_Click);   
             // 
             // Body
             // 
@@ -276,6 +257,7 @@
             this.Name = "AccountantForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AccountantDashboard";
+            this.Text = "AccountantDashboard";
             this.Header.ResumeLayout(false);
             this.Header.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Profile)).EndInit();
@@ -297,7 +279,6 @@
         private System.Windows.Forms.Label txtName;
         private System.Windows.Forms.PictureBox Profile;
         private System.Windows.Forms.Panel Siderbar;
-        private System.Windows.Forms.Button btnManageUser;
         private System.Windows.Forms.Panel Body;
         private System.Windows.Forms.PictureBox PicLogo;
         private System.Windows.Forms.Label txtSubFunctionname;
