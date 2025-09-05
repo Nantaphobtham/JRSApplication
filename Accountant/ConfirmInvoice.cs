@@ -21,11 +21,16 @@ namespace JRSApplication.Accountant
         private string empId;
         private string fullName; //ไม่ได้ใช้ในที่นี้ แต่ถ้าใช้ในอนาคตอาจจะมีประโยชน์
         private string role;  //ไม่ได้ใช้ในที่นี้ แต่ถ้าใช้ในอนาคตอาจจะมีประโยชน์
+
         public ConfirmInvoice() : this(fullName: "", role: "", empId: "") { }
+
         public ConfirmInvoice(string fullName, string role, string empId)
         {
             InitializeComponent();
             CustomizeDataGridView();
+
+            // 🔒 ล็อกให้แก้วันที่ไม่ได้
+            MakeHeaderFieldsReadOnly();
 
             // 🔴 ตั้งค่าสีเทาและปิดการใช้งานเริ่มต้น
             dgvInvoices.Enabled = false;
@@ -555,6 +560,19 @@ namespace JRSApplication.Accountant
             dgvInvoices.Enabled = true;
             dgvInvoices.BackgroundColor = Color.White;
         }
+
+        private void MakeHeaderFieldsReadOnly()
+        {
+            // 🔒 Lock both DateTimePickers
+            dtpInvoiceDate.Enabled = false;
+            dtpInvoiceDate.TabStop = false;
+
+            txtDueDate.Enabled = false;   // txtDueDate เป็น DateTimePicker
+            txtDueDate.TabStop = false;
+        }
+
+
+
 
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
