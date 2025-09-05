@@ -19,6 +19,14 @@ namespace JRSApplication
             this.fullName = fullName;
             this.role = role;
             this.empId = empId;
+
+            this.Load += AccountantForm_Load;
+        }
+        private void AccountantForm_Load(object sender, EventArgs e)
+        {
+            // แสดงชื่อ-ตำแหน่งจากค่าที่ส่งมาจาก Login
+            txtName.Text = this.fullName;
+            txtPosition.Text = this.role;
         }
 
         private void btnReceivePaymentMain_Click(object sender, EventArgs e)
