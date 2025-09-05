@@ -432,9 +432,9 @@
             this.label10.Location = new System.Drawing.Point(296, 355);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(52, 31);
+            this.label10.Size = new System.Drawing.Size(164, 31);
             this.label10.TabIndex = 29;
-            this.label10.Text = "วันที่";
+            this.label10.Text = "วันที่เรียกชำระเงิน";
             // 
             // dtpInvDate
             // 
@@ -555,7 +555,7 @@
             this.Controls.Add(this.dtgvInvoice);
             this.Controls.Add(this.panel1);
             this.Name = "Invoice";
-            this.Size = new System.Drawing.Size(1559, 953);
+            this.Size = new System.Drawing.Size(1508, 902);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
