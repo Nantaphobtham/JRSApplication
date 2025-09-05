@@ -55,18 +55,21 @@ namespace JRSApplication
         private void btnInvoice_Click(object sender, EventArgs e)
         {
             LoadUserControl(new Invoice());
+            txtFunctionname.Text = "เรียกชำระเงิน";
         }
 
         private void btnConfirmInvoice_Click(object sender, EventArgs e)
         {
-            // ✅ go to empty ConfirmInvoice (no preselect)
-            LoadUserControl(new ConfirmInvoice(fullName, role, empId));
+            LoadUserControl(new ConfirmInvoice(this.fullName, this.role, this.empId));
+            txtFunctionname.Text = "ยืนยันการรับชำระเงิน";
         }
 
         private void btnPrintReceipt_Click(object sender, EventArgs e)
         {
             LoadUserControl(new Receipt());
+            txtFunctionname.Text = "พิมพ์ใบเสร็จรับเงิน";
         }
+
 
         private void btnClose_Click(object sender, EventArgs e)
         {
