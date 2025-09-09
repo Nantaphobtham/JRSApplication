@@ -388,12 +388,12 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(1154, 360);
+            this.label3.Location = new System.Drawing.Point(1044, 360);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(210, 30);
+            this.label3.Size = new System.Drawing.Size(462, 30);
             this.label3.TabIndex = 17;
-            this.label3.Text = "ตารางการเรียกรับเงิน";
+            this.label3.Text = "รายการเรียกเก็บเงิน(เปลี่ยนแปลง/แก้ไข/ต่อเติม)";
             // 
             // label1
             // 
