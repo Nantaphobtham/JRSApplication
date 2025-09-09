@@ -29,6 +29,13 @@ namespace JRSApplication
             _empId = empId;
             CustomizeDataGridViewAssignment();
             LoadAssignments(); // ปิดฟิลด์ทั้งหมดไม่ให้แก้ไขก่อน
+
+            // ✅ ผูกอีเวนต์ป้องกัน end < start
+            startDate.ValueChanged += startDate_ValueChanged;
+            dueDate.ValueChanged += dueDate_ValueChanged;
+
+            // ✅ ตั้งค่าขอบเขตเบื้องต้น
+            ApplyDateGuards();
         }
 
         //  โหลดข้อมูลเฟสของโครงการลง ComboBox
@@ -538,21 +545,52 @@ namespace JRSApplication
             {
                 DateTime start = startDate.Value.Date;
                 DateTime due = CalculateDueDate(start, workDays);
+
+                // ✅ เคารพ MinDate: ห้ามก่อน start
+                if (due < start) due = start;
+
+                dueDate.MinDate = start;   // อัปเดตกรอบทุกครั้ง
                 dueDate.Value = due;
             }
             else
             {
-                dueDate.Value = startDate.Value;
+                // ไม่มีจำนวนวัน → ให้วันสิ้นสุด = วันเริ่ม
+                dueDate.MinDate = startDate.Value.Date;
+                dueDate.Value = startDate.Value.Date;
             }
+        }
+
+
+        private void ApplyDateGuards()
+        {
+            // วันสิ้นสุดต้องไม่ก่อนวันเริ่ม
+            dueDate.MinDate = startDate.Value.Date;
+
+            // ถ้าปัจจุบัน dueDate เล็กกว่า MinDate ให้เด้งกลับ
+            if (dueDate.Value.Date < dueDate.MinDate.Date)
+                dueDate.Value = dueDate.MinDate;
+        }
+
+        private void startDate_ValueChanged(object sender, EventArgs e)
+        {
+            // อัปเดต MinDate ของ dueDate ทุกครั้งที่เปลี่ยน start
+            ApplyDateGuards();
+
+            // ถ้าคุณใช้การคำนวณวันทำงาน ให้คง logic เดิมไว้
+            UpdateDueDate();
+        }
+
+        private void dueDate_ValueChanged(object sender, EventArgs e)
+        {
+            // กันกรณีผู้ใช้คลิกปฏิทินย้อนหลัง (แม้จะมี MinDate แล้ว)
+            if (dueDate.Value.Date < startDate.Value.Date)
+                dueDate.Value = startDate.Value.Date;
         }
         private void txtDate_TextChanged(object sender, EventArgs e)
         {
             UpdateDueDate();
         }
 
-        private void startDate_ValueChanged(object sender, EventArgs e)
-        {
-            UpdateDueDate();
-        }
+
     }
 }
