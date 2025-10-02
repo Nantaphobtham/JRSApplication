@@ -387,12 +387,12 @@
             // 
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(920, 561);
+            this.label21.Location = new System.Drawing.Point(885, 573);
             this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(229, 30);
+            this.label21.Size = new System.Drawing.Size(439, 30);
             this.label21.TabIndex = 76;
-            this.label21.Text = "รายละเอียดใบเสร็จรับเงิน";
+            this.label21.Text = "รายการเรียกเก็บเงิน(เปลี่ยนแปลง/แก้ไข/ต่อเติม)";
             // 
             // dtgvReceiptDetail
             // 
@@ -537,7 +537,7 @@
             this.Controls.Add(this.dtgvInvoice);
             this.Controls.Add(this.Topic1);
             this.Name = "Receipt";
-            this.Size = new System.Drawing.Size(1430, 628);
+            this.Size = new System.Drawing.Size(1413, 611);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvReceiptDetail)).EndInit();
             this.panel4.ResumeLayout(false);

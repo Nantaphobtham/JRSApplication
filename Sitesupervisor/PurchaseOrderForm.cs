@@ -53,6 +53,9 @@ namespace JRSApplication
             cmbUnit.AutoCompleteSource = AutoCompleteSource.None;
 
             LoadAllPurchaseOrders();
+            // ดับเบิ้ลคลิกเพื่อดูรายละเอียด PO
+            dtgvPurchaseOrderList.CellDoubleClick += dtgvPurchaseOrderList_CellDoubleClick;
+
         }
         private string GenerateNextOrderNumber()
         {
@@ -844,5 +847,64 @@ namespace JRSApplication
             txtQuantity.ReadOnly = false; // เปลี่ยนแปลงหน่วย
             cmbUnit.Enabled = true; // เปลี่ยนแปลงหน่วย
         }
+
+        private void dtgvPurchaseOrderList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+{
+    if (e.RowIndex < 0) return;
+
+    var row = dtgvPurchaseOrderList.Rows[e.RowIndex];
+    var po = row.DataBoundItem as JRSApplication.Components.Models.PurchaseOrder;
+    if (po == null) return;
+
+    ShowPurchaseOrderDetails(po);
+}
+
+
+        private void ShowPurchaseOrderDetails(JRSApplication.Components.Models.PurchaseOrder po)
+        {
+            if (po == null) return;
+
+            // เติมหัวฟอร์ม
+            txtOrderNO.Text = po.OrderNumber;
+            txtOrderDetail.Text = po.OrderDetail;
+            dtpOrderDate.Value = po.OrderDate == DateTime.MinValue ? DateTime.Today : po.OrderDate;
+
+            // ถ้า cmbDueDate ของคุณเก็บ “จำนวนวัน” อาจไม่ต้องเซ็ตตรง ๆ
+            // ถ้าอยากโชว์วันที่กำหนดส่งกลับเป็น text ก็ทำได้ เช่น:
+            // txtDueDateDisplay.Text = po.OrderDueDate.ToString("dd/MM/yyyy"); // ถ้ามี textbox สำหรับโชว์
+
+            // โหลดรายการวัสดุตาม order id
+            var dal = new PurchaseOrderDAL();
+            var materials = dal.GetMaterialDetailsByOrderId(po.OrderId);
+
+            materialList.Clear();
+            int seq = 1;
+            foreach (var m in materials)
+            {
+                materialList.Add(new MaterialDetail
+                {
+                    MatNo = seq++,
+                    MatDetail = m.MatDetail,
+                    MatQuantity = m.MatQuantity,
+                    MatPrice = m.MatPrice,
+                    MatUnit = m.MatUnit,
+                    MatAmount = m.MatAmount
+                });
+            }
+
+            dtgvMaterialList.DataSource = null;
+            dtgvMaterialList.DataSource = materialList;
+            dtgvMaterialList.ClearSelection();
+            UpdateMaterialSummary();
+
+            // โหมดอ่านอย่างเดียว กันแก้ไขผิดใบ
+            txtMaterialName.ReadOnly = true;
+            txtUnitPrice.ReadOnly = true;
+            txtQuantity.ReadOnly = true;
+            cmbUnit.Enabled = false;
+            btnAddMaterial.Enabled = false;
+            btnEditMaterial.Enabled = false;
+        }
+
     }
 }

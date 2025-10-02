@@ -30,6 +30,10 @@ namespace JRSApplication.Accountant
             // ensure row selects on right/left click for menu
             dtgvInvoice.CellMouseDown += dtgvInvoice_CellMouseDown;
 
+            // ✅ บังคับช่วง due date ตาม inv date
+            dtpInvDate.ValueChanged += dtpInvDate_ValueChanged;
+            dtpDueDate.ValueChanged += dtpDueDate_ValueChanged;
+
         }
 
 
@@ -110,6 +114,8 @@ namespace JRSApplication.Accountant
 
             // if you clear the form and want to show the next number immediately:
             txtInvNo.Text = new InvoiceDAL().PeekNextInvoiceId();
+            ApplyDueDateFloor(); // ✅ บังคับช่วงตั้งแต่แรก
+
 
         }
         private void btnAdd_Click(object sender, EventArgs e)
@@ -119,6 +125,15 @@ namespace JRSApplication.Accountant
             {
                 MessageBox.Show("กรุณาเลือกโครงการและลูกค้าก่อนบันทึก", "แจ้งเตือน",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // ✅ กันกรณี due < inv
+            if (dtpDueDate.Value.Date < dtpInvDate.Value.Date)
+            {
+                MessageBox.Show("กำหนดชำระเงินต้องไม่น้อยกว่าวันที่ออกใบแจ้งหนี้",
+                    "วันที่ไม่ถูกต้อง", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dtpDueDate.Value = dtpInvDate.Value.Date;
                 return;
             }
 
@@ -721,6 +736,36 @@ namespace JRSApplication.Accountant
             }
         }
 
-        
+        // ====== บังคับ Due Date ต้องไม่ก่อน Inv Date ======
+        private void ApplyDueDateFloor()
+        {
+            var inv = dtpInvDate.Value.Date;
+
+            // ถ้า due ปัจจุบัน < inv ให้ยกค่าก่อน แล้วค่อยตั้ง MinDate
+            if (dtpDueDate.Value.Date < inv)
+                dtpDueDate.Value = inv;
+
+            if (dtpDueDate.MinDate != inv)
+                dtpDueDate.MinDate = inv;
+        }
+
+        private void dtpInvDate_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyDueDateFloor();
+        }
+
+        private void dtpDueDate_ValueChanged(object sender, EventArgs e)
+        {
+            var inv = dtpInvDate.Value.Date;
+            if (dtpDueDate.Value.Date < inv)
+            {
+                dtpDueDate.Value = inv;
+                MessageBox.Show("กำหนดชำระเงินต้องไม่ก่อนวันที่ออกใบแจ้งหนี้",
+                    "วันที่ไม่ถูกต้อง", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+
+
     }
 }

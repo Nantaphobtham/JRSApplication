@@ -145,8 +145,6 @@ namespace JRSApplication.Data_Access_Layer
             return orders;
         }
 
-
-
         public void UpdateOrderStatus(int orderId, string status, string remark, string empId)
         {
             string query = @"UPDATE purchaseorder
@@ -217,6 +215,55 @@ namespace JRSApplication.Data_Access_Layer
             }
             return order;
         }
+
+        // ดึงรายการวัสดุตาม order_id
+        public List<MaterialDetail> GetMaterialDetailsByOrderId(int orderId)
+        {
+            var items = new List<MaterialDetail>();
+
+            string sql = @"
+            SELECT 
+                d.mat_line_no,
+                d.mat_no,
+                d.mat_detail,
+                d.mat_quantity,
+                d.mat_price,
+                d.mat_unit,
+                d.mat_amount
+            FROM material_detail d
+            WHERE d.order_id = @OrderId
+            ORDER BY d.mat_line_no ASC;";
+
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("@OrderId", orderId);
+                conn.Open();
+
+                using (var rdr = cmd.ExecuteReader())
+                {
+                    while (rdr.Read())
+                    {
+                        decimal qty = rdr["mat_quantity"] == DBNull.Value ? 0m : Convert.ToDecimal(rdr["mat_quantity"]);
+                        decimal price = rdr["mat_price"] == DBNull.Value ? 0m : Convert.ToDecimal(rdr["mat_price"]);
+                        decimal? amt = rdr["mat_amount"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(rdr["mat_amount"]);
+
+                        items.Add(new MaterialDetail
+                        {
+                            MatNo = rdr["mat_no"] == DBNull.Value ? 0 : Convert.ToInt32(rdr["mat_no"]),
+                            MatDetail = rdr["mat_detail"] == DBNull.Value ? "" : rdr["mat_detail"].ToString(),
+                            MatQuantity = qty,
+                            MatPrice = price,
+                            MatUnit = rdr["mat_unit"] == DBNull.Value ? "" : rdr["mat_unit"].ToString(),
+                            MatAmount = amt ?? (qty * price)
+                        });
+                    }
+                }
+            }
+
+            return items;
+        }
+
 
 
     }

@@ -19,6 +19,14 @@ namespace JRSApplication
             this.fullName = fullName;
             this.role = role;
             this.empId = empId;
+
+            this.Load += AccountantForm_Load;
+        }
+        private void AccountantForm_Load(object sender, EventArgs e)
+        {
+            // แสดงชื่อ-ตำแหน่งจากค่าที่ส่งมาจาก Login
+            txtName.Text = this.fullName;
+            txtPosition.Text = this.role;
         }
 
         private void btnReceivePaymentMain_Click(object sender, EventArgs e)
@@ -47,18 +55,21 @@ namespace JRSApplication
         private void btnInvoice_Click(object sender, EventArgs e)
         {
             LoadUserControl(new Invoice());
+            txtFunctionname.Text = "เรียกชำระเงิน";
         }
 
         private void btnConfirmInvoice_Click(object sender, EventArgs e)
         {
-            // ✅ go to empty ConfirmInvoice (no preselect)
-            LoadUserControl(new ConfirmInvoice(fullName, role, empId));
+            LoadUserControl(new ConfirmInvoice(this.fullName, this.role, this.empId));
+            txtFunctionname.Text = "ยืนยันการรับชำระเงิน";
         }
 
         private void btnPrintReceipt_Click(object sender, EventArgs e)
         {
             LoadUserControl(new Receipt());
+            txtFunctionname.Text = "พิมพ์ใบเสร็จรับเงิน";
         }
+
 
         private void btnClose_Click(object sender, EventArgs e)
         {

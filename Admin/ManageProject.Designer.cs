@@ -137,6 +137,7 @@
             this.dtgvProject = new System.Windows.Forms.DataGridView();
             this.lblToppic1 = new System.Windows.Forms.Label();
             this.searchboxProject = new JRSApplication.SearchboxControl();
+            this.label20 = new System.Windows.Forms.Label();
             this.pnlInfomation.SuspendLayout();
             this.subInfo.SuspendLayout();
             this.pnlPhaseData.SuspendLayout();
@@ -170,12 +171,13 @@
             this.pnlInfomation.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInfomation.Location = new System.Drawing.Point(0, 0);
             this.pnlInfomation.Name = "pnlInfomation";
-            this.pnlInfomation.Size = new System.Drawing.Size(1331, 738);
+            this.pnlInfomation.Size = new System.Drawing.Size(1314, 738);
             this.pnlInfomation.TabIndex = 0;
             // 
             // subInfo
             // 
             this.subInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.subInfo.Controls.Add(this.label20);
             this.subInfo.Controls.Add(this.btnTurnoffEditing);
             this.subInfo.Controls.Add(this.pnlPhaseData);
             this.subInfo.Controls.Add(this.pnlboqPercentage);
@@ -589,7 +591,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.label2.ForeColor = System.Drawing.Color.Blue;
-            this.label2.Location = new System.Drawing.Point(37, 84);
+            this.label2.Location = new System.Drawing.Point(30, 83);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(186, 21);
             this.label2.TabIndex = 5;
@@ -649,7 +651,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Blue;
-            this.label1.Location = new System.Drawing.Point(37, 84);
+            this.label1.Location = new System.Drawing.Point(14, 83);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(186, 21);
             this.label1.TabIndex = 4;
@@ -1360,7 +1362,7 @@
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 738);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1331, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1314, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDelete
@@ -1429,7 +1431,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 832);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1331, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1314, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // pnlProjectdata
@@ -1440,7 +1442,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 842);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1331, 371);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1314, 371);
             this.pnlProjectdata.TabIndex = 3;
             // 
             // dtgvProject
@@ -1472,6 +1474,17 @@
             this.searchboxProject.Size = new System.Drawing.Size(650, 50);
             this.searchboxProject.TabIndex = 0;
             // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.ForeColor = System.Drawing.Color.Red;
+            this.label20.Location = new System.Drawing.Point(14, 678);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(172, 21);
+            this.label20.TabIndex = 31;
+            this.label20.Text = "*อัปโหลดไฟล์ใหม่เพื่อแก้ไข";
+            // 
             // ManageProject
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1482,9 +1495,10 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.pnlInfomation);
             this.Name = "ManageProject";
-            this.Size = new System.Drawing.Size(1331, 954);
+            this.Size = new System.Drawing.Size(1314, 954);
             this.pnlInfomation.ResumeLayout(false);
             this.subInfo.ResumeLayout(false);
+            this.subInfo.PerformLayout();
             this.pnlPhaseData.ResumeLayout(false);
             this.pnlPhaseData.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPhase)).EndInit();
@@ -1643,5 +1657,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
     }
 }

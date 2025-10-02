@@ -19,29 +19,32 @@ namespace JRSApplication.Accountant
     {
         private string _currentInvId;   // when we navigate directly from Invoice
         private string empId;
-        private string fullName; //ไม่ได้ใช้ในที่นี้ แต่ถ้าใช้ในอนาคตอาจจะมีประโยชน์
-        private string role;  //ไม่ได้ใช้ในที่นี้ แต่ถ้าใช้ในอนาคตอาจจะมีประโยชน์
+        private string fullName; // reserved for future use
+        private string role;     // reserved for future use
+
         public ConfirmInvoice() : this(fullName: "", role: "", empId: "") { }
+
         public ConfirmInvoice(string fullName, string role, string empId)
         {
             InitializeComponent();
             CustomizeDataGridView();
 
-            // 🔴 ตั้งค่าสีเทาและปิดการใช้งานเริ่มต้น
+            // 🔒 ล็อกให้แก้วันที่ไม่ได้
+            MakeHeaderFieldsReadOnly();
+
+            // 🔴 ปิดตารางก่อนจนกว่าจะมีข้อมูล
             dgvInvoices.Enabled = false;
             dgvInvoices.BackgroundColor = SystemColors.AppWorkspace;
-
 
             PopulatePaymentMethod();
             this.empId = empId;
         }
 
-
+        // -------------------- Helpers: money/decimal --------------------
         private static decimal ToMoney(object val)
         {
             if (val == null || val == DBNull.Value) return 0m;
 
-            // keep only digits, dot, comma
             var s = new string(val.ToString().Where(ch => char.IsDigit(ch) || ch == '.' || ch == ',').ToArray());
             if (string.IsNullOrWhiteSpace(s)) return 0m;
 
@@ -57,17 +60,15 @@ namespace JRSApplication.Accountant
         {
             d = 0m;
             if (val == null || val == DBNull.Value) return false;
-
-            // reject if contains letters (e.g. "1 cm")
             var s = val.ToString();
             if (s.Any(char.IsLetter)) return false;
 
             if (decimal.TryParse(s, NumberStyles.Number, CultureInfo.CurrentCulture, out d)) return true;
             if (decimal.TryParse(s, NumberStyles.Number, CultureInfo.InvariantCulture, out d)) return true;
-
             return false;
         }
 
+        // -------------------- UI setup --------------------
         private void CustomizeDataGridView()
         {
             dgvInvoices.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -101,10 +102,12 @@ namespace JRSApplication.Accountant
             dgvInvoices.AllowUserToResizeRows = false;
         }
 
+        // -------------------- Load invoices (top grid) --------------------
         private void LoadInvoiceData()
         {
             SearchService service = new SearchService();
-            DataTable dt = service.GetAllInvoices(); // ✅ make sure this returns necessary columns
+            // ต้องให้ service คืน inv_status มาด้วย
+            DataTable dt = service.GetAllInvoices();
             dgvInvoices.DataSource = dt;
 
             if (dt.Rows.Count > 0)
@@ -118,18 +121,19 @@ namespace JRSApplication.Accountant
                 dgvInvoices.BackgroundColor = SystemColors.AppWorkspace;
             }
 
-            // Optional: Customize column headers
-            if (dgvInvoices.Columns.Contains("inv_id")) dgvInvoices.Columns["inv_id"].HeaderText = "รหัสใบแจ้งหนี้";
-            if (dgvInvoices.Columns.Contains("inv_no")) dgvInvoices.Columns["inv_no"].HeaderText = "เลขที่ใบแจ้งหนี้";
+            // Headers (ใช้ inv_id เป็นเลขที่ใบแจ้งหนี้)
+            if (dgvInvoices.Columns.Contains("inv_id")) dgvInvoices.Columns["inv_id"].HeaderText = "เลขที่ใบแจ้งหนี้";
             if (dgvInvoices.Columns.Contains("inv_date")) dgvInvoices.Columns["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
             if (dgvInvoices.Columns.Contains("inv_duedate")) dgvInvoices.Columns["inv_duedate"].HeaderText = "กำหนดชำระ";
             if (dgvInvoices.Columns.Contains("cus_id")) dgvInvoices.Columns["cus_id"].HeaderText = "รหัสลูกค้า";
             if (dgvInvoices.Columns.Contains("pro_id")) dgvInvoices.Columns["pro_id"].HeaderText = "รหัสโครงการ";
             if (dgvInvoices.Columns.Contains("phase_id")) dgvInvoices.Columns["phase_id"].HeaderText = "รหัสเฟส";
+
+            // ★ เพิ่มคอลัมน์สถานะ (Method A)
+            ApplyInvoiceGridStatusColumn();
         }
 
-
-
+        // -------------------- Customer / Project --------------------
         private void LoadCustomerDetails(string cusId)
         {
             SearchService service = new SearchService();
@@ -138,74 +142,67 @@ namespace JRSApplication.Accountant
             if (dt.Rows.Count > 0)
             {
                 DataRow row = dt.Rows[0];
-
-                // ✅ รวมชื่อ + นามสกุล
-                string fullName = $"{row["cus_name"]} {row["cus_lname"]}";
-
-                txtCustomerName.Text = fullName;
+                string fullname = $"{row["cus_name"]} {row["cus_lname"]}";
+                txtCustomerName.Text = fullname;
                 txtCustomerIDCard.Text = row["cus_id_card"].ToString();
                 txtCustomerAddress.Text = row["cus_address"].ToString();
             }
         }
 
-
-
         private void LoadProjectDetails(string proId)
         {
             SearchService service = new SearchService();
-            DataTable dt = service.GetProjectById(proId); // You need to implement this if not exists
+            DataTable dt = service.GetProjectById(proId);
 
             if (dt.Rows.Count > 0)
             {
                 DataRow row = dt.Rows[0];
-                txtProjectName.Text = row["pro_name"].ToString(); // Project name
+                txtProjectName.Text = row["pro_name"].ToString();
             }
         }
 
-
-
+        // -------------------- Click row on top grid --------------------
         private void dgvInvoices_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
-            {
-                DataGridViewRow row = dgvInvoices.Rows[e.RowIndex];
-                InvoiceDAL dal = new InvoiceDAL();
+            if (e.RowIndex < 0) return;
 
-                //string helper
-                //string CellText(string col) => row.Cells[col]?.Value?.ToString() ?? "";
+            DataGridViewRow row = dgvInvoices.Rows[e.RowIndex];
+            InvoiceDAL dal = new InvoiceDAL();
 
-                string invNo = row.Cells["inv_id"].Value?.ToString() ?? "";
-                string invDate = row.Cells["inv_date"].Value?.ToString() ?? "";
-                string invDueDate = row.Cells["inv_duedate"].Value?.ToString() ?? "";
-                string proId = row.Cells["pro_id"].Value?.ToString() ?? "";
-                string cusId = row.Cells["cus_id"].Value?.ToString() ?? "";
+            string invId = row.Cells["inv_id"].Value?.ToString() ?? "";
+            string invDate = row.Cells["inv_date"].Value?.ToString() ?? "";
+            string invDueDate = row.Cells["inv_duedate"].Value?.ToString() ?? "";
+            string proId = row.Cells["pro_id"].Value?.ToString() ?? "";
+            string cusId = row.Cells["cus_id"].Value?.ToString() ?? "";
 
-                // ✅ ดึง phase_id และ query phase_no
-                int phaseId = Convert.ToInt32(row.Cells["phase_id"].Value);
-                string phaseNo = dal.GetPhaseNoById(phaseId);
+            int phaseId = 0;
+            if (row.Cells["phase_id"].Value != null)
+                int.TryParse(row.Cells["phase_id"].Value.ToString(), out phaseId);
+            string phaseNo = dal.GetPhaseNoById(phaseId);
 
-                // ✅ แสดงค่าบนฟอร์ม
-                txtInvoiceNumber.Text = invNo;
+            // Header fields
+            txtInvoiceNumber.Text = invId; // ใช้ inv_id เป็นเลขที่ใบแจ้งหนี้
+            if (!string.IsNullOrWhiteSpace(invDate))
                 dtpInvoiceDate.Value = Convert.ToDateTime(invDate);
-                txtDueDate.Text = invDueDate;
-                txtProjectID.Text = proId;
-                textBox7.Text = phaseNo; // ✅ แก้ตรงนี้
 
-                LoadProjectDetails(proId);
-                LoadCustomerDetails(cusId);
-                string invId = row.Cells["inv_id"]?.Value?.ToString();
-                if (string.IsNullOrWhiteSpace(invId))
-                {
-                    MessageBox.Show("ไม่พบเลขที่ใบแจ้งหนี้ (inv_id).", "แจ้งเตือน",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                LoadInvoiceDetails(invId);
+            txtDueDate.Text = invDueDate;
+            txtProjectID.Text = proId;
+            textBox7.Text = phaseNo;
 
+            LoadProjectDetails(proId);
+            LoadCustomerDetails(cusId);
 
+            if (string.IsNullOrWhiteSpace(invId))
+            {
+                MessageBox.Show("ไม่พบเลขที่ใบแจ้งหนี้ (inv_id).", "แจ้งเตือน",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
+
+            LoadInvoiceDetails(invId);
         }
 
+        // -------------------- Details grid (right) --------------------
         private void LoadInvoiceDetails(string invId)
         {
             SetupInvoiceDetailGrid();
@@ -213,7 +210,6 @@ namespace JRSApplication.Accountant
             var dal = new InvoiceDetailDAL();
             DataTable dt = dal.GetInvoiceDetailByInvId(invId);
 
-            // running total that matches the grid's subtotal rule
             decimal total = 0m;
             foreach (DataRow r in dt.Rows)
             {
@@ -224,14 +220,14 @@ namespace JRSApplication.Accountant
                     total += price;
             }
 
-            // add "รวม" row at the end
+            // add summary row
             DataRow totalRow = dt.NewRow();
             totalRow["inv_detail"] = "รวม";
             dt.Rows.Add(totalRow);
 
             dgvInvoiceDetails.DataSource = dt;
 
-            // stash total for the CellFormatting of the last row
+            // keep total for last row formatting
             dgvInvoiceDetails.Tag = total;
         }
 
@@ -240,8 +236,9 @@ namespace JRSApplication.Accountant
             comboPaymentMethod.Items.Clear();
             comboPaymentMethod.Items.Add("โอนผ่านธนาคาร");
             comboPaymentMethod.Items.Add("เช็ค");
-            comboPaymentMethod.SelectedIndex = 0; // Default to first
+            comboPaymentMethod.SelectedIndex = 0;
         }
+
         private void SaveProofOfPayment(string invoiceId, string filePath)
         {
             if (string.IsNullOrEmpty(filePath)) return;
@@ -251,7 +248,7 @@ namespace JRSApplication.Accountant
             string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
             string query = @"INSERT INTO payment_proof (inv_id, file_name, file_data)
-                     VALUES (@inv_id, @file_name, @file_data)";
+                             VALUES (@inv_id, @file_name, @file_data)";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -270,18 +267,18 @@ namespace JRSApplication.Accountant
             string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
             string query = @"UPDATE invoice 
-                     SET inv_status = 'ชำระแล้ว', 
-                         inv_method = @method, 
-                         paid_date = @paid_date,
-                         emp_id = @emp_id
-                     WHERE inv_id = @inv_id";
+                             SET inv_status = 'ชำระแล้ว', 
+                                 inv_method = @method, 
+                                 paid_date = @paid_date,
+                                 emp_id = @emp_id
+                             WHERE inv_id = @inv_id";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
             {
                 cmd.Parameters.AddWithValue("@method", comboPaymentMethod.SelectedItem.ToString());
                 cmd.Parameters.AddWithValue("@paid_date", dtpPaymentDate.Value);
-                cmd.Parameters.AddWithValue("@emp_id", this.empId); // ✅ ใส่ empId ของผู้ที่ล็อกอิน
+                cmd.Parameters.AddWithValue("@emp_id", this.empId);
                 cmd.Parameters.AddWithValue("@inv_id", invId);
 
                 conn.Open();
@@ -298,6 +295,7 @@ namespace JRSApplication.Accountant
                     string selectedProjectId = searchForm.SelectedID;
 
                     SearchService service = new SearchService();
+                    // ต้องมี inv_status ในผลลัพธ์
                     DataTable filtered = service.GetDraftInvoicesByProject(selectedProjectId);
                     dgvInvoices.DataSource = filtered;
 
@@ -306,7 +304,7 @@ namespace JRSApplication.Accountant
                         dgvInvoices.Enabled = true;
                         dgvInvoices.BackgroundColor = Color.White;
 
-                        // Optional: Auto-select first row
+                        // Auto-select first row
                         dgvInvoices.Rows[0].Selected = true;
                         dgvInvoices_CellContentClick(dgvInvoices, new DataGridViewCellEventArgs(0, 0));
                     }
@@ -316,19 +314,18 @@ namespace JRSApplication.Accountant
                         dgvInvoices.BackgroundColor = Color.LightGray;
                     }
 
-                    // Optional: Customize headers
-                    if (dgvInvoices.Columns.Contains("inv_id")) dgvInvoices.Columns["inv_id"].HeaderText = "รหัสใบแจ้งหนี้";
-                    if (dgvInvoices.Columns.Contains("inv_no")) dgvInvoices.Columns["inv_no"].HeaderText = "เลขที่ใบแจ้งหนี้";
+                    if (dgvInvoices.Columns.Contains("inv_id")) dgvInvoices.Columns["inv_id"].HeaderText = "เลขที่ใบแจ้งหนี้";
                     if (dgvInvoices.Columns.Contains("inv_date")) dgvInvoices.Columns["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
                     if (dgvInvoices.Columns.Contains("inv_duedate")) dgvInvoices.Columns["inv_duedate"].HeaderText = "กำหนดชำระ";
                     if (dgvInvoices.Columns.Contains("pro_id")) dgvInvoices.Columns["pro_id"].HeaderText = "รหัสโครงการ";
                     if (dgvInvoices.Columns.Contains("phase_id")) dgvInvoices.Columns["phase_id"].HeaderText = "เฟสที่";
                     if (dgvInvoices.Columns.Contains("cus_id")) dgvInvoices.Columns["cus_id"].HeaderText = "รหัสลูกค้า";
+
+                    // ★ เพิ่มคอลัมน์สถานะ (Method A)
+                    ApplyInvoiceGridStatusColumn();
                 }
             }
         }
-
-
 
         private void SetupInvoiceDetailGrid()
         {
@@ -389,15 +386,13 @@ namespace JRSApplication.Accountant
             dgvInvoiceDetails.CellFormatting += dgvInvoiceDetails_CellFormatting;
         }
 
-
-
         private void dgvInvoiceDetails_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0) return;
             var grid = dgvInvoiceDetails;
             var row = grid.Rows[e.RowIndex];
 
-            // -- Last row ("รวม")
+            // Last row "รวม"
             if (row.Cells["inv_detail"].Value?.ToString() == "รวม")
             {
                 if (grid.Columns[e.ColumnIndex].Name == "subtotal")
@@ -414,7 +409,7 @@ namespace JRSApplication.Accountant
                 }
                 else
                 {
-                    e.Value = ""; // clear other cells on the total row
+                    e.Value = "";
                 }
 
                 e.CellStyle.BackColor = Color.LightYellow;
@@ -422,7 +417,7 @@ namespace JRSApplication.Accountant
                 return;
             }
 
-            // -- Subtotal for normal rows
+            // Subtotal for normal rows
             if (grid.Columns[e.ColumnIndex].Name == "subtotal")
             {
                 var qObj = row.Cells["inv_quantity"].Value;
@@ -430,7 +425,6 @@ namespace JRSApplication.Accountant
 
                 decimal price = ToMoney(pObj);
 
-                // if quantity is numeric, use qty * price; otherwise just price (ignore qty)
                 if (TryParseDecimal(qObj, out var qty))
                     e.Value = (qty * price).ToString("N2");
                 else
@@ -440,7 +434,7 @@ namespace JRSApplication.Accountant
                 return;
             }
 
-            // -- Auto number
+            // Auto number
             if (grid.Columns[e.ColumnIndex].Name == "No")
             {
                 e.Value = (e.RowIndex + 1).ToString();
@@ -448,7 +442,7 @@ namespace JRSApplication.Accountant
             }
         }
 
-
+        // -------------------- Confirm payment --------------------
         private void btnConfirm_Click(object sender, EventArgs e)
         {
             if (dgvInvoices.SelectedRows.Count == 0)
@@ -456,7 +450,7 @@ namespace JRSApplication.Accountant
                 MessageBox.Show("กรุณาเลือกใบแจ้งหนี้ก่อน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            // ตรวจสอบช่องว่าง
+
             if (string.IsNullOrWhiteSpace(txtInvoiceNumber.Text) ||
                 string.IsNullOrWhiteSpace(txtDueDate.Text) ||
                 string.IsNullOrWhiteSpace(txtProjectID.Text) ||
@@ -468,14 +462,13 @@ namespace JRSApplication.Accountant
                 MessageBox.Show("กรุณากรอกข้อมูลให้ครบถ้วนก่อนทำการบันทึก", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            // ตรวจสอบไฟล์แนบ
+
             if (string.IsNullOrWhiteSpace(txtFilePath.Text))
             {
                 MessageBox.Show("กรุณาแนบไฟล์หลักฐานการชำระเงิน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // ตรวจสอบการเลือกวิธีการชำระเงิน
             if (comboPaymentMethod.SelectedItem == null)
             {
                 MessageBox.Show("กรุณาเลือกวิธีการชำระเงิน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -495,17 +488,17 @@ namespace JRSApplication.Accountant
                 return;
             }
 
-            string filePath = txtFilePath.Text; // Set by file dialog when uploading proof
+            string filePath = txtFilePath.Text;
 
             UpdateInvoice(invId);
             SaveProofOfPayment(invId, filePath);
 
             MessageBox.Show("บันทึกข้อมูลเรียบร้อยแล้ว", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            LoadInvoiceData(); // Refresh grid
+            LoadInvoiceData(); // Refresh
             dgvInvoices.ClearSelection();
-
         }
+
         private void btnChooseFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -516,6 +509,7 @@ namespace JRSApplication.Accountant
             }
         }
 
+        // -------------------- Init from external (open by invId) --------------------
         public void InitFromInvoiceId(string invId)
         {
             if (string.IsNullOrWhiteSpace(invId)) return;
@@ -537,61 +531,113 @@ namespace JRSApplication.Accountant
             // Project / phase
             txtProjectID.Text = r["pro_id"]?.ToString() ?? "";
             txtProjectName.Text = r["pro_name"]?.ToString() ?? "";
-            // use your phase display control here (you used textBox7 for phase_no)
+
             if (r.Table.Columns.Contains("phase_no"))
                 textBox7.Text = r["phase_no"]?.ToString() ?? "";
             else if (r.Table.Columns.Contains("phase_id"))
                 textBox7.Text = r["phase_id"]?.ToString() ?? "";
 
-            // Customer (you already have LoadCustomerDetails, but we can fill directly)
+            // Customer
             txtCustomerName.Text = r["cus_fullname"]?.ToString() ?? "";
             txtCustomerIDCard.Text = r["cus_id_card"]?.ToString() ?? "";
             txtCustomerAddress.Text = r["cus_address"]?.ToString() ?? "";
 
-            // Load detail rows into the right grid and compute total row
+            // Details
             LoadInvoiceDetails(invId);
 
-            // Enable the grid (you disabled it in ctor)
             dgvInvoices.Enabled = true;
             dgvInvoices.BackgroundColor = Color.White;
         }
 
-        private void panel3_Paint(object sender, PaintEventArgs e)
+        private void MakeHeaderFieldsReadOnly()
         {
+            dtpInvoiceDate.Enabled = false;
+            dtpInvoiceDate.TabStop = false;
 
+            // ถ้า txtDueDate เป็น TextBox ให้คงไว้; ถ้าเป็น DateTimePicker ควรแก้ชื่อ control ให้ตรงชนิด
+            txtDueDate.Enabled = false;
+            txtDueDate.TabStop = false;
         }
 
-        private void txtCustomerName_TextChanged(object sender, EventArgs e)
+        // ==================== Method A: Status column on dgvInvoices ====================
+        private string NormalizeStatus(string status)
         {
+            if (string.IsNullOrWhiteSpace(status)) return "ไม่พบสถานะ";
+            status = status.Trim();
 
+            if (status.Equals("Draft", StringComparison.OrdinalIgnoreCase)) return "ค้างชำระ";
+            if (status.Equals("Pending", StringComparison.OrdinalIgnoreCase)) return "รอดำเนินการ";
+            if (status.Contains("ชำระแล้ว")) return "ชำระแล้ว";
+            if (status.Contains("ยกเลิก")) return "ยกเลิก";
+            return status;
         }
 
-        private void txtInvoiceNumber_TextChanged(object sender, EventArgs e)
+        private void ApplyInvoiceGridStatusColumn()
         {
+            var g = dgvInvoices;
+            if (g.DataSource == null) return;
+            if (!g.Columns.Contains("inv_status")) return;
 
+            var col = g.Columns["inv_status"];
+            col.HeaderText = "สถานะการชำระเงิน";
+            col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            col.DisplayIndex = g.Columns.Count - 1; // ไปท้ายสุด
+            col.SortMode = DataGridViewColumnSortMode.Automatic;
+
+            // กันผูกซ้ำ
+            g.CellFormatting -= DgvInvoices_CellFormatting_StatusColor;
+            g.CellFormatting += DgvInvoices_CellFormatting_StatusColor;
         }
 
-        private void txtCustomerIDCard_TextChanged(object sender, EventArgs e)
+        private void DgvInvoices_CellFormatting_StatusColor(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            if (e.RowIndex < 0) return;
+            var grid = (DataGridView)sender;
 
+            if (!grid.Columns.Contains("inv_status")) return;
+
+            var row = grid.Rows[e.RowIndex];
+            string raw = row.Cells["inv_status"]?.Value?.ToString() ?? "";
+            string status = NormalizeStatus(raw);
+
+            // แสดงคำ normalize ที่คอลัมน์ inv_status
+            if (grid.Columns[e.ColumnIndex].Name == "inv_status")
+            {
+                e.Value = status;
+                e.FormattingApplied = true;
+            }
+
+            // สีทั้งแถว
+            if (status.Contains("ชำระแล้ว"))
+            {
+                row.DefaultCellStyle.BackColor = Color.Honeydew;
+                row.DefaultCellStyle.ForeColor = Color.DarkGreen;
+            }
+            else if (status.Contains("ค้างชำระ") || status.Contains("รอดำเนินการ"))
+            {
+                row.DefaultCellStyle.BackColor = Color.MistyRose;
+                row.DefaultCellStyle.ForeColor = Color.Maroon;
+            }
+            else if (status.Contains("ยกเลิก"))
+            {
+                row.DefaultCellStyle.BackColor = Color.Gainsboro;
+                row.DefaultCellStyle.ForeColor = Color.DimGray;
+            }
+            else
+            {
+                row.DefaultCellStyle.BackColor = Color.White;
+                row.DefaultCellStyle.ForeColor = Color.Black;
+            }
         }
 
-        private void txtProjectID_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtProjectName_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtCustomerAddress_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        // -------------------- empty handlers from designer --------------------
+        private void panel3_Paint(object sender, PaintEventArgs e) { }
+        private void txtCustomerName_TextChanged(object sender, EventArgs e) { }
+        private void txtInvoiceNumber_TextChanged(object sender, EventArgs e) { }
+        private void txtCustomerIDCard_TextChanged(object sender, EventArgs e) { }
+        private void txtProjectID_TextChanged(object sender, EventArgs e) { }
+        private void txtProjectName_TextChanged(object sender, EventArgs e) { }
+        private void txtCustomerAddress_TextChanged(object sender, EventArgs e) { }
     }
 }
-
-
-

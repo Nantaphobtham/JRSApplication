@@ -183,7 +183,7 @@
             this.btnChooseSubcontractors.Name = "btnChooseSubcontractors";
             this.btnChooseSubcontractors.Size = new System.Drawing.Size(336, 80);
             this.btnChooseSubcontractors.TabIndex = 3;
-            this.btnChooseSubcontractors.Text = "กำหนดผู้รับเหมาช่วง";
+            this.btnChooseSubcontractors.Text = "กำหนดผู้รับเหมา";
             this.btnChooseSubcontractors.UseVisualStyleBackColor = false;
             this.btnChooseSubcontractors.Click += new System.EventHandler(this.btnChooseSubcontractors_Click);
             // 
