@@ -32,6 +32,11 @@
             this.label19 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.tblReceiptHeader = new System.Windows.Forms.TableLayoutPanel();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
@@ -60,20 +65,15 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.tblReceiptHeader = new System.Windows.Forms.TableLayoutPanel();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.tblReceiptHeader.SuspendLayout();
             this.tblLeftBottom.SuspendLayout();
             this.tblBottomRight.SuspendLayout();
             this.tblReceiptItems.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tblHeader.SuspendLayout();
-            this.tblReceiptHeader.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // button2
@@ -130,6 +130,72 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1041, 774);
             this.panel1.TabIndex = 55;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.pictureBox1.Image = global::JRSApplication.Properties.Resources.logo;
+            this.pictureBox1.Location = new System.Drawing.Point(729, 19);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(294, 107);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 71;
+            this.pictureBox1.TabStop = false;
+            // 
+            // tblReceiptHeader
+            // 
+            this.tblReceiptHeader.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.tblReceiptHeader.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tblReceiptHeader.ColumnCount = 2;
+            this.tblReceiptHeader.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tblReceiptHeader.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tblReceiptHeader.Controls.Add(this.label25, 0, 0);
+            this.tblReceiptHeader.Controls.Add(this.label26, 0, 1);
+            this.tblReceiptHeader.Controls.Add(this.label27, 0, 2);
+            this.tblReceiptHeader.Location = new System.Drawing.Point(608, 190);
+            this.tblReceiptHeader.Name = "tblReceiptHeader";
+            this.tblReceiptHeader.RowCount = 3;
+            this.tblReceiptHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tblReceiptHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tblReceiptHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tblReceiptHeader.Size = new System.Drawing.Size(396, 131);
+            this.tblReceiptHeader.TabIndex = 70;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.BackColor = System.Drawing.SystemColors.Control;
+            this.label25.Font = new System.Drawing.Font("Angsana New", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label25.Location = new System.Drawing.Point(3, 1);
+            this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(39, 26);
+            this.label25.TabIndex = 56;
+            this.label25.Text = "เลขที่";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.BackColor = System.Drawing.SystemColors.Control;
+            this.label26.Font = new System.Drawing.Font("Angsana New", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label26.Location = new System.Drawing.Point(3, 44);
+            this.label26.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(35, 26);
+            this.label26.TabIndex = 57;
+            this.label26.Text = "วันที่";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.BackColor = System.Drawing.SystemColors.Control;
+            this.label27.Font = new System.Drawing.Font("Angsana New", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label27.Location = new System.Drawing.Point(3, 87);
+            this.label27.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(58, 26);
+            this.label27.TabIndex = 58;
+            this.label27.Text = "ใบวางบิล";
             // 
             // label22
             // 
@@ -191,8 +257,8 @@
             this.tblLeftBottom.Name = "tblLeftBottom";
             this.tblLeftBottom.RowCount = 1;
             this.tblLeftBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblLeftBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 104F));
-            this.tblLeftBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 104F));
+            this.tblLeftBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 134F));
+            this.tblLeftBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 134F));
             this.tblLeftBottom.Size = new System.Drawing.Size(416, 135);
             this.tblLeftBottom.TabIndex = 64;
             // 
@@ -502,72 +568,6 @@
             this.label9.TabIndex = 58;
             this.label9.Text = "ใบวางบิล";
             // 
-            // tblReceiptHeader
-            // 
-            this.tblReceiptHeader.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.tblReceiptHeader.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tblReceiptHeader.ColumnCount = 2;
-            this.tblReceiptHeader.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tblReceiptHeader.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tblReceiptHeader.Controls.Add(this.label25, 0, 0);
-            this.tblReceiptHeader.Controls.Add(this.label26, 0, 1);
-            this.tblReceiptHeader.Controls.Add(this.label27, 0, 2);
-            this.tblReceiptHeader.Location = new System.Drawing.Point(608, 190);
-            this.tblReceiptHeader.Name = "tblReceiptHeader";
-            this.tblReceiptHeader.RowCount = 3;
-            this.tblReceiptHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tblReceiptHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tblReceiptHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tblReceiptHeader.Size = new System.Drawing.Size(396, 131);
-            this.tblReceiptHeader.TabIndex = 70;
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.BackColor = System.Drawing.SystemColors.Control;
-            this.label25.Font = new System.Drawing.Font("Angsana New", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.Location = new System.Drawing.Point(3, 1);
-            this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(39, 26);
-            this.label25.TabIndex = 56;
-            this.label25.Text = "เลขที่";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.BackColor = System.Drawing.SystemColors.Control;
-            this.label26.Font = new System.Drawing.Font("Angsana New", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.Location = new System.Drawing.Point(3, 44);
-            this.label26.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(35, 26);
-            this.label26.TabIndex = 57;
-            this.label26.Text = "วันที่";
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.BackColor = System.Drawing.SystemColors.Control;
-            this.label27.Font = new System.Drawing.Font("Angsana New", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label27.Location = new System.Drawing.Point(3, 87);
-            this.label27.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(58, 26);
-            this.label27.TabIndex = 58;
-            this.label27.Text = "ใบวางบิล";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.pictureBox1.Image = global::JRSApplication.Properties.Resources.logo;
-            this.pictureBox1.Location = new System.Drawing.Point(729, 19);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(294, 107);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 71;
-            this.pictureBox1.TabStop = false;
-            // 
             // ReceiptPrint
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -581,6 +581,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.tblReceiptHeader.ResumeLayout(false);
+            this.tblReceiptHeader.PerformLayout();
             this.tblLeftBottom.ResumeLayout(false);
             this.tblLeftBottom.PerformLayout();
             this.tblBottomRight.ResumeLayout(false);
@@ -591,9 +594,6 @@
             this.tableLayoutPanel2.PerformLayout();
             this.tblHeader.ResumeLayout(false);
             this.tblHeader.PerformLayout();
-            this.tblReceiptHeader.ResumeLayout(false);
-            this.tblReceiptHeader.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

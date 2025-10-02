@@ -103,6 +103,7 @@
             this.txtSearch.Size = new System.Drawing.Size(268, 35);
             this.txtSearch.TabIndex = 12;
             this.txtSearch.TabIndexChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtKeyword_TextChanged);
             // 
             // lblSearchBy
             // 

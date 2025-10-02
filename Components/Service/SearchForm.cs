@@ -304,8 +304,8 @@ namespace JRSApplication
                 if (string.IsNullOrEmpty(keyword))
                 {
                     table.DefaultView.RowFilter = string.Empty;
-                    MessageBox.Show("⚠️ Please enter a keyword to search. Showing all data.", "Search",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //MessageBox.Show("⚠️ Please enter a keyword to search. Showing all data.", "Search",
+                    //    MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
@@ -322,16 +322,16 @@ namespace JRSApplication
                 table.DefaultView.RowFilter =
                     $"CONVERT([{selectedColumn}], 'System.String') LIKE '%{keyword}%'";
 
-                if (table.DefaultView.Count > 0)
-                {
-                    MessageBox.Show($"✅ Found {table.DefaultView.Count} result(s).", "Search Result",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    MessageBox.Show("❌ No data found.", "Search Result",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                //if (table.DefaultView.Count > 0)
+                //{
+                //    MessageBox.Show($"✅ Found {table.DefaultView.Count} result(s).", "Search Result",
+                //        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //}
+                //else
+                //{
+                //    MessageBox.Show("❌ No data found.", "Search Result",
+                //        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //}
             }
         }
 

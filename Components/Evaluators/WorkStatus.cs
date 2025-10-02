@@ -70,9 +70,9 @@ namespace JRSApplication.Components
         {
             switch (status)
             {
-                case Submitted: return "ส่งใบสั่งซื้อแล้ว";
-                case Approved: return "อนุมัติแล้ว";
-                case Rejected: return "ถูกปฏิเสธ";
+                case Submitted: return "ส่งใบสั่งซื้อ";
+                case Approved: return "อนุมัติ";
+                case Rejected: return "ปฏิเสธใบสั่งซื้อ";
                 default: return "ไม่ทราบสถานะ";
             }
         }

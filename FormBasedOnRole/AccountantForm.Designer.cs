@@ -93,6 +93,7 @@
             this.btnMinimize.TabIndex = 5;
             this.btnMinimize.Text = "_";
             this.btnMinimize.UseVisualStyleBackColor = false;
+            this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
             // 
             // txtSubFunctionname
             // 
@@ -147,7 +148,7 @@
             this.Profile.TabIndex = 1;
             this.Profile.TabStop = false;
             // 
-            // ---- Sidebar ----
+            // Siderbar
             // 
             this.Siderbar.BackgroundImage = global::JRSApplication.Properties.Resources.sidebar;
             this.Siderbar.Controls.Add(this.panelReceivePaymentSub);
@@ -157,17 +158,17 @@
             this.Siderbar.Name = "Siderbar";
             this.Siderbar.Size = new System.Drawing.Size(336, 954);
             this.Siderbar.TabIndex = 2;
-
-            // ---- panelReceivePaymentSub ----
+            // 
+            // panelReceivePaymentSub
+            // 
             this.panelReceivePaymentSub.Controls.Add(this.button3);
             this.panelReceivePaymentSub.Controls.Add(this.button2);
             this.panelReceivePaymentSub.Controls.Add(this.button1);
-            this.panelReceivePaymentSub.Dock = System.Windows.Forms.DockStyle.Top;  // ✅ ปรับเป็น Dock ให้เรียงหัวข้อย่อยตรงๆ
+            this.panelReceivePaymentSub.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelReceivePaymentSub.Location = new System.Drawing.Point(0, 0);
             this.panelReceivePaymentSub.Name = "panelReceivePaymentSub";
             this.panelReceivePaymentSub.Size = new System.Drawing.Size(336, 159);
             this.panelReceivePaymentSub.TabIndex = 1;
-            this.panelReceivePaymentSub.Visible = true; // ✅ ให้แสดงตลอด ไม่ต้องคลิกเปิด
             // 
             // button3
             // 
@@ -224,7 +225,7 @@
             this.button1.TabIndex = 4;
             this.button1.Text = "เรียกชำระเงิน";
             this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.btnInvoice_Click);   
+            this.button1.Click += new System.EventHandler(this.btnInvoice_Click);
             // 
             // Body
             // 
@@ -256,7 +257,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AccountantForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "AccountantDashboard";
             this.Text = "AccountantDashboard";
             this.Header.ResumeLayout(false);
             this.Header.PerformLayout();

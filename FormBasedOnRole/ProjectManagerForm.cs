@@ -116,13 +116,14 @@ namespace JRSApplication
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.Close(); // ปิดโปรแกรม
+            Application.Exit(); // ปิด Application ทั้งหมด
         }
 
         private void btnMinimize_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized; // ย่อหน้าต่าง
         }
+
         bool menuExpand = false;
         private void menuTransition_Tick(object sender, EventArgs e)
         {

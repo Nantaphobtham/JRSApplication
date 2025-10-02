@@ -91,6 +91,7 @@
             this.btnMinimize.TabIndex = 5;
             this.btnMinimize.Text = "_";
             this.btnMinimize.UseVisualStyleBackColor = false;
+            this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
             // 
             // txtsubFunctionname
             // 

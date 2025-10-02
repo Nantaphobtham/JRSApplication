@@ -33,7 +33,12 @@ namespace JRSApplication
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.Close(); // ปิดโปรแกรม
+            Application.Exit(); // ปิด Application ทั้งหมด
+        }
+        private void btnMinimize_Click(object sender, EventArgs e)
+        {
+            //minimize window
+            this.WindowState = FormWindowState.Minimized; // ย่อหน้าต่าง
         }
 
         private void LoadUserControl(UserControl userControl, string functionName = "", bool showSubFunctionName = false)
@@ -85,5 +90,7 @@ namespace JRSApplication
         {
             LoadUserControl(new WorkResponse(), "ลงทะเบียนผู้รับเหมา"); 
         }
+
+        
     }
 }

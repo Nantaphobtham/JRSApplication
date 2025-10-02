@@ -73,7 +73,12 @@ namespace JRSApplication
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.Close(); // ปิดโปรแกรม
+            Application.Exit(); // ปิดโปรแกรม
+        }
+
+        private void btnMinimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized; // ย่อหน้าต่าง
         }
     }
 }

@@ -251,5 +251,6 @@ namespace JRSApplication.Accountant
             tblBottomRight.ResumeLayout();
         }
 
+        
     }
 }
