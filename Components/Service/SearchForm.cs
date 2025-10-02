@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySqlX.XDevAPI.CRUD;
 
 namespace JRSApplication
 {
@@ -31,7 +32,9 @@ namespace JRSApplication
             this.SearchMode = mode;
             this.optionalProjectId = optionalProjectId;
 
-            // ✅ ตั้งชื่อหัวเรื่อง
+            this.Load += SearchForm_Load;
+
+            // ✅ Title
             if (SearchMode == "Customer")
                 lblTitle.Text = "ค้นหาลูกค้า";
             else if (SearchMode == "Employee")
@@ -47,23 +50,29 @@ namespace JRSApplication
             else
                 lblTitle.Text = "ค้นหา";
 
-            // ✅ โหลดข้อมูล: กรณีพิเศษใช้ projectId
+            // ✅ Initial data load
             if (SearchMode == "UnpaidInvoiceByProject")
                 LoadSearchData(optionalProjectId ?? "");
             else
-                LoadSearchData("");  // default
+                LoadSearchData("");
 
-            CustomizeDataGridViewAlldata(); // ✅ ปรับแต่ง DataGridView
+            CustomizeDataGridViewAlldata();
         }
-        private void LoadSearchData(string keywordOrProjectId)
+
+        private void LoadSearchData(string keywordOrProjectId = "")
         {
             dtgvAlldata.AutoGenerateColumns = true;
-            // For unpaid invoices by project, we use the project ID as input
+
             if (SearchMode == "UnpaidInvoiceByProject")
+            {
                 dtgvAlldata.DataSource = searchService.SearchData(SearchMode, keywordOrProjectId);
+            }
             else
-                dtgvAlldata.DataSource = searchService.SearchData(SearchMode, keywordOrProjectId);
+            {
+                dtgvAlldata.DataSource = searchService.SearchData(SearchMode, "");
+            }
         }
+
 
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
@@ -202,10 +211,128 @@ namespace JRSApplication
             dtgvAlldata.AllowUserToAddRows = false;
             dtgvAlldata.AllowUserToResizeRows = false;
         }
+        // ✅ Step 1: Populate filter columns depending on SearchMode
+        private void SearchForm_Load(object sender, EventArgs e)
+        {
+            cmbSearchBy.Items.Clear();
 
+            if (SearchMode == "Project")
+            {
+                cmbSearchBy.Items.Add("ชื่อโครงการ");
+                cmbSearchBy.Items.Add("ลูกค้า");
+                cmbSearchBy.Items.Add("รหัสโครงการ");
+            }
+            else if (SearchMode == "Employee")
+            {
+                cmbSearchBy.Items.Add("ชื่อ");
+                cmbSearchBy.Items.Add("นามสกุล");
+                cmbSearchBy.Items.Add("ID");
+            }
+            else if (SearchMode == "Customer")
+            {
+                cmbSearchBy.Items.Add("ชื่อ");
+                cmbSearchBy.Items.Add("นามสกุล");
+                cmbSearchBy.Items.Add("เลขบัตรประชาชน");
+            }
+            else if (SearchMode == "Supplier")
+            {
+                cmbSearchBy.Items.Add("ชื่อบริษัท");
+                cmbSearchBy.Items.Add("เลขทะเบียนนิติบุคคล");
+            }
+            else if (SearchMode == "Invoice")
+            {
+                cmbSearchBy.Items.Add("เลขที่ใบแจ้งหนี้");
+            }
+
+            if (cmbSearchBy.Items.Count > 0)
+                cmbSearchBy.SelectedIndex = 0;
+        }
+
+        private void txtKeyword_TextChanged(object sender, EventArgs e)
+        {
+            if (dtgvAlldata.DataSource is DataTable table)
+            {
+                string keyword = txtSearch.Text.Trim().Replace("'", "''");
+
+                if (string.IsNullOrEmpty(keyword))
+                {
+                    table.DefaultView.RowFilter = string.Empty;  // show all again
+                }
+                else
+                {
+                    if (SearchMode == "Project")
+                    {
+                        // Search by Project Name or Customer Name
+                        table.DefaultView.RowFilter =
+                            $"[ชื่อโครงการ] LIKE '%{keyword}%' OR [ลูกค้า] LIKE '%{keyword}%'";
+                    }
+                    else if (SearchMode == "Employee")
+                    {
+                        // Search by Employee Name or Last Name
+                        table.DefaultView.RowFilter =
+                            $"[ชื่อ] LIKE '%{keyword}%' OR [นามสกุล] LIKE '%{keyword}%'";
+                    }
+                    else if (SearchMode == "Customer")
+                    {
+                        // Search by Customer Name
+                        table.DefaultView.RowFilter =
+                            $"[ชื่อ] LIKE '%{keyword}%' OR [นามสกุล] LIKE '%{keyword}%'";
+                    }
+                    else if (SearchMode == "Supplier")
+                    {
+                        // Search by Supplier Name or Juristic Number
+                        table.DefaultView.RowFilter =
+                            $"[ชื่อบริษัท] LIKE '%{keyword}%' OR [เลขทะเบียนนิติบุคคล] LIKE '%{keyword}%'";
+                    }
+                    else if (SearchMode == "Invoice")
+                    {
+                        // Search by Invoice ID
+                        table.DefaultView.RowFilter =
+                            $"CONVERT([เลขที่ใบแจ้งหนี้], 'System.String') LIKE '%{keyword}%'";
+                    }
+                }
+            }
+        }
+
+        // ✅ Step 3: Apply filter to current DataTable
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            LoadSearchData(txtSearch.Text.Trim());
+            if (dtgvAlldata.DataSource is DataTable table)
+            {
+                string keyword = txtSearch.Text.Trim().Replace("'", "''");
+
+                if (string.IsNullOrEmpty(keyword))
+                {
+                    table.DefaultView.RowFilter = string.Empty;
+                    MessageBox.Show("⚠️ Please enter a keyword to search. Showing all data.", "Search",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                // use selected column
+                string selectedColumn = cmbSearchBy.SelectedItem?.ToString();
+                if (string.IsNullOrEmpty(selectedColumn))
+                {
+                    MessageBox.Show("⚠️ Please select a search column.", "Search",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // string search (CONVERT for numeric cols just in case)
+                table.DefaultView.RowFilter =
+                    $"CONVERT([{selectedColumn}], 'System.String') LIKE '%{keyword}%'";
+
+                if (table.DefaultView.Count > 0)
+                {
+                    MessageBox.Show($"✅ Found {table.DefaultView.Count} result(s).", "Search Result",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("❌ No data found.", "Search Result",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
         }
 
         private void btnBack_Click(object sender, EventArgs e)
