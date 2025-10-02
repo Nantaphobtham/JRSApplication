@@ -235,9 +235,12 @@ namespace JRSApplication.Components
                         emp_username AS 'ชื่อผู้ใช้',
                         emp_name     AS 'ชื่อ',
                         emp_lname    AS 'นามสกุล',
-                        emp_tel      AS 'เบอร์โทร',
+                        emp_identification AS 'เลขบัตรประชาชน',
+                        emp_tel      AS 'เบอร์โทร',  
                         emp_email    AS 'อีเมล',
-                        emp_pos      AS 'ตำแหน่ง'
+                        emp_pos      AS 'ตำแหน่ง',
+                        emp_address  AS 'ที่อยู่'
+                        
                     FROM employee;";
                     using (var adapter = new MySqlDataAdapter(sql, conn))
                     {
