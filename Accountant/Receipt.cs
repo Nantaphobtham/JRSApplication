@@ -463,6 +463,5 @@ namespace JRSApplication.Accountant
             previewForm.ShowDialog();
         }
 
-
     }
 }
