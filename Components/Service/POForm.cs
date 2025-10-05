@@ -14,6 +14,55 @@ namespace JRSApplication.Components.Service
 {
     public partial class POForm : Form
     {
+        //เพิ่ม preview mode (อ่านอย่างเดียว)และ ปิดการแก้ไข หรือ ปิดปุ่มอนุมัติถ้าใบสั่งซื้ออนุมัติแล้ว ปิดการแก้ไข remark ปิดปุ่ม radioApproved, radioRejected , btnSave 
+        private readonly bool _isPreview;
+
+        public POForm(int orderId, string empId, bool isPreview) : this(orderId, empId)
+        {
+            InitializeComponent();
+            _isPreview = isPreview;
+
+            var po = new JRSApplication.Components.Models.PurchaseOrder(); 
+            LoadPurchaseOrder(po);
+
+            if (_isPreview) SetPreviewMode();// 🔒 ปิด Action ต่าง ๆ
+
+        }
+
+        private void LoadPurchaseOrder(JRSApplication.Components.Models.PurchaseOrder po)
+        {
+            // โหลดข้อมูลใบสั่งซื้อลง UI
+            LoadOrderData(); // โหลดข้อมูลใบสั่งซื้อ
+            LoadMaterialData(); // โหลดวัสดุตาม orderId
+            CustomizeMaterialGridStyling();
+        }
+
+        private void SetPreviewMode()
+        {
+            // 🔐 ปิดปุ่ม Action ต่าง ๆ
+            //btnSave.Enabled = false;
+            //btnSave.Visible = false; //ซ่อนปุ่มบันทึก
+            //txtRemark.Enabled = false;
+            //txtRemark.Visible = false;
+            //radioApproved.Enabled = false;
+            //radioRejected.Enabled = false;
+            //radioApproved.Visible = false; // ซ่อนปุ่ม radioApproved
+            //radioRejected.Visible = false; // ซ่อนปุ่ม radioRejected
+
+            // ❌ หรือปิดการใช้ control ทั้งหมดใน groupBox:
+            foreach (Control ctrl in this.Controls)
+            {
+                //txtRemark.Visible = false;
+                //radioApproved.Visible = false; // ซ่อนปุ่ม radioApproved
+                //radioRejected.Visible = false; // ซ่อนปุ่ม radioRejected
+                if (ctrl is TextBox textbox) textbox.ReadOnly = true;
+                else if (ctrl is ComboBox combo) combo.Enabled = false;
+                else if (ctrl is Button btn) btn.Enabled = false;
+                else ctrl.Enabled = false;
+            }
+        }
+
+
         private int _orderId;
         private readonly string currentUserId; // ✅ เพิ่มตัวแปร field
         private List<MaterialDetail> materialList = new List<MaterialDetail>();

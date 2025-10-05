@@ -1,5 +1,6 @@
 ﻿using JRSApplication.Components;
 using JRSApplication.Components.Models;
+using JRSApplication.Components.Service;
 using JRSApplication.Data_Access_Layer;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
@@ -849,15 +850,15 @@ namespace JRSApplication
         }
 
         private void dtgvPurchaseOrderList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-{
-    if (e.RowIndex < 0) return;
+        {
+            if (e.RowIndex < 0) return;
 
-    var row = dtgvPurchaseOrderList.Rows[e.RowIndex];
-    var po = row.DataBoundItem as JRSApplication.Components.Models.PurchaseOrder;
-    if (po == null) return;
+            var row = dtgvPurchaseOrderList.Rows[e.RowIndex];
+            var po = row.DataBoundItem as JRSApplication.Components.Models.PurchaseOrder;
+            if (po == null) return;
 
-    ShowPurchaseOrderDetails(po);
-}
+            ShowPurchaseOrderDetails(po);
+        }
 
 
         private void ShowPurchaseOrderDetails(JRSApplication.Components.Models.PurchaseOrder po)
@@ -904,6 +905,49 @@ namespace JRSApplication
             cmbUnit.Enabled = false;
             btnAddMaterial.Enabled = false;
             btnEditMaterial.Enabled = false;
+        }
+
+        private Timer hoverTimer = new Timer();
+        private int hoveredRowIndex = -1;
+        private void StartHoverPreviewTimer(int rowIndex)
+        {
+            hoveredRowIndex = rowIndex;
+
+            hoverTimer.Interval = 1000; // วินาที
+            hoverTimer.Tick -= HoverTimer_Tick; // ป้องกันซ้ำ
+            hoverTimer.Tick += HoverTimer_Tick;
+            hoverTimer.Start();
+        }
+        private void HoverTimer_Tick(object sender, EventArgs e)
+        {
+            hoverTimer.Stop();
+
+            if (hoveredRowIndex >= 0 && hoveredRowIndex < dtgvPurchaseOrderList.Rows.Count)
+            {
+                var row = dtgvPurchaseOrderList.Rows[hoveredRowIndex];
+                var po = row.DataBoundItem as JRSApplication.Components.Models.PurchaseOrder;
+
+                if (po != null)
+                {
+                    // เรียก POForm แบบ preview
+                    var previewForm = new POForm(po.OrderId, _empId, true);
+                    previewForm.ShowDialog();
+                }
+            }
+
+            hoveredRowIndex = -1;
+        }
+        private void dtgvPurchaseOrderList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                StartHoverPreviewTimer(e.RowIndex);
+            }
+        }
+        private void dtgvPurchaseOrderList_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            hoverTimer.Stop();
+            hoveredRowIndex = -1;
         }
 
     }
