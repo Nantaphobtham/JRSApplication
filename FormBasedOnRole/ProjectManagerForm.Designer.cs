@@ -152,17 +152,6 @@
             this.btnPurchaseOrder.Text = "อนุมัติใบสั่งซื้อ";
             this.btnPurchaseOrder.UseVisualStyleBackColor = false;
             this.btnPurchaseOrder.Click += new System.EventHandler(this.btnPurchaseOrder_Click);
-            // 
-            // Header
-            // 
-            this.Header = new System.Windows.Forms.Panel();
-            this.txtFunctionname = new System.Windows.Forms.Label();
-            this.txtsubFunctionname = new System.Windows.Forms.Label();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.btnMinimize = new System.Windows.Forms.Button();
-            this.txtPosition = new System.Windows.Forms.Label();
-            this.txtName = new System.Windows.Forms.Label();
-            this.Profile = new System.Windows.Forms.PictureBox();
 
             this.Header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Profile)).BeginInit();
@@ -186,27 +175,26 @@
             // txtFunctionname
             //
             this.txtFunctionname.BackColor = System.Drawing.Color.Transparent;
-            this.txtFunctionname.Dock = System.Windows.Forms.DockStyle.Top;
+            this.txtFunctionname.Dock = System.Windows.Forms.DockStyle.None; // ❌ เอา Dock ออก
             this.txtFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtFunctionname.ForeColor = System.Drawing.Color.Black;
-            this.txtFunctionname.Location = new System.Drawing.Point(0, 0);
-            this.txtFunctionname.Name = "txtFunctionname";
-            this.txtFunctionname.Size = new System.Drawing.Size(1920, 45); // ขยายเต็ม Header
+            this.txtFunctionname.Location = new System.Drawing.Point(600, 20);   // ✅ กำหนดตำแหน่งเอง (x,y)
+            this.txtFunctionname.Size = new System.Drawing.Size(800, 45);       // ✅ ขนาดข้อความ
             this.txtFunctionname.TabIndex = 4;
             this.txtFunctionname.Text = "ยินดีต้อนรับ";
             this.txtFunctionname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-
+            //
             // txtsubFunctionname
             this.txtsubFunctionname.BackColor = System.Drawing.Color.Transparent;
-            this.txtsubFunctionname.Dock = System.Windows.Forms.DockStyle.Top;
+            this.txtsubFunctionname.Dock = System.Windows.Forms.DockStyle.None; // ❌ เอา Dock ออก
             this.txtsubFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtsubFunctionname.ForeColor = System.Drawing.Color.Black;
-            this.txtsubFunctionname.Location = new System.Drawing.Point(0, 45);
-            this.txtsubFunctionname.Name = "txtsubFunctionname";
-            this.txtsubFunctionname.Size = new System.Drawing.Size(1920, 37);
+            this.txtsubFunctionname.Location = new System.Drawing.Point(600, 70); // ✅ ใต้บรรทัดบน
+            this.txtsubFunctionname.Size = new System.Drawing.Size(800, 37);
             this.txtsubFunctionname.TabIndex = 6;
             this.txtsubFunctionname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.txtsubFunctionname.Visible = false;
+
 
             // 
             // btnClose
