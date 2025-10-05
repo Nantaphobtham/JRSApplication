@@ -7,14 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySqlX.XDevAPI.CRUD;
 
 namespace JRSApplication
 {
     public partial class SearchForm : Form
     {
         private SearchService searchService = new SearchService();
-        public string SearchMode { get; set; }  // "Customer" หรือ "Employee" หรือ "Supplier" หรือ "Project" หรือ "Invoice"
+        public string SearchMode { get; set; }
         public string SelectedID { get; private set; } = "";
         public string SelectedName { get; private set; } = "";
         public string SelectedContract { get; private set; } = "";
@@ -24,7 +23,6 @@ namespace JRSApplication
         public string SelectedEmail { get; private set; } = "";
         public string SelectedCusID { get; private set; } = "";
         private string optionalProjectId = null;
-
 
         public SearchForm(string mode, string optionalProjectId = null)
         {
@@ -57,6 +55,9 @@ namespace JRSApplication
                 LoadSearchData("");
 
             CustomizeDataGridViewAlldata();
+
+            // ✅ เพิ่ม Event DoubleClick
+            dtgvAlldata.CellDoubleClick += dtgvAlldata_CellDoubleClick;
         }
 
         private void LoadSearchData(string keywordOrProjectId = "")
@@ -73,13 +74,10 @@ namespace JRSApplication
             }
         }
 
-
-
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             if (SearchMode == "UnpaidInvoiceByProject")
             {
-                // Local filter on the in-memory table
                 if (dtgvAlldata.DataSource is DataTable table)
                 {
                     var dv = table.DefaultView;
@@ -91,7 +89,6 @@ namespace JRSApplication
                     }
                     else
                     {
-                        // Filter by a few useful columns
                         dv.RowFilter =
                             $"CONVERT(inv_id, 'System.String') LIKE '%{q}%' " +
                             $"OR CONVERT(inv_status, 'System.String') LIKE '%{q}%' " +
@@ -101,13 +98,25 @@ namespace JRSApplication
             }
             else
             {
-                // All other modes keep DB-backed searching
                 LoadSearchData(txtSearch.Text);
             }
         }
 
-
+        // ✅ ใช้ฟังก์ชันกลาง
         private void btnConfirm_Click(object sender, EventArgs e)
+        {
+            ConfirmSelection();
+        }
+
+        private void dtgvAlldata_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                ConfirmSelection();
+            }
+        }
+
+        private void ConfirmSelection()
         {
             if (dtgvAlldata.SelectedRows.Count > 0)
             {
@@ -129,7 +138,6 @@ namespace JRSApplication
                     SelectedLastName = selectedRow.Cells["นามสกุล"].Value?.ToString() ?? "";
                     SelectedIDCardOrRole = selectedRow.Cells["ตำแหน่ง"].Value?.ToString() ?? "";
                     SelectedPhone = selectedRow.Cells["เบอร์โทร"].Value?.ToString() ?? "";
-
                 }
                 else if (SearchMode == "Supplier")
                 {
@@ -144,15 +152,15 @@ namespace JRSApplication
                     SelectedContract = selectedRow.Cells["เลขที่สัญญา"].Value?.ToString() ?? "";
                     SelectedName = selectedRow.Cells["ชื่อโครงการ"].Value?.ToString() ?? "";
                     SelectedLastName = selectedRow.Cells["ลูกค้า"].Value?.ToString() ?? "";
-                    SelectedPhone = selectedRow.Cells["เบอร์โทร"].Value?.ToString() ?? "";    // ✅ ใช้ "เบอร์โทร"
-                    SelectedEmail = selectedRow.Cells["อีเมล"].Value?.ToString() ?? "";        // ✅ ใช้ "อีเมล"
+                    SelectedPhone = selectedRow.Cells["เบอร์โทร"].Value?.ToString() ?? "";
+                    SelectedEmail = selectedRow.Cells["อีเมล"].Value?.ToString() ?? "";
                     SelectedIDCardOrRole = selectedRow.Cells["พนักงานดูแล"].Value?.ToString() ?? "";
                     SelectedCusID = selectedRow.Cells["รหัสลูกค้า"].Value?.ToString() ?? "";
                 }
                 else if (SearchMode == "Invoice")
                 {
                     SelectedID = selectedRow.Cells["เลขที่ใบแจ้งหนี้"].Value?.ToString() ?? "";
-                    SelectedCusID = selectedRow.Cells["รหัสลูกค้า"].Value.ToString();  // ✅ ค่าของ cus_id
+                    SelectedCusID = selectedRow.Cells["รหัสลูกค้า"].Value?.ToString() ?? "";
                     SelectedLastName = selectedRow.Cells["รหัสโครงการ"].Value?.ToString() ?? "";
                     SelectedIDCardOrRole = selectedRow.Cells["รหัสพนักงาน"].Value?.ToString() ?? "";
                     SelectedPhone = selectedRow.Cells["วิธีชำระเงิน"].Value?.ToString() ?? "";
@@ -166,9 +174,9 @@ namespace JRSApplication
                     SelectedPhone = selectedRow.Cells["inv_method"].Value?.ToString() ?? "";
                     SelectedEmail = selectedRow.Cells["inv_status"].Value?.ToString() ?? "";
                 }
+
                 this.DialogResult = DialogResult.OK;
                 this.Close();
-
             }
             else
             {
@@ -180,38 +188,32 @@ namespace JRSApplication
         {
             dtgvAlldata.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dtgvAlldata.MultiSelect = false;
-
             dtgvAlldata.BorderStyle = BorderStyle.None;
             dtgvAlldata.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
             dtgvAlldata.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dtgvAlldata.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
             dtgvAlldata.DefaultCellStyle.SelectionForeColor = Color.White;
             dtgvAlldata.BackgroundColor = Color.White;
-
             dtgvAlldata.EnableHeadersVisualStyles = false;
             dtgvAlldata.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dtgvAlldata.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dtgvAlldata.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dtgvAlldata.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
             dtgvAlldata.ColumnHeadersHeight = 30;
-
             dtgvAlldata.DefaultCellStyle.Font = new Font("Segoe UI", 12);
             dtgvAlldata.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dtgvAlldata.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dtgvAlldata.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
-
             dtgvAlldata.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dtgvAlldata.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dtgvAlldata.RowTemplate.Height = 30;
-
             dtgvAlldata.GridColor = Color.LightGray;
             dtgvAlldata.RowHeadersVisible = false;
-
             dtgvAlldata.ReadOnly = true;
             dtgvAlldata.AllowUserToAddRows = false;
             dtgvAlldata.AllowUserToResizeRows = false;
         }
-        // ✅ Step 1: Populate filter columns depending on SearchMode
+
         private void SearchForm_Load(object sender, EventArgs e)
         {
             cmbSearchBy.Items.Clear();
@@ -256,37 +258,32 @@ namespace JRSApplication
 
                 if (string.IsNullOrEmpty(keyword))
                 {
-                    table.DefaultView.RowFilter = string.Empty;  // show all again
+                    table.DefaultView.RowFilter = string.Empty;
                 }
                 else
                 {
                     if (SearchMode == "Project")
                     {
-                        // Search by Project Name or Customer Name
                         table.DefaultView.RowFilter =
                             $"[ชื่อโครงการ] LIKE '%{keyword}%' OR [ลูกค้า] LIKE '%{keyword}%'";
                     }
                     else if (SearchMode == "Employee")
                     {
-                        // Search by Employee Name or Last Name
                         table.DefaultView.RowFilter =
                             $"[ชื่อ] LIKE '%{keyword}%' OR [นามสกุล] LIKE '%{keyword}%'";
                     }
                     else if (SearchMode == "Customer")
                     {
-                        // Search by Customer Name
                         table.DefaultView.RowFilter =
                             $"[ชื่อ] LIKE '%{keyword}%' OR [นามสกุล] LIKE '%{keyword}%'";
                     }
                     else if (SearchMode == "Supplier")
                     {
-                        // Search by Supplier Name or Juristic Number
                         table.DefaultView.RowFilter =
                             $"[ชื่อบริษัท] LIKE '%{keyword}%' OR [เลขทะเบียนนิติบุคคล] LIKE '%{keyword}%'";
                     }
                     else if (SearchMode == "Invoice")
                     {
-                        // Search by Invoice ID
                         table.DefaultView.RowFilter =
                             $"CONVERT([เลขที่ใบแจ้งหนี้], 'System.String') LIKE '%{keyword}%'";
                     }
@@ -294,7 +291,6 @@ namespace JRSApplication
             }
         }
 
-        // ✅ Step 3: Apply filter to current DataTable
         private void btnSearch_Click(object sender, EventArgs e)
         {
             if (dtgvAlldata.DataSource is DataTable table)
@@ -304,12 +300,9 @@ namespace JRSApplication
                 if (string.IsNullOrEmpty(keyword))
                 {
                     table.DefaultView.RowFilter = string.Empty;
-                    //MessageBox.Show("⚠️ Please enter a keyword to search. Showing all data.", "Search",
-                    //    MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                // use selected column
                 string selectedColumn = cmbSearchBy.SelectedItem?.ToString();
                 if (string.IsNullOrEmpty(selectedColumn))
                 {
@@ -318,20 +311,8 @@ namespace JRSApplication
                     return;
                 }
 
-                // string search (CONVERT for numeric cols just in case)
                 table.DefaultView.RowFilter =
                     $"CONVERT([{selectedColumn}], 'System.String') LIKE '%{keyword}%'";
-
-                //if (table.DefaultView.Count > 0)
-                //{
-                //    MessageBox.Show($"✅ Found {table.DefaultView.Count} result(s).", "Search Result",
-                //        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                //}
-                //else
-                //{
-                //    MessageBox.Show("❌ No data found.", "Search Result",
-                //        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //}
             }
         }
 
@@ -339,6 +320,5 @@ namespace JRSApplication
         {
             this.Close();
         }
-
     }
 }
