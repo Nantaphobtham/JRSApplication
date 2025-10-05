@@ -266,120 +266,96 @@ namespace JRSApplication.Accountant
             }
 
             string invId = txtInvNo.Text.Trim();
+            decimal phaseBudget = 0m;
+            string phaseDetail = "งบประมาณของเฟสงาน";
+            string invDate = "";
+            string remark = txtRemark.Text.Trim();
+            string cusAddress = "";
 
-            // Load address from DB so the customer box shows real address
-            string custAddress = "";
             try
             {
-                var invDal = new InvoiceDAL();
-                var dtInv = invDal.GetInvoiceID(invId);
-                if (dtInv.Rows.Count > 0 && dtInv.Columns.Contains("cus_address"))
-                    custAddress = dtInv.Rows[0]["cus_address"]?.ToString() ?? "";
-            }
-            catch { /* ignore */ }
-
-            // If right-panel fields are empty, pull first invoice_detail row
-            string detailText = (txtDetail.Text ?? "").Trim();
-            string quantityText = (txtQuantity.Text ?? "").Trim();   // keep AS-TYPED for display
-            string priceText = (txtPrice.Text ?? "").Trim();
-
-            if (string.IsNullOrWhiteSpace(detailText) &&
-                string.IsNullOrWhiteSpace(quantityText) &&
-                string.IsNullOrWhiteSpace(priceText))
-            {
-                try
+                DataTable headTable = new InvoiceDAL().GetInvoiceID(invId);
+                if (headTable.Rows.Count > 0)
                 {
-                    var detDal = new InvoiceDetailDAL();
-                    var first = detDal.GetFirstDetailForPrint(invId);
-                    if (first.HasValue)
-                    {
-                        detailText = first.Value.Detail ?? "";
-                        quantityText = first.Value.Quantity ?? "";
-                        priceText = first.Value.Price.ToString("N2");
-                    }
+                    var r = headTable.Rows[0];
+
+                    if (headTable.Columns.Contains("phase_budget") && r["phase_budget"] != DBNull.Value)
+                        phaseBudget = Convert.ToDecimal(r["phase_budget"]);
+
+                    if (headTable.Columns.Contains("phase_detail") && r["phase_detail"] != DBNull.Value)
+                        phaseDetail = Convert.ToString(r["phase_detail"]);
+
+                    if (headTable.Columns.Contains("inv_date") && r["inv_date"] != DBNull.Value)
+                        invDate = Convert.ToDateTime(r["inv_date"]).ToString("d/M/yyyy");
+
+                    if (headTable.Columns.Contains("cus_address") && r["cus_address"] != DBNull.Value)
+                        cusAddress = r["cus_address"].ToString();
                 }
-                catch { /* ignore */ }
             }
+            catch { }
 
-            // UI scaffold
-            Form invoiceForm = new Form
-            {
-                Text = "ใบแจ้งหนี้",
-                StartPosition = FormStartPosition.CenterScreen,
-                Size = new Size(1620, 1080),
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                MaximizeBox = false
-            };
+            // --- Build ONE DataTable for RDLC ---
+            var table = new DataTable();
+            table.Columns.Add("receipt_id");
+            table.Columns.Add("receipt_date");
+            table.Columns.Add("inv_id");
+            table.Columns.Add("inv_date");
+            table.Columns.Add("cus_fullname");
+            table.Columns.Add("cus_address");
+            table.Columns.Add("pro_name");
+            table.Columns.Add("phase_detail");
+            table.Columns.Add("phase_budget", typeof(decimal));
+            table.Columns.Add("inv_remark");
+            table.Columns.Add("subtotal", typeof(decimal));
+            table.Columns.Add("vat", typeof(decimal));
+            table.Columns.Add("grand_total", typeof(decimal));
+            table.Columns.Add("ToDate");
 
-            var invoicePrint = new InvoicePrint { Dock = DockStyle.Fill };
+            table.Columns.Add("inv_detail");
+            table.Columns.Add("inv_quantity");
+            table.Columns.Add("inv_price");
 
-            // Customer box + header (address fixed)
-            string line2 = string.IsNullOrWhiteSpace(custAddress)
-                ? ("รหัสลูกค้า: " + txtCusID.Text)
-                : ("ที่อยู่: " + custAddress);
-            invoicePrint.SetCustomerBox(txtCusName.Text, line2);
-            var printDate = DateTime.Now;   // or DateTime.Today
-            invoicePrint.SetInvoiceHeader(invId, printDate);
+            // --- Calculate totals ---
+            decimal subtotal = phaseBudget;
+            string invDetail = txtDetail.Text.Trim();
+            string invQty = string.IsNullOrWhiteSpace(txtQuantity.Text) ? "1" : txtQuantity.Text.Trim();
+            string invPrice = txtPrice.Text.Trim();
 
-            // Helpers
-            decimal ParseMoney(string s)
-            {
-                if (string.IsNullOrWhiteSpace(s)) return 0m;
-                if (decimal.TryParse(s, NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
-                                     CultureInfo.CurrentCulture, out var v)) return v;
-                if (decimal.TryParse(s, NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
-                                     CultureInfo.InvariantCulture, out v)) return v;
-                return 0m;
-            }
+            if (decimal.TryParse(invPrice, out decimal extraPrice))
+                subtotal += extraPrice;
 
-            // 3) Build items
-            var items = new DataTable();
-            items.Columns.Add("inv_detail");
-            items.Columns.Add("inv_quantity");
-            items.Columns.Add("inv_price");
+            decimal vat = Math.Round(subtotal * 0.07m, 2, MidpointRounding.AwayFromZero);
+            decimal grand = subtotal + vat;
 
-            // ----- Right row (optional) -----
-            bool hasRightRow = !string.IsNullOrWhiteSpace(detailText);
-            decimal priceNum = ParseMoney(priceText);
+            var thaiCulture = new System.Globalization.CultureInfo("th-TH");
+            string toDate = DateTime.Now.ToString("d MMMM yyyy", thaiCulture);
+            // --- Add row ---
+            table.Rows.Add(
+                DBNull.Value,        // receipt_id (not used for invoice)
+                DBNull.Value,        // receipt_date
+                invId,
+                dtpInvDate.Value.ToString("d/M/yyyy"),// ✅ inv_date
+                txtCusName.Text,
+                cusAddress,
+                txtProjectName.Text,
+                phaseDetail,
+                phaseBudget,
+                remark,
+                subtotal,
+                vat,
+                grand,
+                toDate,
+                string.IsNullOrWhiteSpace(invDetail) ? "" : invDetail,
+                invQty,
+                string.IsNullOrWhiteSpace(invPrice) ? "0.00" : invPrice
+            );
 
-            if (hasRightRow)
-            {
-                var rRight = items.NewRow();
-                rRight["inv_detail"] = detailText;
-                rRight["inv_quantity"] = quantityText;        // show EXACT text
-                rRight["inv_price"] = priceNum.ToString("N2");
-                items.Rows.Add(rRight);
-            }
-
-            // ----- Phase row (always) -----
-            decimal phaseBudget = ParseMoney(txtPhaseBudget.Text);
-            string phaseName = string.IsNullOrWhiteSpace(txtPhaseDetail.Text)
-                ? "งบประมาณของเฟสงาน"
-                : txtPhaseDetail.Text.Trim();
-
-            var rPhase = items.NewRow();
-            rPhase["inv_detail"] = phaseName;
-            rPhase["inv_quantity"] = "1";                    // display only
-            rPhase["inv_price"] = phaseBudget.ToString("N2");
-            items.Rows.Add(rPhase);
-
-            invoicePrint.SetInvoiceDetails(items);
-
-            // 4) Summary: **ignore quantity** (treat each line as 1×price)
-            decimal subtotal = 0m;
-            if (hasRightRow) subtotal += priceNum;
-            subtotal += phaseBudget;
-
-            decimal vat = subtotal * 0.07m;
-            decimal grandTotal = subtotal + vat;
-            invoicePrint.SetInvoiceSummary(subtotal, vat, grandTotal);
-
-            // 5) Remark
-            invoicePrint.SetInvoiceRemark(txtRemark.Text);
-
-            invoiceForm.Controls.Add(invoicePrint);
-            invoiceForm.ShowDialog();
+            // --- Show RDLC ---
+            var frm = new InvoicePrintRDLC(table);
+            frm.ShowDialog();
         }
+
+
 
         private void cmbPhase_SelectedIndexChanged(object sender, EventArgs e)
         {

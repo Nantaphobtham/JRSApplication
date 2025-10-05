@@ -408,9 +408,9 @@
             this.panel4.Controls.Add(this.button5);
             this.panel4.Controls.Add(this.button3);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel4.Location = new System.Drawing.Point(0, 865);
+            this.panel4.Location = new System.Drawing.Point(0, 748);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1636, 103);
+            this.panel4.Size = new System.Drawing.Size(1457, 103);
             this.panel4.TabIndex = 79;
             // 
             // button6
@@ -498,7 +498,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = true;
+            this.CausesValidation = false;
             this.Controls.Add(this.dtpReceiptDate);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.btn1);
@@ -537,7 +537,7 @@
             this.Controls.Add(this.dtgvInvoice);
             this.Controls.Add(this.Topic1);
             this.Name = "Receipt";
-            this.Size = new System.Drawing.Size(1413, 611);
+            this.Size = new System.Drawing.Size(1457, 851);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvReceiptDetail)).EndInit();
             this.panel4.ResumeLayout(false);

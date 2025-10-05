@@ -78,7 +78,7 @@
             this.label19.AutoSize = true;
             this.label19.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.label19.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(692, 29);
+            this.label19.Location = new System.Drawing.Point(582, 26);
             this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(243, 30);
@@ -113,7 +113,7 @@
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(304, 82);
+            this.panel1.Location = new System.Drawing.Point(194, 79);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1041, 774);
             this.panel1.TabIndex = 58;
@@ -520,7 +520,7 @@
             // 
             this.dataGridView1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(222, 3);
+            this.dataGridView1.Location = new System.Drawing.Point(113, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1200, 954);
             this.dataGridView1.TabIndex = 56;
@@ -537,7 +537,7 @@
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.button2);
             this.Name = "InvoicePrint";
-            this.Size = new System.Drawing.Size(1584, 1099);
+            this.Size = new System.Drawing.Size(1466, 860);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
