@@ -237,6 +237,9 @@ namespace JRSApplication.Sitesupervisor
                     }
                 }
             };
+
+            // Apply the style
+            CustomizeGridStyling(dtgvWorkResponse);
         }
         private void LoadWorkResponse()
         {
@@ -352,7 +355,32 @@ namespace JRSApplication.Sitesupervisor
             return list;
         }
 
-
-
+        // Add this method to your WorkResponse class
+        private void CustomizeGridStyling(DataGridView grid)
+        {
+            grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            grid.BorderStyle = BorderStyle.None;
+            grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
+            grid.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            grid.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
+            grid.DefaultCellStyle.SelectionForeColor = Color.White;
+            grid.EnableHeadersVisualStyles = false;
+            grid.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            grid.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            grid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            grid.ColumnHeadersHeight = 32;
+            grid.DefaultCellStyle.Font = new Font("Segoe UI", 12);
+            grid.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            grid.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
+            grid.RowTemplate.Height = 32;
+            grid.AllowUserToResizeRows = false;
+            grid.AllowUserToAddRows = false;
+            grid.ReadOnly = true;
+            grid.RowHeadersVisible = false;
+            grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+        }
     }
 }
