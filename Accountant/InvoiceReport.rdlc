@@ -95,6 +95,7 @@
                 <Value>ใบเสร็จรับเงิน</Value>
                 <Style>
                   <FontSize>14pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -147,7 +148,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>ลำดับ</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -177,7 +181,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>รายละเอียด</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -206,7 +213,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>จำนวน</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -236,7 +246,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>ราคา</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -271,7 +284,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>1</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -301,7 +317,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!phase_detail.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -331,7 +350,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>1</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -361,7 +383,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!phase_budget.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -396,7 +421,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>2</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -426,7 +454,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!inv_detail.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -456,7 +487,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!inv_quantity.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -487,6 +521,8 @@
                             <TextRun>
                               <Value>=Fields!inv_price.Value</Value>
                               <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
                                 <FontWeight>Normal</FontWeight>
                               </Style>
                             </TextRun>
@@ -571,7 +607,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>="หมายเหตุ: " &amp; Fields!inv_remark.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -643,7 +682,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>รวมเป็นเงิน </Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -672,7 +714,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=First(Fields!subtotal.Value, "ReceiptDataSet")</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -706,7 +751,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>จำนวนภาษีมูลค่าเพิ่ม </Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -736,7 +784,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=First(Fields!vat.Value, "ReceiptDataSet")</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -771,7 +822,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>จำนวนเงินทั้งสิ้น</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -801,7 +855,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=First(Fields!grand_total.Value, "ReceiptDataSet")</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>Angsana New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -855,84 +912,6 @@
           </Border>
         </Style>
       </Tablix>
-      <Textbox Name="Textbox131">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>( ___________________ )</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>                    ผู้รับเงิน</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox131</rd:DefaultName>
-        <Top>4.31356in</Top>
-        <Left>0.57761in</Left>
-        <Height>0.39487in</Height>
-        <Width>1.66225in</Width>
-        <ZIndex>6</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="Textbox132">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>( ___________________ )</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>                    ผู้รับเงิน</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox131</rd:DefaultName>
-        <Top>4.31356in</Top>
-        <Left>3.7558in</Left>
-        <Height>0.39487in</Height>
-        <Width>1.66225in</Width>
-        <ZIndex>7</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
       <Textbox Name="Textbox135">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
@@ -941,11 +920,17 @@
             <TextRuns>
               <TextRun>
                 <Value>ลูกค้า: </Value>
-                <Style />
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>12pt</FontSize>
+                </Style>
               </TextRun>
               <TextRun>
                 <Value>=Fields!cus_fullname.Value</Value>
-                <Style />
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>12pt</FontSize>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
@@ -954,22 +939,28 @@
             <TextRuns>
               <TextRun>
                 <Value>ที่อยู่: </Value>
-                <Style />
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>12pt</FontSize>
+                </Style>
               </TextRun>
               <TextRun>
                 <Value>=Fields!cus_address.Value</Value>
-                <Style />
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>12pt</FontSize>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox135</rd:DefaultName>
-        <Top>1.31322in</Top>
-        <Left>0.1463in</Left>
+        <Top>1.32711in</Top>
+        <Left>0.1568in</Left>
         <Height>0.92708in</Height>
         <Width>2.99325in</Width>
-        <ZIndex>8</ZIndex>
+        <ZIndex>6</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -988,7 +979,10 @@
             <TextRuns>
               <TextRun>
                 <Value>เลขที่</Value>
-                <Style />
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>12pt</FontSize>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
@@ -999,7 +993,7 @@
         <Left>3.13954in</Left>
         <Height>0.47098in</Height>
         <Width>1in</Width>
-        <ZIndex>9</ZIndex>
+        <ZIndex>7</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -1018,7 +1012,10 @@
             <TextRuns>
               <TextRun>
                 <Value>วันที่</Value>
-                <Style />
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>12pt</FontSize>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
@@ -1029,7 +1026,7 @@
         <Left>3.13953in</Left>
         <Height>0.45611in</Height>
         <Width>1in</Width>
-        <ZIndex>10</ZIndex>
+        <ZIndex>8</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -1048,7 +1045,10 @@
             <TextRuns>
               <TextRun>
                 <Value>=Fields!inv_id.Value</Value>
-                <Style />
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>12pt</FontSize>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
@@ -1059,7 +1059,7 @@
         <Left>4.13954in</Left>
         <Height>0.47098in</Height>
         <Width>1.78115in</Width>
-        <ZIndex>11</ZIndex>
+        <ZIndex>9</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -1078,7 +1078,10 @@
             <TextRuns>
               <TextRun>
                 <Value>=Fields!inv_date.Value</Value>
-                <Style />
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>12pt</FontSize>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
@@ -1089,7 +1092,7 @@
         <Left>4.13953in</Left>
         <Height>0.45611in</Height>
         <Width>1.78114in</Width>
-        <ZIndex>12</ZIndex>
+        <ZIndex>10</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -1108,7 +1111,10 @@
             <TextRuns>
               <TextRun>
                 <Value>อ้างอิง</Value>
-                <Style />
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>12pt</FontSize>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
@@ -1119,7 +1125,7 @@
         <Left>0.1463in</Left>
         <Height>0.25in</Height>
         <Width>1.00001in</Width>
-        <ZIndex>13</ZIndex>
+        <ZIndex>11</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -1138,7 +1144,10 @@
             <TextRuns>
               <TextRun>
                 <Value />
-                <Style />
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>12pt</FontSize>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
@@ -1149,7 +1158,7 @@
         <Left>1.1463in</Left>
         <Height>0.25in</Height>
         <Width>4.77437in</Width>
-        <ZIndex>14</ZIndex>
+        <ZIndex>12</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -1160,8 +1169,191 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
+      <Textbox Name="Textbox133">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value> ( ___________________ )</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value xml:space="preserve">              </Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontFamily>AngsanaUPC</FontFamily>
+                  <FontSize>12pt</FontSize>
+                  <FontWeight>Normal</FontWeight>
+                  <TextDecoration>None</TextDecoration>
+                  <Color>#000000</Color>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=Fields!cus_fullname.Value</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontFamily>AngsanaUPC</FontFamily>
+                  <FontSize>12pt</FontSize>
+                  <FontWeight>Normal</FontWeight>
+                  <TextDecoration>None</TextDecoration>
+                  <Color>#000000</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox131</rd:DefaultName>
+        <Top>4.32744in</Top>
+        <Left>0.67387in</Left>
+        <Height>0.43654in</Height>
+        <Width>1.78062in</Width>
+        <ZIndex>13</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox7">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>ลงวันที่: </Value>
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=Fields!ToDate.Value</Value>
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox3</rd:DefaultName>
+        <Top>4.76398in</Top>
+        <Left>0.67387in</Left>
+        <Height>0.25in</Height>
+        <Width>1.78062in</Width>
+        <ZIndex>14</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox134">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>  ( ___________________ )</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>  เจ อาร์ เอส เฮ้าส์ คอนสตรัคชั่น จำกัด</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontFamily>AngsanaUPC</FontFamily>
+                  <FontSize>12pt</FontSize>
+                  <FontWeight>Normal</FontWeight>
+                  <TextDecoration>None</TextDecoration>
+                  <Color>#000000</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox131</rd:DefaultName>
+        <Top>4.32744in</Top>
+        <Left>3.59369in</Left>
+        <Height>0.43654in</Height>
+        <Width>1.78062in</Width>
+        <ZIndex>15</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox9">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>ลงวันที่: </Value>
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value>=Fields!ToDate.Value</Value>
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox3</rd:DefaultName>
+        <Top>4.76398in</Top>
+        <Left>3.59369in</Left>
+        <Height>0.25in</Height>
+        <Width>1.78062in</Width>
+        <ZIndex>16</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
-    <Height>5.10417in</Height>
+    <Height>5.35679in</Height>
     <Style>
       <Border>
         <Style>None</Style>
@@ -1255,6 +1447,10 @@
         </Field>
         <Field Name="inv_date">
           <DataField>inv_date</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ToDate">
+          <DataField>ToDate</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
