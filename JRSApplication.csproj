@@ -155,11 +155,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accountant\Class1.cs" />
     <Compile Include="Accountant\ConfirmInvoice.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Accountant\ConfirmInvoice.Designer.cs">
       <DependentUpon>ConfirmInvoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Accountant\InvoicePrintRDLC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Accountant\InvoicePrintRDLC.Designer.cs">
+      <DependentUpon>InvoicePrintRDLC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Accountant\ReceiptPrintRDLC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Accountant\ReceiptPrintRDLC.Designer.cs">
+      <DependentUpon>ReceiptPrintRDLC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Accountant\ReceiptDataSet.cs">
+      <DependentUpon>ReceiptDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Accountant\ReceiptDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReceiptDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Accountant\Helpers\InvoiceDetailDAL.cs" />
     <Compile Include="Accountant\Invoice.cs">
@@ -180,11 +201,11 @@
     <Compile Include="Accountant\Receipt.Designer.cs">
       <DependentUpon>Receipt.cs</DependentUpon>
     </Compile>
-    <Compile Include="Accountant\ReceiptPrint.cs">
+    <Compile Include="Accountant\ReceiptPrintBackup.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Accountant\ReceiptPrint.Designer.cs">
-      <DependentUpon>ReceiptPrint.cs</DependentUpon>
+    <Compile Include="Accountant\ReceiptPrintBackup.Designer.cs">
+      <DependentUpon>ReceiptPrintBackup.cs</DependentUpon>
     </Compile>
     <Compile Include="Admin\CustomerRegistration.cs">
       <SubType>UserControl</SubType>
@@ -377,6 +398,9 @@
     <EmbeddedResource Include="Accountant\ConfirmInvoice.resx">
       <DependentUpon>ConfirmInvoice.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Accountant\InvoicePrintRDLC.resx">
+      <DependentUpon>InvoicePrintRDLC.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Accountant\Invoice.resx">
       <DependentUpon>Invoice.cs</DependentUpon>
     </EmbeddedResource>
@@ -386,9 +410,18 @@
     <EmbeddedResource Include="Accountant\Receipt.resx">
       <DependentUpon>Receipt.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Accountant\ReceiptPrint.resx">
-      <DependentUpon>ReceiptPrint.cs</DependentUpon>
+    <EmbeddedResource Include="Accountant\ReceiptPrintBackup.resx">
+      <DependentUpon>ReceiptPrintBackup.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Accountant\ReceiptPrintRDLC.resx">
+      <DependentUpon>ReceiptPrintRDLC.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="Accountant\ReceiptReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Accountant\InvoiceReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Admin\CustomerRegistration.resx">
       <DependentUpon>CustomerRegistration.cs</DependentUpon>
     </EmbeddedResource>
@@ -464,6 +497,17 @@
     <EmbeddedResource Include="Sitesupervisor\WorkResponse.resx">
       <DependentUpon>WorkResponse.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Accountant\ReceiptDataSet.xsc">
+      <DependentUpon>ReceiptDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Accountant\ReceiptDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ReceiptDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Accountant\ReceiptDataSet.xss">
+      <DependentUpon>ReceiptDataSet.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\DataSources\AccountantForm.datasource" />

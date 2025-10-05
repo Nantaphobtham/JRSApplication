@@ -281,6 +281,7 @@ namespace JRSApplication.Data_Access_Layer
             i.inv_date,
             i.inv_duedate,
             i.inv_remark,
+            i.paid_date,
             p.pro_id,
             p.pro_name,
             p.pro_number,

@@ -12,40 +12,78 @@ using System.Windows.Forms;
 
 namespace JRSApplication.Accountant
 {
-    public partial class ReceiptPrint : UserControl
+    public partial class ReceiptPrintBackup : UserControl
     {
-        public ReceiptPrint()
+        public ReceiptPrintBackup()
         {
             InitializeComponent();
+
+            // A4 at 96 DPI ≈ 794 x 1123 pixels
+            this.Size = new Size(794, 1123);
+            this.BackColor = Color.White;   // white page
+            this.AutoScroll = false;
+            // 🔥 Reset ALL margins & padding (fix left-side offset)
+            this.Margin = new Padding(0);
+            this.Padding = new Padding(0);
+
+            foreach (Control c in this.Controls)
+            {
+                c.Margin = new Padding(0);
+                if (c is TableLayoutPanel tbl)
+                    tbl.Padding = new Padding(0);
+            }
         }
 
         private void btnPrintReceipt_Click(object sender, EventArgs e)
         {
             PrintDocument pd = new PrintDocument();
-            PrintDialog dlg = new PrintDialog();
-            dlg.Document = pd;
+            pd.DefaultPageSettings.Landscape = false; // A4 portrait
 
-            if (dlg.ShowDialog() == DialogResult.OK)
+            pd.PrintPage += (s, args) =>
             {
-                pd.PrintPage += (s, args) =>
-                {
-                    using (Bitmap bmp = new Bitmap(this.Width, this.Height))
-                    {
-                        this.DrawToBitmap(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
-                        args.Graphics.DrawImage(bmp, 0, 0);
-                    }
-                };
+                Control target = panel2; // full A4 panel
 
-                try
+                using (Bitmap bmp = new Bitmap(target.Width, target.Height))
                 {
+                    // ✅ Make it print-quality
+                    bmp.SetResolution(300, 300);
+
+                    // draw the control into the bitmap
+                    target.DrawToBitmap(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
+
+                    // ✅ improve drawing quality
+                    args.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    args.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    args.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                    args.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+
+                    // scale to fit page margins (keeps aspect ratio)
+                    Rectangle marginBounds = args.MarginBounds;
+                    float ratioX = (float)marginBounds.Width / bmp.Width;
+                    float ratioY = (float)marginBounds.Height / bmp.Height;
+                    float ratio = Math.Min(ratioX, ratioY);
+
+                    int newWidth = (int)(bmp.Width * ratio);
+                    int newHeight = (int)(bmp.Height * ratio);
+
+                    int posX = marginBounds.Left + (marginBounds.Width - newWidth) / 2;
+                    int posY = marginBounds.Top + (marginBounds.Height - newHeight) / 2;
+
+                    args.Graphics.DrawImage(bmp, posX, posY, newWidth, newHeight);
+                }
+            };
+
+            using (PrintDialog dlg = new PrintDialog())
+            {
+                dlg.Document = pd;
+                if (dlg.ShowDialog() == DialogResult.OK)
                     pd.Print();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Printing failed: " + ex.Message);
-                }
             }
         }
+
+
+
+
         private decimal SafeParse(object value, decimal fallback = 0m)
         {
             var s = Convert.ToString(value);
@@ -167,14 +205,6 @@ namespace JRSApplication.Accountant
         }
 
 
-        // ✅ แปลงตัวเลขเป็นข้อความบาทไทย
-        private string ConvertToThaiBahtText(decimal amount)
-        {
-            // คุณต้องมีคลาส ThaiBahtTextConverter เองหรือเขียนเพิ่ม
-            return new ThaiBahtTextConverter().GetBahtText(amount);
-        }
-
-
         // One place to create uniform bordered cells
         private void AddCell(
             TableLayoutPanel tbl,
@@ -250,7 +280,5 @@ namespace JRSApplication.Accountant
 
             tblBottomRight.ResumeLayout();
         }
-
-        
     }
 }

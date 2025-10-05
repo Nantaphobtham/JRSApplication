@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;               // <— added
 using JRSApplication.Data_Access_Layer;
 using System.Globalization;
 using System.Linq;
+using System.Drawing.Printing;
 
 namespace JRSApplication.Accountant
 {
@@ -15,6 +16,7 @@ namespace JRSApplication.Accountant
         private InvoiceDAL invoiceDAL = new InvoiceDAL();
         private ReceiptDAL receiptDAL = new ReceiptDAL();
         private string currentInvId;
+
 
         // for GenerateNextReceiptId()
         private readonly string _cs = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
@@ -352,9 +354,9 @@ namespace JRSApplication.Accountant
             }
             return null;
         }
+
         private void btnPrintReceipt_Click(object sender, EventArgs e)
         {
-            // receipt id (string) already generated/saved against the current invoice
             string receiptNo = receiptDAL.GetReceiptNoByInvId(currentInvId);
             if (string.IsNullOrWhiteSpace(receiptNo))
             {
@@ -363,105 +365,93 @@ namespace JRSApplication.Accountant
                 return;
             }
 
-            // 1) Load phase budget & phase detail (and address if you want later)
             decimal phaseBudget = 0m;
             string phaseDetail = "งบประมาณของเฟสงาน";
+            string paidDate = "";
+            string remark = receiptDAL.GetReceiptRemarkByInvId(currentInvId);
 
             try
             {
-                var head = invoiceDAL.GetInvoiceID(currentInvId);
-                if (head.Rows.Count > 0)
+                DataTable headTable = invoiceDAL.GetInvoiceID(currentInvId);
+                if (headTable.Rows.Count > 0)
                 {
-                    var r = head.Rows[0];
-                    if (head.Columns.Contains("phase_budget") && r["phase_budget"] != DBNull.Value)
+                    var r = headTable.Rows[0];
+                    if (headTable.Columns.Contains("phase_budget") && r["phase_budget"] != DBNull.Value)
                         phaseBudget = Convert.ToDecimal(r["phase_budget"]);
 
-                    if (head.Columns.Contains("phase_detail") && r["phase_detail"] != DBNull.Value)
+                    if (headTable.Columns.Contains("phase_detail") && r["phase_detail"] != DBNull.Value)
                         phaseDetail = Convert.ToString(r["phase_detail"]);
+
+                    if (headTable.Columns.Contains("paid_date") && r["paid_date"] != DBNull.Value)
+                        paidDate = Convert.ToDateTime(r["paid_date"]).ToString("d/M/yyyy");
                 }
             }
-            catch { /* ignore – keep defaults */ }
+            catch { }
 
-            // 2) “Extra” line from the first row in grid (or just leave empty)
-            string extraDetail = "";
-            string extraQtyText = "";
-            string extraPriceText = "";
+            // --- Build ONE DataTable for RDLC ---
+            var table = new DataTable();
+            table.Columns.Add("receipt_id");
+            table.Columns.Add("receipt_date");
+            table.Columns.Add("inv_id");
+            table.Columns.Add("cus_fullname");
+            table.Columns.Add("cus_address");
+            table.Columns.Add("pro_name");
+            table.Columns.Add("phase_detail");
+            table.Columns.Add("phase_budget", typeof(decimal));
+            table.Columns.Add("inv_remark");
+            table.Columns.Add("subtotal", typeof(decimal));
+            table.Columns.Add("vat", typeof(decimal));
+            table.Columns.Add("grand_total", typeof(decimal));
+
+            // ✅ Add the item columns too (so RDLC finds them)
+            table.Columns.Add("inv_detail");
+            table.Columns.Add("inv_quantity");
+            table.Columns.Add("inv_price");
+
+            // --- Calculate totals ---
+            decimal subtotal = phaseBudget;
+            string invDetail = null, invQty = null, invPrice = null;
+
             var first = GetFirstDetailFromGrid();
             if (first.HasValue)
             {
-                extraDetail = first.Value.detail ?? "";
-                extraQtyText = first.Value.qtyText ?? "";
-                extraPriceText = first.Value.priceText ?? "";
+                invDetail = first.Value.detail ?? "";
+                invQty = string.IsNullOrWhiteSpace(first.Value.qtyText) ? "1" : first.Value.qtyText;
+                invPrice = first.Value.priceText ?? "0.00";
+
+                if (decimal.TryParse(first.Value.priceText, out decimal extraPrice))
+                    subtotal += extraPrice;
             }
 
-            // 3) Build the printable items DataTable (same schema as InvoicePrint)
-            var items = new DataTable();
-            items.Columns.Add("inv_detail");
-            items.Columns.Add("inv_quantity");
-            items.Columns.Add("inv_price");
-
-            // 3.1 Optional “extra” row (display qty; DO NOT multiply for totals)
-            bool hasExtra = !string.IsNullOrWhiteSpace(extraDetail);
-            decimal extraPrice = ParseMoney(extraPriceText);
-
-            if (hasExtra)
-            {
-                var rr = items.NewRow();
-                rr["inv_detail"] = extraDetail;
-                rr["inv_quantity"] = extraQtyText;              // show exactly what the user typed
-                rr["inv_price"] = extraPrice.ToString("N2");
-                items.Rows.Add(rr);
-            }
-
-            // 3.2 Always include phase budget as the second row
-            var rPhase = items.NewRow();
-            rPhase["inv_detail"] = string.IsNullOrWhiteSpace(phaseDetail) ? "งบประมาณของเฟสงาน" : phaseDetail.Trim();
-            rPhase["inv_quantity"] = "1";
-            rPhase["inv_price"] = phaseBudget.ToString("N2");
-            items.Rows.Add(rPhase);
-
-            // 4) Totals (match Invoice Print): subtotal = extraPrice + phaseBudget (no qty multiplication)
-            decimal subtotal = (hasExtra ? extraPrice : 0m) + phaseBudget;
             decimal vat = Math.Round(subtotal * 0.07m, 2, MidpointRounding.AwayFromZero);
             decimal grand = subtotal + vat;
 
-            // 5) Render using ReceiptPrint (same look & feel as InvoicePrint)
-            var receiptPrint = new ReceiptPrint();
-
-            // 5.1 Left-top customer box
-            receiptPrint.SetCustomerBox(
+            // --- Add row ---
+            table.Rows.Add(
+                receiptNo,
+                paidDate,
+                txtInvNo.Text.Trim(),
                 txtCusName.Text,
                 txtCusAddress.Text,
-                txtInvNo.Text
+                txtProName.Text,
+                phaseDetail,
+                phaseBudget,
+                remark,
+                subtotal,
+                vat,
+                grand,
+                invDetail ?? DBNull.Value.ToString(),
+                invQty ?? DBNull.Value.ToString(),
+                invPrice ?? DBNull.Value.ToString()
             );
 
-            // 5.2 Top-right header (receipt number / date / invoice no)
-            receiptPrint.SetReceiptHeader(
-                receiptNo,
-                dtpReceiptDate.Value.ToString("d/M/yyyy"),
-                txtInvNo.Text.Trim()
-            );
-
-            // 5.3 Lines + summary + remark
-            receiptPrint.SetInvoiceDetails(items);
-            receiptPrint.SetReceiptSummary(subtotal, vat, grand);
-
-            string remark = receiptDAL.GetReceiptRemarkByInvId(currentInvId);
-            receiptPrint.SetInvoiceRemark(remark);
-
-            // 5.4 Show full preview
-            Form previewForm = new Form
-            {
-                Text = "ใบเสร็จรับเงิน",
-                StartPosition = FormStartPosition.CenterScreen,
-                Size = new Size(1620, 1080),
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                MaximizeBox = false
-            };
-            receiptPrint.Dock = DockStyle.Fill;
-            previewForm.Controls.Add(receiptPrint);
-            previewForm.ShowDialog();
+            // --- Show RDLC ---
+            var frm = new ReceiptPrintRDLC(table);
+            frm.ShowDialog();
         }
+
+
+
 
     }
 }
