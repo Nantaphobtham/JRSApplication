@@ -88,7 +88,7 @@ namespace JRSApplication
 
         private void btnWorkResponse_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new WorkResponse(), "ลงทะเบียนผู้รับเหมา"); 
+            LoadUserControl(new WorkResponse(), "ผลการอนุมัติ"); 
         }
 
         
