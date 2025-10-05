@@ -30,7 +30,8 @@
               <xs:element name="inv_detail" msprop:Generator_ColumnPropNameInTable="inv_detailColumn" msprop:Generator_ColumnPropNameInRow="inv_detail" msprop:Generator_UserColumnName="inv_detail" msprop:Generator_ColumnVarNameInTable="columninv_detail" type="xs:string" minOccurs="0" />
               <xs:element name="inv_quantity" msprop:Generator_ColumnPropNameInTable="inv_quantityColumn" msprop:Generator_ColumnPropNameInRow="inv_quantity" msprop:Generator_UserColumnName="inv_quantity" msprop:Generator_ColumnVarNameInTable="columninv_quantity" type="xs:string" minOccurs="0" />
               <xs:element name="inv_price" msprop:Generator_ColumnPropNameInTable="inv_priceColumn" msprop:Generator_ColumnPropNameInRow="inv_price" msprop:Generator_UserColumnName="inv_price" msprop:Generator_ColumnVarNameInTable="columninv_price" type="xs:double" minOccurs="0" />
-              <xs:element name="inv_date" msprop:Generator_ColumnPropNameInRow="inv_date" msprop:Generator_ColumnPropNameInTable="inv_dateColumn" msprop:Generator_ColumnVarNameInTable="columninv_date" msprop:Generator_UserColumnName="inv_date" type="xs:string" minOccurs="0" />
+              <xs:element name="inv_date" msprop:Generator_UserColumnName="inv_date" msprop:Generator_ColumnPropNameInTable="inv_dateColumn" msprop:Generator_ColumnPropNameInRow="inv_date" msprop:Generator_ColumnVarNameInTable="columninv_date" type="xs:string" minOccurs="0" />
+              <xs:element name="ToDate" msprop:Generator_ColumnPropNameInRow="ToDate" msprop:Generator_ColumnPropNameInTable="ToDateColumn" msprop:Generator_ColumnVarNameInTable="columnToDate" msprop:Generator_UserColumnName="ToDate" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

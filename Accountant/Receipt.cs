@@ -402,6 +402,7 @@ namespace JRSApplication.Accountant
             table.Columns.Add("subtotal", typeof(decimal));
             table.Columns.Add("vat", typeof(decimal));
             table.Columns.Add("grand_total", typeof(decimal));
+            table.Columns.Add("ToDate");
 
             // ✅ Add the item columns too (so RDLC finds them)
             table.Columns.Add("inv_detail");
@@ -426,6 +427,8 @@ namespace JRSApplication.Accountant
             decimal vat = Math.Round(subtotal * 0.07m, 2, MidpointRounding.AwayFromZero);
             decimal grand = subtotal + vat;
 
+            var thaiCulture = new System.Globalization.CultureInfo("th-TH");
+            string toDate = DateTime.Now.ToString("d MMMM yyyy", thaiCulture);
             // --- Add row ---
             table.Rows.Add(
                 receiptNo,
@@ -440,6 +443,7 @@ namespace JRSApplication.Accountant
                 subtotal,
                 vat,
                 grand,
+                toDate, 
                 invDetail ?? DBNull.Value.ToString(),
                 invQty ?? DBNull.Value.ToString(),
                 invPrice ?? DBNull.Value.ToString()

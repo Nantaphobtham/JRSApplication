@@ -309,6 +309,8 @@ namespace JRSApplication.Accountant
             table.Columns.Add("subtotal", typeof(decimal));
             table.Columns.Add("vat", typeof(decimal));
             table.Columns.Add("grand_total", typeof(decimal));
+            table.Columns.Add("ToDate");
+
             table.Columns.Add("inv_detail");
             table.Columns.Add("inv_quantity");
             table.Columns.Add("inv_price");
@@ -325,6 +327,8 @@ namespace JRSApplication.Accountant
             decimal vat = Math.Round(subtotal * 0.07m, 2, MidpointRounding.AwayFromZero);
             decimal grand = subtotal + vat;
 
+            var thaiCulture = new System.Globalization.CultureInfo("th-TH");
+            string toDate = DateTime.Now.ToString("d MMMM yyyy", thaiCulture);
             // --- Add row ---
             table.Rows.Add(
                 DBNull.Value,        // receipt_id (not used for invoice)
@@ -340,6 +344,7 @@ namespace JRSApplication.Accountant
                 subtotal,
                 vat,
                 grand,
+                toDate,
                 string.IsNullOrWhiteSpace(invDetail) ? "" : invDetail,
                 invQty,
                 string.IsNullOrWhiteSpace(invPrice) ? "0.00" : invPrice
