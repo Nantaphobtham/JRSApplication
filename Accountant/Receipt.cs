@@ -166,7 +166,38 @@ namespace JRSApplication.Accountant
             DataTable dt = invoiceDAL.GetInvoicesByProjectId(projectId);
             dtgvInvoice.AutoGenerateColumns = true;
             dtgvInvoice.DataSource = dt;
+
+            // ✅ เปลี่ยนชื่อหัวคอลัมน์เป็นภาษาไทย
+            RenameInvoiceHeaders();
         }
+
+        private void RenameInvoiceHeaders()
+        {
+            try
+            {
+                dtgvInvoice.Columns["inv_id"].HeaderText = "เลขที่ใบแจ้งหนี้";
+                dtgvInvoice.Columns["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
+                dtgvInvoice.Columns["inv_duedate"].HeaderText = "วันครบกำหนดชำระ";
+                dtgvInvoice.Columns["inv_status"].HeaderText = "สถานะใบแจ้งหนี้";
+                dtgvInvoice.Columns["inv_method"].HeaderText = "วิธีการชำระเงิน";
+                dtgvInvoice.Columns["paid_date"].HeaderText = "วันที่ชำระเงิน";
+
+                dtgvInvoice.Columns["emp_id"].HeaderText = "รหัสพนักงาน";
+                dtgvInvoice.Columns["emp_fullname"].HeaderText = "ชื่อพนักงานผู้ออกใบแจ้งหนี้";
+
+                dtgvInvoice.Columns["pro_id"].HeaderText = "รหัสโครงการ";
+                dtgvInvoice.Columns["pro_name"].HeaderText = "ชื่อโครงการ";
+
+                dtgvInvoice.Columns["cus_fullname"].HeaderText = "ชื่อลูกค้า";
+                dtgvInvoice.Columns["cus_id_card"].HeaderText = "เลขบัตรประชาชนลูกค้า";
+                dtgvInvoice.Columns["cus_address"].HeaderText = "ที่อยู่ลูกค้า";
+
+                dtgvInvoice.Columns["phase_id"].HeaderText = "รหัสเฟสงาน";
+                dtgvInvoice.Columns["phase_no"].HeaderText = "ลำดับเฟสงาน";
+            }
+            catch { /* ถ้ามีบางคอลัมน์ไม่มี ไม่ต้อง Error */ }
+        }
+
 
         private void SetupReceiptDetailGrid()
         {
