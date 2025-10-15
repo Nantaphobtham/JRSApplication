@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button8 = new System.Windows.Forms.Button();
             this.ddd = new System.Windows.Forms.Label();
             this.txtRemark = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
@@ -66,7 +67,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.cmbPhase = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.button8 = new System.Windows.Forms.Button();
             this.dtgvInvoice = new System.Windows.Forms.DataGridView();
             this.lblToppic2 = new System.Windows.Forms.Label();
             this.searchboxControl1 = new JRSApplication.SearchboxControl();
@@ -114,10 +114,23 @@
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.cmbPhase);
             this.panel1.Controls.Add(this.label11);
-            this.panel1.Location = new System.Drawing.Point(0, 244);
+            this.panel1.Location = new System.Drawing.Point(0, 2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1581, 526);
             this.panel1.TabIndex = 14;
+            // 
+            // button8
+            // 
+            this.button8.AutoSize = true;
+            this.button8.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.button8.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button8.Location = new System.Drawing.Point(887, 445);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(180, 51);
+            this.button8.TabIndex = 46;
+            this.button8.Text = "พิมพ์ใบแจ้งหนี้";
+            this.button8.UseVisualStyleBackColor = false;
+            this.button8.Click += new System.EventHandler(this.btnPrintInvoice_Click);
             // 
             // ddd
             // 
@@ -503,23 +516,10 @@
             this.label11.TabIndex = 30;
             this.label11.Text = "กำหนดชำระเงิน (วัน)";
             // 
-            // button8
-            // 
-            this.button8.AutoSize = true;
-            this.button8.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.button8.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button8.Location = new System.Drawing.Point(887, 445);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(180, 51);
-            this.button8.TabIndex = 46;
-            this.button8.Text = "พิมพ์ใบแจ้งหนี้";
-            this.button8.UseVisualStyleBackColor = false;
-            this.button8.Click += new System.EventHandler(this.btnPrintInvoice_Click);
-            // 
             // dtgvInvoice
             // 
             this.dtgvInvoice.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvInvoice.Location = new System.Drawing.Point(20, 828);
+            this.dtgvInvoice.Location = new System.Drawing.Point(20, 595);
             this.dtgvInvoice.Name = "dtgvInvoice";
             this.dtgvInvoice.Size = new System.Drawing.Size(1501, 484);
             this.dtgvInvoice.TabIndex = 15;
@@ -528,7 +528,7 @@
             // 
             this.lblToppic2.AutoSize = true;
             this.lblToppic2.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblToppic2.Location = new System.Drawing.Point(13, 788);
+            this.lblToppic2.Location = new System.Drawing.Point(13, 555);
             this.lblToppic2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblToppic2.Name = "lblToppic2";
             this.lblToppic2.Size = new System.Drawing.Size(379, 37);
@@ -538,7 +538,7 @@
             // searchboxControl1
             // 
             this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.Location = new System.Drawing.Point(871, 775);
+            this.searchboxControl1.Location = new System.Drawing.Point(871, 542);
             this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.searchboxControl1.Name = "searchboxControl1";
             this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
@@ -555,7 +555,7 @@
             this.Controls.Add(this.dtgvInvoice);
             this.Controls.Add(this.panel1);
             this.Name = "Invoice";
-            this.Size = new System.Drawing.Size(1474, 868);
+            this.Size = new System.Drawing.Size(1440, 834);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
