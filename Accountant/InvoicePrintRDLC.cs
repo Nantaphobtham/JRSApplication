@@ -21,18 +21,20 @@ namespace JRSApplication.Accountant
         }
 
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void InvoicePrintRDLC_Load(object sender, EventArgs e)
         {
+            string reportPath = System.IO.Path.Combine(
+                Application.StartupPath, "Accountant\\InvoiceReport.rdlc");
 
-            // 👉 point to your InvoiceReport.rdlc (new file you design for invoices)
-            reportViewer1.LocalReport.ReportPath = "Accountant\\InvoiceReport.rdlc";
+            reportViewer1.LocalReport.ReportPath = reportPath;
             reportViewer1.LocalReport.DataSources.Clear();
 
-            // ✅ Bind to same dataset name you designed in RDLC
+            // ✅ ใช้ชื่อ DataSet เดียวกับใบเสร็จได้เลย
             reportViewer1.LocalReport.DataSources.Add(
                 new ReportDataSource("ReceiptDataSet", reportTable));
 
             reportViewer1.RefreshReport();
         }
+
     }
 }

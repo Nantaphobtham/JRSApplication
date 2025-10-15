@@ -31,6 +31,8 @@
             this.label19 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tableTextPhase_no = new System.Windows.Forms.TableLayoutPanel();
+            this.label7 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tblReceiptHeader = new System.Windows.Forms.TableLayoutPanel();
             this.label25 = new System.Windows.Forms.Label();
@@ -63,6 +65,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
+            this.tableTextPhase_no.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tblReceiptHeader.SuspendLayout();
             this.tblLeftBottom.SuspendLayout();
@@ -97,6 +100,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.tableTextPhase_no);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.tblReceiptHeader);
             this.panel1.Controls.Add(this.label22);
@@ -118,6 +122,35 @@
             this.panel1.Size = new System.Drawing.Size(1041, 774);
             this.panel1.TabIndex = 58;
             // 
+            // tableTextPhase_no
+            // 
+            this.tableTextPhase_no.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.tableTextPhase_no.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableTextPhase_no.ColumnCount = 1;
+            this.tableTextPhase_no.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableTextPhase_no.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableTextPhase_no.Controls.Add(this.label7, 0, 0);
+            this.tableTextPhase_no.Location = new System.Drawing.Point(319, 503);
+            this.tableTextPhase_no.Name = "tableTextPhase_no";
+            this.tableTextPhase_no.RowCount = 1;
+            this.tableTextPhase_no.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableTextPhase_no.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 134F));
+            this.tableTextPhase_no.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 134F));
+            this.tableTextPhase_no.Size = new System.Drawing.Size(173, 135);
+            this.tableTextPhase_no.TabIndex = 72;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.SystemColors.Control;
+            this.label7.Font = new System.Drawing.Font("Angsana New", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(3, 1);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(69, 37);
+            this.label7.TabIndex = 55;
+            this.label7.Text = "งวดที่ :";
+            // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlDark;
@@ -138,7 +171,7 @@
             this.tblReceiptHeader.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this.tblReceiptHeader.Controls.Add(this.label25, 0, 0);
             this.tblReceiptHeader.Controls.Add(this.label26, 0, 1);
-            this.tblReceiptHeader.Location = new System.Drawing.Point(608, 190);
+            this.tblReceiptHeader.Location = new System.Drawing.Point(608, 196);
             this.tblReceiptHeader.Name = "tblReceiptHeader";
             this.tblReceiptHeader.RowCount = 2;
             this.tblReceiptHeader.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -175,7 +208,7 @@
             this.label22.AutoSize = true;
             this.label22.BackColor = System.Drawing.SystemColors.Control;
             this.label22.Font = new System.Drawing.Font("Angsana New", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(698, 692);
+            this.label22.Location = new System.Drawing.Point(698, 702);
             this.label22.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(92, 26);
@@ -187,7 +220,7 @@
             this.label24.AutoSize = true;
             this.label24.BackColor = System.Drawing.SystemColors.Control;
             this.label24.Font = new System.Drawing.Font("Angsana New", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(613, 656);
+            this.label24.Location = new System.Drawing.Point(613, 666);
             this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(269, 36);
@@ -199,7 +232,7 @@
             this.label23.AutoSize = true;
             this.label23.BackColor = System.Drawing.SystemColors.Control;
             this.label23.Font = new System.Drawing.Font("Angsana New", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(274, 692);
+            this.label23.Location = new System.Drawing.Point(274, 702);
             this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(85, 26);
@@ -211,7 +244,7 @@
             this.label21.AutoSize = true;
             this.label21.BackColor = System.Drawing.SystemColors.Control;
             this.label21.Font = new System.Drawing.Font("Angsana New", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(183, 656);
+            this.label21.Location = new System.Drawing.Point(183, 666);
             this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(269, 36);
@@ -226,13 +259,13 @@
             this.tblLeftBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tblLeftBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tblLeftBottom.Controls.Add(this.label20, 0, 0);
-            this.tblLeftBottom.Location = new System.Drawing.Point(77, 497);
+            this.tblLeftBottom.Location = new System.Drawing.Point(77, 503);
             this.tblLeftBottom.Name = "tblLeftBottom";
             this.tblLeftBottom.RowCount = 1;
             this.tblLeftBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tblLeftBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 134F));
             this.tblLeftBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 134F));
-            this.tblLeftBottom.Size = new System.Drawing.Size(416, 135);
+            this.tblLeftBottom.Size = new System.Drawing.Size(242, 135);
             this.tblLeftBottom.TabIndex = 64;
             // 
             // label20
@@ -257,7 +290,7 @@
             this.tblBottomRight.Controls.Add(this.label16, 0, 0);
             this.tblBottomRight.Controls.Add(this.label17, 0, 1);
             this.tblBottomRight.Controls.Add(this.label18, 0, 2);
-            this.tblBottomRight.Location = new System.Drawing.Point(492, 497);
+            this.tblBottomRight.Location = new System.Drawing.Point(492, 503);
             this.tblBottomRight.Name = "tblBottomRight";
             this.tblBottomRight.RowCount = 3;
             this.tblBottomRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -317,7 +350,7 @@
             this.tblReceiptItems.Controls.Add(this.label13, 2, 0);
             this.tblReceiptItems.Controls.Add(this.label11, 0, 0);
             this.tblReceiptItems.Controls.Add(this.label12, 1, 0);
-            this.tblReceiptItems.Location = new System.Drawing.Point(77, 355);
+            this.tblReceiptItems.Location = new System.Drawing.Point(77, 361);
             this.tblReceiptItems.Name = "tblReceiptItems";
             this.tblReceiptItems.RowCount = 2;
             this.tblReceiptItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
@@ -397,7 +430,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 90F));
             this.tableLayoutPanel2.Controls.Add(this.label10, 0, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(77, 321);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(77, 327);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -424,7 +457,7 @@
             this.lblCustomer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.lblCustomer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.lblCustomer.Controls.Add(this.label6, 0, 0);
-            this.lblCustomer.Location = new System.Drawing.Point(77, 190);
+            this.lblCustomer.Location = new System.Drawing.Point(77, 196);
             this.lblCustomer.Name = "lblCustomer";
             this.lblCustomer.RowCount = 1;
             this.lblCustomer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -520,7 +553,7 @@
             // 
             this.dataGridView1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(113, 0);
+            this.dataGridView1.Location = new System.Drawing.Point(79, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1200, 954);
             this.dataGridView1.TabIndex = 56;
@@ -537,9 +570,11 @@
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.button2);
             this.Name = "InvoicePrint";
-            this.Size = new System.Drawing.Size(1466, 860);
+            this.Size = new System.Drawing.Size(1398, 860);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.tableTextPhase_no.ResumeLayout(false);
+            this.tableTextPhase_no.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tblReceiptHeader.ResumeLayout(false);
             this.tblReceiptHeader.PerformLayout();
@@ -595,5 +630,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.TableLayoutPanel tableTextPhase_no;
+        private System.Windows.Forms.Label label7;
     }
 }

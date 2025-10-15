@@ -582,12 +582,12 @@
             this.reportViewer1.Size = new System.Drawing.Size(754, 1123);
             this.reportViewer1.TabIndex = 56;
             // 
-            // ReceiptPrint
+            // ReceiptPrintBackup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel2);
-            this.Name = "ReceiptPrint";
+            this.Name = "ReceiptPrintBackup";
             this.Size = new System.Drawing.Size(1200, 954);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

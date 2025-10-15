@@ -313,6 +313,8 @@ namespace JRSApplication.Accountant {
             
             private global::System.Data.DataColumn columnToDate;
             
+            private global::System.Data.DataColumn columnphase_no;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public InvoiceHeaderDataTable() {
@@ -484,6 +486,14 @@ namespace JRSApplication.Accountant {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn phase_noColumn {
+                get {
+                    return this.columnphase_no;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -536,7 +546,8 @@ namespace JRSApplication.Accountant {
                         string inv_quantity, 
                         double inv_price, 
                         string inv_date, 
-                        string ToDate) {
+                        string ToDate, 
+                        string phase_no) {
                 InvoiceHeaderRow rowInvoiceHeaderRow = ((InvoiceHeaderRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         receipt_id,
@@ -555,7 +566,8 @@ namespace JRSApplication.Accountant {
                         inv_quantity,
                         inv_price,
                         inv_date,
-                        ToDate};
+                        ToDate,
+                        phase_no};
                 rowInvoiceHeaderRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowInvoiceHeaderRow);
                 return rowInvoiceHeaderRow;
@@ -595,6 +607,7 @@ namespace JRSApplication.Accountant {
                 this.columninv_price = base.Columns["inv_price"];
                 this.columninv_date = base.Columns["inv_date"];
                 this.columnToDate = base.Columns["ToDate"];
+                this.columnphase_no = base.Columns["phase_no"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -634,6 +647,8 @@ namespace JRSApplication.Accountant {
                 base.Columns.Add(this.columninv_date);
                 this.columnToDate = new global::System.Data.DataColumn("ToDate", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnToDate);
+                this.columnphase_no = new global::System.Data.DataColumn("phase_no", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnphase_no);
                 this.columnphase_budget.Caption = "remark";
             }
             
@@ -1049,6 +1064,22 @@ namespace JRSApplication.Accountant {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string phase_no {
+                get {
+                    try {
+                        return ((string)(this[this.tableInvoiceHeader.phase_noColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'phase_no\' in table \'InvoiceHeader\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableInvoiceHeader.phase_noColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool Isreceipt_idNull() {
                 return this.IsNull(this.tableInvoiceHeader.receipt_idColumn);
             }
@@ -1249,6 +1280,18 @@ namespace JRSApplication.Accountant {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetToDateNull() {
                 this[this.tableInvoiceHeader.ToDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Isphase_noNull() {
+                return this.IsNull(this.tableInvoiceHeader.phase_noColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Setphase_noNull() {
+                this[this.tableInvoiceHeader.phase_noColumn] = global::System.Convert.DBNull;
             }
         }
         

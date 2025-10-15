@@ -7,7 +7,7 @@
         <Value>LogoCopyPNG</Value>
         <Sizing>FitProportional</Sizing>
         <Top>0.26141cm</Top>
-        <Left>11.23134cm</Left>
+        <Left>11.70619cm</Left>
         <Height>1.73896cm</Height>
         <Width>3.80722cm</Width>
         <Style>
@@ -71,7 +71,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
         <Top>1.0728cm</Top>
-        <Left>0.39826cm</Left>
+        <Left>0.87311cm</Left>
         <Height>2.12168cm</Height>
         <Width>8.88398cm</Width>
         <ZIndex>1</ZIndex>
@@ -92,7 +92,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>ใบเสร็จรับเงิน</Value>
+                <Value>ใบแจ้งหนี้ (INVOICE)</Value>
                 <Style>
                   <FontSize>14pt</FontSize>
                   <FontWeight>Bold</FontWeight>
@@ -104,7 +104,7 @@
         </Paragraphs>
         <rd:DefaultName>ReportName</rd:DefaultName>
         <Top>0.10292in</Top>
-        <Left>1.97792in</Left>
+        <Left>2.16487in</Left>
         <Height>0.25in</Height>
         <Width>1.4375in</Width>
         <ZIndex>2</ZIndex>
@@ -576,7 +576,7 @@
         </TablixRowHierarchy>
         <DataSetName>ReceiptDataSet</DataSetName>
         <Top>2.51146in</Top>
-        <Left>0.1568in</Left>
+        <Left>0.34375in</Left>
         <Height>0.75in</Height>
         <Width>5.76388in</Width>
         <ZIndex>3</ZIndex>
@@ -590,7 +590,7 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>2.98274in</Width>
+              <Width>1.86816in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -648,9 +648,9 @@
         </TablixRowHierarchy>
         <DataSetName>ReceiptDataSet</DataSetName>
         <Top>3.28924in</Top>
-        <Left>0.1568in</Left>
+        <Left>0.34375in</Left>
         <Height>0.96876in</Height>
-        <Width>2.98274in</Width>
+        <Width>1.86816in</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -750,7 +750,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>จำนวนภาษีมูลค่าเพิ่ม </Value>
+                              <Value>จำนวนภาษีมูลค่าเพิ่ม 7% </Value>
                               <Style>
                                 <FontFamily>Angsana New</FontFamily>
                                 <FontSize>12pt</FontSize>
@@ -902,7 +902,7 @@
         </TablixRowHierarchy>
         <DataSetName>ReceiptDataSet</DataSetName>
         <Top>3.28924in</Top>
-        <Left>3.13954in</Left>
+        <Left>3.32649in</Left>
         <Height>0.96876in</Height>
         <Width>2.78115in</Width>
         <ZIndex>5</ZIndex>
@@ -957,7 +957,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox135</rd:DefaultName>
         <Top>1.32711in</Top>
-        <Left>0.1568in</Left>
+        <Left>0.34375in</Left>
         <Height>0.92708in</Height>
         <Width>2.99325in</Width>
         <ZIndex>6</ZIndex>
@@ -990,7 +990,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox136</rd:DefaultName>
         <Top>1.32711in</Top>
-        <Left>3.13954in</Left>
+        <Left>3.32649in</Left>
         <Height>0.47098in</Height>
         <Width>1in</Width>
         <ZIndex>7</ZIndex>
@@ -1023,7 +1023,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox136</rd:DefaultName>
         <Top>1.79809in</Top>
-        <Left>3.13953in</Left>
+        <Left>3.32648in</Left>
         <Height>0.45611in</Height>
         <Width>1in</Width>
         <ZIndex>8</ZIndex>
@@ -1056,7 +1056,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox136</rd:DefaultName>
         <Top>1.32712in</Top>
-        <Left>4.13954in</Left>
+        <Left>4.32649in</Left>
         <Height>0.47098in</Height>
         <Width>1.78115in</Width>
         <ZIndex>9</ZIndex>
@@ -1089,7 +1089,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox136</rd:DefaultName>
         <Top>1.79809in</Top>
-        <Left>4.13953in</Left>
+        <Left>4.32648in</Left>
         <Height>0.45611in</Height>
         <Width>1.78114in</Width>
         <ZIndex>10</ZIndex>
@@ -1122,7 +1122,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox144</rd:DefaultName>
         <Top>2.2542in</Top>
-        <Left>0.1463in</Left>
+        <Left>0.33325in</Left>
         <Height>0.25in</Height>
         <Width>1.00001in</Width>
         <ZIndex>11</ZIndex>
@@ -1155,7 +1155,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox144</rd:DefaultName>
         <Top>2.2542in</Top>
-        <Left>1.1463in</Left>
+        <Left>1.33325in</Left>
         <Height>0.25in</Height>
         <Width>4.77437in</Width>
         <ZIndex>12</ZIndex>
@@ -1212,7 +1212,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox131</rd:DefaultName>
         <Top>4.32744in</Top>
-        <Left>0.67387in</Left>
+        <Left>0.86082in</Left>
         <Height>0.43654in</Height>
         <Width>1.78062in</Width>
         <ZIndex>13</ZIndex>
@@ -1252,7 +1252,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox3</rd:DefaultName>
         <Top>4.76398in</Top>
-        <Left>0.67387in</Left>
+        <Left>0.86082in</Left>
         <Height>0.25in</Height>
         <Width>1.78062in</Width>
         <ZIndex>14</ZIndex>
@@ -1298,7 +1298,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox131</rd:DefaultName>
         <Top>4.32744in</Top>
-        <Left>3.59369in</Left>
+        <Left>3.78064in</Left>
         <Height>0.43654in</Height>
         <Width>1.78062in</Width>
         <ZIndex>15</ZIndex>
@@ -1338,7 +1338,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox3</rd:DefaultName>
         <Top>4.76398in</Top>
-        <Left>3.59369in</Left>
+        <Left>3.78064in</Left>
         <Height>0.25in</Height>
         <Width>1.78062in</Width>
         <ZIndex>16</ZIndex>
@@ -1346,6 +1346,44 @@
           <Border>
             <Style>None</Style>
           </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="phase_no">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>="งวดที่ " &amp; First(Fields!phase_no.Value, "ReceiptDataSet")</Value>
+                <Style>
+                  <FontFamily>Angsana New</FontFamily>
+                  <FontSize>14pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>phase_no</rd:DefaultName>
+        <Top>3.27535in</Top>
+        <Left>2.23968in</Left>
+        <Height>0.96876in</Height>
+        <Width>1.03125in</Width>
+        <ZIndex>17</ZIndex>
+        <Style>
+          <Border>
+            <Color>LightGrey</Color>
+            <Style>Solid</Style>
+          </Border>
+          <VerticalAlign>Middle</VerticalAlign>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -1360,7 +1398,7 @@
       </Border>
     </Style>
   </Body>
-  <Width>8.25777in</Width>
+  <Width>8.44472in</Width>
   <Page>
     <LeftMargin>1in</LeftMargin>
     <RightMargin>1in</RightMargin>
@@ -1453,10 +1491,14 @@
           <DataField>ToDate</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="phase_no">
+          <DataField>phase_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSet1</rd:DataSetName>
-        <rd:SchemaPath>D:\Work\PROJECT\Accountant\ReceiptDataSet.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\Users\PC-GLP\Source\Repos\JRSApplication\Accountant\ReceiptDataSet.xsd</rd:SchemaPath>
         <rd:TableName>InvoiceHeader</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

@@ -416,12 +416,12 @@
     <EmbeddedResource Include="Accountant\ReceiptPrintRDLC.resx">
       <DependentUpon>ReceiptPrintRDLC.cs</DependentUpon>
     </EmbeddedResource>
-    <Content Include="Accountant\ReceiptReport.rdlc">
+    <EmbeddedResource Include="Accountant\ReceiptReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Accountant\InvoiceReport.rdlc">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accountant\InvoiceReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
     <EmbeddedResource Include="Admin\CustomerRegistration.resx">
       <DependentUpon>CustomerRegistration.cs</DependentUpon>
     </EmbeddedResource>

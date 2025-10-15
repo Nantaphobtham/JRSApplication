@@ -49,7 +49,7 @@
             this.Controls.Add(this.reportViewer1);
             this.Name = "InvoicePrintRDLC";
             this.Text = "InvoicePrintRDLC_Load";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.InvoicePrintRDLC_Load);
             this.ResumeLayout(false);
 
         }
