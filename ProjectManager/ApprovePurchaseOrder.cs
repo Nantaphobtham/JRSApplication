@@ -216,8 +216,8 @@ namespace JRSApplication.ProjectManager
                         break;
 
                     case "submitted":
-                    case "ส่งอนุมัติ":
-                        e.Value = "ส่งอนุมัติ";
+                    case "รออนุมัติ":
+                        e.Value = "รออนุมัติ";
                         e.CellStyle.BackColor = Color.FromArgb(52, 152, 219); // ฟ้า
                         e.CellStyle.ForeColor = Color.White;
                         break;
