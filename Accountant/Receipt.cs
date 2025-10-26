@@ -8,6 +8,7 @@ using JRSApplication.Data_Access_Layer;
 using System.Globalization;
 using System.Linq;
 using System.Drawing.Printing;
+using System.ComponentModel;
 
 namespace JRSApplication.Accountant
 {
@@ -24,8 +25,16 @@ namespace JRSApplication.Accountant
         public Receipt()
         {
             InitializeComponent();
-            CustomizeDataGridView();
+
+            // 🔒 ป้องกันไม่ให้รันโค้ดฐานข้อมูลใน Design Mode
+            if (LicenseManager.UsageMode == LicenseUsageMode.Runtime)
+            {
+                invoiceDAL = new InvoiceDAL();
+                receiptDAL = new ReceiptDAL();
+                CustomizeDataGridView();
+            }
         }
+
 
         private void CustomizeDataGridView()
         {
