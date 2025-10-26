@@ -1201,26 +1201,39 @@ namespace JRSApplication
                 hoverCheckTimer.Interval = 300;
                 hoverCheckTimer.Tick += (s, e) =>
                 {
-                    Point mousePos = Cursor.Position;
+                    Point mousePos = Cursor.Position; // พิกัดบนหน้าจอ (Screen Coordinates)
 
-                    bool overButton = buttonControl.Bounds.Contains(buttonControl.Parent.PointToClient(mousePos));
+                    // ✅ ต้องใช้ PointToScreen เพื่อแปลง Bounds ของปุ่มเป็น Screen coordinates เช่นกัน
+                    Rectangle buttonScreenBounds = new Rectangle(
+                        buttonControl.PointToScreen(Point.Empty),
+                        buttonControl.Size
+                    );
+
+                    bool overButton = buttonScreenBounds.Contains(mousePos);
                     bool overPreview = pdfPreviewForm != null && !pdfPreviewForm.IsDisposed && pdfPreviewForm.Bounds.Contains(mousePos);
 
+                    // ✅ เพิ่ม delay เล็กน้อยก่อนปิด
                     if (!overButton && !overPreview)
                     {
-                        if (pdfPreviewForm != null && !pdfPreviewForm.IsDisposed)
-                        {
-                            pdfPreviewForm.Close();
-                            pdfPreviewForm = null;
-                        }
-
                         hoverCheckTimer.Stop();
+                        Task.Delay(300).ContinueWith(_ =>
+                        {
+                            if (pdfPreviewForm != null && !pdfPreviewForm.IsDisposed)
+                            {
+                                pdfPreviewForm.Invoke((Action)(() =>
+                                {
+                                    pdfPreviewForm.Close();
+                                    pdfPreviewForm = null;
+                                }));
+                            }
+                        });
                     }
                 };
             }
 
             hoverCheckTimer.Start();
         }
+
 
         private void btnInsertBlueprintFile_MouseEnter(object sender, EventArgs e)
         {
