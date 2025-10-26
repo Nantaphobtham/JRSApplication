@@ -147,13 +147,35 @@ namespace JRSApplication.Data_Access_Layer
 
         public void UpdateOrderStatus(int orderId, string status, string remark, string empId)
         {
-            string query = @"UPDATE purchaseorder
-                         SET order_status = @status,
-                             order_remark = @remark,
-                             approved_by_emp_id = @empId,
-                             approved_date = NOW()
-                         WHERE order_id = @orderId";
+            // ✅ 1. ตรวจสอบค่าที่จะอัปเดตให้ตรง ENUM ที่ฐานข้อมูล
+            string[] validStatuses = { "draft", "submitted", "approved", "rejected", "canceled" };
 
+            if (string.IsNullOrWhiteSpace(status))
+                throw new ArgumentException("Order status must not be empty.");
+
+            // แปลงให้เป็นตัวพิมพ์เล็กเสมอเพื่อความสอดคล้องกับ ENUM
+            status = status.Trim().ToLower();
+
+            if (!validStatuses.Contains(status))
+            {
+                // ❌ ถ้าค่าไม่ตรง ENUM ให้ throw exception พร้อมข้อความชัดเจน
+                string validList = string.Join(", ", validStatuses);
+                throw new ArgumentException(
+                    $"Invalid order status '{status}'. Allowed values are: {validList}");
+            }
+
+            // ✅ 2. สร้างคำสั่ง SQL ปลอดภัย
+            string query = @"
+        UPDATE purchaseorder
+        SET 
+            order_status = @status,
+            order_remark = @remark,
+            approved_by_emp_id = @empId,
+            approved_date = NOW()
+        WHERE order_id = @orderId;
+    ";
+
+            // ✅ 3. ใช้ using เพื่อจัดการ connection อย่างปลอดภัย
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
             {
@@ -162,10 +184,35 @@ namespace JRSApplication.Data_Access_Layer
                 cmd.Parameters.AddWithValue("@empId", empId);
                 cmd.Parameters.AddWithValue("@orderId", orderId);
 
-                conn.Open();
-                cmd.ExecuteNonQuery();
+                try
+                {
+                    conn.Open();
+                    int affected = cmd.ExecuteNonQuery();
+
+                    // ✅ ตรวจสอบว่ามีการอัปเดตจริง
+                    if (affected == 0)
+                    {
+                        throw new Exception($"No purchase order found with ID = {orderId}");
+                    }
+
+                    // (ทางเลือก) Log ไว้สำหรับ debug
+                    Console.WriteLine($"✅ [LOG] Order #{orderId} updated to status '{status}' by employee '{empId}'");
+                }
+                catch (MySqlException ex)
+                {
+                    // ❌ ดักเฉพาะ error จาก MySQL เพื่อ debug ง่ายขึ้น
+                    Console.WriteLine($"❌ MySQL Error: {ex.Message}");
+                    throw new Exception("เกิดข้อผิดพลาดขณะอัปเดตสถานะใบสั่งซื้อ: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    // ❌ ดักข้อผิดพลาดทั่วไป
+                    Console.WriteLine($"❌ Error: {ex.Message}");
+                    throw;
+                }
             }
         }
+
 
         public PurchaseOrder GetPurchaseOrderById(int orderId)
         {
