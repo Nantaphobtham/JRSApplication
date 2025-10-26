@@ -133,7 +133,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1228, 555);
+            this.panel1.Size = new System.Drawing.Size(1211, 555);
             this.panel1.TabIndex = 0;
             // 
             // cmbUnit
@@ -576,7 +576,7 @@
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 555);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1228, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1211, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDeleteOrder
@@ -633,6 +633,7 @@
             this.btnPrintOrder.Text = "พิมพ์ใบสั่งซื้อ";
             this.btnPrintOrder.UseVisualStyleBackColor = false;
             this.btnPrintOrder.Visible = false;
+            this.btnPrintOrder.Click += new System.EventHandler(this.btnPrintOrder_Click);
             // 
             // btnSaveOrder
             // 
@@ -655,7 +656,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 649);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1228, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1211, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // panel4
@@ -667,7 +668,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel4.Location = new System.Drawing.Point(0, 659);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1228, 305);
+            this.panel4.Size = new System.Drawing.Size(1211, 305);
             this.panel4.TabIndex = 3;
             // 
             // dtgvPurchaseOrderList
@@ -710,7 +711,7 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.panel1);
             this.Name = "PurchaseOrderForm";
-            this.Size = new System.Drawing.Size(1228, 915);
+            this.Size = new System.Drawing.Size(1211, 915);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvMaterialList)).EndInit();

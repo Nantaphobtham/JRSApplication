@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Reporting.WinForms;
 
 namespace JRSApplication
 {
@@ -678,6 +679,39 @@ namespace JRSApplication
         {
             hoverTimer.Stop();
             hoveredRowIndex = -1;
+        }
+
+        private void ShowReport(PurchaseOrder po, List<MaterialDetail> materials)
+        {
+            var reportViewer = new ReportViewer();
+            reportViewer.ProcessingMode = ProcessingMode.Local;
+            reportViewer.LocalReport.ReportPath = "POreport.rdlc";
+
+            // Set data sources
+            reportViewer.LocalReport.DataSources.Clear();
+            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("PurchaseOrderDataSet", new List<PurchaseOrder> { po }));
+            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("MaterialDetailDataSet", materials));
+
+            // Refresh and show
+            reportViewer.RefreshReport();
+        }
+
+        private void btnPrintOrder_Click(object sender, EventArgs e)
+        {
+            if (dtgvPurchaseOrderList.CurrentRow == null)
+            {
+                MessageBox.Show("กรุณาเลือกใบสั่งซื้อก่อน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var po = dtgvPurchaseOrderList.CurrentRow.DataBoundItem as PurchaseOrder;
+            if (po == null) return;
+
+            var dal = new PurchaseOrderDAL();
+            var materials = dal.GetMaterialDetailsByOrderId(po.OrderId);
+
+            //var reportForm = new POReportForm(po, materials);
+            //reportForm.ShowDialog();
         }
     }
 }

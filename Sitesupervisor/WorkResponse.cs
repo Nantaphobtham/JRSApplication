@@ -354,7 +354,113 @@ namespace JRSApplication.Sitesupervisor
 
             return list;
         }
+        //private List<Response> LoadResponses()
+        //{
+        //    string sql = @"
+        //    SELECT 
+        //        po.order_id,
+        //        po.order_number,
+        //        po.order_detail,
+        //        po.order_date,
+        //        po.order_status,
+        //        po.order_duedate,
+        //        po.approved_date,
+        //        po.order_remark,
 
+        //        pp.phase_id,
+        //        pp.phase_no,
+        //        pp.pro_id,
+
+        //        p.pro_number,
+
+        //        pw.work_id,
+        //        pw.work_detail,
+        //        pw.work_date,
+        //        pw.work_end_date,
+        //        pw.work_status,
+        //        pw.work_remark
+
+        //    FROM purchaseorder po
+        //    INNER JOIN project_phase pp 
+        //        ON po.pro_id = pp.pro_id
+        //    INNER JOIN project p 
+        //        ON pp.pro_id = p.pro_id
+        //    LEFT JOIN phase_working pw 
+        //        ON pp.phase_id = pw.phase_id 
+        //       AND pw.work_status IN ('Completed','Waiting')
+        //    WHERE 
+        //        po.order_status IN ('อนุมัติ','ไม่อนุมัติ')
+        //        AND EXISTS (
+        //            SELECT 1 
+        //            FROM phase_working x 
+        //            WHERE x.phase_id = pp.phase_id
+        //                    )
+        //    ORDER BY po.order_id, pp.phase_id, pw.work_id;
+        //        ";
+
+        //    var list = new List<Response>();
+
+        //    using (var con = new MySqlConnection(connectionString))
+        //    using (var cmd = new MySqlCommand(sql, con))
+        //    using (var da = new MySqlDataAdapter(cmd))
+        //    {
+        //        var dt = new DataTable();
+        //        da.Fill(dt);
+
+        //        var orderGroupKeys = new HashSet<string>();
+
+        //        foreach (DataRow row in dt.Rows)
+        //        {
+        //            string orderNumber = row["order_number"]?.ToString();
+        //            string groupKey = $"{orderNumber}_{row["phase_id"]}";
+
+        //            // ✅ แถว Order
+        //            if (!orderGroupKeys.Contains(groupKey))
+        //            {
+        //                list.Add(new Response
+        //                {
+        //                    RowType = RowType.Order,
+        //                    ProjectId = row["pro_id"]?.ToString(),
+        //                    ProjectNumber = row["pro_number"]?.ToString(),
+        //                    PhaseNo = row["phase_no"]?.ToString(),
+        //                    OrderId = Convert.ToInt32(row["order_id"]),
+        //                    OrderNumber = orderNumber,
+        //                    OrderDetail = row["order_detail"]?.ToString(),
+        //                    OrderDate = Convert.ToDateTime(row["order_date"]),
+        //                    DueDate = row["order_duedate"] != DBNull.Value ? Convert.ToDateTime(row["order_duedate"]) : (DateTime?)null,
+        //                    ApproveDate = row["approved_date"] != DBNull.Value ? Convert.ToDateTime(row["approved_date"]) : (DateTime?)null,
+        //                    OrderStatus = row["order_status"]?.ToString(),
+        //                    OrderRemark = row["order_remark"]?.ToString()
+        //                });
+        //                orderGroupKeys.Add(groupKey);
+        //            }
+
+        //            // ✅ แถว Work
+        //            if (row["work_id"] != DBNull.Value)
+        //            {
+        //                var workStatus = row["work_status"]?.ToString();
+        //                if (workStatus == "Completed" || workStatus == "Waiting")
+        //                {
+        //                    list.Add(new Response
+        //                    {
+        //                        RowType = RowType.Work,
+        //                        ProjectId = row["pro_id"]?.ToString(),
+        //                        ProjectNumber = row["pro_number"]?.ToString(),
+        //                        PhaseNo = row["phase_no"]?.ToString(),
+        //                        WorkId = row["work_id"]?.ToString(),
+        //                        WorkDetail = row["work_detail"]?.ToString(),
+        //                        WorkDate = row["work_date"] != DBNull.Value ? Convert.ToDateTime(row["work_date"]) : (DateTime?)null,
+        //                        WorkendDate = row["work_end_date"] != DBNull.Value ? Convert.ToDateTime(row["work_end_date"]) : (DateTime?)null,
+        //                        WorkStatus = workStatus,
+        //                        WorkRemark = row["work_remark"]?.ToString()
+        //                    });
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return list;
+        //}
         // Add this method to your WorkResponse class
         private void CustomizeGridStyling(DataGridView grid)
         {
