@@ -497,7 +497,7 @@
       <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
     <Content Include="Sitesupervisor\POreport.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Sitesupervisor\PurchaseOrderForm.resx">
       <DependentUpon>PurchaseOrderForm.cs</DependentUpon>

@@ -92,22 +92,22 @@ namespace JRSApplication.Sitesupervisor
         private DataTable GetPurchaseOrderHeader(int orderId)
         {
             string sql = @"
-                SELECT 
-                    po.order_id        AS OrderId,
-                    po.order_number    AS OrderNumber,
-                    po.order_detail    AS OrderDetail,
-                    po.order_date      AS OrderDate,
-                    po.order_duedate   AS DueDate,
-                    po.approved_date   AS ApproveDate,
-                    po.order_status    AS OrderStatus,
-                    po.order_remark    AS OrderRemark,
-                    pp.phase_no        AS PhaseNo,
-                    p.pro_id           AS ProjectId,
-                    p.pro_number       AS ProjectNumber
-                FROM purchaseorder po
-                INNER JOIN project_phase pp ON po.pro_id = pp.pro_id
-                INNER JOIN project p ON pp.pro_id = p.pro_id
-                WHERE po.order_id = @orderId";
+                    SELECT 
+                        po.order_id        AS OrderId,
+                        po.order_number    AS OrderNumber,
+                        po.order_detail    AS OrderDetail,
+                        po.order_date      AS OrderDate,
+                        po.order_duedate   AS DueDate,
+                        po.approved_date   AS ApproveDate,
+                        po.order_status    AS OrderStatus,
+                        po.order_remark    AS OrderRemark,
+                        pp.phase_no        AS PhaseNo,
+                        p.pro_id           AS ProjectId,
+                        p.pro_number       AS ProjectNumber
+                    FROM purchaseorder po
+                    INNER JOIN project_phase pp ON po.pro_id = pp.pro_id
+                    INNER JOIN project p ON pp.pro_id = p.pro_id
+                    WHERE po.order_id = @orderId";
 
             var dt = new DataTable();
             using (var con = new MySqlConnection(connectionString))
@@ -120,17 +120,20 @@ namespace JRSApplication.Sitesupervisor
             return dt;
         }
 
+
         // 🧩 ดึงข้อมูลรายละเอียดวัสดุ
         private DataTable GetPurchaseOrderDetail(int orderId)
         {
             string sql = @"
                     SELECT 
-                        m.mat_line_no     AS LineNo,
-                        m.mat_detail      AS MaterialName,
-                        m.mat_quantity    AS Quantity,
-                        m.mat_unit        AS Unit,
-                        m.mat_price       AS UnitPrice,
-                        m.mat_amount      AS TotalPrice
+                        m.mat_line_no AS MatLineNo,
+                        m.mat_no AS MatNo,
+                        m.mat_detail AS MatDetail,
+                        m.mat_quantity AS MatQuantity,
+                        m.mat_unit AS MatUnit,
+                        m.mat_price AS MatPrice,
+                        m.mat_amount AS MatAmount,
+                        m.order_id AS OrderId
                     FROM material_detail m
                     WHERE m.order_id = @orderId
                     ORDER BY m.mat_line_no ASC;";
@@ -145,6 +148,7 @@ namespace JRSApplication.Sitesupervisor
             }
             return dt;
         }
+
 
 
 
