@@ -304,6 +304,7 @@ namespace JRSApplication.Accountant
             table.Columns.Add("cus_address");
             table.Columns.Add("pro_name");
             table.Columns.Add("phase_detail");
+            table.Columns.Add("phase_no");
             table.Columns.Add("phase_budget", typeof(decimal));
             table.Columns.Add("inv_remark");
             table.Columns.Add("subtotal", typeof(decimal));
@@ -339,6 +340,7 @@ namespace JRSApplication.Accountant
                 cusAddress,
                 txtProjectName.Text,
                 phaseDetail,
+                cmbPhase.Text,
                 phaseBudget,
                 remark,
                 subtotal,

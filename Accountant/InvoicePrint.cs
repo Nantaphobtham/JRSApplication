@@ -285,6 +285,26 @@ namespace JRSApplication.Accountant
             tblLeftBottom.Controls.Add(lbl);
         }
 
+        // ✅ ฟังก์ชันแสดงงวดงาน (phase_no)
+        public void SetPhaseNo(string phaseNo)
+        {
+            // ล้างค่าเดิมใน tableTextPhase_no (ชื่อ TableLayoutPanel ของคุณ)
+            tableTextPhase_no.Controls.Clear();
+
+            Label lblPhase = new Label
+            {
+                Text = phaseNo,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Tahoma", 10, FontStyle.Bold),
+                Padding = new Padding(5),
+                AutoSize = false
+            };
+
+            tableTextPhase_no.Controls.Add(lblPhase, 0, 0);
+        }
+
+
 
     }
 }

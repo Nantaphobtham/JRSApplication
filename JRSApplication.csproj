@@ -389,6 +389,12 @@
     <Compile Include="Sitesupervisor\PurchaseOrderForm.Designer.cs">
       <DependentUpon>PurchaseOrderForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sitesupervisor\PurchaseOrderPrintForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Sitesupervisor\PurchaseOrderPrintForm.Designer.cs">
+      <DependentUpon>PurchaseOrderPrintForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Sitesupervisor\WorkResponse.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -416,12 +422,12 @@
     <EmbeddedResource Include="Accountant\ReceiptPrintRDLC.resx">
       <DependentUpon>ReceiptPrintRDLC.cs</DependentUpon>
     </EmbeddedResource>
-    <Content Include="Accountant\ReceiptReport.rdlc">
+    <EmbeddedResource Include="Accountant\ReceiptReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Accountant\InvoiceReport.rdlc">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accountant\InvoiceReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
     <EmbeddedResource Include="Admin\CustomerRegistration.resx">
       <DependentUpon>CustomerRegistration.cs</DependentUpon>
     </EmbeddedResource>
@@ -490,9 +496,14 @@
     <EmbeddedResource Include="Components\Service\SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Sitesupervisor\POreport.rdlc" />
+    <Content Include="Sitesupervisor\POreport.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Sitesupervisor\PurchaseOrderForm.resx">
       <DependentUpon>PurchaseOrderForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sitesupervisor\PurchaseOrderPrintForm.resx">
+      <DependentUpon>PurchaseOrderPrintForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sitesupervisor\WorkResponse.resx">
       <DependentUpon>WorkResponse.cs</DependentUpon>

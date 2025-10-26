@@ -152,14 +152,17 @@
             this.btnPurchaseOrder.Text = "อนุมัติใบสั่งซื้อ";
             this.btnPurchaseOrder.UseVisualStyleBackColor = false;
             this.btnPurchaseOrder.Click += new System.EventHandler(this.btnPurchaseOrder_Click);
+
+            this.Header.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Profile)).BeginInit();
             // 
             // Header
             // 
             this.Header.BackgroundImage = global::JRSApplication.Properties.Resources.header;
             this.Header.Controls.Add(this.txtsubFunctionname);
+            this.Header.Controls.Add(this.txtFunctionname);
             this.Header.Controls.Add(this.btnClose);
             this.Header.Controls.Add(this.btnMinimize);
-            this.Header.Controls.Add(this.txtFunctionname);
             this.Header.Controls.Add(this.txtPosition);
             this.Header.Controls.Add(this.txtName);
             this.Header.Controls.Add(this.Profile);
@@ -168,17 +171,31 @@
             this.Header.Name = "Header";
             this.Header.Size = new System.Drawing.Size(1920, 126);
             this.Header.TabIndex = 1;
-            // 
+            //
+            // txtFunctionname
+            //
+            this.txtFunctionname.BackColor = System.Drawing.Color.Transparent;
+            this.txtFunctionname.Dock = System.Windows.Forms.DockStyle.None; // ❌ เอา Dock ออก
+            this.txtFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFunctionname.ForeColor = System.Drawing.Color.Black;
+            this.txtFunctionname.Location = new System.Drawing.Point(600, 20);   // ✅ กำหนดตำแหน่งเอง (x,y)
+            this.txtFunctionname.Size = new System.Drawing.Size(800, 45);       // ✅ ขนาดข้อความ
+            this.txtFunctionname.TabIndex = 4;
+            this.txtFunctionname.Text = "ยินดีต้อนรับ";
+            this.txtFunctionname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            //
             // txtsubFunctionname
-            // 
-            this.txtsubFunctionname.AutoSize = true;
             this.txtsubFunctionname.BackColor = System.Drawing.Color.Transparent;
+            this.txtsubFunctionname.Dock = System.Windows.Forms.DockStyle.None; // ❌ เอา Dock ออก
             this.txtsubFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtsubFunctionname.Location = new System.Drawing.Point(960, 67);
-            this.txtsubFunctionname.Name = "txtsubFunctionname";
-            this.txtsubFunctionname.Size = new System.Drawing.Size(0, 37);
+            this.txtsubFunctionname.ForeColor = System.Drawing.Color.Black;
+            this.txtsubFunctionname.Location = new System.Drawing.Point(600, 70); // ✅ ใต้บรรทัดบน
+            this.txtsubFunctionname.Size = new System.Drawing.Size(800, 37);
             this.txtsubFunctionname.TabIndex = 6;
             this.txtsubFunctionname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.txtsubFunctionname.Visible = false;
+
+
             // 
             // btnClose
             // 
@@ -206,18 +223,6 @@
             this.btnMinimize.Text = "_";
             this.btnMinimize.UseVisualStyleBackColor = false;
             this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
-            // 
-            // txtFunctionname
-            // 
-            this.txtFunctionname.AutoSize = true;
-            this.txtFunctionname.BackColor = System.Drawing.Color.Transparent;
-            this.txtFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFunctionname.Location = new System.Drawing.Point(884, 23);
-            this.txtFunctionname.Name = "txtFunctionname";
-            this.txtFunctionname.Size = new System.Drawing.Size(152, 37);
-            this.txtFunctionname.TabIndex = 4;
-            this.txtFunctionname.Text = "ยินดีต้อนรับ";
-            this.txtFunctionname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtPosition
             // 
@@ -248,6 +253,10 @@
             this.Profile.Size = new System.Drawing.Size(80, 80);
             this.Profile.TabIndex = 1;
             this.Profile.TabStop = false;
+
+            this.Header.ResumeLayout(false);
+            this.Header.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Profile)).EndInit();
             // 
             // menuTransition
             // 
