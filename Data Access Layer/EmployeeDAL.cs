@@ -179,16 +179,62 @@ namespace JRSApplication.Components
             }
         }
 
-        public bool DeleteEmployee(string employeeID)
+        public bool DeleteEmployee(string employeeID, out string errorMessage)
         {
+            errorMessage = "";
+
             using (var conn = new MySqlConnection(connectionString))
-            using (var cmd = new MySqlCommand("DELETE FROM employee WHERE emp_id = @EmployeeID;", conn))
             {
-                cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
-                conn.Open();
-                return cmd.ExecuteNonQuery() > 0;
+                try
+                {
+                    conn.Open();
+
+                    // ตรวจว่ามีข้อมูลลูกที่เกี่ยวข้องอยู่ไหม (project_employee_supervision)
+                    string checkChildSql = "SELECT COUNT(*) FROM project_employee_supervision WHERE emp_id = @EmpID;";
+                    using (var checkCmd = new MySqlCommand(checkChildSql, conn))
+                    {
+                        checkCmd.Parameters.AddWithValue("@EmpID", employeeID);
+                        long count = Convert.ToInt64(checkCmd.ExecuteScalar());
+                        if (count > 0)
+                        {
+                            errorMessage = "ไม่สามารถลบพนักงานได้ เนื่องจากยังมีข้อมูลเชื่อมโยงในระบบโครงการ (project_employee_supervision)";
+                            return false;
+                        }
+                    }
+
+                    // ลบข้อมูลพนักงาน
+                    string deleteSql = "DELETE FROM employee WHERE emp_id = @EmpID;";
+                    using (var cmd = new MySqlCommand(deleteSql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@EmpID", employeeID);
+                        int rows = cmd.ExecuteNonQuery();
+
+                        if (rows > 0)
+                            return true;
+                        else
+                        {
+                            errorMessage = "ไม่พบข้อมูลพนักงานที่ต้องการลบ";
+                            return false;
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    if (ex.Message.Contains("foreign key constraint fails"))
+                        errorMessage = "ไม่สามารถลบพนักงานได้ เนื่องจากยังมีข้อมูลที่เชื่อมโยงอยู่ในระบบ";
+                    else
+                        errorMessage = "เกิดข้อผิดพลาดจากฐานข้อมูล: " + ex.Message;
+
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = "เกิดข้อผิดพลาด: " + ex.Message;
+                    return false;
+                }
             }
         }
+
 
         public DataTable GetEmployeeByIDtoUMNGT(string employeeID)
         {

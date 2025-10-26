@@ -29,6 +29,44 @@ namespace JRSApplication.Components.Service
 
         }
 
+        private void UpdateOrderStatus(string status, string remark)
+        {
+            // ✅ แปลงข้อความสถานะภาษาไทย → ENUM ภาษาอังกฤษ
+            Dictionary<string, string> statusMap = new Dictionary<string, string>
+                    {
+                        { "แบบร่าง", "draft" },
+                        { "ส่งอนุมัติ", "submitted" },
+                        { "อนุมัติ", "approved" },
+                        { "ไม่อนุมัติ", "rejected" },
+                        { "ยกเลิก", "canceled" }
+                    };
+
+            // แปลงข้อความก่อนส่งเข้า DAL
+            string statusToSave = statusMap.ContainsKey(status) ? statusMap[status] : status.ToLower();
+
+            try
+            {
+                PurchaseOrderDAL dal = new PurchaseOrderDAL();
+                dal.UpdateOrderStatus(_orderId, statusToSave, remark, currentUserId);
+
+                MessageBox.Show("อัปเดตสถานะใบสั่งซื้อเรียบร้อยแล้ว",
+                    "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                this.Close(); // ปิดฟอร์มหลังบันทึกเสร็จ
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message, "สถานะไม่ถูกต้อง", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("เกิดข้อผิดพลาดขณะอัปเดตสถานะ: " + ex.Message,
+                    "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+
         private void LoadPurchaseOrder(JRSApplication.Components.Models.PurchaseOrder po)
         {
             // โหลดข้อมูลใบสั่งซื้อลง UI
@@ -246,14 +284,7 @@ namespace JRSApplication.Components.Service
 
             lblSummary.Text = $"รวม {count} รายการ\nรวมยอดเงิน {total:N2} บาท";
         }
-        private void UpdateOrderStatus(string status, string remark)
-        {
-            var dal = new PurchaseOrderDAL();
-            dal.UpdateOrderStatus(_orderId, status, remark, currentUserId);
-
-            MessageBox.Show("บันทึกข้อมูลสำเร็จแล้ว", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            this.Close();
-        }
+        
         private string PromptForRemark(string title, string label)
         {
             Form prompt = new Form()

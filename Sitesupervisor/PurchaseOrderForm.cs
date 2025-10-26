@@ -269,7 +269,10 @@ namespace JRSApplication
                     OrderDetail = txtOrderDetail.Text.Trim(),
                     OrderDate = dtpOrderDate.Value.Date,
                     OrderDueDate = CalculateDueDate(),
-                    OrderStatus = "รอดำเนินการ",
+
+                    // ✅ เปลี่ยนตรงนี้
+                    OrderStatus = "submitted",  // ENUM ที่ถูกต้อง
+
                     ProId = int.Parse(txtProjectID.Text),
                     EmpId = _empId,
                     MaterialDetails = materialList.ToList()
@@ -298,6 +301,7 @@ namespace JRSApplication
                 MessageBox.Show("เกิดข้อผิดพลาด: " + ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void btnAddMaterial_Click(object sender, EventArgs e)
         {
