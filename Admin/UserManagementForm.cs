@@ -422,20 +422,26 @@ namespace JRSApplication
         {
             if (string.IsNullOrEmpty(selectedEmployeeID))
             {
-                MessageBox.Show("กรุณาเลือกพนักงานก่อนลบ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกพนักงานก่อนลบ!", "แจ้งเตือน",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var result = MessageBox.Show("คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?", "ยืนยันการลบ",
-                                         MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (result != DialogResult.Yes) return;
+            var result = MessageBox.Show("คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?",
+                                         "ยืนยันการลบ", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result != DialogResult.Yes)
+                return;
 
             var dal = new EmployeeDAL();
-            bool success = dal.DeleteEmployee(selectedEmployeeID);
+            string errorMessage;
+
+            bool success = dal.DeleteEmployee(selectedEmployeeID, out errorMessage);
 
             if (success)
             {
-                MessageBox.Show("ลบข้อมูลสำเร็จ!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("ลบข้อมูลสำเร็จ!", "สำเร็จ",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 LoadEmployeeData();
                 ReadOnlyControlsOff();
                 EnableControlsOff();
@@ -446,9 +452,11 @@ namespace JRSApplication
             }
             else
             {
-                MessageBox.Show("เกิดข้อผิดพลาดในการลบข้อมูล!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(errorMessage, "ไม่สามารถลบข้อมูลได้",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
 
         // ===== Helpers =====
 
