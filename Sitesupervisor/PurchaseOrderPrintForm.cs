@@ -24,69 +24,35 @@ namespace JRSApplication.Sitesupervisor
         {
             try
             {
+                // ✅ ระบุ path ของไฟล์รายงาน RDLC ให้ชัดเจน
                 string reportPath = Path.Combine(Application.StartupPath, "Sitesupervisor", "POreport.rdlc");
-                reportViewer1.LocalReport.ReportPath = reportPath;
-
-                // ✅ โหลดข้อมูลหัวใบสั่งซื้อ
-                var dtHeader = GetPurchaseOrderHeader(_orderId);
-                // ✅ โหลดรายละเอียดวัสดุ
-                var dtDetail = GetPurchaseOrderDetail(_orderId);
-
-                reportViewer1.LocalReport.DataSources.Clear();
-                reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("dataPO", dtHeader));
-                reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataMat", dtDetail));
-
-
-                // ✅ เตรียมพารามิเตอร์
-                string poNumber = "", projectNumber = "", orderDetail = "";
-                string orderIssuer = "คุณ A";     // ตัวอย่าง สามารถดึงจากระบบ Login
-                string orderApprover = "คุณ B";   // ตัวอย่าง สามารถดึงจากฐานข้อมูลจริง
-                DateTime? orderDate = null;
-                DateTime? approvedDate = null;
-
-                if (dtHeader.Rows.Count > 0)
+                if (!File.Exists(reportPath))
                 {
-                    DataRow r = dtHeader.Rows[0];
-
-                    if (r.Table.Columns.Contains("OrderNumber"))
-                        poNumber = r["OrderNumber"]?.ToString();
-
-                    if (r.Table.Columns.Contains("ProjectNumber"))
-                        projectNumber = r["ProjectNumber"]?.ToString();
-
-                    if (r.Table.Columns.Contains("OrderDetail"))
-                        orderDetail = r["OrderDetail"]?.ToString();
-
-                    if (r.Table.Columns.Contains("OrderDate") && r["OrderDate"] != DBNull.Value)
-                        orderDate = Convert.ToDateTime(r["OrderDate"]);
-
-                    if (r.Table.Columns.Contains("ApproveDate") && r["ApproveDate"] != DBNull.Value)
-                        approvedDate = Convert.ToDateTime(r["ApproveDate"]);
+                    MessageBox.Show("ไม่พบไฟล์รายงาน: " + reportPath);
+                    return;
                 }
 
-                // ✅ ส่งพารามิเตอร์ไปยัง RDLC
-                var parameters = new ReportParameter[]
-                {
-                    new ReportParameter("pPONumber", poNumber ?? ""),
-                    new ReportParameter("pProjectNumber", projectNumber ?? ""),
-                    new ReportParameter("pOrderIssuer", orderIssuer ?? ""),
-                    new ReportParameter("pOrderApprover", orderApprover ?? ""),
-                    new ReportParameter("pOrderDate", orderDate?.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString("yyyy-MM-dd")),
-                    new ReportParameter("pApprovedDate", approvedDate?.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString("yyyy-MM-dd")),
-                    new ReportParameter("pOrderDetail", orderDetail ?? "")
-                };
+                reportViewer1.LocalReport.ReportPath = reportPath; // กำหนดไฟล์ที่ใช้
 
-                reportViewer1.LocalReport.SetParameters(parameters);
+                // ✅ โหลดข้อมูล
+                var dtHeader = GetPurchaseOrderHeader(_orderId);
+                var dtDetail = GetPurchaseOrderDetail(_orderId);
+
+                // ✅ ล้าง DataSource เก่า
+                reportViewer1.LocalReport.DataSources.Clear();
+
+                // ✅ ชื่อ Dataset ต้องตรงกับใน RDLC
+                reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("POHeaderDataSet", dtHeader));
+                reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("PODetailDataSet", dtDetail));
+
                 reportViewer1.RefreshReport();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"เกิดข้อผิดพลาดในการโหลดรายงาน:\n{ex.Message}\n\nรายละเอียดเพิ่มเติม:\n{ex.InnerException?.Message}",
-                    "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("เกิดข้อผิดพลาด: " + ex.Message);
             }
-
         }
+
 
         // 🧩 ดึงข้อมูลส่วนหัวใบสั่งซื้อ
         private DataTable GetPurchaseOrderHeader(int orderId)
