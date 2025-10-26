@@ -14,6 +14,10 @@ namespace JRSApplication.Sitesupervisor
         private readonly string connectionString =
             System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
+        public int OrderId => _orderId;
+
+        public string ConnectionString => connectionString;
+
         public PurchaseOrderPrintForm(int orderId)
         {
             InitializeComponent();
@@ -35,16 +39,18 @@ namespace JRSApplication.Sitesupervisor
                 reportViewer1.LocalReport.ReportPath = reportPath; // กำหนดไฟล์ที่ใช้
 
                 // ✅ โหลดข้อมูล
-                var dtHeader = GetPurchaseOrderHeader(_orderId);
-                var dtDetail = GetPurchaseOrderDetail(_orderId);
+                var dtHeader = GetPurchaseOrderHeader(OrderId);
+                var dtDetail = GetPurchaseOrderDetail(OrderId);
+
+                Console.WriteLine($"Header Rows: {dtHeader.Rows.Count}");
+                Console.WriteLine($"Detail Rows: {dtDetail.Rows.Count}");
 
                 // ✅ ล้าง DataSource เก่า
                 reportViewer1.LocalReport.DataSources.Clear();
-
-                // ✅ ชื่อ Dataset ต้องตรงกับใน RDLC
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("POHeaderDataSet", dtHeader));
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("PODetailDataSet", dtDetail));
 
+                reportViewer1.RefreshReport();
                 reportViewer1.RefreshReport();
             }
             catch (Exception ex)
@@ -59,33 +65,59 @@ namespace JRSApplication.Sitesupervisor
         {
             string sql = @"
                     SELECT 
-                        po.order_id        AS OrderId,
-                        po.order_number    AS OrderNumber,
-                        po.order_detail    AS OrderDetail,
-                        po.order_date      AS OrderDate,
-                        po.order_duedate   AS DueDate,
-                        po.approved_date   AS ApproveDate,
-                        po.order_status    AS OrderStatus,
-                        po.order_remark    AS OrderRemark,
-                        pp.phase_no        AS PhaseNo,
-                        p.pro_id           AS ProjectId,
-                        p.pro_number       AS ProjectNumber
-                    FROM purchaseorder po
-                    INNER JOIN project_phase pp ON po.pro_id = pp.pro_id
-                    INNER JOIN project p ON pp.pro_id = p.pro_id
-                    WHERE po.order_id = @orderId";
+                po.order_id        AS OrderId,
+                po.order_number    AS OrderNumber,
+                po.order_detail    AS OrderDetail,
+                po.order_date      AS OrderDate,
+                po.order_duedate   AS DueDate,
+                po.approved_date   AS ApproveDate,
+                po.order_status    AS OrderStatus,
+                po.order_remark    AS OrderRemark,
+                pp.phase_no        AS PhaseNo,
+                p.pro_id           AS ProjectId,
+                p.pro_number       AS ProjectNumber,
+
+                e1.emp_name        AS OrderByFullName,
+                e2.emp_name        AS ApprovedByFullName
+
+            FROM purchaseorder po
+            INNER JOIN project_phase pp ON po.pro_id = pp.pro_id
+            INNER JOIN project p ON pp.pro_id = p.pro_id
+            LEFT JOIN employee e1 ON po.emp_id = e1.emp_id
+            LEFT JOIN employee e2 ON po.approved_by_emp_id = e2.emp_id
+            WHERE po.order_id = @orderId
+            LIMIT 1;
+                   ";
 
             var dt = new DataTable();
-            using (var con = new MySqlConnection(connectionString))
+            using (var con = new MySqlConnection(ConnectionString))
             using (var cmd = new MySqlCommand(sql, con))
             using (var da = new MySqlDataAdapter(cmd))
             {
                 cmd.Parameters.AddWithValue("@orderId", orderId);
                 da.Fill(dt);
             }
+
             return dt;
         }
 
+        //งงว่าต้องส่งไปที่ไหน
+        private string GetEmployeeFullName(string empId)
+        {
+            string sql = "SELECT first_name, last_name FROM employee WHERE emp_id = @empId";
+            using (var con = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, con))
+            {
+                cmd.Parameters.AddWithValue("@empId", empId);
+                con.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                        return $"{reader["first_name"]} {reader["last_name"]}";
+                }
+            }
+            return empId; // fallback
+        }
 
         // 🧩 ดึงข้อมูลรายละเอียดวัสดุ
         private DataTable GetPurchaseOrderDetail(int orderId)
@@ -105,7 +137,7 @@ namespace JRSApplication.Sitesupervisor
                     ORDER BY m.mat_line_no ASC;";
 
             var dt = new DataTable();
-            using (var con = new MySqlConnection(connectionString))
+            using (var con = new MySqlConnection(ConnectionString))
             using (var cmd = new MySqlCommand(sql, con))
             using (var da = new MySqlDataAdapter(cmd))
             {
@@ -125,7 +157,7 @@ namespace JRSApplication.Sitesupervisor
             {
                 string savePath = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-                    $"PurchaseOrder_{_orderId}.pdf"
+                    $"PurchaseOrder_{OrderId}.pdf"
                 );
 
                 byte[] bytes = reportViewer1.LocalReport.Render("PDF");
