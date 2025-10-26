@@ -197,7 +197,7 @@ namespace JRSApplication.Sitesupervisor
             DataGridViewButtonColumn printButtonColumn = new DataGridViewButtonColumn();
             printButtonColumn.Name = "colPrint";
             printButtonColumn.HeaderText = "พิมพ์";
-            printButtonColumn.Text = "ปริ้น";
+            printButtonColumn.Text = "พิมพ์เอกสาร";
             printButtonColumn.UseColumnTextForButtonValue = true;
             printButtonColumn.Width = 100;
             dtgvWorkResponse.Columns.Add(printButtonColumn);
@@ -371,19 +371,9 @@ namespace JRSApplication.Sitesupervisor
         {
             try
             {
-                string message = $"ใบสั่งซื้อ: {row.OrderNumber}\n" +
-                                 $"รายละเอียด: {row.OrderDetail}\n" +
-                                 $"วันที่อนุมัติ: {row.ApproveDate:dd/MM/yyyy}\n" +
-                                 $"เฟสที่: {row.PhaseNo}\n" +
-                                 $"รหัสโครงการ: {row.ProjectId}\n" +
-                                 $"สถานะ: {row.OrderStatus}";
-
-                MessageBox.Show("กำลังพิมพ์...\n\n" + message,
-                    "พิมพ์ใบสั่งซื้อ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // ✅ หากมีฟอร์มพิมพ์จริงให้เปิดได้เลย เช่น
-                // var frm = new PurchaseOrderPrintForm(row.OrderId);
-                // frm.ShowDialog();
+                // 🔹 เปิดหน้ารายงานใบสั่งซื้อ (เชื่อมกับ RDLC)
+                var frm = new PurchaseOrderPrintForm(row.OrderId);
+                frm.ShowDialog();
             }
             catch (Exception ex)
             {
@@ -391,6 +381,7 @@ namespace JRSApplication.Sitesupervisor
                     "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void CustomizeGridStyling(DataGridView grid)
         {
