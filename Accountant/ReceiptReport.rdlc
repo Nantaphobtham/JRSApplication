@@ -95,7 +95,7 @@
                 <Value>ใบเสร็จรับเงิน</Value>
                 <Style>
                   <FontFamily>Angsana New</FontFamily>
-                  <FontSize>16pt</FontSize>
+                  <FontSize>20pt</FontSize>
                   <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
@@ -104,7 +104,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>ReportName</rd:DefaultName>
-        <Left>1.97792in</Left>
+        <Left>0.1463in</Left>
         <Height>0.35292in</Height>
         <Width>1.54009in</Width>
         <ZIndex>2</ZIndex>
