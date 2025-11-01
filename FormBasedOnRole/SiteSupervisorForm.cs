@@ -1,4 +1,5 @@
 ﻿using JRSApplication.Sitesupervisor;
+using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -88,9 +89,16 @@ namespace JRSApplication
 
         private void btnWorkResponse_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new WorkResponse(), "ผลการอนุมัติ"); 
+            LoadUserControl(new WorkResponse(), "ผลการอนุมัติใบสั่งซื้อ"); 
         }
 
+        private void btnPhaseApprovalResult_Click(object sender, EventArgs e)
+        {
         
-    }
+            LoadUserControl(new PhaseApprovalResult(_empId, userRole), "ผลการอนุมัติเฟส");
+        }
+
+
+
+}
 }

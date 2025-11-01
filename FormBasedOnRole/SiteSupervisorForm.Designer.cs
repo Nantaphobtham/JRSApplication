@@ -39,6 +39,7 @@
             this.Siderbar = new System.Windows.Forms.Panel();
             this.btnPurchaseOrder = new System.Windows.Forms.Button();
             this.btnWorkResponse = new System.Windows.Forms.Button();
+            this.btnPhaseApprovalResult = new System.Windows.Forms.Button();
             this.btnUpdatePhase = new System.Windows.Forms.Button();
             this.btnCheckProjectInformation = new System.Windows.Forms.Button();
             this.Body = new System.Windows.Forms.Panel();
@@ -151,6 +152,7 @@
             this.Siderbar.BackgroundImage = global::JRSApplication.Properties.Resources.sidebar;
             this.Siderbar.Controls.Add(this.btnPurchaseOrder);
             this.Siderbar.Controls.Add(this.btnWorkResponse);
+            this.Siderbar.Controls.Add(this.btnPhaseApprovalResult);
             this.Siderbar.Controls.Add(this.btnUpdatePhase);
             this.Siderbar.Controls.Add(this.btnCheckProjectInformation);
             this.Siderbar.Dock = System.Windows.Forms.DockStyle.Left;
@@ -168,7 +170,7 @@
             this.btnPurchaseOrder.FlatAppearance.BorderSize = 0;
             this.btnPurchaseOrder.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnPurchaseOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPurchaseOrder.Location = new System.Drawing.Point(0, 240);
+            this.btnPurchaseOrder.Location = new System.Drawing.Point(0, 320);
             this.btnPurchaseOrder.Name = "btnPurchaseOrder";
             this.btnPurchaseOrder.Size = new System.Drawing.Size(336, 80);
             this.btnPurchaseOrder.TabIndex = 3;
@@ -184,13 +186,31 @@
             this.btnWorkResponse.FlatAppearance.BorderSize = 0;
             this.btnWorkResponse.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnWorkResponse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnWorkResponse.Location = new System.Drawing.Point(0, 160);
+            this.btnWorkResponse.Location = new System.Drawing.Point(0, 240);
             this.btnWorkResponse.Name = "btnWorkResponse";
             this.btnWorkResponse.Size = new System.Drawing.Size(336, 80);
             this.btnWorkResponse.TabIndex = 2;
-            this.btnWorkResponse.Text = "ผลการอนุมัติ";
+            this.btnWorkResponse.Text = "ผลการอนุมัติใบสั่งซื้อ";
             this.btnWorkResponse.UseVisualStyleBackColor = false;
             this.btnWorkResponse.Click += new System.EventHandler(this.btnWorkResponse_Click);
+            // 
+            // btnPhaseApprovalResult
+            // 
+            this.btnPhaseApprovalResult.BackColor = System.Drawing.Color.Transparent;
+            this.btnPhaseApprovalResult.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnPhaseApprovalResult.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnPhaseApprovalResult.FlatAppearance.BorderSize = 0;
+            this.btnPhaseApprovalResult.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnPhaseApprovalResult.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPhaseApprovalResult.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPhaseApprovalResult.Location = new System.Drawing.Point(0, 160);
+            this.btnPhaseApprovalResult.Name = "btnPhaseApprovalResult";
+            this.btnPhaseApprovalResult.Size = new System.Drawing.Size(336, 80);
+            this.btnPhaseApprovalResult.TabIndex = 4;
+            this.btnPhaseApprovalResult.Text = "ผลการอนุมัติเฟส";
+            this.btnPhaseApprovalResult.UseVisualStyleBackColor = false;
+            this.btnPhaseApprovalResult.Click += new System.EventHandler(this.btnPhaseApprovalResult_Click);
+
             // 
             // btnUpdatePhase
             // 
@@ -283,5 +303,7 @@
         private System.Windows.Forms.Panel Body;
         private System.Windows.Forms.PictureBox PicLogo;
         private System.Windows.Forms.Label txtsubFunctionname;
+        private System.Windows.Forms.Button btnPhaseApprovalResult;
+
     }
 }
