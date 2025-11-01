@@ -697,7 +697,7 @@
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>1.81843in</Height>
+    <Height>1.8896in</Height>
     <Style />
   </Body>
   <Width>6.81619in</Width>
@@ -725,7 +725,7 @@
                   <Value>ใบสั่งซื้อ</Value>
                   <Style>
                     <FontFamily>Angsana New</FontFamily>
-                    <FontSize>20pt</FontSize>
+                    <FontSize>30pt</FontSize>
                     <FontWeight>Bold</FontWeight>
                   </Style>
                 </TextRun>
@@ -747,10 +747,9 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>ReportName</rd:DefaultName>
-          <Top>0.42527cm</Top>
-          <Left>3.11694in</Left>
-          <Height>0.35292in</Height>
-          <Width>0.78613in</Width>
+          <Left>2.83768in</Left>
+          <Height>0.54226in</Height>
+          <Width>1.14082in</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -765,10 +764,9 @@
           <Source>Embedded</Source>
           <Value>LogoCopyPNG</Value>
           <Sizing>FitProportional</Sizing>
-          <Top>0.42527cm</Top>
           <Left>0.01332cm</Left>
-          <Height>1.37735cm</Height>
-          <Width>3.70778cm</Width>
+          <Height>1.90845cm</Height>
+          <Width>5.33177cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -818,15 +816,14 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox1</rd:DefaultName>
-          <Top>1.97901cm</Top>
+          <Top>2.38392cm</Top>
           <Left>0.01332cm</Left>
           <Height>2.50589cm</Height>
           <Width>10.12145cm</Width>
           <ZIndex>2</ZIndex>
           <Style>
             <Border>
-              <Style>Solid</Style>
-              <Width>0.5pt</Width>
+              <Style>None</Style>
             </Border>
             <PaddingLeft>2pt</PaddingLeft>
             <PaddingRight>2pt</PaddingRight>
@@ -861,8 +858,7 @@
           <ZIndex>3</ZIndex>
           <Style>
             <Border>
-              <Style>Solid</Style>
-              <Width>0.5pt</Width>
+              <Style>None</Style>
             </Border>
             <PaddingLeft>2pt</PaddingLeft>
             <PaddingRight>2pt</PaddingRight>
@@ -897,8 +893,7 @@
           <ZIndex>4</ZIndex>
           <Style>
             <Border>
-              <Style>Solid</Style>
-              <Width>0.5pt</Width>
+              <Style>None</Style>
             </Border>
             <PaddingLeft>2pt</PaddingLeft>
             <PaddingRight>2pt</PaddingRight>
@@ -933,8 +928,7 @@
           <ZIndex>5</ZIndex>
           <Style>
             <Border>
-              <Style>Solid</Style>
-              <Width>0.5pt</Width>
+              <Style>None</Style>
             </Border>
             <PaddingLeft>2pt</PaddingLeft>
             <PaddingRight>2pt</PaddingRight>
@@ -969,8 +963,7 @@
           <ZIndex>6</ZIndex>
           <Style>
             <Border>
-              <Style>Solid</Style>
-              <Width>0.5pt</Width>
+              <Style>None</Style>
             </Border>
             <PaddingLeft>2pt</PaddingLeft>
             <PaddingRight>2pt</PaddingRight>
@@ -993,7 +986,7 @@
                 </TextRun>
               </TextRuns>
               <Style>
-                <TextAlign>Center</TextAlign>
+                <TextAlign>Left</TextAlign>
               </Style>
             </Paragraph>
           </Paragraphs>
@@ -1004,8 +997,7 @@
           <ZIndex>7</ZIndex>
           <Style>
             <Border>
-              <Style>Solid</Style>
-              <Width>0.5pt</Width>
+              <Style>None</Style>
             </Border>
             <PaddingLeft>2pt</PaddingLeft>
             <PaddingRight>2pt</PaddingRight>
@@ -1028,7 +1020,7 @@
                 </TextRun>
               </TextRuns>
               <Style>
-                <TextAlign>Center</TextAlign>
+                <TextAlign>Left</TextAlign>
               </Style>
             </Paragraph>
           </Paragraphs>
@@ -1039,8 +1031,7 @@
           <ZIndex>8</ZIndex>
           <Style>
             <Border>
-              <Style>Solid</Style>
-              <Width>0.5pt</Width>
+              <Style>None</Style>
             </Border>
             <PaddingLeft>2pt</PaddingLeft>
             <PaddingRight>2pt</PaddingRight>
@@ -1063,19 +1054,18 @@
                 </TextRun>
               </TextRuns>
               <Style>
-                <TextAlign>Center</TextAlign>
+                <TextAlign>Left</TextAlign>
               </Style>
             </Paragraph>
           </Paragraphs>
-          <Top>3.09841cm</Top>
+          <Top>3.09842cm</Top>
           <Left>13.44312cm</Left>
           <Height>0.84531cm</Height>
           <Width>3.37611cm</Width>
           <ZIndex>9</ZIndex>
           <Style>
             <Border>
-              <Style>Solid</Style>
-              <Width>0.5pt</Width>
+              <Style>None</Style>
             </Border>
             <PaddingLeft>2pt</PaddingLeft>
             <PaddingRight>2pt</PaddingRight>
@@ -1090,7 +1080,7 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value />
+                  <Value EvaluationMode="Constant" />
                   <Style>
                     <FontFamily>AngsanaUPC</FontFamily>
                     <FontSize>16pt</FontSize>
@@ -1098,7 +1088,7 @@
                 </TextRun>
               </TextRuns>
               <Style>
-                <TextAlign>Center</TextAlign>
+                <TextAlign>Left</TextAlign>
               </Style>
             </Paragraph>
           </Paragraphs>
@@ -1109,8 +1099,7 @@
           <ZIndex>10</ZIndex>
           <Style>
             <Border>
-              <Style>Solid</Style>
-              <Width>0.5pt</Width>
+              <Style>None</Style>
             </Border>
             <PaddingLeft>2pt</PaddingLeft>
             <PaddingRight>2pt</PaddingRight>
@@ -1145,8 +1134,7 @@
           <ZIndex>11</ZIndex>
           <Style>
             <Border>
-              <Style>Solid</Style>
-              <Width>0.5pt</Width>
+              <Style>None</Style>
             </Border>
             <PaddingLeft>2pt</PaddingLeft>
             <PaddingRight>2pt</PaddingRight>
@@ -1170,7 +1158,7 @@
                 </TextRun>
               </TextRuns>
               <Style>
-                <TextAlign>Center</TextAlign>
+                <TextAlign>Left</TextAlign>
               </Style>
             </Paragraph>
           </Paragraphs>
@@ -1181,8 +1169,7 @@
           <ZIndex>12</ZIndex>
           <Style>
             <Border>
-              <Style>Solid</Style>
-              <Width>0.5pt</Width>
+              <Style>None</Style>
             </Border>
             <PaddingLeft>2pt</PaddingLeft>
             <PaddingRight>2pt</PaddingRight>
@@ -1211,14 +1198,13 @@
           </Paragraphs>
           <rd:DefaultName>Textbox27</rd:DefaultName>
           <Top>5.24259cm</Top>
-          <Left>0.33082cm</Left>
+          <Left>0.01332cm</Left>
           <Height>0.74018cm</Height>
           <Width>3.41115cm</Width>
           <ZIndex>13</ZIndex>
           <Style>
             <Border>
-              <Style>Solid</Style>
-              <Width>0.5pt</Width>
+              <Style>None</Style>
             </Border>
             <PaddingLeft>2pt</PaddingLeft>
             <PaddingRight>2pt</PaddingRight>
@@ -1246,16 +1232,15 @@
             </Paragraph>
           </Paragraphs>
           <Top>5.24259cm</Top>
-          <Left>3.77724cm</Left>
+          <Left>3.45974cm</Left>
           <Height>0.74018cm</Height>
-          <Width>13.04199cm</Width>
+          <Width>13.35949cm</Width>
           <ZIndex>14</ZIndex>
           <Style>
             <Border>
               <Style>Solid</Style>
               <Width>0.5pt</Width>
             </Border>
-            <VerticalAlign>Middle</VerticalAlign>
             <PaddingLeft>2pt</PaddingLeft>
             <PaddingRight>2pt</PaddingRight>
             <PaddingTop>2pt</PaddingTop>
@@ -1281,7 +1266,7 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>ผู้ซื้อ</Value>
+                  <Value>ผู้ออกใบสั่งซื้อ</Value>
                   <Style>
                     <FontFamily>AngsanaUPC</FontFamily>
                     <FontSize>16pt</FontSize>
@@ -1292,10 +1277,10 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox36</rd:DefaultName>
-          <Top>0.17639cm</Top>
-          <Left>4.17042cm</Left>
+          <Top>0.14111cm</Top>
+          <Left>2.18974cm</Left>
           <Height>0.87083cm</Height>
-          <Width>0.83333cm</Width>
+          <Width>2.36791cm</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -1308,7 +1293,7 @@
         </Textbox>
         <Line Name="Line1">
           <Top>2.15968cm</Top>
-          <Left>1.78917cm</Left>
+          <Left>0.83667cm</Left>
           <Height>0cm</Height>
           <Width>5.3865cm</Width>
           <ZIndex>1</ZIndex>
@@ -1325,7 +1310,7 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>ผู้ขาย</Value>
+                  <Value>ผู้อนุมัติใบสั่งซื้อ</Value>
                   <Style>
                     <FontFamily>AngsanaUPC</FontFamily>
                     <FontSize>16pt</FontSize>
@@ -1337,9 +1322,9 @@
           </Paragraphs>
           <rd:DefaultName>Textbox36</rd:DefaultName>
           <Top>0.17639cm</Top>
-          <Left>13.07722cm</Left>
+          <Left>12.30794cm</Left>
           <Height>0.87083cm</Height>
-          <Width>0.96562cm</Width>
+          <Width>2.68541cm</Width>
           <ZIndex>2</ZIndex>
           <Style>
             <Border>
@@ -1372,7 +1357,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox38</rd:DefaultName>
           <Top>3.21861cm</Top>
-          <Left>1.51568cm</Left>
+          <Left>0.56318cm</Left>
           <Height>0.82679cm</Height>
           <Width>6.47816cm</Width>
           <ZIndex>3</ZIndex>
@@ -1393,17 +1378,20 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>(____________________________)</Value>
-                  <Style />
+                  <Value />
+                  <Style>
+                    <FontFamily>AngsanaUPC</FontFamily>
+                    <FontSize>16pt</FontSize>
+                  </Style>
                 </TextRun>
               </TextRuns>
               <Style />
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox39</rd:DefaultName>
-          <Top>2.51278cm</Top>
-          <Left>1.78917cm</Left>
-          <Height>0.6cm</Height>
+          <Top>2.30079cm</Top>
+          <Left>0.83667cm</Left>
+          <Height>0.84726cm</Height>
           <Width>5.90574cm</Width>
           <ZIndex>4</ZIndex>
           <Style>
@@ -1428,14 +1416,14 @@
             </Border>
           </Style>
         </Line>
-        <Textbox Name="Textbox40">
+        <Textbox Name="Textbox41">
           <CanGrow>true</CanGrow>
           <KeepTogether>true</KeepTogether>
           <Paragraphs>
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>(____________________________)</Value>
+                  <Value />
                   <Style>
                     <FontFamily>AngsanaUPC</FontFamily>
                     <FontSize>16pt</FontSize>
@@ -1445,10 +1433,10 @@
               <Style />
             </Paragraph>
           </Paragraphs>
-          <rd:DefaultName>Textbox38</rd:DefaultName>
-          <Top>3.24072cm</Top>
+          <rd:DefaultName>Textbox39</rd:DefaultName>
+          <Top>2.30079cm</Top>
           <Left>10.68283cm</Left>
-          <Height>0.82679cm</Height>
+          <Height>0.88254cm</Height>
           <Width>5.90574cm</Width>
           <ZIndex>6</ZIndex>
           <Style>
@@ -1461,25 +1449,30 @@
             <PaddingBottom>2pt</PaddingBottom>
           </Style>
         </Textbox>
-        <Textbox Name="Textbox41">
+        <Textbox Name="Textbox40">
           <CanGrow>true</CanGrow>
           <KeepTogether>true</KeepTogether>
           <Paragraphs>
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>(____________________________)</Value>
-                  <Style />
+                  <Value>(เจ อาร์ เอส เฮ้าส์ คอนสตรัคชั่น จำกัด)</Value>
+                  <Style>
+                    <FontFamily>AngsanaUPC</FontFamily>
+                    <FontSize>16pt</FontSize>
+                  </Style>
                 </TextRun>
               </TextRuns>
-              <Style />
+              <Style>
+                <TextAlign>Center</TextAlign>
+              </Style>
             </Paragraph>
           </Paragraphs>
-          <rd:DefaultName>Textbox39</rd:DefaultName>
-          <Top>2.51278cm</Top>
-          <Left>10.68283cm</Left>
-          <Height>0.6cm</Height>
-          <Width>5.90574cm</Width>
+          <rd:DefaultName>Textbox38</rd:DefaultName>
+          <Top>3.25389cm</Top>
+          <Left>10.43291cm</Left>
+          <Height>0.82679cm</Height>
+          <Width>6.47816cm</Width>
           <ZIndex>7</ZIndex>
           <Style>
             <Border>
@@ -1522,6 +1515,13 @@
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
       <rd:DataSourceID>34cb7d14-0c66-43aa-b84a-4e4fc778b8cc</rd:DataSourceID>
+    </DataSource>
+    <DataSource Name="JRSApplicationComponents">
+      <ConnectionProperties>
+        <DataProvider>System.Data.DataSet</DataProvider>
+        <ConnectString>/* Local Connection */</ConnectString>
+      </ConnectionProperties>
+      <rd:DataSourceID>3f4371ec-2c8f-4325-984b-e458f9470cb2</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
@@ -1665,6 +1665,59 @@
         <rd:DataSetName>JRSApplication.Components.Models</rd:DataSetName>
         <rd:TableName>MaterialDetail</rd:TableName>
         <rd:ObjectDataSourceType>JRSApplication.Components.Models.MaterialDetail, JRSApplication, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+      </rd:DataSetInfo>
+    </DataSet>
+    <DataSet Name="Employee">
+      <Query>
+        <DataSourceName>JRSApplicationComponents</DataSourceName>
+        <CommandText>/* Local Query */</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Address">
+          <DataField>Address</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Email">
+          <DataField>Email</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="EmployeeID">
+          <DataField>EmployeeID</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FirstName">
+          <DataField>FirstName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="IDCard">
+          <DataField>IDCard</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="LastName">
+          <DataField>LastName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Password">
+          <DataField>Password</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Phone">
+          <DataField>Phone</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Role">
+          <DataField>Role</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Username">
+          <DataField>Username</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <rd:DataSetInfo>
+        <rd:DataSetName>JRSApplication.Components</rd:DataSetName>
+        <rd:TableName>Employee</rd:TableName>
+        <rd:ObjectDataSourceType>JRSApplication.Components.Employee, JRSApplication, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
