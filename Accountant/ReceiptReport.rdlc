@@ -7,7 +7,7 @@
         <Value>LogoCopyPNG</Value>
         <Sizing>FitProportional</Sizing>
         <Top>0.26141cm</Top>
-        <Left>11.23134cm</Left>
+        <Left>12.50134cm</Left>
         <Height>1.73896cm</Height>
         <Width>3.80722cm</Width>
         <Style>
@@ -71,7 +71,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
         <Top>1.0728cm</Top>
-        <Left>0.39826cm</Left>
+        <Left>1.66826cm</Left>
         <Height>2.12168cm</Height>
         <Width>8.88398cm</Width>
         <ZIndex>1</ZIndex>
@@ -104,7 +104,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>ReportName</rd:DefaultName>
-        <Left>0.1463in</Left>
+        <Left>0.6463in</Left>
         <Height>0.35292in</Height>
         <Width>1.54009in</Width>
         <ZIndex>2</ZIndex>
@@ -576,7 +576,7 @@
         </TablixRowHierarchy>
         <DataSetName>ReceiptDataSet</DataSetName>
         <Top>2.51146in</Top>
-        <Left>0.1568in</Left>
+        <Left>0.6568in</Left>
         <Height>0.75in</Height>
         <Width>5.76388in</Width>
         <ZIndex>3</ZIndex>
@@ -590,7 +590,7 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>2.98274in</Width>
+              <Width>1.67024in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -648,9 +648,9 @@
         </TablixRowHierarchy>
         <DataSetName>ReceiptDataSet</DataSetName>
         <Top>3.28924in</Top>
-        <Left>0.1568in</Left>
+        <Left>0.6568in</Left>
         <Height>0.96876in</Height>
-        <Width>2.98274in</Width>
+        <Width>1.67024in</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -902,7 +902,7 @@
         </TablixRowHierarchy>
         <DataSetName>ReceiptDataSet</DataSetName>
         <Top>3.28924in</Top>
-        <Left>3.13954in</Left>
+        <Left>3.63954in</Left>
         <Height>0.96876in</Height>
         <Width>2.78115in</Width>
         <ZIndex>5</ZIndex>
@@ -958,7 +958,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox135</rd:DefaultName>
         <Top>1.31322in</Top>
-        <Left>0.1463in</Left>
+        <Left>0.6463in</Left>
         <Height>0.92708in</Height>
         <Width>2.99325in</Width>
         <ZIndex>6</ZIndex>
@@ -991,7 +991,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox136</rd:DefaultName>
         <Top>1.32711in</Top>
-        <Left>3.13954in</Left>
+        <Left>3.63954in</Left>
         <Height>0.32062in</Height>
         <Width>1in</Width>
         <ZIndex>7</ZIndex>
@@ -1024,7 +1024,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox136</rd:DefaultName>
         <Top>1.64773in</Top>
-        <Left>3.13954in</Left>
+        <Left>3.63954in</Left>
         <Height>0.30673in</Height>
         <Width>1in</Width>
         <ZIndex>8</ZIndex>
@@ -1057,7 +1057,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox136</rd:DefaultName>
         <Top>1.95447in</Top>
-        <Left>3.13954in</Left>
+        <Left>3.63954in</Left>
         <Height>0.28584in</Height>
         <Width>1in</Width>
         <ZIndex>9</ZIndex>
@@ -1090,7 +1090,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox136</rd:DefaultName>
         <Top>1.32712in</Top>
-        <Left>4.13954in</Left>
+        <Left>4.63954in</Left>
         <Height>0.32062in</Height>
         <Width>1.78115in</Width>
         <ZIndex>10</ZIndex>
@@ -1123,7 +1123,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox136</rd:DefaultName>
         <Top>1.64773in</Top>
-        <Left>4.13954in</Left>
+        <Left>4.63954in</Left>
         <Height>0.30673in</Height>
         <Width>1.78114in</Width>
         <ZIndex>11</ZIndex>
@@ -1156,7 +1156,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox136</rd:DefaultName>
         <Top>1.95447in</Top>
-        <Left>4.13954in</Left>
+        <Left>4.63954in</Left>
         <Height>0.28584in</Height>
         <Width>1.78115in</Width>
         <ZIndex>12</ZIndex>
@@ -1189,7 +1189,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox144</rd:DefaultName>
         <Top>2.2542in</Top>
-        <Left>0.1463in</Left>
+        <Left>0.6463in</Left>
         <Height>0.25in</Height>
         <Width>1.00001in</Width>
         <ZIndex>13</ZIndex>
@@ -1222,7 +1222,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox144</rd:DefaultName>
         <Top>2.2542in</Top>
-        <Left>1.1463in</Left>
+        <Left>1.6463in</Left>
         <Height>0.25in</Height>
         <Width>4.77437in</Width>
         <ZIndex>14</ZIndex>
@@ -1268,7 +1268,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox131</rd:DefaultName>
         <Top>4.32744in</Top>
-        <Left>0.67387in</Left>
+        <Left>1.17387in</Left>
         <Height>0.43654in</Height>
         <Width>1.78062in</Width>
         <ZIndex>15</ZIndex>
@@ -1301,7 +1301,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>4.76398in</Top>
-        <Left>0.67387in</Left>
+        <Left>1.17387in</Left>
         <Height>0.25in</Height>
         <Width>1.78062in</Width>
         <ZIndex>16</ZIndex>
@@ -1341,7 +1341,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox3</rd:DefaultName>
         <Top>4.95289in</Top>
-        <Left>0.67387in</Left>
+        <Left>1.17387in</Left>
         <Height>0.25in</Height>
         <Width>1.78062in</Width>
         <ZIndex>17</ZIndex>
@@ -1387,7 +1387,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox131</rd:DefaultName>
         <Top>4.32744in</Top>
-        <Left>3.59369in</Left>
+        <Left>4.09369in</Left>
         <Height>0.43654in</Height>
         <Width>1.78062in</Width>
         <ZIndex>18</ZIndex>
@@ -1420,7 +1420,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>4.76398in</Top>
-        <Left>3.59369in</Left>
+        <Left>4.09369in</Left>
         <Height>0.25in</Height>
         <Width>1.78062in</Width>
         <ZIndex>19</ZIndex>
@@ -1460,13 +1460,44 @@
         </Paragraphs>
         <rd:DefaultName>Textbox3</rd:DefaultName>
         <Top>4.95289in</Top>
-        <Left>3.60059in</Left>
+        <Left>4.10059in</Left>
         <Height>0.25in</Height>
         <Width>1.78062in</Width>
         <ZIndex>20</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox4">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=First(Fields!phase_no.Value, "ReceiptDataSet")</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox4</rd:DefaultName>
+        <Top>3.28924in</Top>
+        <Left>2.35482in</Left>
+        <Height>0.96876in</Height>
+        <Width>1.25694in</Width>
+        <ZIndex>21</ZIndex>
+        <Style>
+          <Border>
+            <Color>LightGrey</Color>
+            <Style>Solid</Style>
           </Border>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
@@ -1482,7 +1513,7 @@
       </Border>
     </Style>
   </Body>
-  <Width>8.25777in</Width>
+  <Width>7in</Width>
   <Page>
     <LeftMargin>1in</LeftMargin>
     <RightMargin>1in</RightMargin>
@@ -1575,10 +1606,14 @@
           <DataField>ToDate</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="phase_no">
+          <DataField>phase_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSet1</rd:DataSetName>
-        <rd:SchemaPath>D:\Work\PROJECT\Accountant\ReceiptDataSet.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\Users\PC-GLP\source\repos\Nantaphobtham\JRSApplication\Accountant\ReceiptDataSet.xsd</rd:SchemaPath>
         <rd:TableName>InvoiceHeader</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

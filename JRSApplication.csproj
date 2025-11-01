@@ -383,6 +383,12 @@
       <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\Service\SearchService.cs" />
+    <Compile Include="Sitesupervisor\PhaseApprovalResult.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sitesupervisor\PhaseApprovalResult.Designer.cs">
+      <DependentUpon>PhaseApprovalResult.cs</DependentUpon>
+    </Compile>
     <Compile Include="Sitesupervisor\PurchaseOrderForm.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -499,6 +505,9 @@
     <Content Include="Sitesupervisor\POreport.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Sitesupervisor\PhaseApprovalResult.resx">
+      <DependentUpon>PhaseApprovalResult.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Sitesupervisor\PurchaseOrderForm.resx">
       <DependentUpon>PurchaseOrderForm.cs</DependentUpon>
     </EmbeddedResource>
