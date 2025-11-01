@@ -1,6 +1,6 @@
 ﻿namespace JRSApplication.Sitesupervisor
 {
-    partial class WorkResponse
+    partial class PhaseApprovalResult
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,19 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dtgvWorkResponse = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
+            this.dtgvWorkResponse = new System.Windows.Forms.DataGridView();
             this.searchboxControl1 = new JRSApplication.SearchboxControl();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvWorkResponse)).BeginInit();
             this.SuspendLayout();
-            // 
-            // dtgvWorkResponse
-            // 
-            this.dtgvWorkResponse.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvWorkResponse.Location = new System.Drawing.Point(17, 79);
-            this.dtgvWorkResponse.Name = "dtgvWorkResponse";
-            this.dtgvWorkResponse.Size = new System.Drawing.Size(1551, 841);
-            this.dtgvWorkResponse.TabIndex = 1;
             // 
             // label1
             // 
@@ -48,9 +40,17 @@
             this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(11, 21);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(310, 32);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "รายการผลการอนุมัติใบสั่งซื้อ";
+            this.label1.Size = new System.Drawing.Size(267, 32);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "รายการผลการอนุมัติเฟส";
+            // 
+            // dtgvWorkResponse
+            // 
+            this.dtgvWorkResponse.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvWorkResponse.Location = new System.Drawing.Point(17, 79);
+            this.dtgvWorkResponse.Name = "dtgvWorkResponse";
+            this.dtgvWorkResponse.Size = new System.Drawing.Size(1551, 841);
+            this.dtgvWorkResponse.TabIndex = 4;
             // 
             // searchboxControl1
             // 
@@ -59,17 +59,16 @@
             this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.searchboxControl1.Name = "searchboxControl1";
             this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl1.TabIndex = 0;
+            this.searchboxControl1.TabIndex = 5;
             // 
-            // WorkResponse
+            // PhaseApprovalResult
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.dtgvWorkResponse);
             this.Controls.Add(this.searchboxControl1);
-            this.Name = "WorkResponse";
+            this.Controls.Add(this.dtgvWorkResponse);
+            this.Controls.Add(this.label1);
+            this.Name = "PhaseApprovalResult";
             this.Size = new System.Drawing.Size(1584, 954);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvWorkResponse)).EndInit();
             this.ResumeLayout(false);
@@ -79,8 +78,8 @@
 
         #endregion
 
-        private SearchboxControl searchboxControl1;
-        private System.Windows.Forms.DataGridView dtgvWorkResponse;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridView dtgvWorkResponse;
+        private SearchboxControl searchboxControl1;
     }
 }
