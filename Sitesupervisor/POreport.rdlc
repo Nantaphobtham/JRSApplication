@@ -6,22 +6,22 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>1.51517cm</Width>
+              <Width>1.15402cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>5.68526cm</Width>
+              <Width>6.50127cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.78987cm</Width>
+              <Width>2.31563cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.78987cm</Width>
+              <Width>1.99236cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.78987cm</Width>
+              <Width>2.0522cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.78987cm</Width>
+              <Width>2.72983cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -88,7 +88,6 @@
                       <rd:DefaultName>Textbox12</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -123,7 +122,6 @@
                       <rd:DefaultName>Textbox14</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -158,7 +156,6 @@
                       <rd:DefaultName>Textbox16</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -193,7 +190,6 @@
                       <rd:DefaultName>Textbox18</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -228,7 +224,6 @@
                       <rd:DefaultName>Textbox20</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -268,7 +263,6 @@
                       <rd:DefaultName>Textbox11</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -301,7 +295,6 @@
                       <rd:DefaultName>Textbox13</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -325,18 +318,18 @@
                               <Style>
                                 <FontFamily>AngsanaUPC</FontFamily>
                                 <FontSize>16pt</FontSize>
+                                <Format>0;(0)</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox15</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <VerticalAlign>Middle</VerticalAlign>
@@ -372,7 +365,6 @@
                       <rd:DefaultName>Textbox17</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -408,7 +400,6 @@
                       <rd:DefaultName>Textbox19</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -437,14 +428,13 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox21</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -481,229 +471,332 @@
         </TablixRowHierarchy>
         <DataSetName>PODetailDataSet</DataSetName>
         <Top>0.17639cm</Top>
-        <Left>0.29038cm</Left>
         <Height>1.67428cm</Height>
-        <Width>18.35993cm</Width>
+        <Width>16.74531cm</Width>
         <Style>
           <Border>
-            <Style>None</Style>
+            <Style>Solid</Style>
           </Border>
+          <TopBorder>
+            <Color>Black</Color>
+            <Style>Solid</Style>
+            <Width>1pt</Width>
+          </TopBorder>
+          <BottomBorder>
+            <Color>Black</Color>
+            <Style>Solid</Style>
+            <Width>1pt</Width>
+          </BottomBorder>
+          <LeftBorder>
+            <Color>Black</Color>
+            <Style>Solid</Style>
+            <Width>1pt</Width>
+          </LeftBorder>
+          <RightBorder>
+            <Color>Black</Color>
+            <Style>Solid</Style>
+            <Width>1pt</Width>
+          </RightBorder>
         </Style>
       </Tablix>
-      <Textbox Name="Textbox30">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>จำนวน :</Value>
-                <Style>
-                  <FontFamily>AngsanaUPC</FontFamily>
-                  <FontSize>16pt</FontSize>
-                </Style>
-              </TextRun>
-            </TextRuns>
+      <Rectangle Name="Rectangle2">
+        <ReportItems>
+          <Textbox Name="Textbox8">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>หมายเหตุ :</Value>
+                    <Style>
+                      <FontFamily>AngsanaUPC</FontFamily>
+                      <FontSize>16pt</FontSize>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox8</rd:DefaultName>
+            <Top>0cm</Top>
+            <Height>0.77787cm</Height>
+            <Width>1.87295cm</Width>
             <Style>
-              <TextAlign>Right</TextAlign>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
             </Style>
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox30</rd:DefaultName>
-        <Top>2.56118cm</Top>
-        <Left>7.78069cm</Left>
-        <Height>0.77787cm</Height>
-        <Width>2.5cm</Width>
+          </Textbox>
+          <Textbox Name="Textbox9">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!OrderRemark.Value, "POHeaderDataSet")</Value>
+                    <Style>
+                      <FontFamily>AngsanaUPC</FontFamily>
+                      <FontSize>16pt</FontSize>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox9</rd:DefaultName>
+            <Top>0cm</Top>
+            <Left>1.90823cm</Left>
+            <Height>1.93102cm</Height>
+            <Width>6.31073cm</Width>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <RightBorder>
+                <Color>Black</Color>
+                <Style>Solid</Style>
+                <Width>1pt</Width>
+              </RightBorder>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox30">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>จำนวน :</Value>
+                    <Style>
+                      <FontFamily>AngsanaUPC</FontFamily>
+                      <FontSize>16pt</FontSize>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox30</rd:DefaultName>
+            <Left>8.59023cm</Left>
+            <Height>0.77787cm</Height>
+            <Width>1.51516cm</Width>
+            <ZIndex>2</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtCountMatAmount">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Count(Fields!MatDetail.Value, "PODetailDataSet")</Value>
+                    <Style>
+                      <FontFamily>AngsanaUPC</FontFamily>
+                      <FontSize>16pt</FontSize>
+                      <Format>n0</Format>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <Left>10.14067cm</Left>
+            <Height>0.77787cm</Height>
+            <Width>3.54267cm</Width>
+            <ZIndex>3</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox32">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>รวมเงิน :</Value>
+                    <Style>
+                      <FontFamily>AngsanaUPC</FontFamily>
+                      <FontSize>16pt</FontSize>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox32</rd:DefaultName>
+            <Top>0.91898cm</Top>
+            <Left>8.59023cm</Left>
+            <Height>0.73569cm</Height>
+            <Width>1.51516cm</Width>
+            <ZIndex>4</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtSumPrice">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Sum(Fields!MatAmount.Value, "PODetailDataSet")</Value>
+                    <Style>
+                      <FontFamily>AngsanaUPC</FontFamily>
+                      <FontSize>16pt</FontSize>
+                      <Format>#,0.00;#,0.00-</Format>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <Top>0.91898cm</Top>
+            <Left>10.14067cm</Left>
+            <Height>0.73569cm</Height>
+            <Width>3.54267cm</Width>
+            <ZIndex>5</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox34">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>รายการ</Value>
+                    <Style>
+                      <FontFamily>AngsanaUPC</FontFamily>
+                      <FontSize>16pt</FontSize>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox34</rd:DefaultName>
+            <Left>13.68334cm</Left>
+            <Height>0.77787cm</Height>
+            <Width>3.06197cm</Width>
+            <ZIndex>6</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox35">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>บาท</Value>
+                    <Style>
+                      <FontFamily>AngsanaUPC</FontFamily>
+                      <FontSize>16pt</FontSize>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox35</rd:DefaultName>
+            <Top>0.91898cm</Top>
+            <Left>13.68334cm</Left>
+            <Height>0.73569cm</Height>
+            <Width>3.06197cm</Width>
+            <ZIndex>7</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+        </ReportItems>
+        <KeepTogether>true</KeepTogether>
+        <Top>1.88595cm</Top>
+        <Height>1.93102cm</Height>
+        <Width>16.74531cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
-            <Style>None</Style>
+            <Style>Solid</Style>
           </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
         </Style>
-      </Textbox>
-      <Textbox Name="txtCountMatAmount">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>=Count(Fields!MatDetail.Value, "PODetailDataSet")</Value>
-                <Style>
-                  <FontFamily>AngsanaUPC</FontFamily>
-                  <FontSize>16pt</FontSize>
-                  <Format>n0</Format>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Center</TextAlign>
-            </Style>
-          </Paragraph>
-        </Paragraphs>
-        <Top>2.56118cm</Top>
-        <Left>10.31597cm</Left>
-        <Height>0.77787cm</Height>
-        <Width>4.80679cm</Width>
-        <ZIndex>2</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="Textbox32">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>รวมเงิน :</Value>
-                <Style>
-                  <FontFamily>AngsanaUPC</FontFamily>
-                  <FontSize>16pt</FontSize>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Right</TextAlign>
-            </Style>
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox32</rd:DefaultName>
-        <Top>3.37433cm</Top>
-        <Left>7.78069cm</Left>
-        <Height>0.73569cm</Height>
-        <Width>2.5cm</Width>
-        <ZIndex>3</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="txtSumPrice">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>=Sum(Fields!MatAmount.Value, "PODetailDataSet")</Value>
-                <Style>
-                  <FontFamily>AngsanaUPC</FontFamily>
-                  <FontSize>16pt</FontSize>
-                  <Format>#,0.00;#,0.00-</Format>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Center</TextAlign>
-            </Style>
-          </Paragraph>
-        </Paragraphs>
-        <Top>3.37433cm</Top>
-        <Left>10.31597cm</Left>
-        <Height>0.73569cm</Height>
-        <Width>4.80679cm</Width>
-        <ZIndex>4</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="Textbox34">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>รายการ</Value>
-                <Style>
-                  <FontFamily>AngsanaUPC</FontFamily>
-                  <FontSize>16pt</FontSize>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox34</rd:DefaultName>
-        <Top>2.56118cm</Top>
-        <Left>15.15804cm</Left>
-        <Height>0.77787cm</Height>
-        <Width>1.97414cm</Width>
-        <ZIndex>5</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="Textbox35">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>บาท</Value>
-                <Style>
-                  <FontFamily>AngsanaUPC</FontFamily>
-                  <FontSize>16pt</FontSize>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox35</rd:DefaultName>
-        <Top>3.37433cm</Top>
-        <Left>15.15804cm</Left>
-        <Height>0.73569cm</Height>
-        <Width>1.97414cm</Width>
-        <ZIndex>6</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
+      </Rectangle>
     </ReportItems>
-    <Height>1.8896in</Height>
+    <Height>1.61013in</Height>
     <Style />
   </Body>
-  <Width>7.5in</Width>
+  <Width>6.62037in</Width>
   <Page>
     <PageHeader>
-      <Height>6.72682cm</Height>
+      <Height>6.34012cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -715,27 +808,6 @@
               <TextRuns>
                 <TextRun>
                   <Value> ใบสั่งซื้อ</Value>
-                  <Style>
-                    <FontFamily>Angsana New</FontFamily>
-                    <FontSize>28pt</FontSize>
-                    <FontWeight>Bold</FontWeight>
-                  </Style>
-                </TextRun>
-                <TextRun>
-                  <Value>ใบสั่งซื้อ</Value>
-                  <Style>
-                    <FontFamily>Angsana New</FontFamily>
-                    <FontSize>30pt</FontSize>
-                    <FontWeight>Bold</FontWeight>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style />
-            </Paragraph>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value />
                   <Style>
                     <FontFamily>Angsana New</FontFamily>
                     <FontSize>28pt</FontSize>
@@ -852,7 +924,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox2</rd:DefaultName>
           <Top>1.28333cm</Top>
-          <Left>12.28335cm</Left>
+          <Left>10.37835cm</Left>
           <Height>0.89642cm</Height>
           <Width>2.95557cm</Width>
           <ZIndex>3</ZIndex>
@@ -887,7 +959,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox3</rd:DefaultName>
           <Top>2.17974cm</Top>
-          <Left>12.28335cm</Left>
+          <Left>10.37835cm</Left>
           <Height>0.86283cm</Height>
           <Width>2.95557cm</Width>
           <ZIndex>4</ZIndex>
@@ -922,7 +994,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox4</rd:DefaultName>
           <Top>3.04257cm</Top>
-          <Left>12.28335cm</Left>
+          <Left>10.37835cm</Left>
           <Height>0.84531cm</Height>
           <Width>2.95557cm</Width>
           <ZIndex>5</ZIndex>
@@ -957,7 +1029,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox5</rd:DefaultName>
           <Top>3.88788cm</Top>
-          <Left>12.28335cm</Left>
+          <Left>10.37835cm</Left>
           <Height>0.91081cm</Height>
           <Width>2.95557cm</Width>
           <ZIndex>6</ZIndex>
@@ -991,7 +1063,7 @@
             </Paragraph>
           </Paragraphs>
           <Top>1.28332cm</Top>
-          <Left>15.2742cm</Left>
+          <Left>13.3692cm</Left>
           <Height>0.89642cm</Height>
           <Width>3.37611cm</Width>
           <ZIndex>7</ZIndex>
@@ -1025,7 +1097,7 @@
             </Paragraph>
           </Paragraphs>
           <Top>2.17974cm</Top>
-          <Left>15.2742cm</Left>
+          <Left>13.3692cm</Left>
           <Height>0.86283cm</Height>
           <Width>3.37611cm</Width>
           <ZIndex>8</ZIndex>
@@ -1046,7 +1118,7 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value />
+                  <Value>=First(Fields!OrderByEmpId.Value, "POHeaderDataSet")</Value>
                   <Style>
                     <FontFamily>AngsanaUPC</FontFamily>
                     <FontSize>16pt</FontSize>
@@ -1058,9 +1130,9 @@
               </Style>
             </Paragraph>
           </Paragraphs>
-          <Top>3.09842cm</Top>
-          <Left>13.44312cm</Left>
-          <Height>0.84531cm</Height>
+          <Top>3.04257cm</Top>
+          <Left>13.3692cm</Left>
+          <Height>0.8453cm</Height>
           <Width>3.37611cm</Width>
           <ZIndex>9</ZIndex>
           <Style>
@@ -1080,7 +1152,7 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value EvaluationMode="Constant" />
+                  <Value>=First(Fields!ApprovedByEmpId.Value, "POHeaderDataSet")</Value>
                   <Style>
                     <FontFamily>AngsanaUPC</FontFamily>
                     <FontSize>16pt</FontSize>
@@ -1093,7 +1165,7 @@
             </Paragraph>
           </Paragraphs>
           <Top>3.88787cm</Top>
-          <Left>15.2742cm</Left>
+          <Left>13.3692cm</Left>
           <Height>0.91081cm</Height>
           <Width>3.37611cm</Width>
           <ZIndex>10</ZIndex>
@@ -1128,7 +1200,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox25</rd:DefaultName>
           <Top>0.52563cm</Top>
-          <Left>12.28335cm</Left>
+          <Left>10.37835cm</Left>
           <Height>0.7577cm</Height>
           <Width>2.95557cm</Width>
           <ZIndex>11</ZIndex>
@@ -1163,7 +1235,7 @@
             </Paragraph>
           </Paragraphs>
           <Top>0.52562cm</Top>
-          <Left>15.2742cm</Left>
+          <Left>13.3692cm</Left>
           <Height>0.7577cm</Height>
           <Width>3.37611cm</Width>
           <ZIndex>12</ZIndex>
@@ -1234,7 +1306,7 @@
           <Top>5.24259cm</Top>
           <Left>3.45974cm</Left>
           <Height>0.74018cm</Height>
-          <Width>13.35949cm</Width>
+          <Width>13.28557cm</Width>
           <ZIndex>14</ZIndex>
           <Style>
             <Border>
@@ -1254,243 +1326,6 @@
         </Border>
       </Style>
     </PageHeader>
-    <PageFooter>
-      <Height>4.52612cm</Height>
-      <PrintOnFirstPage>true</PrintOnFirstPage>
-      <PrintOnLastPage>true</PrintOnLastPage>
-      <ReportItems>
-        <Textbox Name="Textbox36">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>ผู้ออกใบสั่งซื้อ</Value>
-                  <Style>
-                    <FontFamily>AngsanaUPC</FontFamily>
-                    <FontSize>16pt</FontSize>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style />
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox36</rd:DefaultName>
-          <Top>0.14111cm</Top>
-          <Left>2.18974cm</Left>
-          <Height>0.87083cm</Height>
-          <Width>2.36791cm</Width>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-        <Line Name="Line1">
-          <Top>2.15968cm</Top>
-          <Left>0.83667cm</Left>
-          <Height>0cm</Height>
-          <Width>5.3865cm</Width>
-          <ZIndex>1</ZIndex>
-          <Style>
-            <Border>
-              <Style>Solid</Style>
-            </Border>
-          </Style>
-        </Line>
-        <Textbox Name="Textbox37">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>ผู้อนุมัติใบสั่งซื้อ</Value>
-                  <Style>
-                    <FontFamily>AngsanaUPC</FontFamily>
-                    <FontSize>16pt</FontSize>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style />
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox36</rd:DefaultName>
-          <Top>0.17639cm</Top>
-          <Left>12.30794cm</Left>
-          <Height>0.87083cm</Height>
-          <Width>2.68541cm</Width>
-          <ZIndex>2</ZIndex>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-        <Textbox Name="Textbox38">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>(เจ อาร์ เอส เฮ้าส์ คอนสตรัคชั่น จำกัด)</Value>
-                  <Style>
-                    <FontFamily>AngsanaUPC</FontFamily>
-                    <FontSize>16pt</FontSize>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style>
-                <TextAlign>Center</TextAlign>
-              </Style>
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox38</rd:DefaultName>
-          <Top>3.21861cm</Top>
-          <Left>0.56318cm</Left>
-          <Height>0.82679cm</Height>
-          <Width>6.47816cm</Width>
-          <ZIndex>3</ZIndex>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-        <Textbox Name="Textbox39">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value />
-                  <Style>
-                    <FontFamily>AngsanaUPC</FontFamily>
-                    <FontSize>16pt</FontSize>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style />
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox39</rd:DefaultName>
-          <Top>2.30079cm</Top>
-          <Left>0.83667cm</Left>
-          <Height>0.84726cm</Height>
-          <Width>5.90574cm</Width>
-          <ZIndex>4</ZIndex>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-        <Line Name="Line2">
-          <Top>2.15968cm</Top>
-          <Left>11.00033cm</Left>
-          <Height>0cm</Height>
-          <Width>5.41295cm</Width>
-          <ZIndex>5</ZIndex>
-          <Style>
-            <Border>
-              <Style>Solid</Style>
-            </Border>
-          </Style>
-        </Line>
-        <Textbox Name="Textbox41">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value />
-                  <Style>
-                    <FontFamily>AngsanaUPC</FontFamily>
-                    <FontSize>16pt</FontSize>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style />
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox39</rd:DefaultName>
-          <Top>2.30079cm</Top>
-          <Left>10.68283cm</Left>
-          <Height>0.88254cm</Height>
-          <Width>5.90574cm</Width>
-          <ZIndex>6</ZIndex>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-        <Textbox Name="Textbox40">
-          <CanGrow>true</CanGrow>
-          <KeepTogether>true</KeepTogether>
-          <Paragraphs>
-            <Paragraph>
-              <TextRuns>
-                <TextRun>
-                  <Value>(เจ อาร์ เอส เฮ้าส์ คอนสตรัคชั่น จำกัด)</Value>
-                  <Style>
-                    <FontFamily>AngsanaUPC</FontFamily>
-                    <FontSize>16pt</FontSize>
-                  </Style>
-                </TextRun>
-              </TextRuns>
-              <Style>
-                <TextAlign>Center</TextAlign>
-              </Style>
-            </Paragraph>
-          </Paragraphs>
-          <rd:DefaultName>Textbox38</rd:DefaultName>
-          <Top>3.25389cm</Top>
-          <Left>10.43291cm</Left>
-          <Height>0.82679cm</Height>
-          <Width>6.47816cm</Width>
-          <ZIndex>7</ZIndex>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-            <PaddingLeft>2pt</PaddingLeft>
-            <PaddingRight>2pt</PaddingRight>
-            <PaddingTop>2pt</PaddingTop>
-            <PaddingBottom>2pt</PaddingBottom>
-          </Style>
-        </Textbox>
-      </ReportItems>
-      <Style>
-        <Border>
-          <Style>None</Style>
-        </Border>
-      </Style>
-    </PageFooter>
     <PageHeight>29.7cm</PageHeight>
     <PageWidth>21cm</PageWidth>
     <LeftMargin>2cm</LeftMargin>
@@ -1535,6 +1370,10 @@
           <DataField>ApproveDate</DataField>
           <rd:TypeName>System.Nullable`1[[System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
+        <Field Name="ApprovedByEmpId">
+          <DataField>ApprovedByEmpId</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="CombinedRemark">
           <DataField>CombinedRemark</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -1546,6 +1385,10 @@
         <Field Name="DueDate">
           <DataField>DueDate</DataField>
           <rd:TypeName>System.Nullable`1[[System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="OrderByEmpId">
+          <DataField>OrderByEmpId</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="OrderDate">
           <DataField>OrderDate</DataField>

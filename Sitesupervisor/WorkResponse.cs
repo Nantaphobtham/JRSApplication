@@ -11,7 +11,7 @@ namespace JRSApplication.Sitesupervisor
 {
     public partial class WorkResponse : UserControl
     {
-        private readonly string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+        private static readonly string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
         public enum RowType
         {
@@ -47,6 +47,10 @@ namespace JRSApplication.Sitesupervisor
             public string WorkStatus { get; set; }
             public string OrderRemark { get; set; }
             public string WorkRemark { get; set; }
+
+            // ✅ เพิ่ม 2 บรรทัดนี้
+            public string OrderByEmpId { get; set; }
+            public string ApprovedByEmpId { get; set; }
 
             // 🔹 หมายเหตุรวม
             public string CombinedRemark
@@ -126,19 +130,19 @@ namespace JRSApplication.Sitesupervisor
                 DataPropertyName = "ProjectNumber"
             });
 
-            // 🧩 เฟสที่
-            dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "colPhase",
-                HeaderText = "เฟสที่",
-                DataPropertyName = "PhaseNo"
-            });
+            //// 🧩 เฟสที่
+            //dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
+            //{
+            //    Name = "colPhase",
+            //    HeaderText = "เฟสที่",
+            //    DataPropertyName = "PhaseNo"
+            //});
 
             // 📎 รหัสรายการ / รหัสงาน
             dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "colItemCode",
-                HeaderText = "รหัสรายการ",
+                HeaderText = "เลขที่ใบสั่งซื้อ",
                 DataPropertyName = "OrderNumber"
             });
 
@@ -146,7 +150,7 @@ namespace JRSApplication.Sitesupervisor
             dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "colDetail",
-                HeaderText = "รายละเอียด",
+                HeaderText = "รายละเอียดคำสั่งซื้อ",
                 DataPropertyName = "OrderDetail"
             });
 
@@ -154,7 +158,7 @@ namespace JRSApplication.Sitesupervisor
             dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "colStartDate",
-                HeaderText = "วันที่เริ่มต้น / วันที่ทำงาน",
+                HeaderText = "วันที่ออกใบสังซื้อ",
                 DataPropertyName = "OrderDate",
                 DefaultCellStyle = { Format = "dd/MM/yyyy" }
             });
@@ -163,7 +167,7 @@ namespace JRSApplication.Sitesupervisor
             dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "colEndDate",
-                HeaderText = "วันที่ครบกำหนด / วันที่เสร็จ",
+                HeaderText = "วันที่ครบกำหนด",
                 DataPropertyName = "DueDate",
                 DefaultCellStyle = { Format = "dd/MM/yyyy" }
             });
@@ -172,7 +176,7 @@ namespace JRSApplication.Sitesupervisor
             dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "colApproved",
-                HeaderText = "วันที่อนุมัติ / เสร็จงาน",
+                HeaderText = "วันที่อนุมัติ",
                 DataPropertyName = "ApproveDate",
                 DefaultCellStyle = { Format = "dd/MM/yyyy" }
             });
@@ -241,10 +245,10 @@ namespace JRSApplication.Sitesupervisor
                     {
                         bool canPrint =
                             (row.RowType == RowType.Order &&
-                             row.OrderStatus?.Equals("approved", StringComparison.OrdinalIgnoreCase) == true)
-                            ||
-                            (row.RowType == RowType.Work &&
-                             row.WorkStatus?.Equals("completed", StringComparison.OrdinalIgnoreCase) == true);
+                             row.OrderStatus?.Equals("approved", StringComparison.OrdinalIgnoreCase) == true);
+                            //||
+                            //(row.RowType == RowType.Work &&
+                            // row.WorkStatus?.Equals("completed", StringComparison.OrdinalIgnoreCase) == true);
 
                         if (canPrint)
                         {
@@ -252,7 +256,7 @@ namespace JRSApplication.Sitesupervisor
                         }
                         else
                         {
-                            MessageBox.Show("อนุญาตให้พิมพ์ได้เฉพาะรายการที่ 'อนุมัติแล้ว' หรือ 'เสร็จสมบูรณ์' เท่านั้น",
+                            MessageBox.Show("อนุญาตให้พิมพ์ได้เฉพาะรายการที่ 'อนุมัติแล้ว' เท่านั้น",
                                 "ไม่สามารถพิมพ์ได้", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
@@ -268,46 +272,37 @@ namespace JRSApplication.Sitesupervisor
             var responses = LoadResponses();
             dtgvWorkResponse.DataSource = responses;
         }
-
         private List<Response> LoadResponses()
         {
-            string sql = @"
-            SELECT 
-                po.order_id,
-                po.order_number,
-                po.order_detail,
-                po.order_date,
-                po.order_status,
-                po.order_duedate,
-                po.approved_date,
-                po.order_remark,
+            return LoadPurchaseOrders();
+        }
 
-                pp.phase_id,
-                pp.phase_no,
-                pp.pro_id,
-
-                p.pro_number,
-
-                pw.work_id,
-                pw.work_detail,
-                pw.work_date,
-                pw.work_end_date,
-                pw.work_status,
-                pw.work_remark
-
-            FROM purchaseorder po
-            INNER JOIN project_phase pp ON po.pro_id = pp.pro_id
-            INNER JOIN project p ON pp.pro_id = p.pro_id
-            LEFT JOIN phase_working pw 
-                ON pp.phase_id = pw.phase_id 
-               AND pw.work_status IN ('Completed','Waiting')
-            WHERE po.order_status IN ('approved','submitted')
-                AND EXISTS (
-                    SELECT 1 FROM phase_working x WHERE x.phase_id = pp.phase_id
-                )
-            ORDER BY po.order_id, pp.phase_id, pw.work_id;";
-
+        private List<Response> LoadPurchaseOrders()
+        {
             var list = new List<Response>();
+            string sql = @"
+                        SELECT 
+                    po.order_id,
+                    po.order_number,
+                    po.order_detail,
+                    po.order_date,
+                    po.order_status,
+                    po.order_duedate,
+                    po.approved_date,
+                    po.order_remark,
+                    po.pro_id,
+
+                    p.pro_number,
+
+                    (SELECT MIN(pp.phase_no)
+                     FROM project_phase pp
+                     WHERE pp.pro_id = po.pro_id) AS phase_no
+
+                FROM purchaseorder po
+                INNER JOIN project p ON po.pro_id = p.pro_id
+                WHERE po.order_status IN ('approved','submitted')
+                ORDER BY po.order_id;";
+
             using (var con = new MySqlConnection(connectionString))
             using (var cmd = new MySqlCommand(sql, con))
             using (var da = new MySqlDataAdapter(cmd))
@@ -315,55 +310,88 @@ namespace JRSApplication.Sitesupervisor
                 var dt = new DataTable();
                 da.Fill(dt);
 
-                var orderGroupKeys = new HashSet<string>();
+                var groupKeys = new HashSet<string>();
 
                 foreach (DataRow row in dt.Rows)
                 {
                     string orderNumber = row["order_number"]?.ToString();
-                    string groupKey = $"{orderNumber}_{row["phase_id"]}";
+                    string groupKey = orderNumber;
 
-                    if (!orderGroupKeys.Contains(groupKey))
+                    if (!groupKeys.Contains(groupKey))
                     {
                         list.Add(new Response
                         {
                             RowType = RowType.Order,
                             ProjectId = row["pro_id"]?.ToString(),
                             ProjectNumber = row["pro_number"]?.ToString(),
-                            PhaseNo = row["phase_no"]?.ToString(),
+                            //PhaseNo = row["phase_no"]?.ToString(),
                             OrderId = Convert.ToInt32(row["order_id"]),
                             OrderNumber = orderNumber,
                             OrderDetail = row["order_detail"]?.ToString(),
-                            OrderDate = Convert.ToDateTime(row["order_date"]),
+                            OrderDate = row["order_date"] != DBNull.Value ? Convert.ToDateTime(row["order_date"]) : (DateTime?)null,
                             DueDate = row["order_duedate"] != DBNull.Value ? Convert.ToDateTime(row["order_duedate"]) : (DateTime?)null,
                             ApproveDate = row["approved_date"] != DBNull.Value ? Convert.ToDateTime(row["approved_date"]) : (DateTime?)null,
                             OrderStatus = row["order_status"]?.ToString(),
                             OrderRemark = row["order_remark"]?.ToString()
                         });
-                        orderGroupKeys.Add(groupKey);
-                    }
 
-                    if (row["work_id"] != DBNull.Value)
-                    {
-                        var workStatus = row["work_status"]?.ToString();
-                        if (workStatus == "Completed" || workStatus == "Waiting")
-                        {
-                            list.Add(new Response
-                            {
-                                RowType = RowType.Work,
-                                ProjectId = row["pro_id"]?.ToString(),
-                                ProjectNumber = row["pro_number"]?.ToString(),
-                                PhaseNo = row["phase_no"]?.ToString(),
-                                WorkId = row["work_id"]?.ToString(),
-                                WorkDetail = row["work_detail"]?.ToString(),
-                                WorkDate = row["work_date"] != DBNull.Value ? Convert.ToDateTime(row["work_date"]) : (DateTime?)null,
-                                WorkendDate = row["work_end_date"] != DBNull.Value ? Convert.ToDateTime(row["work_end_date"]) : (DateTime?)null,
-                                WorkStatus = workStatus,
-                                WorkRemark = row["work_remark"]?.ToString()
-                            });
-                        }
+                        groupKeys.Add(groupKey);
                     }
                 }
             }
+
+            return list;
+        }
+
+        public static List<Response> LoadPhaseWorkings()
+        {
+            var list = new List<Response>();
+            string sql = @"
+        SELECT 
+            pw.work_id,
+            pw.work_detail,
+            pw.work_date,
+            pw.work_end_date,
+            pw.work_status,
+            pw.work_remark,
+
+            pp.phase_id,
+            pp.phase_no,
+            pp.pro_id,
+
+            p.pro_number
+
+        FROM phase_working pw
+        INNER JOIN project_phase pp ON pw.phase_id = pp.phase_id
+        INNER JOIN project p ON pp.pro_id = p.pro_id
+        WHERE pw.work_status IN ('Completed', 'Waiting')
+        ORDER BY pw.work_id;";
+
+            using (var con = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, con))
+            using (var da = new MySqlDataAdapter(cmd))
+            {
+                var dt = new DataTable();
+                da.Fill(dt);
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    list.Add(new Response
+                    {
+                        RowType = RowType.Work,
+                        ProjectId = row["pro_id"]?.ToString(),
+                        ProjectNumber = row["pro_number"]?.ToString(),
+                        PhaseNo = row["phase_no"]?.ToString(),
+                        WorkId = row["work_id"]?.ToString(),
+                        WorkDetail = row["work_detail"]?.ToString(),
+                        WorkDate = row["work_date"] != DBNull.Value ? Convert.ToDateTime(row["work_date"]) : (DateTime?)null,
+                        WorkendDate = row["work_end_date"] != DBNull.Value ? Convert.ToDateTime(row["work_end_date"]) : (DateTime?)null,
+                        WorkStatus = row["work_status"]?.ToString(),
+                        WorkRemark = row["work_remark"]?.ToString()
+                    });
+                }
+            }
+
             return list;
         }
 

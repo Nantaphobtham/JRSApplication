@@ -41,6 +41,7 @@ namespace JRSApplication.Sitesupervisor
                 // ✅ โหลดข้อมูล
                 var dtHeader = GetPurchaseOrderHeader(OrderId);
                 var dtDetail = GetPurchaseOrderDetail(OrderId);
+                var dtEmployee = GetEmployeeData();
                 // ✅ เพิ่มคอลัมน์ใหม่สำหรับชื่อเต็ม (ชื่อ+นามสกุล)
                 if (!dtHeader.Columns.Contains("OrderByFullName"))
                     dtHeader.Columns.Add("OrderByFullName", typeof(string));
@@ -49,8 +50,8 @@ namespace JRSApplication.Sitesupervisor
                 // ✅ ใส่ค่าด้วยฟังก์ชันที่คุณมี
                 foreach (DataRow row in dtHeader.Rows)
                 {
-                    string orderByEmpId = row["emp_id"]?.ToString();
-                    string approvedByEmpId = row["approved_by_emp_id"]?.ToString();
+                    string orderByEmpId = row["OrderByEmpId"]?.ToString();         // ✅ เปลี่ยนตรงนี้
+                    string approvedByEmpId = row["ApprovedByEmpId"]?.ToString();   // ✅ เปลี่ยนตรงนี้
 
                     row["OrderByFullName"] = GetEmployeeFullName(orderByEmpId);
                     row["ApprovedByFullName"] = GetEmployeeFullName(approvedByEmpId);
@@ -63,6 +64,7 @@ namespace JRSApplication.Sitesupervisor
                 reportViewer1.LocalReport.DataSources.Clear();
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("POHeaderDataSet", dtHeader));
                 reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("PODetailDataSet", dtDetail));
+                reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("Employee", dtEmployee));
 
                 reportViewer1.RefreshReport();
                 reportViewer1.RefreshReport();
@@ -72,6 +74,18 @@ namespace JRSApplication.Sitesupervisor
                 MessageBox.Show("เกิดข้อผิดพลาด: " + ex.Message);
             }
         }
+        private DataTable GetEmployeeData()
+        {
+            string sql = "SELECT emp_id AS EmployeeID, emp_name AS FirstName, emp_lname AS LastName FROM employee";
+            var dt = new DataTable();
+            using (var con = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, con))
+            using (var da = new MySqlDataAdapter(cmd))
+            {
+                da.Fill(dt);
+            }
+            return dt;
+        }
 
 
         // 🧩 ดึงข้อมูลส่วนหัวใบสั่งซื้อ
@@ -79,19 +93,19 @@ namespace JRSApplication.Sitesupervisor
         {
             string sql = @"
         SELECT 
-            po.order_id        AS OrderId,
-            po.order_number    AS OrderNumber,
-            po.order_detail    AS OrderDetail,
-            po.order_date      AS OrderDate,
-            po.order_duedate   AS DueDate,
-            po.approved_date   AS ApproveDate,
-            po.order_status    AS OrderStatus,
-            po.order_remark    AS OrderRemark,
-            pp.phase_no        AS PhaseNo,
-            p.pro_id           AS ProjectId,
-            p.pro_number       AS ProjectNumber,
-            po.emp_id,               -- ต้องดึงมา
-            po.approved_by_emp_id   -- ต้องดึงมา
+            po.order_id          AS OrderId,
+            po.order_number      AS OrderNumber,
+            po.order_detail      AS OrderDetail,
+            po.order_date        AS OrderDate,
+            po.order_duedate     AS DueDate,
+            po.approved_date     AS ApproveDate,
+            po.order_status      AS OrderStatus,
+            po.order_remark      AS OrderRemark,
+            pp.phase_no          AS PhaseNo,
+            p.pro_id             AS ProjectId,
+            p.pro_number         AS ProjectNumber,
+            po.emp_id            AS OrderByEmpId,         -- ✅ ไม่มี comma หน้า AS
+            po.approved_by_emp_id AS ApprovedByEmpId      -- ✅ บรรทัดสุดท้ายไม่ต้องมี comma
         FROM purchaseorder po
         INNER JOIN project_phase pp ON po.pro_id = pp.pro_id
         INNER JOIN project p ON pp.pro_id = p.pro_id
@@ -108,22 +122,9 @@ namespace JRSApplication.Sitesupervisor
                 da.Fill(dt);
             }
 
-            // ✅ เพิ่มคอลัมน์ใหม่
-            dt.Columns.Add("OrderByFullName", typeof(string));
-            dt.Columns.Add("ApprovedByFullName", typeof(string));
-
-            // ✅ เติมค่าชื่อเต็มลงไป
-            foreach (DataRow row in dt.Rows)
-            {
-                var empId = row["emp_id"]?.ToString();
-                var approvedId = row["approved_by_emp_id"]?.ToString();
-
-                row["OrderByFullName"] = GetEmployeeFullName(empId);
-                row["ApprovedByFullName"] = GetEmployeeFullName(approvedId);
-            }
-
             return dt;
         }
+
 
 
         //งงว่าต้องส่งไปที่ไหน
