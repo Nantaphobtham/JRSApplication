@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props" Condition="Exists('packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -14,9 +15,24 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <PublishUrl>C:\Users\Gotz\OneDrive\Desktop\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -33,6 +49,24 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo - Copy.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>JRSApplication.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BCrypt.Net-Next, Version=4.0.3.0, Culture=neutral, PublicKeyToken=1e11be04b6288443, processorArchitecture=MSIL">
@@ -55,6 +89,24 @@
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.SqlServer.Types.160.1000.6\lib\net462\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=9.1.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>packages\MySql.Data.9.1.0\lib\net48\MySql.Data.dll</HintPath>
@@ -103,12 +155,34 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accountant\Class1.cs" />
     <Compile Include="Accountant\ConfirmInvoice.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Accountant\ConfirmInvoice.Designer.cs">
       <DependentUpon>ConfirmInvoice.cs</DependentUpon>
     </Compile>
+    <Compile Include="Accountant\InvoicePrintRDLC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Accountant\InvoicePrintRDLC.Designer.cs">
+      <DependentUpon>InvoicePrintRDLC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Accountant\ReceiptPrintRDLC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Accountant\ReceiptPrintRDLC.Designer.cs">
+      <DependentUpon>ReceiptPrintRDLC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Accountant\ReceiptDataSet.cs">
+      <DependentUpon>ReceiptDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Accountant\ReceiptDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReceiptDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Accountant\Helpers\InvoiceDetailDAL.cs" />
     <Compile Include="Accountant\Invoice.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -127,11 +201,11 @@
     <Compile Include="Accountant\Receipt.Designer.cs">
       <DependentUpon>Receipt.cs</DependentUpon>
     </Compile>
-    <Compile Include="Accountant\ReceiptPrint.cs">
+    <Compile Include="Accountant\ReceiptPrintBackup.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Accountant\ReceiptPrint.Designer.cs">
-      <DependentUpon>ReceiptPrint.cs</DependentUpon>
+    <Compile Include="Accountant\ReceiptPrintBackup.Designer.cs">
+      <DependentUpon>ReceiptPrintBackup.cs</DependentUpon>
     </Compile>
     <Compile Include="Admin\CustomerRegistration.cs">
       <SubType>UserControl</SubType>
@@ -139,27 +213,59 @@
     <Compile Include="Admin\CustomerRegistration.Designer.cs">
       <DependentUpon>CustomerRegistration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\Customer.cs" />
-    <Compile Include="Components\Employee.cs" />
-    <Compile Include="Components\EmployeeAssignment.cs" />
-    <Compile Include="Components\Invoice.cs" />
-    <Compile Include="Components\InvoiceDetail.cs" />
-    <Compile Include="Components\PhaseWithStatus.cs" />
-    <Compile Include="Components\PhaseWorking.cs" />
-    <Compile Include="Components\Project.cs" />
-    <Compile Include="Components\ProjectPhase.cs" />
-    <Compile Include="Components\ProjectStatusEvaluator.cs" />
-    <Compile Include="Components\Supplier.cs" />
-    <Compile Include="Components\WorkingPicture.cs" />
-    <Compile Include="Components\WorkStatus.cs" />
+    <Compile Include="Components\Models\Customer.cs" />
+    <Compile Include="Components\Models\Employee.cs" />
+    <Compile Include="Components\Models\EmployeeAssignment.cs" />
+    <Compile Include="Components\Models\InvoiceModel.cs" />
+    <Compile Include="Components\Models\InvoiceDetail.cs" />
+    <Compile Include="Components\Models\MaterialDetail.cs" />
+    <Compile Include="Components\Models\PhaseWithStatus.cs" />
+    <Compile Include="Components\Models\PhaseWorking.cs" />
+    <Compile Include="Components\Models\Project.cs" />
+    <Compile Include="Components\Models\ProjectEmployeeSupervisionModel.cs" />
+    <Compile Include="Components\Models\ProjectPhase.cs" />
+    <Compile Include="Components\Evaluators\ProjectStatusEvaluator.cs" />
+    <Compile Include="Components\Models\project_files.cs" />
+    <Compile Include="Components\Models\PurchaseOrder.cs" />
+    <Compile Include="Components\Models\Supplier.cs" />
+    <Compile Include="Components\Models\SupplierAssignmentFile.cs" />
+    <Compile Include="Components\Models\SupplierWorkAssignment.cs" />
+    <Compile Include="Components\Models\WorkingPicture.cs" />
+    <Compile Include="Components\Evaluators\WorkStatus.cs" />
+    <Compile Include="Components\Service\CheckphaseWorking.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Service\CheckphaseWorking.Designer.cs">
+      <DependentUpon>CheckphaseWorking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Service\FormPDFPreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Service\FormPDFPreview.Designer.cs">
+      <DependentUpon>FormPDFPreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Service\POForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\Service\POForm.Designer.cs">
+      <DependentUpon>POForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data Access Layer\ReceiptDAL.cs" />
+    <Compile Include="Data Access Layer\InvoiceDetailDAL.cs" />
+    <Compile Include="Data Access Layer\InvoiceDAL.cs" />
     <Compile Include="Data Access Layer\CustomerDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeAssignmentDAL.cs" />
     <Compile Include="Data Access Layer\EmployeeDAL.cs" />
+    <Compile Include="Data Access Layer\MaterialDetailDAL.cs" />
     <Compile Include="Data Access Layer\PaymentDAL.cs" />
     <Compile Include="Data Access Layer\PhaseWorkDAL.cs" />
     <Compile Include="Data Access Layer\ProjectDAL.cs" />
     <Compile Include="Data Access Layer\PhaseDAL.cs" />
+    <Compile Include="Data Access Layer\ProjectEmployeeSupervisionDAL.cs" />
+    <Compile Include="Data Access Layer\PurchaseOrderDAL.cs" />
+    <Compile Include="Data Access Layer\SupplierAssignmentFileDAL.cs" />
     <Compile Include="Data Access Layer\SupplierDAL.cs" />
+    <Compile Include="Data Access Layer\SupplierWorkAssignmentDAL.cs" />
     <Compile Include="Data Access Layer\WorkingPictureDAL.cs" />
     <Compile Include="ProjectManager\AllocatePersonnel.cs">
       <SubType>UserControl</SubType>
@@ -167,17 +273,17 @@
     <Compile Include="ProjectManager\AllocatePersonnel.Designer.cs">
       <DependentUpon>AllocatePersonnel.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProjectManager\DetermineSubcontractors.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ProjectManager\DetermineSubcontractors.Designer.cs">
-      <DependentUpon>DetermineSubcontractors.cs</DependentUpon>
-    </Compile>
     <Compile Include="ProjectManager\ApprovePurchaseOrder.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ProjectManager\ApprovePurchaseOrder.Designer.cs">
       <DependentUpon>ApprovePurchaseOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectManager\DetermineSubcontractors.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProjectManager\DetermineSubcontractors.Designer.cs">
+      <DependentUpon>DetermineSubcontractors.cs</DependentUpon>
     </Compile>
     <Compile Include="ProjectManager\CheckProjectPayments.cs">
       <SubType>UserControl</SubType>
@@ -228,6 +334,12 @@
     <Compile Include="ProjectManager\ProjectPhaseListRequestsforApproval.Designer.cs">
       <DependentUpon>ProjectPhaseListRequestsforApproval.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProjectManager\CheckProjectPay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProjectManager\CheckProjectPay.Designer.cs">
+      <DependentUpon>CheckProjectPay.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FormBasedOnRole\SiteSupervisorForm.cs">
       <SubType>Form</SubType>
@@ -240,10 +352,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Components\SearchboxControl.cs">
+    <Compile Include="Components\Service\SearchboxControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Components\SearchboxControl.Designer.cs">
+    <Compile Include="Components\Service\SearchboxControl.Designer.cs">
       <DependentUpon>SearchboxControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Admin\UserManagementForm.cs">
@@ -264,21 +376,42 @@
     <Compile Include="ProjectManager\UpdateProjectPhase.Designer.cs">
       <DependentUpon>UpdateProjectPhase.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\SearchForm.cs">
+    <Compile Include="Components\Service\SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Components\SearchForm.Designer.cs">
+    <Compile Include="Components\Service\SearchForm.Designer.cs">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\SearchService.cs" />
-    <Compile Include="Sitesupervisor\PurchaseOrder.cs">
+    <Compile Include="Components\Service\SearchService.cs" />
+    <Compile Include="Sitesupervisor\PhaseApprovalResult.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Sitesupervisor\PurchaseOrder.Designer.cs">
-      <DependentUpon>PurchaseOrder.cs</DependentUpon>
+    <Compile Include="Sitesupervisor\PhaseApprovalResult.Designer.cs">
+      <DependentUpon>PhaseApprovalResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Sitesupervisor\PurchaseOrderForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sitesupervisor\PurchaseOrderForm.Designer.cs">
+      <DependentUpon>PurchaseOrderForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Sitesupervisor\PurchaseOrderPrintForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Sitesupervisor\PurchaseOrderPrintForm.Designer.cs">
+      <DependentUpon>PurchaseOrderPrintForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Sitesupervisor\WorkResponse.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sitesupervisor\WorkResponse.Designer.cs">
+      <DependentUpon>WorkResponse.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Accountant\ConfirmInvoice.resx">
       <DependentUpon>ConfirmInvoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accountant\InvoicePrintRDLC.resx">
+      <DependentUpon>InvoicePrintRDLC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Accountant\Invoice.resx">
       <DependentUpon>Invoice.cs</DependentUpon>
@@ -289,11 +422,26 @@
     <EmbeddedResource Include="Accountant\Receipt.resx">
       <DependentUpon>Receipt.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Accountant\ReceiptPrint.resx">
-      <DependentUpon>ReceiptPrint.cs</DependentUpon>
+    <EmbeddedResource Include="Accountant\ReceiptPrintBackup.resx">
+      <DependentUpon>ReceiptPrintBackup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accountant\ReceiptPrintRDLC.resx">
+      <DependentUpon>ReceiptPrintRDLC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accountant\ReceiptReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accountant\InvoiceReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Admin\CustomerRegistration.resx">
       <DependentUpon>CustomerRegistration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Service\CheckphaseWorking.resx">
+      <DependentUpon>CheckphaseWorking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Service\POForm.resx">
+      <DependentUpon>POForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormBasedOnRole\AccountantForm.resx">
       <DependentUpon>AccountantForm.cs</DependentUpon>
@@ -304,11 +452,14 @@
     <EmbeddedResource Include="ProjectManager\AllocatePersonnel.resx">
       <DependentUpon>AllocatePersonnel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProjectManager\DetermineSubcontractors.resx">
-      <DependentUpon>DetermineSubcontractors.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ProjectManager\ApprovePurchaseOrder.resx">
       <DependentUpon>ApprovePurchaseOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectManager\CheckProjectPay.resx">
+      <DependentUpon>CheckProjectPay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectManager\DetermineSubcontractors.resx">
+      <DependentUpon>DetermineSubcontractors.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectManager\CheckProjectPayments.resx">
       <DependentUpon>CheckProjectPayments.cs</DependentUpon>
@@ -336,7 +487,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\SearchboxControl.resx">
+    <EmbeddedResource Include="Components\Service\SearchboxControl.resx">
       <DependentUpon>SearchboxControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Admin\UserManagementForm.resx">
@@ -348,13 +499,333 @@
     <EmbeddedResource Include="ProjectManager\UpdateProjectPhase.resx">
       <DependentUpon>UpdateProjectPhase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\SearchForm.resx">
+    <EmbeddedResource Include="Components\Service\SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Sitesupervisor\PurchaseOrder.resx">
-      <DependentUpon>PurchaseOrder.cs</DependentUpon>
+    <Content Include="Sitesupervisor\POreport.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Sitesupervisor\PhaseApprovalResult.resx">
+      <DependentUpon>PhaseApprovalResult.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Sitesupervisor\PurchaseOrderForm.resx">
+      <DependentUpon>PurchaseOrderForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sitesupervisor\PurchaseOrderPrintForm.resx">
+      <DependentUpon>PurchaseOrderPrintForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sitesupervisor\WorkResponse.resx">
+      <DependentUpon>WorkResponse.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Accountant\ReceiptDataSet.xsc">
+      <DependentUpon>ReceiptDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Accountant\ReceiptDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ReceiptDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Accountant\ReceiptDataSet.xss">
+      <DependentUpon>ReceiptDataSet.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\DataSources\AccountantForm.datasource" />
+    <None Include="Properties\DataSources\AdminForm.datasource" />
+    <None Include="Properties\DataSources\AllocatePersonnel.datasource" />
+    <None Include="Properties\DataSources\CheckProjectPayments.datasource" />
+    <None Include="Properties\DataSources\CustomerRegistration.datasource" />
+    <None Include="Properties\DataSources\DetermineSubcontractors.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Accountant.ConfirmInvoice.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Accountant.Invoice.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Accountant.InvoicePrint.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Accountant.Receipt.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Accountant.ReceiptPrint.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.Customer.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.Employee.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.EmployeeAssignment.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.EmployeeDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.InvoiceDetail.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.InvoiceModel.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.Models.MaterialDetail.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.Models.ProjectEmployeeSupervisionModel.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.Models.PurchaseOrder.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.Models.SupplierAssignmentFile.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.Models.SupplierWorkAssignment.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.PhaseWithStatus.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.PhaseWorking.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.Project.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.ProjectFile.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.ProjectPhase.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.ProjectStatusEvaluator.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.PurchaseOrderStatus.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.Service.CheckphaseWorking.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.Service.FormPDFPreview.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.Service.POForm.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.Supplier.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.WorkingPicture.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Components.WorkStatus.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.CustomerDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.EmployeeAssignmentDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.InvoiceDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.InvoiceDetailDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.MaterialDetailDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.PaymentDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.PhaseDAL+PhaseData.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.PhaseDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.PhaseWorkDAL+PhaseWorkingFullRow.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.PhaseWorkDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.ProjectDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.ProjectEmployeeSupervisionDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.PurchaseOrderDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.ReceiptDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.SupplierAssignmentFileDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.SupplierDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.SupplierWorkAssignmentDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Data_Access_Layer.WorkingPictureDAL.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.ProjectManager.ApprovePurchaseOrder.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.ProjectManager.CheckProjectPay.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Properties.Resources.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Properties.Settings.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Sitesupervisor.WorkResponse+Response.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Sitesupervisor.WorkResponse+RowType.datasource" />
+    <None Include="Properties\DataSources\JRSApplication.Sitesupervisor.WorkResponse.datasource" />
+    <None Include="Properties\DataSources\LoginForm.datasource" />
+    <None Include="Properties\DataSources\ManageProject.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.Authentication.MySqlAuthenticationPlugin.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.Authentication.MySqlClearPasswordPlugin.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.Authentication.MySqlNativePasswordPlugin.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.Authentication.MySqlPemReader.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.AuthenticationPluginConfigurationElement.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.BaseCommandInterceptor.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.BaseTableCache.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.CharacterSet.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.InterceptorConfigurationElement.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.Interceptors.BaseExceptionInterceptor.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlAttribute.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlAttributeCollection.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlBaseConnectionStringBuilder.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlBulkLoader.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlClientFactory.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlClientPermission.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlClientPermissionAttribute.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlCommand.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlCommandBuilder.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlConfiguration.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlConnection.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlConnectionStringBuilder.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlDataAdapter.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlDataReader.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlError.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlException.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlHelper.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlInfoMessageEventArgs.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlInfoMessageEventHandler.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlParameter.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlParameterCollection.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlRowUpdatedEventArgs.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlRowUpdatedEventHandler.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlRowUpdatingEventArgs.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlRowUpdatingEventHandler.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlSchemaCollection.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlSchemaRow.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlScript.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlScriptErrorEventArgs.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlScriptErrorEventHandler.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlScriptEventArgs.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlSecurityPermission.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlStatementExecutedEventHandler.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlTrace.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.MySqlTransaction.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.Replication.ReplicationRoundRobinServerGroup.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.Replication.ReplicationServer.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.Replication.ReplicationServerGroup.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.ReplicationConfigurationElement.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.ReplicationServerConfigurationElement.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.ReplicationServerGroupConfigurationElement.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.SchemaColumn.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.MySqlClient.WebAuthnActionCallback.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.PacketBitConverter.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.Types.MySqlConversionException.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.Types.MySqlDateTime.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.Types.MySqlDecimal.datasource" />
+    <None Include="Properties\DataSources\MySql.Data.Types.MySqlGeometry.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.ClientMessages+Types+Type.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.ClientMessages+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.ClientMessages.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Connection.Capabilities.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Connection.CapabilitiesGet.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Connection.CapabilitiesSet.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Connection.Capability.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Connection.Close.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Connection.Compression.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Connection.MysqlxConnectionReflection.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Collection.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Column.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.CreateView.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Delete.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.DropView.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Find+Types+RowLock.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Find+Types+RowLockOptions.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Find+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Find.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Insert+Types+TypedRow.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Insert+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Insert.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Limit.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.LimitExpr.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.ModifyView.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.MysqlxCrudReflection.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Order+Types+Direction.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Order+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Order.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Projection.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.Update.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.UpdateOperation+Types+UpdateType.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.UpdateOperation+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Crud.UpdateOperation.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Cursor.Close.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Cursor.Fetch.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Cursor.MysqlxCursorReflection.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Cursor.Open+Types+OneOfMessage+Types+Type.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Cursor.Open+Types+OneOfMessage+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Cursor.Open+Types+OneOfMessage.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Cursor.Open+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Cursor.Open.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Datatypes.Any+Types+Type.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Datatypes.Any+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Datatypes.Any.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Datatypes.Array.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Datatypes.MysqlxDatatypesReflection.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Datatypes.Object+Types+ObjectField.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Datatypes.Object+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Datatypes.Object.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Datatypes.Scalar+Types+Octets.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Datatypes.Scalar+Types+String.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Datatypes.Scalar+Types+Type.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Datatypes.Scalar+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Datatypes.Scalar.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Error+Types+Severity.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Error+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Error.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expect.Close.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expect.MysqlxExpectReflection.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expect.Open+Types+Condition+Types+ConditionOperation.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expect.Open+Types+Condition+Types+Key.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expect.Open+Types+Condition+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expect.Open+Types+Condition.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expect.Open+Types+CtxOperation.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expect.Open+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expect.Open.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.Array.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.ColumnIdentifier.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.DocumentPathItem+Types+Type.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.DocumentPathItem+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.DocumentPathItem.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.Expr+Types+Type.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.Expr+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.Expr.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.FunctionCall.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.Identifier.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.MysqlxExprReflection.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.Object+Types+ObjectField.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.Object+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.Object.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Expr.Operator.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.MysqlxExtensions.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.MysqlxReflection.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.Frame+Types+Scope.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.Frame+Types+Type.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.Frame+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.Frame.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.GroupReplicationStateChanged+Types+Type.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.GroupReplicationStateChanged+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.GroupReplicationStateChanged.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.MysqlxNoticeReflection.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.ServerHello.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.SessionStateChanged+Types+Parameter.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.SessionStateChanged+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.SessionStateChanged.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.SessionVariableChanged.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.Warning+Types+Level.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.Warning+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Notice.Warning.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Ok.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Prepare.Deallocate.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Prepare.Execute.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Prepare.MysqlxPrepareReflection.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Prepare.Prepare+Types+OneOfMessage+Types+Type.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Prepare.Prepare+Types+OneOfMessage+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Prepare.Prepare+Types+OneOfMessage.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Prepare.Prepare+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Prepare.Prepare.datasource" />
+    <None Include="Properties\DataSources\MySqlX.Protocol.ProtocolBase.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Resultset.ColumnMetaData+Types+FieldType.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Resultset.ColumnMetaData+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Resultset.ColumnMetaData.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Resultset.FetchDone.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Resultset.FetchDoneMoreOutParams.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Resultset.FetchDoneMoreResultsets.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Resultset.FetchSuspended.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Resultset.MysqlxResultsetReflection.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Resultset.Row.datasource" />
+    <None Include="Properties\DataSources\MySqlX.Serialization.JsonParser.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.ServerMessages+Types+Type.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.ServerMessages+Types.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.ServerMessages.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Session.AuthenticateContinue.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Session.AuthenticateOk.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Session.AuthenticateStart.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Session.Close.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Session.MysqlxSessionReflection.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Session.Reset.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Sql.MysqlxSqlReflection.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Sql.StmtExecute.datasource" />
+    <None Include="Properties\DataSources\Mysqlx.Sql.StmtExecuteOk.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.BaseSession.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Client.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Collection.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Common.BaseResult.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Common.CreateCollectionOptions.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Common.ErrorInfo.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Common.ModifyCollectionOptions.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Common.Result.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Common.Validation.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Common.WarningInfo.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.DatabaseObject.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.DbDoc.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Iterator.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.MySqlExpression.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.MySQLX.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.MySqlXConnectionStringBuilder.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Relational.Column.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Relational.InternalRowResult.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Relational.Row.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Relational.RowResult.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Relational.SqlResult.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Relational.SqlStatement.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Relational.Table.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Relational.TableDeleteStatement.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Relational.TableInsertStatement.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Relational.TableSelectStatement.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Relational.TableUpdateStatement.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Schema.datasource" />
+    <None Include="Properties\DataSources\MySqlX.XDevAPI.Session.datasource" />
+    <None Include="Properties\DataSources\Program.datasource" />
+    <None Include="Properties\DataSources\ProjectData.datasource" />
+    <None Include="Properties\DataSources\ProjectManagerForm.datasource" />
+    <None Include="Properties\DataSources\ProjectPhaseListRequestsforApproval.datasource" />
+    <None Include="Properties\DataSources\PurchaseOrderForm.datasource" />
+    <None Include="Properties\DataSources\SearchboxControl.datasource" />
+    <None Include="Properties\DataSources\SearchEventArgs.datasource" />
+    <None Include="Properties\DataSources\SearchForm.datasource" />
+    <None Include="Properties\DataSources\SearchService.datasource" />
+    <None Include="Properties\DataSources\SiteSupervisorForm.datasource" />
+    <None Include="Properties\DataSources\SupplierRegistration.datasource" />
+    <None Include="Properties\DataSources\ThaiBahtTextConverter.datasource" />
+    <None Include="Properties\DataSources\UpdateProjectPhase.ComboBoxItem.datasource" />
+    <None Include="Properties\DataSources\UpdateProjectPhase.datasource" />
+    <None Include="Properties\DataSources\UserManagementForm.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -392,7 +863,6 @@
   <ItemGroup>
     <None Include="Resources\Profile.jpg" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <COMReference Include="AcroPDFLib">
       <Guid>{05BFD3F1-6319-4F30-B752-C7A22889BCC4}</Guid>
@@ -424,5 +894,27 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="logo - Copy.ico" />
+    <Content Include="Resources\logo - Copy.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props'))" />
+  </Target>
 </Project>

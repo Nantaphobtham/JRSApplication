@@ -150,8 +150,101 @@ namespace JRSApplication.Data_Access_Layer
 
             return phases;
         }
+        public (decimal budget, string detail) GetPhaseBudgetAndDetail(string phaseId)
+        {
+            decimal budget = 0;
+            string detail = "";
 
+            string query = "SELECT phase_budget, phase_detail FROM project_phase WHERE phase_id = @phaseId";
 
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@phaseId", phaseId);
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        budget = reader.GetDecimal("phase_budget");
+                        detail = reader.GetString("phase_detail");
+                    }
+                }
+            }
+
+            return (budget, detail);
+        }
+        public class PhaseData
+        {
+            public decimal Budget { get; set; }
+            public string Detail { get; set; }
+        }
+
+        public PhaseData GetPhaseDataById(string phaseId)
+        {
+            string query = "SELECT phase_budget, phase_detail FROM project_phase WHERE phase_id = @phaseId";
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@phaseId", phaseId);
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new PhaseData
+                        {
+                            Budget = reader.GetDecimal("phase_budget"),
+                            Detail = reader.GetString("phase_detail")
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+        public List<ProjectPhase> GetAllProjectPhase()
+        {
+            List<ProjectPhase> phases = new List<ProjectPhase>();
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                string sql = @"
+            SELECT 
+                phase_id, 
+                pro_id, 
+                phase_no, 
+                phase_detail, 
+                phase_budget, 
+                phase_percent, 
+                phase_status
+            FROM project_phase
+            ORDER BY pro_id, phase_no";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                {
+                    conn.Open();
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            phases.Add(new ProjectPhase
+                            {
+                                PhaseID = reader.GetInt32("phase_id"),
+                                ProID = reader.GetInt32("pro_id"),
+                                PhaseNumber = reader.GetInt32("phase_no"),
+                                PhaseDetail = reader.GetString("phase_detail"),
+                                PhaseBudget = reader.GetDecimal("phase_budget"),
+                                PhasePercent = reader.GetDecimal("phase_percent"),
+                                PhaseStatus = reader.GetString("phase_status"),
+                            });
+                        }
+                    }
+                }
+            }
+
+            return phases;
+        }
 
 
     }

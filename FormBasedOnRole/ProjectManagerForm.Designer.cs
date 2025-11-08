@@ -32,31 +32,30 @@
             this.Body = new System.Windows.Forms.Panel();
             this.PicLogo = new System.Windows.Forms.PictureBox();
             this.Siderbar = new System.Windows.Forms.Panel();
-            this.btnProjectPhaseUpdate = new System.Windows.Forms.Button();
-            this.btnPurchaseOrder = new System.Windows.Forms.Button();
+            this.menuContainer = new System.Windows.Forms.Panel();
             this.btnChooseSubcontractors = new System.Windows.Forms.Button();
             this.btnAllocateEmployee = new System.Windows.Forms.Button();
-            this.btnPaymentsInfomation = new System.Windows.Forms.Button();
-            this.btnProjectInformation = new System.Windows.Forms.Button();
+            this.btnPurchaseOrder = new System.Windows.Forms.Button();
             this.Header = new System.Windows.Forms.Panel();
+            this.txtsubFunctionname = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
-            this.btnMaximize = new System.Windows.Forms.Button();
             this.btnMinimize = new System.Windows.Forms.Button();
             this.txtFunctionname = new System.Windows.Forms.Label();
             this.txtPosition = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.Label();
             this.Profile = new System.Windows.Forms.PictureBox();
-            this.btnHeadmenu = new System.Windows.Forms.Button();
-            this.btnRequestsforApproval = new System.Windows.Forms.Button();
             this.menuTransition = new System.Windows.Forms.Timer(this.components);
-            this.menuContainer = new System.Windows.Forms.Panel();
-            this.txtsubFunctionname = new System.Windows.Forms.Label();
+            this.btnProjectInformation = new System.Windows.Forms.Button();
+            this.btnPaymentsInfomation = new System.Windows.Forms.Button();
+            this.btnRequestsforApproval = new System.Windows.Forms.Button();
+            this.btnProjectPhaseUpdate = new System.Windows.Forms.Button();
+            this.btnHeadmenu = new System.Windows.Forms.Button();
             this.Body.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicLogo)).BeginInit();
             this.Siderbar.SuspendLayout();
+            this.menuContainer.SuspendLayout();
             this.Header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Profile)).BeginInit();
-            this.menuContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // Body
@@ -94,49 +93,31 @@
             this.Siderbar.Size = new System.Drawing.Size(336, 954);
             this.Siderbar.TabIndex = 2;
             // 
-            // btnProjectPhaseUpdate
+            // menuContainer
             // 
-            this.btnProjectPhaseUpdate.BackColor = System.Drawing.Color.Transparent;
-            this.btnProjectPhaseUpdate.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnProjectPhaseUpdate.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnProjectPhaseUpdate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.btnProjectPhaseUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnProjectPhaseUpdate.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnProjectPhaseUpdate.Location = new System.Drawing.Point(0, 80);
-            this.btnProjectPhaseUpdate.Name = "btnProjectPhaseUpdate";
-            this.btnProjectPhaseUpdate.Size = new System.Drawing.Size(336, 82);
-            this.btnProjectPhaseUpdate.TabIndex = 5;
-            this.btnProjectPhaseUpdate.Text = "ปรับปรุงข้อมูลเฟส";
-            this.btnProjectPhaseUpdate.UseVisualStyleBackColor = false;
-            this.btnProjectPhaseUpdate.Click += new System.EventHandler(this.btnProjectPhaseUpdate_Click);
-            // 
-            // btnPurchaseOrder
-            // 
-            this.btnPurchaseOrder.BackColor = System.Drawing.Color.Transparent;
-            this.btnPurchaseOrder.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnPurchaseOrder.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnPurchaseOrder.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.btnPurchaseOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPurchaseOrder.Location = new System.Drawing.Point(0, 80);
-            this.btnPurchaseOrder.Name = "btnPurchaseOrder";
-            this.btnPurchaseOrder.Size = new System.Drawing.Size(336, 80);
-            this.btnPurchaseOrder.TabIndex = 4;
-            this.btnPurchaseOrder.Text = "อนุมัตใบสั่งซื้อ";
-            this.btnPurchaseOrder.UseVisualStyleBackColor = false;
-            this.btnPurchaseOrder.Click += new System.EventHandler(this.btnPurchaseOrder_Click);
+            this.menuContainer.BackColor = System.Drawing.Color.Transparent;
+            this.menuContainer.Controls.Add(this.btnRequestsforApproval);
+            this.menuContainer.Controls.Add(this.btnProjectPhaseUpdate);
+            this.menuContainer.Controls.Add(this.btnHeadmenu);
+            this.menuContainer.Dock = System.Windows.Forms.DockStyle.Top;
+            this.menuContainer.Location = new System.Drawing.Point(0, 320);
+            this.menuContainer.Name = "menuContainer";
+            this.menuContainer.Size = new System.Drawing.Size(336, 80);
+            this.menuContainer.TabIndex = 4;
             // 
             // btnChooseSubcontractors
             // 
             this.btnChooseSubcontractors.BackColor = System.Drawing.Color.Transparent;
             this.btnChooseSubcontractors.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnChooseSubcontractors.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnChooseSubcontractors.FlatAppearance.BorderSize = 0;
             this.btnChooseSubcontractors.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnChooseSubcontractors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnChooseSubcontractors.Location = new System.Drawing.Point(0, 240);
             this.btnChooseSubcontractors.Name = "btnChooseSubcontractors";
             this.btnChooseSubcontractors.Size = new System.Drawing.Size(336, 80);
             this.btnChooseSubcontractors.TabIndex = 3;
-            this.btnChooseSubcontractors.Text = "กำหนดผู้รับเหมาช่วง";
+            this.btnChooseSubcontractors.Text = "กำหนดผู้รับเหมา";
             this.btnChooseSubcontractors.UseVisualStyleBackColor = false;
             this.btnChooseSubcontractors.Click += new System.EventHandler(this.btnChooseSubcontractors_Click);
             // 
@@ -145,6 +126,7 @@
             this.btnAllocateEmployee.BackColor = System.Drawing.Color.Transparent;
             this.btnAllocateEmployee.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnAllocateEmployee.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnAllocateEmployee.FlatAppearance.BorderSize = 0;
             this.btnAllocateEmployee.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnAllocateEmployee.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAllocateEmployee.Location = new System.Drawing.Point(0, 160);
@@ -155,46 +137,32 @@
             this.btnAllocateEmployee.UseVisualStyleBackColor = false;
             this.btnAllocateEmployee.Click += new System.EventHandler(this.btnAllocateEmployee_Click);
             // 
-            // btnPaymentsInfomation
+            // btnPurchaseOrder
             // 
-            this.btnPaymentsInfomation.BackColor = System.Drawing.Color.Transparent;
-            this.btnPaymentsInfomation.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnPaymentsInfomation.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnPaymentsInfomation.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.btnPaymentsInfomation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPaymentsInfomation.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPaymentsInfomation.Location = new System.Drawing.Point(0, 0);
-            this.btnPaymentsInfomation.Name = "btnPaymentsInfomation";
-            this.btnPaymentsInfomation.Size = new System.Drawing.Size(336, 80);
-            this.btnPaymentsInfomation.TabIndex = 1;
-            this.btnPaymentsInfomation.Text = "ตรวจสอบการชำระเงินโครงการ";
-            this.btnPaymentsInfomation.UseVisualStyleBackColor = false;
-            this.btnPaymentsInfomation.Click += new System.EventHandler(this.btnPaymentsInfomation_Click);
-            // 
-            // btnProjectInformation
-            // 
-            this.btnProjectInformation.BackColor = System.Drawing.Color.Transparent;
-            this.btnProjectInformation.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnProjectInformation.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnProjectInformation.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.btnProjectInformation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnProjectInformation.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnProjectInformation.Location = new System.Drawing.Point(0, 400);
-            this.btnProjectInformation.Name = "btnProjectInformation";
-            this.btnProjectInformation.Size = new System.Drawing.Size(336, 80);
-            this.btnProjectInformation.TabIndex = 0;
-            this.btnProjectInformation.Text = "ตรวจสอบข้อมูลโครงการ";
-            this.btnProjectInformation.UseVisualStyleBackColor = false;
-            this.btnProjectInformation.Click += new System.EventHandler(this.btnProjectInformation_Click);
+            this.btnPurchaseOrder.BackColor = System.Drawing.Color.Transparent;
+            this.btnPurchaseOrder.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnPurchaseOrder.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnPurchaseOrder.FlatAppearance.BorderSize = 0;
+            this.btnPurchaseOrder.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnPurchaseOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPurchaseOrder.Location = new System.Drawing.Point(0, 80);
+            this.btnPurchaseOrder.Name = "btnPurchaseOrder";
+            this.btnPurchaseOrder.Size = new System.Drawing.Size(336, 80);
+            this.btnPurchaseOrder.TabIndex = 4;
+            this.btnPurchaseOrder.Text = "อนุมัติใบสั่งซื้อ";
+            this.btnPurchaseOrder.UseVisualStyleBackColor = false;
+            this.btnPurchaseOrder.Click += new System.EventHandler(this.btnPurchaseOrder_Click);
+
+            this.Header.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Profile)).BeginInit();
             // 
             // Header
             // 
             this.Header.BackgroundImage = global::JRSApplication.Properties.Resources.header;
             this.Header.Controls.Add(this.txtsubFunctionname);
-            this.Header.Controls.Add(this.btnClose);
-            this.Header.Controls.Add(this.btnMaximize);
-            this.Header.Controls.Add(this.btnMinimize);
             this.Header.Controls.Add(this.txtFunctionname);
+            this.Header.Controls.Add(this.btnClose);
+            this.Header.Controls.Add(this.btnMinimize);
             this.Header.Controls.Add(this.txtPosition);
             this.Header.Controls.Add(this.txtName);
             this.Header.Controls.Add(this.Profile);
@@ -203,6 +171,31 @@
             this.Header.Name = "Header";
             this.Header.Size = new System.Drawing.Size(1920, 126);
             this.Header.TabIndex = 1;
+            //
+            // txtFunctionname
+            //
+            this.txtFunctionname.BackColor = System.Drawing.Color.Transparent;
+            this.txtFunctionname.Dock = System.Windows.Forms.DockStyle.None; // ❌ เอา Dock ออก
+            this.txtFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFunctionname.ForeColor = System.Drawing.Color.Black;
+            this.txtFunctionname.Location = new System.Drawing.Point(600, 20);   // ✅ กำหนดตำแหน่งเอง (x,y)
+            this.txtFunctionname.Size = new System.Drawing.Size(800, 45);       // ✅ ขนาดข้อความ
+            this.txtFunctionname.TabIndex = 4;
+            this.txtFunctionname.Text = "ยินดีต้อนรับ";
+            this.txtFunctionname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            //
+            // txtsubFunctionname
+            this.txtsubFunctionname.BackColor = System.Drawing.Color.Transparent;
+            this.txtsubFunctionname.Dock = System.Windows.Forms.DockStyle.None; // ❌ เอา Dock ออก
+            this.txtsubFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtsubFunctionname.ForeColor = System.Drawing.Color.Black;
+            this.txtsubFunctionname.Location = new System.Drawing.Point(600, 70); // ✅ ใต้บรรทัดบน
+            this.txtsubFunctionname.Size = new System.Drawing.Size(800, 37);
+            this.txtsubFunctionname.TabIndex = 6;
+            this.txtsubFunctionname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.txtsubFunctionname.Visible = false;
+
+
             // 
             // btnClose
             // 
@@ -218,42 +211,18 @@
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // btnMaximize
-            // 
-            this.btnMaximize.BackColor = System.Drawing.Color.Transparent;
-            this.btnMaximize.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnMaximize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMaximize.Location = new System.Drawing.Point(1759, 3);
-            this.btnMaximize.Name = "btnMaximize";
-            this.btnMaximize.Size = new System.Drawing.Size(75, 23);
-            this.btnMaximize.TabIndex = 5;
-            this.btnMaximize.Text = "☐";
-            this.btnMaximize.UseVisualStyleBackColor = false;
-            // 
             // btnMinimize
             // 
             this.btnMinimize.BackColor = System.Drawing.Color.Transparent;
             this.btnMinimize.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMinimize.Location = new System.Drawing.Point(1676, 3);
+            this.btnMinimize.Location = new System.Drawing.Point(1761, 3);
             this.btnMinimize.Name = "btnMinimize";
             this.btnMinimize.Size = new System.Drawing.Size(75, 23);
             this.btnMinimize.TabIndex = 5;
             this.btnMinimize.Text = "_";
             this.btnMinimize.UseVisualStyleBackColor = false;
             this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
-            // 
-            // txtFunctionname
-            // 
-            this.txtFunctionname.AutoSize = true;
-            this.txtFunctionname.BackColor = System.Drawing.Color.Transparent;
-            this.txtFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFunctionname.Location = new System.Drawing.Point(884, 23);
-            this.txtFunctionname.Name = "txtFunctionname";
-            this.txtFunctionname.Size = new System.Drawing.Size(152, 37);
-            this.txtFunctionname.TabIndex = 4;
-            this.txtFunctionname.Text = "ยินดีต้อนรับ";
-            this.txtFunctionname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtPosition
             // 
@@ -284,22 +253,49 @@
             this.Profile.Size = new System.Drawing.Size(80, 80);
             this.Profile.TabIndex = 1;
             this.Profile.TabStop = false;
+
+            this.Header.ResumeLayout(false);
+            this.Header.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Profile)).EndInit();
             // 
-            // btnHeadmenu
+            // menuTransition
             // 
-            this.btnHeadmenu.BackColor = System.Drawing.Color.Transparent;
-            this.btnHeadmenu.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnHeadmenu.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnHeadmenu.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.btnHeadmenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnHeadmenu.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHeadmenu.Location = new System.Drawing.Point(0, 0);
-            this.btnHeadmenu.Name = "btnHeadmenu";
-            this.btnHeadmenu.Size = new System.Drawing.Size(336, 80);
-            this.btnHeadmenu.TabIndex = 2;
-            this.btnHeadmenu.Text = "ปรับปรุงข้อมูลโครงการ";
-            this.btnHeadmenu.UseVisualStyleBackColor = false;
-            this.btnHeadmenu.Click += new System.EventHandler(this.btnHeadmenu_Click);
+            this.menuTransition.Interval = 10;
+            this.menuTransition.Tick += new System.EventHandler(this.menuTransition_Tick);
+            // 
+            // btnProjectInformation
+            // 
+            this.btnProjectInformation.BackColor = System.Drawing.Color.Transparent;
+            this.btnProjectInformation.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnProjectInformation.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnProjectInformation.FlatAppearance.BorderSize = 0;
+            this.btnProjectInformation.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnProjectInformation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnProjectInformation.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnProjectInformation.Location = new System.Drawing.Point(0, 400);
+            this.btnProjectInformation.Name = "btnProjectInformation";
+            this.btnProjectInformation.Size = new System.Drawing.Size(336, 80);
+            this.btnProjectInformation.TabIndex = 0;
+            this.btnProjectInformation.Text = "ตรวจสอบข้อมูลโครงการ";
+            this.btnProjectInformation.UseVisualStyleBackColor = false;
+            this.btnProjectInformation.Click += new System.EventHandler(this.btnProjectInformation_Click);
+            // 
+            // btnPaymentsInfomation
+            // 
+            this.btnPaymentsInfomation.BackColor = System.Drawing.Color.Transparent;
+            this.btnPaymentsInfomation.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnPaymentsInfomation.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnPaymentsInfomation.FlatAppearance.BorderSize = 0;
+            this.btnPaymentsInfomation.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnPaymentsInfomation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPaymentsInfomation.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPaymentsInfomation.Location = new System.Drawing.Point(0, 0);
+            this.btnPaymentsInfomation.Name = "btnPaymentsInfomation";
+            this.btnPaymentsInfomation.Size = new System.Drawing.Size(336, 80);
+            this.btnPaymentsInfomation.TabIndex = 1;
+            this.btnPaymentsInfomation.Text = "ตรวจสอบการชำระเงินโครงการ";
+            this.btnPaymentsInfomation.UseVisualStyleBackColor = false;
+            this.btnPaymentsInfomation.Click += new System.EventHandler(this.btnPaymentsInfomation_Click);
             // 
             // btnRequestsforApproval
             // 
@@ -317,33 +313,38 @@
             this.btnRequestsforApproval.UseVisualStyleBackColor = false;
             this.btnRequestsforApproval.Click += new System.EventHandler(this.btnRequestsforApproval_Click);
             // 
-            // menuTransition
+            // btnProjectPhaseUpdate
             // 
-            this.menuTransition.Interval = 10;
-            this.menuTransition.Tick += new System.EventHandler(this.menuTransition_Tick);
+            this.btnProjectPhaseUpdate.BackColor = System.Drawing.Color.Transparent;
+            this.btnProjectPhaseUpdate.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnProjectPhaseUpdate.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnProjectPhaseUpdate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnProjectPhaseUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnProjectPhaseUpdate.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnProjectPhaseUpdate.Location = new System.Drawing.Point(0, 80);
+            this.btnProjectPhaseUpdate.Name = "btnProjectPhaseUpdate";
+            this.btnProjectPhaseUpdate.Size = new System.Drawing.Size(336, 82);
+            this.btnProjectPhaseUpdate.TabIndex = 5;
+            this.btnProjectPhaseUpdate.Text = "ปรับปรุงข้อมูลเฟส";
+            this.btnProjectPhaseUpdate.UseVisualStyleBackColor = false;
+            this.btnProjectPhaseUpdate.Click += new System.EventHandler(this.btnProjectPhaseUpdate_Click);
             // 
-            // menuContainer
+            // btnHeadmenu
             // 
-            this.menuContainer.BackColor = System.Drawing.Color.Transparent;
-            this.menuContainer.Controls.Add(this.btnRequestsforApproval);
-            this.menuContainer.Controls.Add(this.btnProjectPhaseUpdate);
-            this.menuContainer.Controls.Add(this.btnHeadmenu);
-            this.menuContainer.Dock = System.Windows.Forms.DockStyle.Top;
-            this.menuContainer.Location = new System.Drawing.Point(0, 320);
-            this.menuContainer.Name = "menuContainer";
-            this.menuContainer.Size = new System.Drawing.Size(336, 80);
-            this.menuContainer.TabIndex = 4;
-            // 
-            // txtsubFunctionname
-            // 
-            this.txtsubFunctionname.AutoSize = true;
-            this.txtsubFunctionname.BackColor = System.Drawing.Color.Transparent;
-            this.txtsubFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtsubFunctionname.Location = new System.Drawing.Point(960, 67);
-            this.txtsubFunctionname.Name = "txtsubFunctionname";
-            this.txtsubFunctionname.Size = new System.Drawing.Size(0, 37);
-            this.txtsubFunctionname.TabIndex = 6;
-            this.txtsubFunctionname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnHeadmenu.BackColor = System.Drawing.Color.Transparent;
+            this.btnHeadmenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnHeadmenu.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnHeadmenu.FlatAppearance.BorderSize = 0;
+            this.btnHeadmenu.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnHeadmenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnHeadmenu.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnHeadmenu.Location = new System.Drawing.Point(0, 0);
+            this.btnHeadmenu.Name = "btnHeadmenu";
+            this.btnHeadmenu.Size = new System.Drawing.Size(336, 80);
+            this.btnHeadmenu.TabIndex = 2;
+            this.btnHeadmenu.Text = "ปรับปรุงข้อมูลโครงการ";
+            this.btnHeadmenu.UseVisualStyleBackColor = false;
+            this.btnHeadmenu.Click += new System.EventHandler(this.btnHeadmenu_Click);
             // 
             // ProjectManagerForm
             // 
@@ -361,10 +362,10 @@
             this.Body.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PicLogo)).EndInit();
             this.Siderbar.ResumeLayout(false);
+            this.menuContainer.ResumeLayout(false);
             this.Header.ResumeLayout(false);
             this.Header.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Profile)).EndInit();
-            this.menuContainer.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -373,7 +374,6 @@
 
         private System.Windows.Forms.Panel Header;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Button btnMaximize;
         private System.Windows.Forms.Button btnMinimize;
         private System.Windows.Forms.Label txtFunctionname;
         private System.Windows.Forms.Label txtPosition;
@@ -382,16 +382,16 @@
         private System.Windows.Forms.Panel Siderbar;
         private System.Windows.Forms.Button btnChooseSubcontractors;
         private System.Windows.Forms.Button btnAllocateEmployee;
-        private System.Windows.Forms.Button btnPaymentsInfomation;
-        private System.Windows.Forms.Button btnProjectInformation;
         private System.Windows.Forms.Panel Body;
         private System.Windows.Forms.PictureBox PicLogo;
         private System.Windows.Forms.Button btnPurchaseOrder;
-        private System.Windows.Forms.Button btnProjectPhaseUpdate;
-        private System.Windows.Forms.Button btnRequestsforApproval;
-        private System.Windows.Forms.Button btnHeadmenu;
         private System.Windows.Forms.Timer menuTransition;
         private System.Windows.Forms.Panel menuContainer;
         private System.Windows.Forms.Label txtsubFunctionname;
+        private System.Windows.Forms.Button btnProjectInformation;
+        private System.Windows.Forms.Button btnPaymentsInfomation;
+        private System.Windows.Forms.Button btnRequestsforApproval;
+        private System.Windows.Forms.Button btnProjectPhaseUpdate;
+        private System.Windows.Forms.Button btnHeadmenu;
     }
 }

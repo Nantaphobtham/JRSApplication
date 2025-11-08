@@ -1,4 +1,5 @@
 ﻿using JRSApplication.Components;
+using JRSApplication.Components.Service;
 using JRSApplication.Data_Access_Layer;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
@@ -18,51 +19,92 @@ namespace JRSApplication
 {
     public partial class ManageProject : UserControl
     {
-        //ตัวแปรระดับคลาส
+        // ---------- NEW: ใช้ใน GenerateNextOrderNumber ----------
+        private readonly string connectionString =
+            System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
+        // ---------- NEW: แฟลกกัน event ระหว่างโปรแกรม set ค่าเอง ----------
+        private bool _suppressUIEvents = false;
+
+        // ตัวแปรระดับคลาส
         private string selectedCustomerID = "";
         private string selectedEmployeeID = "";
-        private string loggedInUser = "Admin"; // ✅ เก็บชื่อผู้ใช้ที่ล็อกอินมา
 
-        private List<EmployeeAssignment> assignedEmployees = new List<EmployeeAssignment>(); // ✅ เก็บพนักงานที่เลือกไว้ก่อนบันทึก
+        private string _loggedInUser;
+        private string _loggedInRole;
 
-        // 🟢 เก็บรายการเฟสทั้งหมด
+        private List<EmployeeAssignment> assignedEmployees = new List<EmployeeAssignment>(); // เก็บพนักงานที่เลือกไว้ก่อนบันทึก
+
+        // เก็บรายการเฟสทั้งหมด
         private List<ProjectPhase> projectPhases = new List<ProjectPhase>();
 
-        // 🟢 ใช้เก็บเฟสที่กำลังแก้ไข
+        // ใช้เก็บเฟสที่กำลังแก้ไข
         private ProjectPhase currentEditingPhase = null;
 
-        //การจัดการ PDF
-        private Project projectFile = new Project(); // ✅ กำหนดค่าเริ่มต้น
+        // file PDF
+        private byte[] fileConstructionBytes;
+        private byte[] fileDemolitionBytes;
 
-        public ManageProject()
+        // PDFPreview
+        private FormPDFPreview pdfPreviewForm = null; // ฟอร์ม Preview
+        private Timer hoverCheckTimer;                // Timer เช็กเมาส์ออก
+        private bool isPreviewingDemolition = false;  // Flag (ไม่ได้ใช้ภายในคำนวณ)
+
+        private int? selectedProjectID = null; // null = ยังไม่มีการเลือก
+
+        public ManageProject(string fullName, string role)
         {
             InitializeComponent();
+
+            _loggedInUser = fullName;
+            _loggedInRole = role;
+
             LoadPhaseNumberDropdown();
+            InitializePhaseDataGridView();
+            InitializeDataGridViewProject();
+
+            // โหลดข้อมูลโปรเจกต์
             LoadProjectData();
-            InitializePhaseDataGridView(); //ของ phase
-            InitializeDataGridViewProject(); // ✅ กำหนดโครงสร้าง DataGridView
-            LoadProjectData(); // ✅ โหลดข้อมูลจากฐานข้อมูล
+            this.Load += (s, e) => LoadProjectData();
+
+            // ป้องกัน loop คำนวณตอน initialize
+            _suppressUIEvents = true;
+            try
+            {
+                // ให้ค่าเริ่มต้น (ถ้าต้องการ)
+                txtWorkingDate.Text = "";
+                dtpkStartDate.Value = DateTime.Now;
+                dtpkEndDate.Value = DateTime.Now;
+            }
+            finally
+            {
+                _suppressUIEvents = false;
+            }
+
+            // ผูกอีเวนต์ (ถ้ายังไม่ได้ผูกใน Designer)
+            this.dtpkStartDate.ValueChanged += dtpkStartDate_ValueChanged;
+            this.txtWorkingDate.TextChanged += txtWorkingDate_TextChanged;
+            this.dtgvProject.CellClick += dtgvProject_CellClick;
         }
 
-        //การโหลดและจัดการตาราง Project
+        // ------------------------------------------------------------
+        // การโหลดและจัดการตาราง Project
+        // ------------------------------------------------------------
         private void InitializeDataGridViewProject()
         {
-            // ✅ ป้องกันการเพิ่มคอลัมน์ซ้ำ
             if (dtgvProject.Columns.Count == 0)
             {
                 dtgvProject.AllowUserToAddRows = false;
 
-                // ✅ เพิ่มคอลัมน์
                 dtgvProject.Columns.Add("ProjectID", "รหัสโครงการ");
                 dtgvProject.Columns.Add("ProjectName", "ชื่อโครงการ");
                 dtgvProject.Columns.Add("ProjectStart", "วันที่เริ่มโครงการ");
                 dtgvProject.Columns.Add("ProjectEnd", "วันที่สิ้นสุดโครงการ");
                 dtgvProject.Columns.Add("ProjectBudget", "งบประมาณ (บาท)");
                 dtgvProject.Columns.Add("CurrentPhaseNumber", "จำนวนเฟสงาน");
-                dtgvProject.Columns.Add("CustomerName", "ชื่อลูกค้า");
-                dtgvProject.Columns.Add("EmployeeName", "ชื่อผู้ดูแลโครงการ");
+                dtgvProject.Columns.Add("CustomerFullName", "ลูกค้า");
+                dtgvProject.Columns.Add("EmployeeFullName", "ผู้ดูแลโครงการ");
 
-                // ✅ ปรับแต่งคอลัมน์
                 dtgvProject.Columns["ProjectID"].Width = 80;
                 dtgvProject.Columns["ProjectID"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dtgvProject.Columns["ProjectID"].ReadOnly = true;
@@ -83,28 +125,28 @@ namespace JRSApplication
 
                 dtgvProject.Columns["ProjectBudget"].Width = 150;
                 dtgvProject.Columns["ProjectBudget"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dtgvProject.Columns["ProjectBudget"].DefaultCellStyle.Format = "N2"; // แสดงเป็น 1,200.00
+                dtgvProject.Columns["ProjectBudget"].DefaultCellStyle.Format = "N2";
                 dtgvProject.Columns["ProjectBudget"].ReadOnly = true;
 
                 dtgvProject.Columns["CurrentPhaseNumber"].Width = 120;
                 dtgvProject.Columns["CurrentPhaseNumber"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dtgvProject.Columns["CurrentPhaseNumber"].ReadOnly = true;
 
-                dtgvProject.Columns["CustomerName"].Width = 150;
-                dtgvProject.Columns["CustomerName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dtgvProject.Columns["CustomerName"].ReadOnly = true;
+                dtgvProject.Columns["CustomerFullName"].Width = 150;
+                dtgvProject.Columns["CustomerFullName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dtgvProject.Columns["CustomerFullName"].ReadOnly = true;
 
-                dtgvProject.Columns["EmployeeName"].Width = 150;
-                dtgvProject.Columns["EmployeeName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dtgvProject.Columns["EmployeeName"].ReadOnly = true;
+                dtgvProject.Columns["EmployeeFullName"].Width = 150;
+                dtgvProject.Columns["EmployeeFullName"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dtgvProject.Columns["EmployeeFullName"].ReadOnly = true;
 
-                // ✅ ใช้ฟังก์ชันตกแต่ง
                 CustomizeDataGridViewProject();
             }
         }
 
         private void CustomizeDataGridViewProject()
         {
+            dtgvProject.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dtgvProject.BorderStyle = BorderStyle.None;
             dtgvProject.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
             dtgvProject.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
@@ -135,71 +177,149 @@ namespace JRSApplication
             dtgvProject.AllowUserToAddRows = false;
             dtgvProject.AllowUserToResizeRows = false;
         }
+
         private void LoadProjectData()
         {
-            InitializeDataGridViewProject(); // ✅ ตรวจสอบตารางก่อนโหลดข้อมูล
+            InitializeDataGridViewProject();
 
             ProjectDAL dal = new ProjectDAL();
             List<Project> projects = dal.GetAllProjects();
 
-            dtgvProject.Rows.Clear();
-            foreach (var project in projects)
+            _suppressUIEvents = true;
+            try
             {
-                dtgvProject.Rows.Add(
-                    project.ProjectID,
-                    project.ProjectName,
-                    project.ProjectStart.ToString("dd/MM/yyyy"),
-                    project.ProjectEnd.ToString("dd/MM/yyyy"),
-                    project.ProjectBudget.ToString("N2"),
-                    project.CurrentPhaseNumber,  // ✅ จำนวนเฟส
-                    project.CustomerName,  // ✅ ชื่อลูกค้า
-                    project.EmployeeName   // ✅ ชื่อผู้ดูแลโครงการ
-                );
-            }
-        }
-        private void LoadProjectDetails(int projectId)
-        {
-            ProjectDAL projectDAL = new ProjectDAL();
-            Project project = projectDAL.GetProjectDetailsById(projectId);
+                dtgvProject.Rows.Clear();
 
-            if (project != null)
+                foreach (var project in projects)
+                {
+                    dtgvProject.Rows.Add(
+                        project.ProjectID,
+                        project.ProjectName,
+                        project.ProjectStart.ToString("dd/MM/yyyy"),
+                        project.ProjectEnd.ToString("dd/MM/yyyy"),
+                        project.ProjectBudget.ToString("N2"),
+                        project.CurrentPhaseNumber,
+                        project.CustomerName ?? "ไม่ระบุ",
+                        project.EmployeeName ?? "ไม่ระบุ"
+                    );
+                }
+            }
+            finally
             {
-                //ต้องเรียกอะไรบ้าง
+                _suppressUIEvents = false;
             }
         }
+
+        private void LoadFullProjectByID(int projectId)
+        {
+            _suppressUIEvents = true;   // << ปิด event ชั่วคราว
+            try
+            {
+                ProjectDAL dal = new ProjectDAL();
+                Project project = dal.GetProjectDetailsById(projectId);
+
+                if (project == null)
+                {
+                    MessageBox.Show("ไม่พบข้อมูลโครงการที่เลือก!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                selectedProjectID = project.ProjectID;
+
+                // แสดงข้อมูล Project
+                txtProjectName.Text = project.ProjectName;
+                txtProjectDetail.Text = project.ProjectDetail;
+                txtProjectAddress.Text = project.ProjectAddress;
+                txtBudget.Text = project.ProjectBudget.ToString("N2");
+                txtRemark.Text = project.Remark;
+                txtNumber.Text = project.ProjectNumber;
+
+                dtpkStartDate.Value = project.ProjectStart;
+                dtpkEndDate.Value = project.ProjectEnd;
+
+                int workingDays = CalculateWorkingDays(project.ProjectStart, project.ProjectEnd);
+                txtWorkingDate.Text = workingDays.ToString();
+
+                cmbCurrentPhaseNumber.SelectedItem = project.CurrentPhaseNumber.ToString();
+
+                txtCustomerName.Text = project.CustomerName;
+                txtEmployeeName.Text = project.EmployeeName;
+
+                // ไฟล์
+                fileConstructionBytes = project.ProjectFile?.ConstructionBlueprint;
+                fileDemolitionBytes = project.ProjectFile?.DemolitionModel;
+
+                btnInsertBlueprintFile.Text = (fileConstructionBytes != null) ? "ไฟล์แนบแล้ว" : "เลือกไฟล์";
+                btnInsertDemolitionFile.Text = (fileDemolitionBytes != null) ? "ไฟล์แนบแล้ว" : "เลือกไฟล์";
+
+                // เฟสงาน
+                projectPhases = project.Phases ?? new List<ProjectPhase>();
+                dtgvPhase.Rows.Clear();
+
+                foreach (var phase in projectPhases)
+                {
+                    dtgvPhase.Rows.Add(
+                        phase.PhaseNumber,
+                        phase.PhaseDetail,
+                        phase.PhaseBudget.ToString("N2"),
+                        phase.PhasePercent.ToString("0.00") + " %",
+                        // เพิ่ม % BOQ คำนวณย้อนหลัง (เทียบกับงบโครงการ)
+                        (project.ProjectBudget > 0 ? (phase.PhaseBudget * 100m / project.ProjectBudget) : 0m).ToString("0.00")
+                    );
+                }
+
+                CalculateTotalPhasePercentage();
+            }
+            finally
+            {
+                _suppressUIEvents = false;  // << เปิด event กลับ
+            }
+        }
+
+        // นับจำนวน "วันทำงาน" แบบไม่รวมวันอาทิตย์ (นับรวมวันเริ่มและวันสิ้นสุด)
+        private int CalculateWorkingDays(DateTime startDate, DateTime endDate)
+        {
+            if (endDate < startDate) return 0;
+
+            int workingDays = 0;
+            DateTime d = startDate.Date;
+            DateTime last = endDate.Date;
+
+            while (d <= last)
+            {
+                if (d.DayOfWeek != DayOfWeek.Sunday) // อยากตัดเสาร์ด้วย ให้ใส่ && d.DayOfWeek != DayOfWeek.Saturday
+                    workingDays++;
+
+                d = d.AddDays(1);
+            }
+            return workingDays;
+        }
+
+
         private void dtgvProject_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                // ✅ ดึงค่า `ProjectID` จากตาราง
                 int projectId = Convert.ToInt32(dtgvProject.Rows[e.RowIndex].Cells["ProjectID"].Value);
-
-                // ✅ โหลดข้อมูลโครงการไปยัง TextBox ต่างๆ
-                LoadProjectDetails(projectId);
-
-                // ✅ โหลดข้อมูล Phase ที่เกี่ยวข้อง
-                LoadPhaseData(projectId);
+                LoadFullProjectByID(projectId);
             }
         }
 
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-        
+        // ------------------------------------------------------------
         // การจัดการข้อมูล Phase
+        // ------------------------------------------------------------
         private void InitializePhaseDataGridView()
         {
-            // ✅ ป้องกันการเพิ่มคอลัมน์ซ้ำ
             if (dtgvPhase.Columns.Count == 0)
             {
                 dtgvPhase.AllowUserToAddRows = false;
 
-                // ✅ เพิ่มคอลัมน์
                 dtgvPhase.Columns.Add("PhaseNumber", "เฟสที่");
                 dtgvPhase.Columns.Add("PhaseDetail", "รายละเอียดการดำเนินงาน");
                 dtgvPhase.Columns.Add("PhaseBudget", "งบประมาณเฟส (บาท)");
-                dtgvPhase.Columns.Add("PhasePercent", "เปอร์เซ็นต์งาน (%)"); // 🟢 เพิ่มคอลัมน์
+                dtgvPhase.Columns.Add("PhasePercent", "% ความก้าวหน้า");
+                dtgvPhase.Columns.Add("BoqPercent", "% BOQ");
 
-                // ✅ ปรับแต่งคอลัมน์
                 dtgvPhase.Columns["PhaseNumber"].Width = 60;
                 dtgvPhase.Columns["PhaseNumber"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dtgvPhase.Columns["PhaseNumber"].ReadOnly = true;
@@ -210,19 +330,26 @@ namespace JRSApplication
 
                 dtgvPhase.Columns["PhaseBudget"].Width = 120;
                 dtgvPhase.Columns["PhaseBudget"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dtgvPhase.Columns["PhaseBudget"].DefaultCellStyle.Format = "N2"; // ✅ แสดงเป็น 1,200.00
+                dtgvPhase.Columns["PhaseBudget"].DefaultCellStyle.Format = "N2";
                 dtgvPhase.Columns["PhaseBudget"].ReadOnly = true;
 
                 dtgvPhase.Columns["PhasePercent"].Width = 100;
                 dtgvPhase.Columns["PhasePercent"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dtgvPhase.Columns["PhasePercent"].DefaultCellStyle.Format = "0.00"; // ✅ แสดงเป็น 2 ตำแหน่ง
+                dtgvPhase.Columns["PhasePercent"].DefaultCellStyle.Format = "0.00";
                 dtgvPhase.Columns["PhasePercent"].ReadOnly = true;
+
+                dtgvPhase.Columns["BoqPercent"].Width = 100;
+                dtgvPhase.Columns["BoqPercent"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dtgvPhase.Columns["BoqPercent"].DefaultCellStyle.Format = "0.00";
+                dtgvPhase.Columns["BoqPercent"].ReadOnly = true;
 
                 CustomizeDataGridViewPhase();
             }
         }
+
         private void CustomizeDataGridViewPhase()
         {
+            dtgvPhase.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dtgvPhase.BorderStyle = BorderStyle.None;
             dtgvPhase.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
             dtgvPhase.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
@@ -234,7 +361,7 @@ namespace JRSApplication
             dtgvPhase.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dtgvPhase.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dtgvPhase.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dtgvPhase.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            dtgvPhase.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
             dtgvPhase.ColumnHeadersHeight = 30;
 
             dtgvPhase.DefaultCellStyle.Font = new Font("Segoe UI", 12);
@@ -254,78 +381,91 @@ namespace JRSApplication
             dtgvPhase.AllowUserToResizeRows = false;
         }
 
-        private void LoadPhaseData(int projectId)
-        {
-            InitializePhaseDataGridView();
-
-            PhaseDAL phaseDAL = new PhaseDAL();
-            List<ProjectPhase> phases = phaseDAL.GetAllPhasesByPrjectID(projectId);
-
-            dtgvPhase.Rows.Clear();
-            foreach (var phase in phases)
-            {
-                dtgvPhase.Rows.Add(
-                    phase.PhaseNumber, // เฟสที่
-                    phase.PhaseDetail, // รายละเอียดการดำเนินงาน
-                    phase.PhaseBudget.ToString("N2"), // จำนวนเงิน (บาท) -> แสดงเป็น 1,200.00
-                    phase.PhasePercent.ToString("N2") + " %" // เปอร์เซ็นต์ (%)
-                );
-            }
-        }
-
         private void LoadPhaseToGridView()
         {
-            dtgvPhase.Rows.Clear();
-
-            foreach (var phase in projectPhases)
+            _suppressUIEvents = true;
+            try
             {
-                dtgvPhase.Rows.Add(phase.PhaseNumber, phase.PhaseDetail,
-                                   phase.PhaseBudget.ToString("N2"),
-                                   phase.PhasePercent.ToString("0.00"));
-            }
+                dtgvPhase.Rows.Clear();
 
-            // ✅ คำนวณเปอร์เซ็นต์รวม
-            CalculateTotalPhasePercentage();
+                decimal totalBudget = 0;
+                decimal.TryParse(txtBudget.Text.Replace(",", ""), out totalBudget);
+
+                foreach (var phase in projectPhases)
+                {
+                    decimal boqPercent = 0;
+                    if (totalBudget > 0)
+                    {
+                        boqPercent = (phase.PhaseBudget * 100) / totalBudget;
+                    }
+
+                    dtgvPhase.Rows.Add(
+                        phase.PhaseNumber,
+                        phase.PhaseDetail,
+                        phase.PhaseBudget.ToString("N2"),
+                        phase.PhasePercent.ToString("0.00"),
+                        boqPercent.ToString("0.00")
+                    );
+                }
+
+                CalculateTotalPhasePercentage();
+            }
+            finally
+            {
+                _suppressUIEvents = false;
+            }
         }
+
         private void dtgvPhase_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0) // ✅ ตรวจสอบว่าคลิกที่แถวที่มีข้อมูล
+            if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dtgvPhase.Rows[e.RowIndex];
 
-                // ✅ ค้นหาเฟสที่ถูกเลือกจาก `List<ProjectPhase>`
                 int selectedPhaseNumber = int.Parse(row.Cells["PhaseNumber"].Value.ToString());
                 currentEditingPhase = projectPhases.FirstOrDefault(p => p.PhaseNumber == selectedPhaseNumber);
                 if (currentEditingPhase != null)
                 {
-                    // ✅ แสดงค่าลงในช่องป้อนข้อมูล
-                    cmbPhaseNumber.SelectedItem = currentEditingPhase.PhaseNumber.ToString();
-                    txtPhaseDetail.Text = currentEditingPhase.PhaseDetail;
-                    txtPercentPhase.Text = currentEditingPhase.PhasePercent.ToString("0.00");
+                    _suppressUIEvents = true;
+                    try
+                    {
+                        cmbPhaseNumber.SelectedItem = currentEditingPhase.PhaseNumber.ToString();
+                        txtPhaseDetail.Text = currentEditingPhase.PhaseDetail;
+                        txtboqPercentage.Text = currentEditingPhase.PhasePercent.ToString("0.00");
+                        txtcompletionPercentage.Text = currentEditingPhase.PhasePercent.ToString("0.00");
+                    }
+                    finally
+                    {
+                        _suppressUIEvents = false;
+                    }
 
-                    // ห้ามแก้ไข
                     PhaseDisableEditing();
                     btnTurnoffEditing.Visible = true;
                 }
             }
-
         }
 
         private void btnAddPhase_Click(object sender, EventArgs e)
         {
-            // ✅ ตรวจสอบว่ากรอกข้อมูลครบ
             if (cmbPhaseNumber.SelectedItem == null ||
                 string.IsNullOrWhiteSpace(txtPhaseDetail.Text) ||
-                string.IsNullOrWhiteSpace(txtPercentPhase.Text))
+                string.IsNullOrWhiteSpace(txtboqPercentage.Text) ||
+                string.IsNullOrWhiteSpace(txtcompletionPercentage.Text))
             {
                 MessageBox.Show("กรุณากรอกข้อมูลให้ครบถ้วน!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // ✅ แปลงค่าเปอร์เซ็นต์
-            if (!decimal.TryParse(txtPercentPhase.Text, out decimal phasePercent) || phasePercent <= 0)
+            if (!decimal.TryParse(txtboqPercentage.Text, out decimal boqPercent) || boqPercent <= 0)
             {
-                MessageBox.Show("กรุณากรอกเปอร์เซ็นต์งานให้ถูกต้อง!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกเปอร์เซ็นต์ BOQ ให้ถูกต้อง!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!decimal.TryParse(txtcompletionPercentage.Text, out decimal completionPercent) ||
+                completionPercent < 0 || completionPercent > 100)
+            {
+                MessageBox.Show("กรุณากรอกเปอร์เซ็นต์ความก้าวหน้าให้ถูกต้อง (0-100%)", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -335,118 +475,153 @@ namespace JRSApplication
                 return;
             }
 
-            // ✅ คำนวณ phase_budget (budget * phasePercent / 100)
-            decimal totalBudget = decimal.Parse(txtBudget.Text.Replace(",", ""));
-            decimal phaseBudget = (totalBudget * phasePercent) / 100;
+            decimal totalBudget = 0;
+            decimal.TryParse(txtBudget.Text.Replace(",", ""), out totalBudget);
+            decimal phaseBudget = (totalBudget * boqPercent) / 100;
+
             int phaseNumber = int.Parse(cmbPhaseNumber.SelectedItem.ToString());
+
+            decimal totalCompletionPercent = projectPhases.Sum(p => p.PhasePercent);
+            decimal totalBoqPercent = 0;
+
+            foreach (var p in projectPhases)
+            {
+                totalBoqPercent += (p.PhaseBudget * 100) / totalBudget;
+            }
 
             if (btnAddPhase.Text == "บันทึก" && currentEditingPhase != null)
             {
-                // ✅ แก้ไขข้อมูลเดิม
+                totalCompletionPercent -= currentEditingPhase.PhasePercent;
+                totalBoqPercent -= (currentEditingPhase.PhaseBudget * 100) / totalBudget;
+            }
+
+            if (totalCompletionPercent + completionPercent > 100)
+            {
+                MessageBox.Show($"เปอร์เซ็นต์ความก้าวหน้ารวมเกิน 100%! (รวม {totalCompletionPercent + completionPercent:0.00}%)",
+                                "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (totalBoqPercent + boqPercent > 100)
+            {
+                MessageBox.Show($"เปอร์เซ็นต์งวดงาน (BOQ) รวมเกิน 100%! (รวม {totalBoqPercent + boqPercent:0.00}%)",
+                                "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (btnAddPhase.Text == "บันทึก" && currentEditingPhase != null)
+            {
                 currentEditingPhase.PhaseDetail = txtPhaseDetail.Text.Trim();
-                currentEditingPhase.PhasePercent = phasePercent;
+                currentEditingPhase.PhasePercent = completionPercent;
                 currentEditingPhase.PhaseBudget = phaseBudget;
             }
             else
             {
-                // ✅ ตรวจสอบว่ามีเฟสนี้แล้วหรือยัง
                 if (projectPhases.Any(p => p.PhaseNumber == phaseNumber))
                 {
                     MessageBox.Show("เฟสนี้มีอยู่แล้ว กรุณาเลือกเฟสใหม่!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // ✅ เพิ่มข้อมูลใหม่
                 ProjectPhase newPhase = new ProjectPhase
                 {
                     PhaseNumber = phaseNumber,
                     PhaseDetail = txtPhaseDetail.Text.Trim(),
-                    PhasePercent = phasePercent,
+                    PhasePercent = completionPercent,
                     PhaseBudget = phaseBudget
                 };
 
                 projectPhases.Add(newPhase);
             }
 
-            // ✅ โหลดข้อมูลใหม่ลงตาราง
             LoadPhaseToGridView();
-
-            // ✅ ล้างค่าฟอร์ม
             clearPhaseForm();
             PhaseAbleOn();
             btnTurnoffEditing.Visible = false;
-
-            // ✅ เปลี่ยนปุ่มกลับเป็น "เพิ่ม"
             btnAddPhase.Text = "เพิ่ม";
             currentEditingPhase = null;
         }
-        
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------
 
-        //การคำนวณและรีเซ็ต Phase
-
-        
+        // ------------------------------------------------------------
+        // การคำนวณและรีเซ็ต Phase
+        // ------------------------------------------------------------
         private void CalculateTotalPhasePercentage()
         {
-            decimal totalPercent = projectPhases.Sum(p => p.PhasePercent);
+            decimal totalCompletion = projectPhases.Sum(p => p.PhasePercent);
+            decimal totalBoqPercent = 0;
+            decimal totalBoqBudget = 0;
 
-            lblTotalPercentage.Text = $"รวม {totalPercent:0.00}%";
+            decimal totalBudget = 0;
+            decimal.TryParse(txtBudget.Text.Replace(",", ""), out totalBudget);
 
-            // ✅ เปลี่ยนสีตัวเลขถ้าครบ 100%
-            lblTotalPercentage.ForeColor = totalPercent == 100 ? Color.Green : Color.Red;
+            foreach (var phase in projectPhases)
+            {
+                if (totalBudget > 0)
+                {
+                    decimal boqPercent = (phase.PhaseBudget * 100) / totalBudget;
+                    totalBoqPercent += boqPercent;
+                    totalBoqBudget += phase.PhaseBudget;
+                }
+            }
+
+            lblTotalPercentage.Text = $"รวม เปอร์เซ็นต์ความก้าวหน้างาน % : {totalCompletion:0.00}%\n" +
+                                      $"รวม เปอร์เซ็นต์งวดงาน (BOQ) % : {totalBoqPercent:0.00}%\n" +
+                                      $"รวม งบประมาณ: {totalBoqBudget:N2} บาท";
+
+            lblTotalPercentage.ForeColor = totalCompletion == 100 ? Color.Green : Color.Blue;
         }
-        //เปิดปิด การทำงาน phase
+
+        // เปิดปิด การทำงาน phase
         private void clearPhaseForm()
-        {   //ล้างข้อมูล
+        {
             txtPhaseDetail.Clear();
-            txtPercentPhase.Clear();
+            txtboqPercentage.Clear();
             cmbPhaseNumber.SelectedIndex = -1;
+            txtcompletionPercentage.Clear();
         }
         private void ClearPhaseData()
         {
-            projectPhases.Clear();               // เคลียร์ List<ProjectPhase>
-            dtgvPhase.Rows.Clear();              // เคลียร์แถวใน DataGridView
-            cmbPhaseNumber.SelectedIndex = -1;   // รีเซ็ต dropdown
+            projectPhases.Clear();
+            dtgvPhase.Rows.Clear();
+            cmbPhaseNumber.SelectedIndex = -1;
             txtPhaseDetail.Clear();
-            txtPercentPhase.Clear();
-
+            txtboqPercentage.Clear();
+            txtcompletionPercentage.Clear();
         }
         private void PhaseDisableEditing()
-        {   //ปิดการทำงาน
+        {
             txtPhaseDetail.ReadOnly = true;
-            txtPercentPhase.ReadOnly = true;
+            txtboqPercentage.ReadOnly = true;
             cmbPhaseNumber.Enabled = false;
             txtPhaseDetail.Enabled = false;
-            txtPercentPhase.Enabled = false;
+            txtboqPercentage.Enabled = false;
+            txtcompletionPercentage.Enabled = false;
         }
         private void PhaseAbleOn()
-        {//เปิดการทำงาน
+        {
             txtPhaseDetail.ReadOnly = false;
-            txtPercentPhase.ReadOnly = false;
+            txtboqPercentage.ReadOnly = false;
             cmbPhaseNumber.Enabled = true;
             txtPhaseDetail.Enabled = true;
-            txtPercentPhase.Enabled = true;
+            txtboqPercentage.Enabled = true;
+            txtcompletionPercentage.Enabled = true;
         }
         private void btnEditPhase_Click(object sender, EventArgs e)
         {
-            if (currentEditingPhase != null)  // ✅ ตรวจสอบว่ามีเฟสที่ถูกเลือกหรือไม่
+            if (currentEditingPhase != null)
             {
-                // ✅ เปิดการแก้ไขเฉพาะรายละเอียดงาน & เปอร์เซ็นต์
                 txtPhaseDetail.ReadOnly = false;
-                txtPercentPhase.ReadOnly = false;
+                txtboqPercentage.ReadOnly = false;
                 txtPhaseDetail.Enabled = true;
-                txtPercentPhase.Enabled = true;
+                txtboqPercentage.Enabled = true;
 
-                // ✅ ปิดการแก้ไขหมายเลขเฟส เพื่อป้องกันการเปลี่ยนหมายเลขเฟส
                 cmbPhaseNumber.Enabled = false;
 
-                // ✅ เปลี่ยนปุ่ม "เพิ่ม" เป็น "บันทึก"
                 btnAddPhase.Text = "บันทึก";
             }
             else
             {
-                MessageBox.Show("กรุณาเลือกเฟสที่ต้องการแก้ไข", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกเฟสที่ต้องการแก้ไข!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -456,10 +631,10 @@ namespace JRSApplication
             clearPhaseForm();
             btnTurnoffEditing.Visible = false;
         }
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------
 
-        //การจัดการ ComboBox(เฟสงาน)
+        // ------------------------------------------------------------
+        // การจัดการ ComboBox(เฟสงาน)
+        // ------------------------------------------------------------
         private void LoadPhaseNumberDropdown()
         {
             cmbCurrentPhaseNumber.Items.Clear();
@@ -468,23 +643,19 @@ namespace JRSApplication
                 cmbCurrentPhaseNumber.Items.Add(i.ToString());
             }
         }
-        //เมื่อเลือก cmbCurrentPhaseNumber ต้องอัปเดต cmbPhaseNumber
+
         private void cmbCurrentPhaseNumber_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbCurrentPhaseNumber.SelectedItem != null)
             {
                 int totalPhases = int.Parse(cmbCurrentPhaseNumber.SelectedItem.ToString());
 
-                // ✅ เคลียร์ค่าเก่าก่อน
                 cmbPhaseNumber.Items.Clear();
-
-                // ✅ เพิ่มค่า 1 ถึง totalPhases (รวม totalPhases ด้วย)
                 for (int i = 1; i <= totalPhases; i++)
                 {
                     cmbPhaseNumber.Items.Add(i.ToString());
                 }
 
-                // ✅ ตั้งค่าเริ่มต้นให้เลือกอันแรก
                 if (cmbPhaseNumber.Items.Count > 0)
                 {
                     cmbPhaseNumber.SelectedIndex = 0;
@@ -492,24 +663,30 @@ namespace JRSApplication
             }
         }
 
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-
-        //ปุ่ม Action หลัก
-        //Action button
+        // ------------------------------------------------------------
+        // ปุ่ม Action หลัก
+        // ------------------------------------------------------------
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
-
-                // ✅ ตรวจสอบข้อมูลก่อนบันทึก
                 if (!ValidateProjectData())
-                {
-                    return; // ❌ ถ้าข้อมูลไม่ครบ จะไม่ดำเนินการต่อ
-                }
+                    return;
 
                 ProjectDAL dal = new ProjectDAL();
-                int projectID = dal.GenerateProjectID(); // ✅ สร้าง `pro_id` ก่อน
+                EmployeeAssignmentDAL assignDal = new EmployeeAssignmentDAL();
+                int projectID;
+
+                bool isUpdate = selectedProjectID != null;
+
+                if (isUpdate)
+                {
+                    projectID = selectedProjectID.Value;
+                }
+                else
+                {
+                    projectID = dal.GenerateProjectID();
+                }
 
                 Project project = new Project
                 {
@@ -523,59 +700,135 @@ namespace JRSApplication
                     CurrentPhaseNumber = int.Parse(cmbCurrentPhaseNumber.SelectedItem.ToString()),
                     Remark = txtRemark.Text.Trim(),
                     ProjectNumber = txtNumber.Text.Trim(),
-
-                    ConstructionBlueprint = projectFile.ConstructionBlueprint, // ✅ ต้องมี
-                    DemolitionModel = projectFile.DemolitionModel,              // ✅ ไม่มีก็ได้
-
-                    EmployeeID = int.Parse(selectedEmployeeID),
+                    EmployeeID = selectedEmployeeID,
                     CustomerID = int.Parse(selectedCustomerID)
                 };
 
+                bool success;
 
-                bool success = dal.InsertProjectWithPhases(project, projectPhases);
-
-                if (success)
+                if (isUpdate)
                 {
-                    MessageBox.Show("บันทึกโครงการเรียบร้อย", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadProjectData(); // ✅ โหลดข้อมูลใหม่
+                    success = dal.UpdateProjectWithPhases(project, projectPhases, fileConstructionBytes, fileDemolitionBytes);
+
+                    if (success)
+                    {
+                        assignDal.DeleteAssignmentsByProjectID(project.ProjectID);
+                        foreach (var assign in assignedEmployees)
+                        {
+                            assign.ProjectID = project.ProjectID;
+                            assignDal.InsertAssignment(assign);
+                        }
+
+                        MessageBox.Show("อัปเดตโครงการเรียบร้อย", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("เกิดข้อผิดพลาดในการบันทึก", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    success = dal.InsertProjectWithPhases(project, projectPhases, fileConstructionBytes, fileDemolitionBytes);
+
+                    if (success)
+                    {
+                        foreach (var assign in assignedEmployees)
+                        {
+                            assign.ProjectID = projectID;
+                            assignDal.InsertAssignment(assign);
+                        }
+
+                        MessageBox.Show("บันทึกโครงการเรียบร้อย", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
+
+                if (!success)
+                {
+                    MessageBox.Show("เกิดข้อผิดพลาดในการบันทึก!", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                LoadProjectData();
+                ClearForm();
+                ReadOnlyControls_close();
+                EnableControls_close();
+                selectedProjectID = null;
+
+                btnSave.Text = "บันทึก";
             }
             catch (Exception ex)
             {
                 MessageBox.Show("ข้อผิดพลาด: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            //เคลียฟอร์ม
-            ClearForm();
-            ReadOnlyControls_close();
-            EnableControls_close();
-
         }
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            //เพิ่ม เปิดการทำงาน
-            EnableControls_open();
-            ReadOnlyControls_open();
-            txtProjectName.Focus();
+            // เริ่มกรอกข้อมูลใหม่เสมอ
+            _suppressUIEvents = true;
+            try
+            {
+                // 1) เคลียร์ฟอร์มและสถานะทั้งหมด
+                ClearForm();                 // ล้างทุก textbox / combobox / datepicker / ไฟล์ / dtgvPhase
+                assignedEmployees.Clear();   // ล้างรายชื่อมอบหมายพนักงานที่ค้างจากโปรเจ็กต์ก่อน
+                projectPhases.Clear();       // ล้างเฟสในหน่วยความจำ
+                dtgvPhase.Rows.Clear();      // ล้างตารางเฟส
+                currentEditingPhase = null;
+                selectedProjectID = null;    // บอกชัด ๆ ว่าคือโหมด "สร้างใหม่"
+
+                // (ถ้าต้องการ default จำนวนเฟสเริ่มต้น เช่น 3 เฟส)
+                //cmbCurrentPhaseNumber.SelectedItem = "3";
+
+                // 2) ตั้งค่าวันที่เริ่ม/สิ้นสุดเป็นวันนี้ & ล้างจำนวนวันทำงาน
+                dtpkStartDate.Value = DateTime.Now;
+                dtpkEndDate.Value = DateTime.Now;
+                txtWorkingDate.Text = string.Empty;
+
+                // 3) เปิดให้กรอก + เปิด ReadOnly ออก
+                EnableControls_open();
+                ReadOnlyControls_open();
+
+                // 4) ออกเลขอัตโนมัติทันทีสำหรับเอกสารใหม่
+                txtNumber.Text = GenerateNextOrderNumber();
+                txtNumber.ReadOnly = false;   // ✅ อนุญาตให้แก้ไข
+                txtNumber.Enabled = true;    // ให้เลือก/คัดลอกได้
+
+                // 5) ตั้งสถานะปุ่ม Save
+                btnSave.Text = "บันทึก";
+
+                // โฟกัสช่องแรก
+                txtProjectName.Focus();
+            }
+            finally
+            {
+                _suppressUIEvents = false;
+            }
+
+            // 6) หลังปลดแฟลก ค่อยคำนวณ end date จาก working days ถ้ามีใส่ค่า
+            if (!string.IsNullOrWhiteSpace(txtWorkingDate.Text))
+            {
+                CalculateEndDateFromWorkingDays(false);
+            }
         }
+
+
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            //แก้ไข
-
-        }
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            //ลบ
-            if (dtgvProject.SelectedRows.Count == 0)
+            if (selectedProjectID == null)
             {
-                MessageBox.Show("กรุณาเลือกโครงการที่ต้องการลบ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกโครงการก่อนแก้ไข!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 🔍 ดึง ProjectID จากแถวที่เลือก
+            EnableControls_open();
+            ReadOnlyControls_open();
+            btnSave.Text = "อัปเดต";
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dtgvProject.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("กรุณาเลือกโครงการที่ต้องการลบ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             int selectedProjectID = Convert.ToInt32(dtgvProject.SelectedRows[0].Cells["ProjectID"].Value);
 
             var confirm = MessageBox.Show("คุณแน่ใจหรือไม่ว่าต้องการลบโครงการนี้?", "ยืนยันการลบ", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -586,20 +839,19 @@ namespace JRSApplication
 
                 if (success)
                 {
-                    MessageBox.Show("ลบโครงการเรียบร้อย", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadProjectData(); // โหลดข้อมูลใหม่
+                    MessageBox.Show("ลบโครงการเรียบร้อย!", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadProjectData();
                 }
                 else
                 {
-                    MessageBox.Show("เกิดข้อผิดพลาดในการลบโครงการ", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("เกิดข้อผิดพลาดในการลบโครงการ!", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-
-        //การจัดการฟอร์ม
+        // ------------------------------------------------------------
+        // การจัดการฟอร์ม
+        // ------------------------------------------------------------
         private void EnableControls_open()
         {
             txtProjectName.Enabled = true;
@@ -609,10 +861,11 @@ namespace JRSApplication
             txtProjectDetail.Enabled = true;
             txtProjectAddress.Enabled = true;
             txtPhaseDetail.Enabled = true;
-            txtPercentPhase.Enabled = true;
+            txtboqPercentage.Enabled = true;
+            txtcompletionPercentage.Enabled = true;
 
+            txtWorkingDate.Enabled = true;
             dtpkStartDate.Enabled = true;
-            dtpkEndDate.Enabled = true;
 
             cmbCurrentPhaseNumber.Enabled = true;
             cmbPhaseNumber.Enabled = true;
@@ -626,6 +879,7 @@ namespace JRSApplication
             btnAddPhase.Enabled = true;
             btnEditPhase.Enabled = true;
         }
+
         private void EnableControls_close()
         {
             txtProjectName.Enabled = false;
@@ -635,10 +889,11 @@ namespace JRSApplication
             txtProjectDetail.Enabled = false;
             txtProjectAddress.Enabled = false;
             txtPhaseDetail.Enabled = false;
-            txtPercentPhase.Enabled = false;
+            txtboqPercentage.Enabled = false;
+            txtcompletionPercentage.Enabled = false;
 
+            txtWorkingDate.Enabled = true;
             dtpkStartDate.Enabled = false;
-            dtpkEndDate.Enabled = false;
 
             cmbCurrentPhaseNumber.Enabled = false;
             cmbPhaseNumber.Enabled = false;
@@ -652,6 +907,7 @@ namespace JRSApplication
             btnAddPhase.Enabled = false;
             btnEditPhase.Enabled = false;
         }
+
         private void ReadOnlyControls_open()
         {
             txtProjectName.ReadOnly = false;
@@ -661,8 +917,11 @@ namespace JRSApplication
             txtProjectDetail.ReadOnly = false;
             txtProjectAddress.ReadOnly = false;
             txtPhaseDetail.ReadOnly = false;
-            txtPercentPhase.ReadOnly = false;
+            txtboqPercentage.ReadOnly = false;
+            txtWorkingDate.ReadOnly = false;
+            txtcompletionPercentage.ReadOnly = false;
         }
+
         private void ReadOnlyControls_close()
         {
             txtProjectName.ReadOnly = true;
@@ -672,76 +931,92 @@ namespace JRSApplication
             txtProjectDetail.ReadOnly = true;
             txtProjectAddress.ReadOnly = true;
             txtPhaseDetail.ReadOnly = true;
-            txtPercentPhase.ReadOnly = true;
+            txtboqPercentage.ReadOnly = true;
+            txtWorkingDate.ReadOnly = true;
+            txtcompletionPercentage.ReadOnly = true;
         }
+
         private void ClearForm()
         {
-            txtProjectName.Clear();
-            txtNumber.Clear();
-            txtBudget.Clear();
-            txtRemark.Clear();
-            txtProjectDetail.Clear();
-            txtProjectAddress.Clear();
-            txtPhaseDetail.Clear();
-            txtPercentPhase.Clear();
+            _suppressUIEvents = true;  // << ป้องกัน event เด้งตอนเคลียร์
+            try
+            {
+                txtProjectName.Clear();
+                txtNumber.Clear();
+                txtBudget.Clear();
+                txtRemark.Clear();
+                txtProjectDetail.Clear();
+                txtProjectAddress.Clear();
+                txtPhaseDetail.Clear();
+                txtboqPercentage.Clear();
+                txtWorkingDate.Clear();
+                txtcompletionPercentage.Clear();
 
-            dtpkStartDate.Value = DateTime.Now;
-            dtpkEndDate.Value = DateTime.Now;
+                if (txtNumber != null)
+                {
+                    txtNumber.Clear();
+                    txtNumber.ReadOnly = false;   // ✅ ให้แก้ไขได้
+                    txtNumber.Enabled = true;     // ✅ เปิดใช้งาน
+                }
 
-            cmbCurrentPhaseNumber.SelectedIndex = -1;
-            cmbPhaseNumber.SelectedIndex = -1;
+                dtpkStartDate.Value = DateTime.Now;
+                dtpkEndDate.Value = DateTime.Now;
 
-            selectedCustomerID = "";
-            txtCustomerName.Text = "";
-            txtCustomerLastName.Text = "";
-            txtCustomerIDCard.Text = "";
-            txtCustomerPhone.Text = "";
-            txtCustomerEmail.Text = "";
+                cmbCurrentPhaseNumber.SelectedIndex = -1;
+                cmbPhaseNumber.SelectedIndex = -1;
 
-            selectedEmployeeID = "";
-            txtEmployeeName.Text = "";
-            txtEmployeeLastName.Text = "";
-            txtEmployeeRole.Text = "";
+                selectedCustomerID = "";
+                txtCustomerName.Text = "";
+                txtCustomerLastName.Text = "";
+                txtCustomerIDCard.Text = "";
+                txtCustomerPhone.Text = "";
+                txtCustomerEmail.Text = "";
 
-            btnInsertBlueprintFile.Text = "เลือกไฟล์";
-            btnInsertDemolitionFile.Text = "เลือกไฟล์";
-            projectFile = new Project(); // รีเซ็ตตัวแปรเก็บไฟล์
+                selectedEmployeeID = "";
+                txtEmployeeName.Text = "";
+                txtEmployeeLastName.Text = "";
+                txtEmployeeRole.Text = "";
 
-            // ✔️ ล้าง phase
-            ClearPhaseData();
+                btnInsertBlueprintFile.Text = "เลือกไฟล์";
+                btnInsertDemolitionFile.Text = "เลือกไฟล์";
+                fileConstructionBytes = null;
+                fileDemolitionBytes = null;
+
+                ClearPhaseData();
+            }
+            finally
+            {
+                _suppressUIEvents = false;
+            }
         }
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------
 
-        //การเลือกผู้ดูแล/ลูกค้า
+        // ------------------------------------------------------------
+        // การเลือกผู้ดูแล/ลูกค้า
+        // ------------------------------------------------------------
         private void btnSearchEmployee_Click(object sender, EventArgs e)
         {
             using (SearchForm searchForm = new SearchForm("Employee"))
             {
                 if (searchForm.ShowDialog() == DialogResult.OK)
                 {
-                    // ✅ เก็บค่าที่ได้จาก SearchForm
                     selectedEmployeeID = searchForm.SelectedID;
                     txtEmployeeName.Text = searchForm.SelectedName;
                     txtEmployeeLastName.Text = searchForm.SelectedLastName;
-                    txtEmployeeRole.Text = searchForm.SelectedIDCardOrRole; // ✅ ใช้ตำแหน่งเป็น Role
+                    txtEmployeeRole.Text = searchForm.SelectedIDCardOrRole;
 
-                    // ✅ เพิ่มพนักงานเข้า List (แต่ยังไม่ลงฐานข้อมูล)
                     EmployeeAssignment newAssign = new EmployeeAssignment
                     {
-                        EmployeeID = int.Parse(selectedEmployeeID),
+                        EmployeeID = selectedEmployeeID,
                         EmployeeName = txtEmployeeName.Text,
                         EmployeeLastName = txtEmployeeLastName.Text,
-                        AssignRole = txtEmployeeRole.Text,
-                        AssignBy = loggedInUser, // ✅ Admin ที่ล็อกอิน
+                        AssignRole = _loggedInRole,
+                        AssignBy = _loggedInUser,
                         AssignDate = DateTime.Now
                     };
 
-                    // ✅ ตรวจสอบว่า Employee ถูก Assign ไปแล้วหรือไม่
                     if (!assignedEmployees.Any(a => a.EmployeeID == newAssign.EmployeeID))
                     {
                         assignedEmployees.Add(newAssign);
-                        //RefreshAssignedEmployeesGrid(); // ✅ อัปเดต DataGridView
                     }
                     else
                     {
@@ -750,17 +1025,18 @@ namespace JRSApplication
                 }
             }
         }
+
         private void btnSearchCustomer_Click(object sender, EventArgs e)
         {
             OpenSearchForm("Customer", txtCustomerName, txtCustomerLastName, txtCustomerIDCard, txtCustomerPhone, txtCustomerEmail);
         }
+
         private void OpenSearchForm(string searchType, TextBox nameTextBox, TextBox lastNameTextBox, TextBox idCardOrRoleTextBox, TextBox phoneTextBox = null, TextBox emailTextBox = null)
         {
             using (SearchForm searchForm = new SearchForm(searchType))
             {
                 if (searchForm.ShowDialog() == DialogResult.OK)
                 {
-                    // ✅ เก็บค่า ID ของลูกค้าหรือพนักงาน (แต่ไม่แสดงใน UI)
                     if (searchType == "Customer")
                     {
                         selectedCustomerID = searchForm.SelectedID;
@@ -770,7 +1046,6 @@ namespace JRSApplication
                         selectedEmployeeID = searchForm.SelectedID;
                     }
 
-                    // ✅ แสดงเฉพาะข้อมูลที่ต้องการใน TextBox
                     nameTextBox.Text = searchForm.SelectedName;
                     lastNameTextBox.Text = searchForm.SelectedLastName;
                     idCardOrRoleTextBox.Text = searchForm.SelectedIDCardOrRole;
@@ -780,70 +1055,203 @@ namespace JRSApplication
                 }
             }
         }
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------
 
-        //จัดการ Budget (KeyPress/Enter/Leave)
+        // ------------------------------------------------------------
+        // Budget textbox handlers
+        // ------------------------------------------------------------
         private void txtBudget_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // ✅ อนุญาตเฉพาะตัวเลข จุดทศนิยม และปุ่ม Backspace
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back && e.KeyChar != '.')
             {
-                e.Handled = true; // ป้องกันการพิมพ์ตัวอักษรหรืออักขระพิเศษ
+                e.Handled = true;
             }
 
-            // ✅ ป้องกันไม่ให้มีมากกว่า 1 จุดทศนิยม
             if (e.KeyChar == '.' && txtBudget.Text.Contains("."))
             {
                 e.Handled = true;
             }
         }
+
         private void txtBudget_Leave(object sender, EventArgs e)
         {
             if (decimal.TryParse(txtBudget.Text, out decimal budget))
             {
-                txtBudget.Text = budget.ToString("#,##0.00"); // ✅ ใส่ `,` คั่นหลักพัน และบังคับทศนิยม 2 ตำแหน่ง
+                txtBudget.Text = budget.ToString("#,##0.00");
             }
         }
+
         private void txtBudget_Enter(object sender, EventArgs e)
         {
-            txtBudget.Text = txtBudget.Text.Replace(",", ""); // ✅ ลบ `,` ออกเมื่อแก้ไข
+            txtBudget.Text = txtBudget.Text.Replace(",", "");
         }
 
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-
-
-        //คำนวณจำนวนวันของโครงการ
-        private void CalculateProjectDuration()
+        // ------------------------------------------------------------
+        // คำนวณจำนวนวันของโครงการ
+        // ------------------------------------------------------------
+        private void CalculateEndDateFromWorkingDays(bool isUserAction = false)
         {
-            // ตรวจสอบว่า วันที่เริ่มต้นและวันที่สิ้นสุดถูกต้องหรือไม่
-            if (dtpkEndDate.Value >= dtpkStartDate.Value)
-            {
-                // คำนวณจำนวนวัน
-                int totalDays = (dtpkEndDate.Value - dtpkStartDate.Value).Days;
+            if (_suppressUIEvents) return;
 
-                // แสดงผลที่ txtSumDate
-                txtSumDate.Text = totalDays + " วัน";
-            }
-            else
+            if (!int.TryParse(txtWorkingDate.Text.Trim(), out int workingDays) || workingDays <= 0)
             {
-                // ถ้าผู้ใช้เลือกวันสิ้นสุดที่น้อยกว่าวันเริ่มต้น
-                txtSumDate.Text = "กรุณาเลือกวันที่ให้ถูกต้อง";
+                if (isUserAction && (txtWorkingDate.Focused || this.ContainsFocus))
+                {
+                    MessageBox.Show("กรุณากรอกจำนวนวันทำงานให้ถูกต้อง!", "แจ้งเตือน",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                return;
+            }
+
+            DateTime startDate = dtpkStartDate.Value;
+            DateTime currentDate = startDate;
+            int countedDays = 0;
+
+            while (countedDays < workingDays)
+            {
+                currentDate = currentDate.AddDays(1);
+                if (currentDate.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    countedDays++;
+                }
+            }
+
+            if (currentDate.DayOfWeek == DayOfWeek.Sunday)
+            {
+                if (isUserAction)
+                {
+                    DialogResult result = MessageBox.Show(
+                        "วันที่สิ้นสุดโครงการตรงกับวันอาทิตย์ คุณต้องการขยายระยะเวลาอีก 1 วันหรือไม่?",
+                        "ยืนยันการเปลี่ยนแปลง",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question
+                    );
+
+                    if (result == DialogResult.Yes)
+                    {
+                        // เพิ่ม 1 วันทำงาน → ให้ TextChanged ยิงเอง
+                        _suppressUIEvents = true;
+                        try
+                        {
+                            txtWorkingDate.Text = (workingDays + 1).ToString();
+                        }
+                        finally
+                        {
+                            _suppressUIEvents = false;
+                        }
+                        // ให้ event ของ TextChanged เรียกฟังก์ชันอีกรอบด้วย isUserAction = true
+                        CalculateEndDateFromWorkingDays(true);
+                        return;
+                    }
+                }
+                else
+                {
+                    // ระบบตั้งค่าเอง: เลื่อน 1 วันเงียบ ๆ
+                    currentDate = currentDate.AddDays(1);
+                }
+            }
+
+            _suppressUIEvents = true;
+            try
+            {
+                dtpkEndDate.Value = currentDate;
+            }
+            finally
+            {
+                _suppressUIEvents = false;
             }
         }
+
         private void dtpkStartDate_ValueChanged(object sender, EventArgs e)
         {
-            CalculateProjectDuration(); // คำนวณใหม่เมื่อเปลี่ยนวันที่เริ่มต้น
+            if (_suppressUIEvents) return;
+            CalculateEndDateFromWorkingDays(true);
         }
-        private void dtpkEndDate_ValueChanged(object sender, EventArgs e)
-        {
-            CalculateProjectDuration(); // คำนวณใหม่เมื่อเปลี่ยนวันที่สิ้นสุด
-        }
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------
 
-        
+        private void txtWorkingDate_TextChanged(object sender, EventArgs e)
+        {
+            if (_suppressUIEvents) return;
+            CalculateEndDateFromWorkingDays(true);
+        }
+
+        // ------------------------------------------------------------
+        // PDFPreview
+        // ------------------------------------------------------------
+        private void ShowPDFPreviewFromBytes(byte[] pdfBytes, Control targetControl)
+        {
+            if (pdfBytes == null) return;
+
+            if (pdfPreviewForm == null || pdfPreviewForm.IsDisposed)
+            {
+                pdfPreviewForm = new FormPDFPreview(pdfBytes);
+
+                var location = targetControl.PointToScreen(new Point(0, targetControl.Height));
+                pdfPreviewForm.Location = location;
+
+                pdfPreviewForm.Show();
+            }
+
+            StartHoverTimer(targetControl);
+        }
+
+        private void StartHoverTimer(Control buttonControl)
+        {
+            if (hoverCheckTimer == null)
+            {
+                hoverCheckTimer = new Timer();
+                hoverCheckTimer.Interval = 300;
+                hoverCheckTimer.Tick += (s, e) =>
+                {
+                    Point mousePos = Cursor.Position; // พิกัดบนหน้าจอ (Screen Coordinates)
+
+                    // ✅ ต้องใช้ PointToScreen เพื่อแปลง Bounds ของปุ่มเป็น Screen coordinates เช่นกัน
+                    Rectangle buttonScreenBounds = new Rectangle(
+                        buttonControl.PointToScreen(Point.Empty),
+                        buttonControl.Size
+                    );
+
+                    bool overButton = buttonScreenBounds.Contains(mousePos);
+                    bool overPreview = pdfPreviewForm != null && !pdfPreviewForm.IsDisposed && pdfPreviewForm.Bounds.Contains(mousePos);
+
+                    // ✅ เพิ่ม delay เล็กน้อยก่อนปิด
+                    if (!overButton && !overPreview)
+                    {
+                        hoverCheckTimer.Stop();
+                        Task.Delay(300).ContinueWith(_ =>
+                        {
+                            if (pdfPreviewForm != null && !pdfPreviewForm.IsDisposed)
+                            {
+                                pdfPreviewForm.Invoke((Action)(() =>
+                                {
+                                    pdfPreviewForm.Close();
+                                    pdfPreviewForm = null;
+                                }));
+                            }
+                        });
+                    }
+                };
+            }
+
+            hoverCheckTimer.Start();
+        }
+
+
+        private void btnInsertBlueprintFile_MouseEnter(object sender, EventArgs e)
+        {
+            isPreviewingDemolition = false;
+            if (fileConstructionBytes != null)
+            {
+                ShowPDFPreviewFromBytes(fileConstructionBytes, btnInsertBlueprintFile);
+            }
+        }
+
+        private void btnInsertDemolitionFile_MouseEnter(object sender, EventArgs e)
+        {
+            isPreviewingDemolition = true;
+            if (fileDemolitionBytes != null)
+            {
+                ShowPDFPreviewFromBytes(fileDemolitionBytes, btnInsertDemolitionFile);
+            }
+        }
 
         private byte[] SelectFileAndSetButtonText(Button button)
         {
@@ -857,204 +1265,249 @@ namespace JRSApplication
                 {
                     string selectedFile = openFileDialog.FileName;
 
-                    // ✅ ตรวจสอบไฟล์ PDF หรือไม่
                     if (Path.GetExtension(selectedFile).ToLower() == ".pdf")
                     {
-                        string fileName = Path.GetFileName(selectedFile);
-                        button.Text = fileName;
-                        Console.WriteLine("ไฟล์ที่เลือก: " + fileName);  // ✅ Debug Log
+                        FileInfo fileInfo = new FileInfo(selectedFile);
 
-                        return File.ReadAllBytes(selectedFile); // ✅ แปลงไฟล์เป็น byte[]
+                        if (fileInfo.Length <= 50 * 1024 * 1024)
+                        {
+                            string fileName = Path.GetFileName(selectedFile);
+                            button.Text = fileName;
+                            Console.WriteLine("ไฟล์ที่เลือก: " + fileName);
+
+                            return File.ReadAllBytes(selectedFile);
+                        }
+                        else
+                        {
+                            MessageBox.Show("ขนาดไฟล์เกิน 50MB!", "ขนาดไฟล์ไม่ถูกต้อง", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("กรุณาเลือกไฟล์ PDF เท่านั้น!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("กรุณาเลือกไฟล์ PDF เท่านั้น!", "ชนิดไฟล์ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
             }
 
-            return null; // ❌ ไม่มีไฟล์ถูกเลือก
+            return null;
         }
+
         private void btnInsertBlueprintFile_Click(object sender, EventArgs e)
         {
-            if (projectFile == null)
-                projectFile = new Project();  // ✅ ป้องกัน null
-
-            byte[] fileData = SelectFileAndSetButtonText(btnInsertBlueprintFile);
-            if (fileData != null)
-                projectFile.ConstructionBlueprint = fileData;  // ✅ ต้องมี
+            fileConstructionBytes = SelectFileAndSetButtonText(btnInsertBlueprintFile);
         }
 
         private void btnInsertDemolitionFile_Click(object sender, EventArgs e)
         {
-            if (projectFile == null)
-                projectFile = new Project();  // ✅ ป้องกัน null
-
-            byte[] fileData = SelectFileAndSetButtonText(btnInsertDemolitionFile);
-            projectFile.DemolitionModel = fileData;  // ✅ จะ null ก็ได้
+            fileDemolitionBytes = SelectFileAndSetButtonText(btnInsertDemolitionFile);
         }
 
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------------
-
-        //Validate ก่อนบันทึก
+        // ------------------------------------------------------------
+        // Validate ก่อนบันทึก
+        // ------------------------------------------------------------
         private bool ValidateProjectData()
         {
-            // ✅ ตรวจสอบค่าที่จำเป็นต้องกรอก
             if (string.IsNullOrWhiteSpace(txtProjectName.Text))
             {
-                MessageBox.Show("กรุณากรอกชื่อโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกชื่อโครงการ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtProjectName.Focus();
-                starProjectName.Visible = true;
                 return false;
-            }
-            else
-            {
-                starProjectName.Visible = false;
             }
 
             if (string.IsNullOrWhiteSpace(txtNumber.Text))
             {
-                MessageBox.Show("กรุณากรอกเลขที่สัญญา", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกเลขที่สัญญา!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtNumber.Focus();
-                starNumber.Visible = true;
                 return false;
-            }
-            else
-            {
-
             }
 
             if (cmbCurrentPhaseNumber.SelectedItem == null)
             {
-                MessageBox.Show("กรุณาระบุจำนวนเฟส", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาระบุจำนวนเฟส!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cmbCurrentPhaseNumber.Focus();
-                starPhase.Visible = true;
                 return false;
-            }
-            else
-            {
-
             }
 
             if (dtpkStartDate.Value > dtpkEndDate.Value)
             {
-                MessageBox.Show("วันที่สิ้นสุดโครงการต้องไม่น้อยกว่าวันที่เริ่มต้น", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("วันที่สิ้นสุดโครงการต้องไม่น้อยกว่าวันที่เริ่มต้น!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 dtpkEndDate.Focus();
-                starStartDate.Visible = true;
-                starEndDate.Visible = true;
                 return false;
-            }
-            else
-            {
-
             }
 
             if (string.IsNullOrWhiteSpace(txtBudget.Text) || !decimal.TryParse(txtBudget.Text.Replace(",", ""), out _))
             {
-                MessageBox.Show("กรุณากรอกจำนวนเงินจ้างที่ถูกต้อง", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกจำนวนเงินจ้างที่ถูกต้อง!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtBudget.Focus();
-                starBudget.Visible = true;
                 return false;
-            }
-            else
-            {
-                starBudget.Visible = false;
             }
 
             if (string.IsNullOrWhiteSpace(selectedCustomerID))
             {
-                MessageBox.Show("กรุณาเลือกข้อมูลลูกค้า", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                starCustomer.Visible = true;
+                MessageBox.Show("กรุณาเลือกข้อมูลลูกค้า!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
-            }
-            else
-            {
-                starCustomer.Visible = false;
             }
 
             if (string.IsNullOrWhiteSpace(selectedEmployeeID))
             {
-                MessageBox.Show("กรุณาเลือกข้อมูลผู้ดูแลโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                starProjectManager.Visible = true;
+                MessageBox.Show("กรุณาเลือกข้อมูลผู้ดูแลโครงการ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
-            }
-            else
-            {
-                starProjectManager.Visible = false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtProjectDetail.Text))
-            {
-                MessageBox.Show("กรุณากรอกข้อมูลโครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtProjectDetail.Focus();
-                starProjectDetail.Visible = true;
-                return false;
-            }
-            else
-            {
-                starProjectDetail.Visible = false;
             }
 
             if (string.IsNullOrWhiteSpace(txtProjectAddress.Text))
             {
-                MessageBox.Show("กรุณากรอกที่อยู่โครงการ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกที่อยู่โครงการ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtProjectAddress.Focus();
-                starProjectAddress.Visible = true;
                 return false;
-            }
-            else 
-            {
-                starProjectAddress.Visible = false;
             }
 
             if (string.IsNullOrWhiteSpace(txtRemark.Text))
             {
-                MessageBox.Show("", "" , MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกหมายเหตุที่เกี่ยวข้องกับโครงการ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtRemark.Focus();
-                starRemark.Visible = true;
-                return false;
-            }
-            else
-            {
-                starRemark.Visible = false;
-            }
-            // ✅ ตรวจสอบว่ามีไฟล์ blueprint หรือไม่
-            if (projectFile == null || projectFile.ConstructionBlueprint == null)
-            {
-                MessageBox.Show("กรุณาเลือกไฟล์แบบแปลนโครงการ (Blueprint) ก่อนบันทึก!",
-                    "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
-            else
+            if (string.IsNullOrWhiteSpace(txtProjectDetail.Text))
             {
-
-            }
-            // งง 
-            if (string.IsNullOrWhiteSpace(btnInsertBlueprintFile.Text) || btnInsertBlueprintFile.Text == "เลือกไฟล์")
-            {
-                MessageBox.Show("กรุณาเลือกไฟล์แบบก่อสร้าง", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                starBlueprint.Visible = true; 
-                return false;
-            }
-            else
-            {
-                starBlueprint.Visible = false; 
-            }
-
-            // ✅ ตรวจสอบเปอร์เซ็นต์รวมของเฟส (ต้องเท่ากับ 100%)
-            decimal totalPercent = projectPhases.Sum(p => p.PhasePercent);
-            if (totalPercent != 100)
-            {
-                MessageBox.Show("เปอร์เซ็นต์รวมของเฟสต้องเท่ากับ 100%", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
+                MessageBox.Show("กรุณากรอกรายละเอียดโครงการ!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtProjectDetail.Focus();
                 return false;
             }
 
-            return true; // ✅ ผ่านทุกเงื่อนไข
+            if (fileConstructionBytes == null)
+            {
+                MessageBox.Show(
+                    "กรุณาเลือกไฟล์แบบแปลนโครงการ (Blueprint) ก่อนบันทึก!",
+                    "ข้อมูลผิดพลาด!",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return false;
+            }
+
+            decimal totalBudget = 0;
+            decimal.TryParse(txtBudget.Text.Replace(",", ""), out totalBudget);
+
+            decimal totalCompletion = projectPhases.Sum(p => p.PhasePercent);
+            decimal totalBoqBudget = projectPhases.Sum(p => p.PhaseBudget);
+            decimal totalBoqPercent = 0;
+
+            if (totalBudget > 0)
+            {
+                foreach (var phase in projectPhases)
+                {
+                    totalBoqPercent += (phase.PhaseBudget * 100) / totalBudget;
+                }
+            }
+
+            List<string> errors = new List<string>();
+
+            if (totalCompletion != 100)
+                errors.Add($"เปอร์เซ็นต์ความก้าวหน้ารวมต้องเท่ากับ 100% (ปัจจุบัน: {totalCompletion:0.00}%)");
+
+            if (totalBoqPercent != 100)
+                errors.Add($"เปอร์เซ็นต์ BOQ รวมต้องเท่ากับ 100% (ปัจจุบัน: {totalBoqPercent:0.00}%)");
+
+            if (Math.Round(totalBoqBudget, 2) != Math.Round(totalBudget, 2))
+                errors.Add($"งบประมาณรวมของเฟส ({totalBoqBudget:N2}) ต้องเท่ากับงบประมาณโครงการ ({totalBudget:N2})");
+
+            if (errors.Any())
+            {
+                MessageBox.Show(string.Join("\n", errors), "ข้อผิดพลาดในการตรวจสอบเฟส", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
         }
 
-        
+        // ------------------------------------------------------------
+        // เมธอดเปิดฟอร์ม Preview (MouseEnter handlers อยู่ข้างบน)
+        // ------------------------------------------------------------
+
+        // ------------------------------------------------------------
+        // NEW: เลขที่ใบสั่งซื้ออัตโนมัติ
+        // ------------------------------------------------------------
+        private string GenerateNextOrderNumber()
+        {
+            string prefix = "CT";
+            var now = DateTime.Now;
+
+            // ปี พ.ศ. 2 หลักท้าย
+            int yearBE = now.Year + 543;
+            string yy = (yearBE % 100).ToString("D2");
+            string mm = now.Month.ToString("D2");
+            string baseKey = $"{prefix}{yy}{mm}";
+            string pattern = $"{baseKey}-%";
+
+            string sql = @"
+                SELECT num FROM (
+                    SELECT order_number AS num
+                    FROM purchaseorder
+                    WHERE order_number LIKE @pattern
+                    UNION ALL
+                    SELECT pro_number AS num
+                    FROM project
+                    WHERE pro_number LIKE @pattern
+                ) x
+                ORDER BY num DESC
+                LIMIT 1;";
+
+            string lastOrderNo = null;
+
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("@pattern", pattern);
+                conn.Open();
+                var result = cmd.ExecuteScalar();
+                if (result != null && result != DBNull.Value)
+                    lastOrderNo = result.ToString();
+            }
+
+            string nextRunning = "0001";
+            string dash = "-";
+
+            if (!string.IsNullOrEmpty(lastOrderNo))
+            {
+                // รูปแบบ: CTyyMM-0001 หรือ CTyyMM-A0001
+                var parts = lastOrderNo.Split('-');
+                if (parts.Length == 2)
+                {
+                    string runningPart = parts[1];
+
+                    if (runningPart.StartsWith("A"))
+                    {
+                        int num = int.Parse(runningPart.Substring(1));
+                        if (num >= 9999)
+                        {
+                            dash = "-A";          // (ยังคงรูปแบบเดิมของคุณ)
+                            nextRunning = "0001";
+                        }
+                        else
+                        {
+                            dash = "-A";
+                            nextRunning = (num + 1).ToString("D4");
+                        }
+                    }
+                    else
+                    {
+                        int num = int.Parse(runningPart);
+                        if (num >= 9999)
+                        {
+                            dash = "-A";
+                            nextRunning = "0001";
+                        }
+                        else
+                        {
+                            nextRunning = (num + 1).ToString("D4");
+                        }
+                    }
+                }
+            }
+
+            return $"{baseKey}{dash}{nextRunning}";
+        }
+
     }
 }

@@ -58,33 +58,41 @@ namespace JRSApplication
                 {
                     connection.Open();
 
-                    // ✅ ใช้ Parameterized Query เพื่อป้องกัน SQL Injection
                     string query = @"
-                        SELECT emp_name, emp_lname, emp_pos 
-                        FROM employee 
-                        WHERE emp_username = @Username 
-                        AND emp_password = @Password";
+                                SELECT emp_id, emp_password, emp_name, emp_lname, emp_pos
+                                FROM employee
+                                WHERE emp_username = @Username";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Username", username);
-                        command.Parameters.AddWithValue("@Password", password);
 
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
+                                string hashedPassword = reader["emp_password"].ToString();
                                 string fullName = $"{reader["emp_name"]} {reader["emp_lname"]}";
                                 string role = reader["emp_pos"].ToString();
+                                string empId = reader["emp_id"].ToString();
 
-                                MessageBox.Show($"เข้าสู่ระบบสำเร็จ! ตำแหน่ง: {role}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                                // ✅ ส่งค่าชื่อและตำแหน่งไป AdminForm
-                                NavigateToDashboard(role, fullName);
+                                 //✅ ตรวจสอบรหัสผ่านด้วย BCrypt
+                                if (BCrypt.Net.BCrypt.Verify(password, hashedPassword))
+                                {
+                                    MessageBox.Show($"ยินดีต้อยรับเข้าสู่ระบบ {fullName + " ตำแหน่ง :" + role}", "เข้าสู่ระบบสำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    NavigateToDashboard(role, fullName, empId);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้องกรุณาลองใหม่อีกครั้ง", "เข้าสู่ระบบล้มเหลว", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    txtUsername.Clear();
+                                    txtPassword.Clear();
+                                    txtUsername.Focus();
+                                }
                             }
                             else
                             {
-                                MessageBox.Show("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้องกรุณาลองใหม่อีกครั้ง", "เข้าสู่ระบบล้มเหลว", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                     }
@@ -92,11 +100,12 @@ namespace JRSApplication
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"เกิดข้อผิดพลาด: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"เกิดข้อผิดพลาด: {ex.Message}", "เข้าสู่ระบบล้มเหลว", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void NavigateToDashboard(string role, string fullName)
+
+        private void NavigateToDashboard(string role, string fullName, string empId)
         {
             Form dashboard;
 
@@ -106,13 +115,13 @@ namespace JRSApplication
                     dashboard = new AdminForm(fullName, role); // ✅ ส่งค่าชื่อและตำแหน่งไป AdminForm
                     break;
                 case "Projectmanager":
-                    dashboard = new ProjectManagerForm(fullName, role); // ✅ ส่งค่าชื่อและตำแหน่ง
+                    dashboard = new ProjectManagerForm(fullName, role, empId); // ✅ ส่งค่าชื่อและตำแหน่ง
                     break;
                 case "Sitesupervisor":
-                    dashboard = new SiteSupervisorForm(); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role
+                    dashboard = new SiteSupervisorForm(fullName, role, empId); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role
                     break;
                 case "Accountant":
-                    dashboard = new AccountantForm(); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role
+                    dashboard = new AccountantForm(fullName, role, empId); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role
                     break;
                 default:
                     throw new InvalidOperationException("ตำแหน่งงานไม่ถูกต้อง");

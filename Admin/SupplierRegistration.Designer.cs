@@ -61,6 +61,8 @@
             this.starPhone = new System.Windows.Forms.Label();
             this.lblPhone = new System.Windows.Forms.Label();
             this.txtPhone = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.pnlIdCompany.SuspendLayout();
             this.pnlName.SuspendLayout();
             this.pnlAddress.SuspendLayout();
@@ -75,10 +77,11 @@
             // 
             // pnlIdCompany
             // 
+            this.pnlIdCompany.Controls.Add(this.label2);
             this.pnlIdCompany.Controls.Add(this.starIdCompany);
             this.pnlIdCompany.Controls.Add(this.lblIdCompany);
             this.pnlIdCompany.Controls.Add(this.txtJuristic);
-            this.pnlIdCompany.Location = new System.Drawing.Point(387, 149);
+            this.pnlIdCompany.Location = new System.Drawing.Point(420, 54);
             this.pnlIdCompany.Margin = new System.Windows.Forms.Padding(2);
             this.pnlIdCompany.Name = "pnlIdCompany";
             this.pnlIdCompany.Size = new System.Drawing.Size(331, 74);
@@ -95,7 +98,6 @@
             this.starIdCompany.Size = new System.Drawing.Size(22, 30);
             this.starIdCompany.TabIndex = 2;
             this.starIdCompany.Text = "*";
-            this.starIdCompany.Visible = false;
             // 
             // lblIdCompany
             // 
@@ -126,7 +128,7 @@
             this.pnlName.Controls.Add(this.starCompanyName);
             this.pnlName.Controls.Add(this.lblCompanyName);
             this.pnlName.Controls.Add(this.txtName);
-            this.pnlName.Location = new System.Drawing.Point(387, 47);
+            this.pnlName.Location = new System.Drawing.Point(70, 54);
             this.pnlName.Margin = new System.Windows.Forms.Padding(2);
             this.pnlName.Name = "pnlName";
             this.pnlName.Size = new System.Drawing.Size(331, 74);
@@ -143,7 +145,6 @@
             this.starCompanyName.Size = new System.Drawing.Size(22, 30);
             this.starCompanyName.TabIndex = 2;
             this.starCompanyName.Text = "*";
-            this.starCompanyName.Visible = false;
             // 
             // lblCompanyName
             // 
@@ -173,7 +174,7 @@
             // 
             this.lblToppic1.AutoSize = true;
             this.lblToppic1.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblToppic1.Location = new System.Drawing.Point(603, 3);
+            this.lblToppic1.Location = new System.Drawing.Point(70, 5);
             this.lblToppic1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblToppic1.Name = "lblToppic1";
             this.lblToppic1.Size = new System.Drawing.Size(318, 37);
@@ -191,7 +192,6 @@
             this.starAddress.Size = new System.Drawing.Size(22, 30);
             this.starAddress.TabIndex = 2;
             this.starAddress.Text = "*";
-            this.starAddress.Visible = false;
             // 
             // lblAddress
             // 
@@ -211,10 +211,9 @@
             this.txtAddress.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAddress.Location = new System.Drawing.Point(0, 37);
             this.txtAddress.Margin = new System.Windows.Forms.Padding(2);
-            this.txtAddress.Multiline = true;
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.ReadOnly = true;
-            this.txtAddress.Size = new System.Drawing.Size(441, 215);
+            this.txtAddress.Size = new System.Drawing.Size(441, 36);
             this.txtAddress.TabIndex = 2;
             this.txtAddress.TextChanged += new System.EventHandler(this.txtAddress_TextChanged);
             // 
@@ -223,10 +222,10 @@
             this.pnlAddress.Controls.Add(this.starAddress);
             this.pnlAddress.Controls.Add(this.lblAddress);
             this.pnlAddress.Controls.Add(this.txtAddress);
-            this.pnlAddress.Location = new System.Drawing.Point(767, 47);
+            this.pnlAddress.Location = new System.Drawing.Point(70, 144);
             this.pnlAddress.Margin = new System.Windows.Forms.Padding(2);
             this.pnlAddress.Name = "pnlAddress";
-            this.pnlAddress.Size = new System.Drawing.Size(443, 254);
+            this.pnlAddress.Size = new System.Drawing.Size(443, 74);
             this.pnlAddress.TabIndex = 6;
             // 
             // lblToppic2
@@ -245,7 +244,7 @@
             this.dtgvSupplier.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgvSupplier.Location = new System.Drawing.Point(30, 86);
             this.dtgvSupplier.Name = "dtgvSupplier";
-            this.dtgvSupplier.Size = new System.Drawing.Size(1525, 270);
+            this.dtgvSupplier.Size = new System.Drawing.Size(1525, 522);
             this.dtgvSupplier.TabIndex = 4;
             this.dtgvSupplier.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvSupplier_CellClick);
             // 
@@ -255,10 +254,10 @@
             this.pnlSuppilerdata.Controls.Add(this.searchboxSuppiler);
             this.pnlSuppilerdata.Controls.Add(this.lblToppic2);
             this.pnlSuppilerdata.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlSuppilerdata.Location = new System.Drawing.Point(0, 585);
+            this.pnlSuppilerdata.Location = new System.Drawing.Point(0, 343);
             this.pnlSuppilerdata.Margin = new System.Windows.Forms.Padding(2);
             this.pnlSuppilerdata.Name = "pnlSuppilerdata";
-            this.pnlSuppilerdata.Size = new System.Drawing.Size(1584, 369);
+            this.pnlSuppilerdata.Size = new System.Drawing.Size(1584, 611);
             this.pnlSuppilerdata.TabIndex = 7;
             // 
             // searchboxSuppiler
@@ -274,7 +273,7 @@
             // 
             this.pnlStep.BackColor = System.Drawing.Color.Black;
             this.pnlStep.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlStep.Location = new System.Drawing.Point(0, 575);
+            this.pnlStep.Location = new System.Drawing.Point(0, 333);
             this.pnlStep.Margin = new System.Windows.Forms.Padding(2);
             this.pnlStep.Name = "pnlStep";
             this.pnlStep.Size = new System.Drawing.Size(1584, 10);
@@ -287,7 +286,7 @@
             this.pnlActionMenu.Controls.Add(this.btnAdd);
             this.pnlActionMenu.Controls.Add(this.btnSave);
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlActionMenu.Location = new System.Drawing.Point(0, 481);
+            this.pnlActionMenu.Location = new System.Drawing.Point(0, 239);
             this.pnlActionMenu.Margin = new System.Windows.Forms.Padding(2);
             this.pnlActionMenu.Name = "pnlActionMenu";
             this.pnlActionMenu.Size = new System.Drawing.Size(1584, 94);
@@ -295,6 +294,7 @@
             // 
             // btDelete
             // 
+            this.btDelete.BackColor = System.Drawing.Color.Red;
             this.btDelete.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btDelete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
             this.btDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -304,11 +304,12 @@
             this.btDelete.Size = new System.Drawing.Size(175, 58);
             this.btDelete.TabIndex = 3;
             this.btDelete.Text = "ลบข้อมูล";
-            this.btDelete.UseVisualStyleBackColor = true;
+            this.btDelete.UseVisualStyleBackColor = false;
             this.btDelete.Click += new System.EventHandler(this.btDelete_Click);
             // 
             // btnEdit
             // 
+            this.btnEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.btnEdit.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnEdit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOrange;
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -318,11 +319,12 @@
             this.btnEdit.Size = new System.Drawing.Size(175, 58);
             this.btnEdit.TabIndex = 4;
             this.btnEdit.Text = "แก้ไขข้อมูล";
-            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.UseVisualStyleBackColor = false;
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // btnAdd
             // 
+            this.btnAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(251)))), ((int)(((byte)(77)))));
             this.btnAdd.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnAdd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -332,11 +334,12 @@
             this.btnAdd.Size = new System.Drawing.Size(175, 58);
             this.btnAdd.TabIndex = 5;
             this.btnAdd.Text = "เพิ่มข้อมูล";
-            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.UseVisualStyleBackColor = false;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnSave
             // 
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(251)))), ((int)(((byte)(77)))));
             this.btnSave.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -346,7 +349,7 @@
             this.btnSave.Size = new System.Drawing.Size(175, 58);
             this.btnSave.TabIndex = 2;
             this.btnSave.Text = "บันทึกข้อมูล";
-            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // pnlInfomation
@@ -356,7 +359,7 @@
             this.pnlInfomation.Location = new System.Drawing.Point(0, 0);
             this.pnlInfomation.Margin = new System.Windows.Forms.Padding(2);
             this.pnlInfomation.Name = "pnlInfomation";
-            this.pnlInfomation.Size = new System.Drawing.Size(1584, 481);
+            this.pnlInfomation.Size = new System.Drawing.Size(1584, 239);
             this.pnlInfomation.TabIndex = 4;
             // 
             // subInfo
@@ -370,7 +373,7 @@
             this.subInfo.Controls.Add(this.lblToppic1);
             this.subInfo.Location = new System.Drawing.Point(30, 9);
             this.subInfo.Name = "subInfo";
-            this.subInfo.Size = new System.Drawing.Size(1525, 463);
+            this.subInfo.Size = new System.Drawing.Size(1525, 227);
             this.subInfo.TabIndex = 1;
             // 
             // pnlEmail
@@ -378,7 +381,7 @@
             this.pnlEmail.Controls.Add(this.starEmail);
             this.pnlEmail.Controls.Add(this.lblEmail);
             this.pnlEmail.Controls.Add(this.txtEmail);
-            this.pnlEmail.Location = new System.Drawing.Point(387, 353);
+            this.pnlEmail.Location = new System.Drawing.Point(1116, 54);
             this.pnlEmail.Margin = new System.Windows.Forms.Padding(2);
             this.pnlEmail.Name = "pnlEmail";
             this.pnlEmail.Size = new System.Drawing.Size(331, 74);
@@ -395,7 +398,6 @@
             this.starEmail.Size = new System.Drawing.Size(22, 30);
             this.starEmail.TabIndex = 2;
             this.starEmail.Text = "*";
-            this.starEmail.Visible = false;
             // 
             // lblEmail
             // 
@@ -423,10 +425,11 @@
             // 
             // pnlPhone
             // 
+            this.pnlPhone.Controls.Add(this.label1);
             this.pnlPhone.Controls.Add(this.starPhone);
             this.pnlPhone.Controls.Add(this.lblPhone);
             this.pnlPhone.Controls.Add(this.txtPhone);
-            this.pnlPhone.Location = new System.Drawing.Point(387, 251);
+            this.pnlPhone.Location = new System.Drawing.Point(769, 54);
             this.pnlPhone.Margin = new System.Windows.Forms.Padding(2);
             this.pnlPhone.Name = "pnlPhone";
             this.pnlPhone.Size = new System.Drawing.Size(331, 74);
@@ -443,7 +446,6 @@
             this.starPhone.Size = new System.Drawing.Size(22, 30);
             this.starPhone.TabIndex = 2;
             this.starPhone.Text = "*";
-            this.starPhone.Visible = false;
             // 
             // lblPhone
             // 
@@ -468,6 +470,30 @@
             this.txtPhone.Size = new System.Drawing.Size(329, 36);
             this.txtPhone.TabIndex = 2;
             this.txtPhone.TextChanged += new System.EventHandler(this.txtPhone_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(249, 16);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(80, 17);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "(ตัวเลขเท่านั้น)";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(249, 18);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(80, 17);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "(ตัวเลขเท่านั้น)";
             // 
             // SupplierRegistration
             // 
@@ -535,5 +561,7 @@
         private System.Windows.Forms.Label starPhone;
         private System.Windows.Forms.Label lblPhone;
         private System.Windows.Forms.TextBox txtPhone;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }

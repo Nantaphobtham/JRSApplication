@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JRSApplication.ProjectManager;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,13 +15,15 @@ namespace JRSApplication
     {
         private string userFullName;
         private string userRole;
-        public ProjectManagerForm(string fullName, string role)
+        private string _empID;
+        public ProjectManagerForm(string fullName, string role, string empId)
         {
             InitializeComponent();
 
             // เก็บค่าที่รับมา
             userFullName = fullName;
             userRole = role;
+            _empID = empId;
         }
 
         private void ProjectManagerForm_Load(object sender, EventArgs e)
@@ -61,22 +64,22 @@ namespace JRSApplication
 
         private void btnPaymentsInfomation_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new CheckProjectPayments());
+            LoadUserControl(new CheckProjectPay());
             txtFunctionname.Text = "ตรวจสอบการชำระเงินโครงการ";
             txtsubFunctionname.Visible = false;
         }
 
         private void btnPurchaseOrder_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ApprovePurchaseOrder());
+            LoadUserControl(new ApprovePurchaseOrder(_empID));
             txtFunctionname.Text = "อนุมัติใบสั่งซื้อ";
             txtsubFunctionname.Visible = false;
         }
 
         private void btnChooseSubcontractors_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new DetermineSubcontractors());
-            txtFunctionname.Text = "กำหนดผู้รับเหมาช่วง";
+            LoadUserControl(new DetermineSubcontractors(_empID));
+            txtFunctionname.Text = "กำหนดผู้รับเหมา";
             txtsubFunctionname.Visible = false;
         }
 
@@ -89,7 +92,7 @@ namespace JRSApplication
 
         private void btnProjectPhaseUpdate_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new UpdateProjectPhase());
+            LoadUserControl(new UpdateProjectPhase(_empID, userRole));
             txtFunctionname.Text = "ปรับปรุงข้อมูลโครงการ";
             txtsubFunctionname.Visible = true;
             txtsubFunctionname.Text = "ปรับปรุงข้อมูลเฟส";
@@ -113,13 +116,14 @@ namespace JRSApplication
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.Close(); // ปิดโปรแกรม
+            Application.Exit(); // ปิด Application ทั้งหมด
         }
 
         private void btnMinimize_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized; // ย่อหน้าต่าง
         }
+
         bool menuExpand = false;
         private void menuTransition_Tick(object sender, EventArgs e)
         {

@@ -85,6 +85,8 @@
             this.lblToppic3 = new System.Windows.Forms.Label();
             this.dtgvEmployee = new System.Windows.Forms.DataGridView();
             this.searchboxUserData = new JRSApplication.SearchboxControl();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.pnlInformation.SuspendLayout();
             this.subInfo.SuspendLayout();
             this.pnlRole.SuspendLayout();
@@ -108,7 +110,7 @@
             this.pnlInformation.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInformation.Location = new System.Drawing.Point(0, 0);
             this.pnlInformation.Name = "pnlInformation";
-            this.pnlInformation.Size = new System.Drawing.Size(1584, 481);
+            this.pnlInformation.Size = new System.Drawing.Size(1584, 307);
             this.pnlInformation.TabIndex = 0;
             // 
             // subInfo
@@ -129,14 +131,14 @@
             this.subInfo.Controls.Add(this.lblToppic1);
             this.subInfo.Location = new System.Drawing.Point(25, 12);
             this.subInfo.Name = "subInfo";
-            this.subInfo.Size = new System.Drawing.Size(1525, 463);
+            this.subInfo.Size = new System.Drawing.Size(1525, 288);
             this.subInfo.TabIndex = 0;
             // 
             // lblToppic2
             // 
             this.lblToppic2.AutoSize = true;
             this.lblToppic2.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblToppic2.Location = new System.Drawing.Point(1038, 8);
+            this.lblToppic2.Location = new System.Drawing.Point(857, 8);
             this.lblToppic2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblToppic2.Name = "lblToppic2";
             this.lblToppic2.Size = new System.Drawing.Size(373, 37);
@@ -148,10 +150,10 @@
             this.pnlRole.Controls.Add(this.cmbRole);
             this.pnlRole.Controls.Add(this.starRole);
             this.pnlRole.Controls.Add(this.lblRole);
-            this.pnlRole.Location = new System.Drawing.Point(1059, 347);
+            this.pnlRole.Location = new System.Drawing.Point(1180, 52);
             this.pnlRole.Margin = new System.Windows.Forms.Padding(2);
             this.pnlRole.Name = "pnlRole";
-            this.pnlRole.Size = new System.Drawing.Size(331, 74);
+            this.pnlRole.Size = new System.Drawing.Size(311, 74);
             this.pnlRole.TabIndex = 12;
             // 
             // cmbRole
@@ -168,7 +170,7 @@
             this.cmbRole.Location = new System.Drawing.Point(0, 35);
             this.cmbRole.Margin = new System.Windows.Forms.Padding(2);
             this.cmbRole.Name = "cmbRole";
-            this.cmbRole.Size = new System.Drawing.Size(329, 38);
+            this.cmbRole.Size = new System.Drawing.Size(308, 38);
             this.cmbRole.TabIndex = 1;
             // 
             // starRole
@@ -182,7 +184,6 @@
             this.starRole.Size = new System.Drawing.Size(22, 30);
             this.starRole.TabIndex = 2;
             this.starRole.Text = "*";
-            this.starRole.Visible = false;
             // 
             // lblRole
             // 
@@ -201,23 +202,24 @@
             this.pnlconfirmPassword.Controls.Add(this.starConfirmPassword);
             this.pnlconfirmPassword.Controls.Add(this.lblconfirmPassword);
             this.pnlconfirmPassword.Controls.Add(this.txtConfirmPassword);
-            this.pnlconfirmPassword.Location = new System.Drawing.Point(1059, 245);
+            this.pnlconfirmPassword.Location = new System.Drawing.Point(1180, 133);
             this.pnlconfirmPassword.Margin = new System.Windows.Forms.Padding(2);
             this.pnlconfirmPassword.Name = "pnlconfirmPassword";
-            this.pnlconfirmPassword.Size = new System.Drawing.Size(331, 98);
+            this.pnlconfirmPassword.Size = new System.Drawing.Size(311, 98);
             this.pnlconfirmPassword.TabIndex = 11;
             // 
             // cbxShowPassword2
             // 
             this.cbxShowPassword2.AutoSize = true;
             this.cbxShowPassword2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbxShowPassword2.Location = new System.Drawing.Point(239, 76);
+            this.cbxShowPassword2.Location = new System.Drawing.Point(219, 76);
             this.cbxShowPassword2.Margin = new System.Windows.Forms.Padding(2);
             this.cbxShowPassword2.Name = "cbxShowPassword2";
             this.cbxShowPassword2.Size = new System.Drawing.Size(87, 19);
             this.cbxShowPassword2.TabIndex = 3;
             this.cbxShowPassword2.Text = "แสดงรหัสผ่าน";
             this.cbxShowPassword2.UseVisualStyleBackColor = true;
+            this.cbxShowPassword2.CheckedChanged += new System.EventHandler(this.cbxShowPassword2_CheckedChanged);
             // 
             // starConfirmPassword
             // 
@@ -230,7 +232,6 @@
             this.starConfirmPassword.Size = new System.Drawing.Size(22, 30);
             this.starConfirmPassword.TabIndex = 2;
             this.starConfirmPassword.Text = "*";
-            this.starConfirmPassword.Visible = false;
             // 
             // lblconfirmPassword
             // 
@@ -252,7 +253,7 @@
             this.txtConfirmPassword.Margin = new System.Windows.Forms.Padding(2);
             this.txtConfirmPassword.Name = "txtConfirmPassword";
             this.txtConfirmPassword.ReadOnly = true;
-            this.txtConfirmPassword.Size = new System.Drawing.Size(329, 36);
+            this.txtConfirmPassword.Size = new System.Drawing.Size(308, 36);
             this.txtConfirmPassword.TabIndex = 2;
             // 
             // pnlUsername
@@ -260,10 +261,10 @@
             this.pnlUsername.Controls.Add(this.starUsername);
             this.pnlUsername.Controls.Add(this.lblUsername);
             this.pnlUsername.Controls.Add(this.txtUsername);
-            this.pnlUsername.Location = new System.Drawing.Point(1059, 65);
+            this.pnlUsername.Location = new System.Drawing.Point(856, 52);
             this.pnlUsername.Margin = new System.Windows.Forms.Padding(2);
             this.pnlUsername.Name = "pnlUsername";
-            this.pnlUsername.Size = new System.Drawing.Size(331, 74);
+            this.pnlUsername.Size = new System.Drawing.Size(311, 74);
             this.pnlUsername.TabIndex = 9;
             // 
             // starUsername
@@ -277,7 +278,6 @@
             this.starUsername.Size = new System.Drawing.Size(22, 30);
             this.starUsername.TabIndex = 2;
             this.starUsername.Text = "*";
-            this.starUsername.Visible = false;
             // 
             // lblUsername
             // 
@@ -299,7 +299,7 @@
             this.txtUsername.Margin = new System.Windows.Forms.Padding(2);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.ReadOnly = true;
-            this.txtUsername.Size = new System.Drawing.Size(329, 36);
+            this.txtUsername.Size = new System.Drawing.Size(308, 36);
             this.txtUsername.TabIndex = 2;
             // 
             // pnlPassword
@@ -308,23 +308,24 @@
             this.pnlPassword.Controls.Add(this.starPassword);
             this.pnlPassword.Controls.Add(this.lblPassword);
             this.pnlPassword.Controls.Add(this.txtPassword);
-            this.pnlPassword.Location = new System.Drawing.Point(1059, 143);
+            this.pnlPassword.Location = new System.Drawing.Point(856, 133);
             this.pnlPassword.Margin = new System.Windows.Forms.Padding(2);
             this.pnlPassword.Name = "pnlPassword";
-            this.pnlPassword.Size = new System.Drawing.Size(331, 98);
+            this.pnlPassword.Size = new System.Drawing.Size(311, 98);
             this.pnlPassword.TabIndex = 10;
             // 
             // cbxShowPassword1
             // 
             this.cbxShowPassword1.AutoSize = true;
             this.cbxShowPassword1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbxShowPassword1.Location = new System.Drawing.Point(239, 76);
+            this.cbxShowPassword1.Location = new System.Drawing.Point(217, 76);
             this.cbxShowPassword1.Margin = new System.Windows.Forms.Padding(2);
             this.cbxShowPassword1.Name = "cbxShowPassword1";
             this.cbxShowPassword1.Size = new System.Drawing.Size(87, 19);
             this.cbxShowPassword1.TabIndex = 3;
             this.cbxShowPassword1.Text = "แสดงรหัสผ่าน";
             this.cbxShowPassword1.UseVisualStyleBackColor = true;
+            this.cbxShowPassword1.CheckedChanged += new System.EventHandler(this.cbxShowPassword1_CheckedChanged);
             // 
             // starPassword
             // 
@@ -337,7 +338,6 @@
             this.starPassword.Size = new System.Drawing.Size(22, 30);
             this.starPassword.TabIndex = 2;
             this.starPassword.Text = "*";
-            this.starPassword.Visible = false;
             // 
             // lblPassword
             // 
@@ -359,16 +359,16 @@
             this.txtPassword.Margin = new System.Windows.Forms.Padding(2);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.ReadOnly = true;
-            this.txtPassword.Size = new System.Drawing.Size(329, 36);
+            this.txtPassword.Size = new System.Drawing.Size(308, 36);
             this.txtPassword.TabIndex = 2;
             // 
             // pnlStep1
             // 
             this.pnlStep1.BackColor = System.Drawing.Color.Black;
             this.pnlStep1.ForeColor = System.Drawing.Color.Black;
-            this.pnlStep1.Location = new System.Drawing.Point(877, 0);
+            this.pnlStep1.Location = new System.Drawing.Point(825, 0);
             this.pnlStep1.Name = "pnlStep1";
-            this.pnlStep1.Size = new System.Drawing.Size(10, 460);
+            this.pnlStep1.Size = new System.Drawing.Size(10, 289);
             this.pnlStep1.TabIndex = 8;
             // 
             // pnlEmail
@@ -376,10 +376,10 @@
             this.pnlEmail.Controls.Add(this.starEmail);
             this.pnlEmail.Controls.Add(this.lblEmail);
             this.pnlEmail.Controls.Add(this.txtEmail);
-            this.pnlEmail.Location = new System.Drawing.Point(22, 364);
+            this.pnlEmail.Location = new System.Drawing.Point(432, 208);
             this.pnlEmail.Margin = new System.Windows.Forms.Padding(2);
             this.pnlEmail.Name = "pnlEmail";
-            this.pnlEmail.Size = new System.Drawing.Size(331, 74);
+            this.pnlEmail.Size = new System.Drawing.Size(370, 74);
             this.pnlEmail.TabIndex = 2;
             // 
             // starEmail
@@ -393,7 +393,6 @@
             this.starEmail.Size = new System.Drawing.Size(22, 30);
             this.starEmail.TabIndex = 2;
             this.starEmail.Text = "*";
-            this.starEmail.Visible = false;
             // 
             // lblEmail
             // 
@@ -415,18 +414,19 @@
             this.txtEmail.Margin = new System.Windows.Forms.Padding(2);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.ReadOnly = true;
-            this.txtEmail.Size = new System.Drawing.Size(329, 36);
+            this.txtEmail.Size = new System.Drawing.Size(368, 36);
             this.txtEmail.TabIndex = 2;
             // 
             // pnlPhone
             // 
+            this.pnlPhone.Controls.Add(this.label2);
             this.pnlPhone.Controls.Add(this.starPhone);
             this.pnlPhone.Controls.Add(this.lblPhone);
             this.pnlPhone.Controls.Add(this.txtPhone);
-            this.pnlPhone.Location = new System.Drawing.Point(22, 286);
+            this.pnlPhone.Location = new System.Drawing.Point(434, 130);
             this.pnlPhone.Margin = new System.Windows.Forms.Padding(2);
             this.pnlPhone.Name = "pnlPhone";
-            this.pnlPhone.Size = new System.Drawing.Size(331, 74);
+            this.pnlPhone.Size = new System.Drawing.Size(370, 74);
             this.pnlPhone.TabIndex = 3;
             // 
             // starPhone
@@ -440,7 +440,6 @@
             this.starPhone.Size = new System.Drawing.Size(22, 30);
             this.starPhone.TabIndex = 2;
             this.starPhone.Text = "*";
-            this.starPhone.Visible = false;
             // 
             // lblPhone
             // 
@@ -462,18 +461,19 @@
             this.txtPhone.Margin = new System.Windows.Forms.Padding(2);
             this.txtPhone.Name = "txtPhone";
             this.txtPhone.ReadOnly = true;
-            this.txtPhone.Size = new System.Drawing.Size(329, 36);
+            this.txtPhone.Size = new System.Drawing.Size(368, 36);
             this.txtPhone.TabIndex = 2;
             // 
             // pnlIdcard
             // 
+            this.pnlIdcard.Controls.Add(this.label1);
             this.pnlIdcard.Controls.Add(this.starIdcard);
             this.pnlIdcard.Controls.Add(this.lblIdcard);
             this.pnlIdcard.Controls.Add(this.txtIdcard);
-            this.pnlIdcard.Location = new System.Drawing.Point(22, 208);
+            this.pnlIdcard.Location = new System.Drawing.Point(22, 130);
             this.pnlIdcard.Margin = new System.Windows.Forms.Padding(2);
             this.pnlIdcard.Name = "pnlIdcard";
-            this.pnlIdcard.Size = new System.Drawing.Size(331, 74);
+            this.pnlIdcard.Size = new System.Drawing.Size(370, 74);
             this.pnlIdcard.TabIndex = 4;
             // 
             // starIdcard
@@ -487,7 +487,6 @@
             this.starIdcard.Size = new System.Drawing.Size(22, 30);
             this.starIdcard.TabIndex = 2;
             this.starIdcard.Text = "*";
-            this.starIdcard.Visible = false;
             // 
             // lblIdcard
             // 
@@ -509,7 +508,7 @@
             this.txtIdcard.Margin = new System.Windows.Forms.Padding(2);
             this.txtIdcard.Name = "txtIdcard";
             this.txtIdcard.ReadOnly = true;
-            this.txtIdcard.Size = new System.Drawing.Size(329, 36);
+            this.txtIdcard.Size = new System.Drawing.Size(368, 36);
             this.txtIdcard.TabIndex = 2;
             // 
             // pnlLastname
@@ -517,10 +516,10 @@
             this.pnlLastname.Controls.Add(this.starLastname);
             this.pnlLastname.Controls.Add(this.lblLastname);
             this.pnlLastname.Controls.Add(this.txtLastname);
-            this.pnlLastname.Location = new System.Drawing.Point(22, 130);
+            this.pnlLastname.Location = new System.Drawing.Point(434, 52);
             this.pnlLastname.Margin = new System.Windows.Forms.Padding(2);
             this.pnlLastname.Name = "pnlLastname";
-            this.pnlLastname.Size = new System.Drawing.Size(331, 74);
+            this.pnlLastname.Size = new System.Drawing.Size(370, 74);
             this.pnlLastname.TabIndex = 5;
             // 
             // starLastname
@@ -534,7 +533,6 @@
             this.starLastname.Size = new System.Drawing.Size(22, 30);
             this.starLastname.TabIndex = 2;
             this.starLastname.Text = "*";
-            this.starLastname.Visible = false;
             // 
             // lblLastname
             // 
@@ -556,7 +554,7 @@
             this.txtLastname.Margin = new System.Windows.Forms.Padding(2);
             this.txtLastname.Name = "txtLastname";
             this.txtLastname.ReadOnly = true;
-            this.txtLastname.Size = new System.Drawing.Size(329, 36);
+            this.txtLastname.Size = new System.Drawing.Size(368, 36);
             this.txtLastname.TabIndex = 2;
             // 
             // pnlAddress
@@ -564,10 +562,10 @@
             this.pnlAddress.Controls.Add(this.starAddress);
             this.pnlAddress.Controls.Add(this.lblAddress);
             this.pnlAddress.Controls.Add(this.txtAddress);
-            this.pnlAddress.Location = new System.Drawing.Point(402, 52);
+            this.pnlAddress.Location = new System.Drawing.Point(22, 208);
             this.pnlAddress.Margin = new System.Windows.Forms.Padding(2);
             this.pnlAddress.Name = "pnlAddress";
-            this.pnlAddress.Size = new System.Drawing.Size(443, 254);
+            this.pnlAddress.Size = new System.Drawing.Size(370, 74);
             this.pnlAddress.TabIndex = 6;
             // 
             // starAddress
@@ -581,7 +579,6 @@
             this.starAddress.Size = new System.Drawing.Size(22, 30);
             this.starAddress.TabIndex = 2;
             this.starAddress.Text = "*";
-            this.starAddress.Visible = false;
             // 
             // lblAddress
             // 
@@ -601,10 +598,9 @@
             this.txtAddress.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAddress.Location = new System.Drawing.Point(0, 37);
             this.txtAddress.Margin = new System.Windows.Forms.Padding(2);
-            this.txtAddress.Multiline = true;
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.ReadOnly = true;
-            this.txtAddress.Size = new System.Drawing.Size(441, 215);
+            this.txtAddress.Size = new System.Drawing.Size(368, 36);
             this.txtAddress.TabIndex = 2;
             // 
             // pnlName
@@ -615,7 +611,7 @@
             this.pnlName.Location = new System.Drawing.Point(22, 52);
             this.pnlName.Margin = new System.Windows.Forms.Padding(2);
             this.pnlName.Name = "pnlName";
-            this.pnlName.Size = new System.Drawing.Size(331, 74);
+            this.pnlName.Size = new System.Drawing.Size(370, 74);
             this.pnlName.TabIndex = 7;
             // 
             // starName
@@ -629,7 +625,6 @@
             this.starName.Size = new System.Drawing.Size(22, 30);
             this.starName.TabIndex = 2;
             this.starName.Text = "*";
-            this.starName.Visible = false;
             // 
             // lblName
             // 
@@ -651,7 +646,7 @@
             this.txtName.Margin = new System.Windows.Forms.Padding(2);
             this.txtName.Name = "txtName";
             this.txtName.ReadOnly = true;
-            this.txtName.Size = new System.Drawing.Size(329, 36);
+            this.txtName.Size = new System.Drawing.Size(368, 36);
             this.txtName.TabIndex = 2;
             // 
             // lblToppic1
@@ -672,13 +667,14 @@
             this.pnlActionMenu.Controls.Add(this.btnAdd);
             this.pnlActionMenu.Controls.Add(this.btnSave);
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlActionMenu.Location = new System.Drawing.Point(0, 481);
+            this.pnlActionMenu.Location = new System.Drawing.Point(0, 307);
             this.pnlActionMenu.Name = "pnlActionMenu";
             this.pnlActionMenu.Size = new System.Drawing.Size(1584, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDelete
             // 
+            this.btnDelete.BackColor = System.Drawing.Color.Red;
             this.btnDelete.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnDelete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -688,11 +684,12 @@
             this.btnDelete.Size = new System.Drawing.Size(175, 58);
             this.btnDelete.TabIndex = 1;
             this.btnDelete.Text = "ลบข้อมูล";
-            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.UseVisualStyleBackColor = false;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnEdit
             // 
+            this.btnEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.btnEdit.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnEdit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkOrange;
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -702,11 +699,12 @@
             this.btnEdit.Size = new System.Drawing.Size(175, 58);
             this.btnEdit.TabIndex = 1;
             this.btnEdit.Text = "แก้ไขข้อมูล";
-            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.UseVisualStyleBackColor = false;
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // btnAdd
             // 
+            this.btnAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(251)))), ((int)(((byte)(77)))));
             this.btnAdd.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnAdd.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -716,11 +714,12 @@
             this.btnAdd.Size = new System.Drawing.Size(175, 58);
             this.btnAdd.TabIndex = 1;
             this.btnAdd.Text = "เพิ่มข้อมูล";
-            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.UseVisualStyleBackColor = false;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnSave
             // 
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(251)))), ((int)(((byte)(77)))));
             this.btnSave.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -730,14 +729,14 @@
             this.btnSave.Size = new System.Drawing.Size(175, 58);
             this.btnSave.TabIndex = 0;
             this.btnSave.Text = "บันทึกข้อมูล";
-            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // pnlStep2
             // 
             this.pnlStep2.BackColor = System.Drawing.Color.Black;
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlStep2.Location = new System.Drawing.Point(0, 575);
+            this.pnlStep2.Location = new System.Drawing.Point(0, 401);
             this.pnlStep2.Name = "pnlStep2";
             this.pnlStep2.Size = new System.Drawing.Size(1584, 10);
             this.pnlStep2.TabIndex = 2;
@@ -748,9 +747,9 @@
             this.pnlUserData.Controls.Add(this.dtgvEmployee);
             this.pnlUserData.Controls.Add(this.searchboxUserData);
             this.pnlUserData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlUserData.Location = new System.Drawing.Point(0, 585);
+            this.pnlUserData.Location = new System.Drawing.Point(0, 411);
             this.pnlUserData.Name = "pnlUserData";
-            this.pnlUserData.Size = new System.Drawing.Size(1584, 369);
+            this.pnlUserData.Size = new System.Drawing.Size(1584, 543);
             this.pnlUserData.TabIndex = 3;
             // 
             // lblToppic3
@@ -769,8 +768,9 @@
             this.dtgvEmployee.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgvEmployee.Location = new System.Drawing.Point(25, 78);
             this.dtgvEmployee.Name = "dtgvEmployee";
-            this.dtgvEmployee.Size = new System.Drawing.Size(1525, 270);
+            this.dtgvEmployee.Size = new System.Drawing.Size(1525, 462);
             this.dtgvEmployee.TabIndex = 1;
+            this.dtgvEmployee.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvEmployee_CellClick);
             // 
             // searchboxUserData
             // 
@@ -780,6 +780,30 @@
             this.searchboxUserData.Name = "searchboxUserData";
             this.searchboxUserData.Size = new System.Drawing.Size(650, 50);
             this.searchboxUserData.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(288, 16);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(80, 17);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "(ตัวเลขเท่านั้น)";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(286, 16);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(80, 17);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "(ตัวเลขเท่านั้น)";
             // 
             // UserManagementForm
             // 
@@ -882,5 +906,7 @@
         private System.Windows.Forms.Label starPassword;
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }

@@ -30,6 +30,7 @@ namespace JRSApplication
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminForm));
             this.Body = new System.Windows.Forms.Panel();
             this.PicLogo = new System.Windows.Forms.PictureBox();
             this.Siderbar = new System.Windows.Forms.Panel();
@@ -39,7 +40,6 @@ namespace JRSApplication
             this.btnManageUser = new System.Windows.Forms.Button();
             this.Header = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
-            this.btnMaximize = new System.Windows.Forms.Button();
             this.btnMinimize = new System.Windows.Forms.Button();
             this.txtFunctionname = new System.Windows.Forms.Label();
             this.txtPosition = new System.Windows.Forms.Label();
@@ -90,6 +90,7 @@ namespace JRSApplication
             this.btnManageProject.BackColor = System.Drawing.Color.Transparent;
             this.btnManageProject.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnManageProject.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnManageProject.FlatAppearance.BorderSize = 0;
             this.btnManageProject.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnManageProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnManageProject.Location = new System.Drawing.Point(0, 240);
@@ -105,6 +106,7 @@ namespace JRSApplication
             this.btnRegisSupplier.BackColor = System.Drawing.Color.Transparent;
             this.btnRegisSupplier.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnRegisSupplier.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnRegisSupplier.FlatAppearance.BorderSize = 0;
             this.btnRegisSupplier.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnRegisSupplier.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRegisSupplier.Location = new System.Drawing.Point(0, 160);
@@ -120,6 +122,7 @@ namespace JRSApplication
             this.btnRegisCustomer.BackColor = System.Drawing.Color.Transparent;
             this.btnRegisCustomer.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnRegisCustomer.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnRegisCustomer.FlatAppearance.BorderSize = 0;
             this.btnRegisCustomer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnRegisCustomer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRegisCustomer.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -136,6 +139,7 @@ namespace JRSApplication
             this.btnManageUser.BackColor = System.Drawing.Color.Transparent;
             this.btnManageUser.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnManageUser.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnManageUser.FlatAppearance.BorderSize = 0;
             this.btnManageUser.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnManageUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnManageUser.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -145,13 +149,12 @@ namespace JRSApplication
             this.btnManageUser.TabIndex = 0;
             this.btnManageUser.Text = "จัดการบัญชีผู้ใช้";
             this.btnManageUser.UseVisualStyleBackColor = false;
-            this.btnManageUser.Click += new System.EventHandler(this.button1_Click);
+            this.btnManageUser.Click += new System.EventHandler(this.btnManageUser_Click);
             // 
             // Header
             // 
             this.Header.BackgroundImage = global::JRSApplication.Properties.Resources.header;
             this.Header.Controls.Add(this.btnClose);
-            this.Header.Controls.Add(this.btnMaximize);
             this.Header.Controls.Add(this.btnMinimize);
             this.Header.Controls.Add(this.txtFunctionname);
             this.Header.Controls.Add(this.txtPosition);
@@ -177,24 +180,12 @@ namespace JRSApplication
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // btnMaximize
-            // 
-            this.btnMaximize.BackColor = System.Drawing.Color.Transparent;
-            this.btnMaximize.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnMaximize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMaximize.Location = new System.Drawing.Point(1759, 3);
-            this.btnMaximize.Name = "btnMaximize";
-            this.btnMaximize.Size = new System.Drawing.Size(75, 23);
-            this.btnMaximize.TabIndex = 5;
-            this.btnMaximize.Text = "☐";
-            this.btnMaximize.UseVisualStyleBackColor = false;
-            // 
             // btnMinimize
             // 
             this.btnMinimize.BackColor = System.Drawing.Color.Transparent;
             this.btnMinimize.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMinimize.Location = new System.Drawing.Point(1676, 3);
+            this.btnMinimize.Location = new System.Drawing.Point(1761, 3);
             this.btnMinimize.Name = "btnMinimize";
             this.btnMinimize.Size = new System.Drawing.Size(75, 23);
             this.btnMinimize.TabIndex = 5;
@@ -254,6 +245,7 @@ namespace JRSApplication
             this.Controls.Add(this.Siderbar);
             this.Controls.Add(this.Header);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AdminForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AdminForm";
@@ -282,7 +274,6 @@ namespace JRSApplication
         private System.Windows.Forms.Button btnManageProject;
         private System.Windows.Forms.Button btnRegisSupplier;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Button btnMaximize;
         private System.Windows.Forms.Button btnMinimize;
         private System.Windows.Forms.PictureBox PicLogo;
     }

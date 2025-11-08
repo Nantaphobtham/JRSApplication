@@ -39,6 +39,19 @@ namespace JRSApplication.Data_Access_Layer
                 }
             }
         }
+        // ลบแล้วเพิ่มใหม่
+        public void DeleteAssignmentsByProjectID(int projectId)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "DELETE FROM employee_assignment WHERE pro_id = @ProjectID";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@ProjectID", projectId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
     }
 
 }

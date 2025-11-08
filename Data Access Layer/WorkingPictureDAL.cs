@@ -13,26 +13,16 @@ namespace JRSApplication.Data_Access_Layer
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
-        //ไม่ถูกใช้งานค่อยลบ
-        public bool InsertPicture(WorkingPicture pic)
-        {
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                string sql = @"INSERT INTO working_picture (phase_id, pic_data, pic_detail)
-                           VALUES (@PhaseID, @PictureData, @PictureDetail)";
+        
 
-                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@PhaseID", pic.PhaseID);
-                    cmd.Parameters.AddWithValue("@PictureData", pic.PictureData);
-                    cmd.Parameters.AddWithValue("@PictureDetail", pic.PictureDetail);
 
-                    conn.Open();
-                    int result = cmd.ExecuteNonQuery();
-                    return result > 0;
-                }
-            }
-        }
+
+     }
+
+
+
+
+        
     }
 
-}
+
