@@ -183,7 +183,7 @@
             this.button3.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.Location = new System.Drawing.Point(0, 104);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(336, 52);
+            this.button3.Size = new System.Drawing.Size(336, 55);
             this.button3.TabIndex = 6;
             this.button3.Text = "พิมพ์ใบเสร็จรับเงิน";
             this.button3.UseVisualStyleBackColor = false;
