@@ -489,8 +489,11 @@ namespace JRSApplication.Accountant
                 invPrice ?? DBNull.Value.ToString()
             );
 
-            // --- Show RDLC ---
-            var frm = new ReceiptPrintRDLC(table);
+            // ดึงค่า 'งวดงาน' จากหน้าฟอร์ม (ในโค้ด Natsu ใช้ txtPhaseID เก็บเลขงวด)
+            var phaseNo = txtPhaseID.Text?.Trim() ?? "";
+
+            // ส่งทั้ง DataTable และ phaseNo เข้าไป
+            var frm = new ReceiptPrintRDLC(table, phaseNo);
             frm.ShowDialog();
         }
 

@@ -519,7 +519,6 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox8</rd:DefaultName>
-            <Top>0cm</Top>
             <Height>0.77787cm</Height>
             <Width>1.87295cm</Width>
             <Style>
@@ -550,7 +549,6 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox9</rd:DefaultName>
-            <Top>0cm</Top>
             <Left>1.90823cm</Left>
             <Height>1.93102cm</Height>
             <Width>6.31073cm</Width>
@@ -790,7 +788,7 @@
         </Style>
       </Rectangle>
     </ReportItems>
-    <Height>1.61013in</Height>
+    <Height>1.54763in</Height>
     <Style />
   </Body>
   <Width>6.62037in</Width>
