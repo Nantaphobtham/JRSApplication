@@ -1,24 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Linq;
+
 
 namespace JRSApplication
 {
     public partial class SearchboxControl : UserControl
     {
-        // Event สำหรับส่งค่าการค้นหาออกไปยังฟอร์มที่เรียก
+        // ยิงอีเวนต์ให้ฟอร์มแม่
         public event EventHandler<SearchEventArgs> SearchTriggered;
 
-        // Dictionary เก็บตัวเลือกการค้นหา
+        // ค่าดีฟอลต์ (เปลี่ยนได้ตามหน้า)
+        public string DefaultRole { get; set; } = "Admin";
+        public string DefaultFunction { get; set; } = "จัดการบัญชีผู้ใช้";
+
+        // เก็บตัวเลือกค้นหาตาม Role/Function
         private Dictionary<string, Dictionary<string, List<string>>> searchOptionsByRoleFunction;
+
+        // properties เผื่อฟอร์มแม่อยากอ่านค่า
+        public string SelectedSearchBy => cmbSearchBy.SelectedItem?.ToString() ?? "";
+        public string Keyword
+        {
+            get => (txtSearchKeyword.Text ?? "").Trim();
+            set => txtSearchKeyword.Text = value ?? "";
+        }
 
         public SearchboxControl()
         {
             InitializeComponent();
             InitializeSearchOptions();
+
+            // ใส่ค่า default ให้เลย ตอนคอนโทรลโหลดครั้งแรก
+            this.Load += (s, e) => ApplyDefaultIfEmpty();
+            // กรณีบางฟอร์ม Load เร็วไป ให้ยิงอีกทีตอน handle ถูกสร้าง
+            // (กันกรณีคอนโทรลอยู่ใน Tab/Panel ที่สร้างช้ากว่า)
+            this.HandleCreated += (s, e) => ApplyDefaultIfEmpty();
+
+            // พิมพ์แล้วค้นหาอัตโนมัติ
+            txtSearchKeyword.TextChanged += (s, e) => TriggerSearch();
+            // กด Enter เพื่อยิงค้นหา, Esc เพื่อล้าง
+            txtSearchKeyword.KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    e.SuppressKeyPress = true;
+                    TriggerSearch();
+                }
+                else if (e.KeyCode == Keys.Escape)
+                {
+                    txtSearchKeyword.Clear();
+                    TriggerSearch();
+                }
+            };
+
+            btnSearch.Click += (s, e) => TriggerSearch();
         }
 
-        // ฟังก์ชันกำหนดตัวเลือกการค้นหา
+        // ใส่ชุดตัวเลือก
         private void InitializeSearchOptions()
         {
             searchOptionsByRoleFunction = new Dictionary<string, Dictionary<string, List<string>>>
@@ -26,104 +65,123 @@ namespace JRSApplication
                 {
                     "Admin", new Dictionary<string, List<string>>
                     {
-                        { "จัดการบัญชีผู้ใช้", new List<string> { "ชื่อ", "เบอร์โทร", "ตำแหน่ง", "รหัสพนักงาน" } },
+                        { "จัดการบัญชีผู้ใช้", new List<string> { "ชื่อ", "นามสกุล", "ชื่อผู้ใช้", "เบอร์โทร", "อีเมล", "ตำแหน่ง", "รหัสพนักงาน", "ที่อยู่" } },
                         { "ทะเบียนลูกค้า", new List<string> { "ชื่อลูกค้า", "เลขประจำตัว", "อีเมล" } },
-                        { "ทะเบียนซัพพลายเออร์", new List<string> {"ชื่อบริซัทซัพพลายเออร์","รหัสซัพพลายเออร์","" } },
-                        { "จัดการข้อมูลโครงการ", new List<string> {"รหัสโครงการ","ชื่อโครงการ","เลขที่สัญญา"} }
-                        //สามารถเพิ่มอื่นๆได้
+                        { "ทะเบียนซัพพลายเออร์", new List<string> { "ชื่อบริษัทซัพพลายเออร์", "รหัสซัพพลายเออร์" } },
+                        { "จัดการข้อมูลโครงการ", new List<string> { "รหัสโครงการ", "ชื่อโครงการ", "เลขที่สัญญา" } }
                     }
                 },
                 {
                     "Projectmanager", new Dictionary<string, List<string>>
                     {
-                        { "ตรวจสอบข้อมูลโครงการ", new List<string> {"รหัสโครงการ","ชื่อโครงการ","เลขที่สัญญา"} },
+                        { "ตรวจสอบข้อมูลโครงการ", new List<string> { "รหัสโครงการ", "ชื่อโครงการ", "เลขที่สัญญา" } },
                         { "อนุมัติคำขอ", new List<string> { "ชื่อคำขอ", "ผู้ส่งคำขอ", "สถานะ" } }
-                        //สามารถเพิ่มอื่นๆได้
                     }
                 },
                 {
                     "Sitesupervisor", new Dictionary<string, List<string>>
                     {
-                        {"ตรวจสอบข้อมูลโครงการ", new List<string> {"รหัสโครงการ","ชื่อโครงการ","เลขที่สัญญา"} }
-                        //สามารถเพิ่มอื่นๆได้
+                        { "ตรวจสอบข้อมูลโครงการ", new List<string> { "รหัสโครงการ", "ชื่อโครงการ", "เลขที่สัญญา" } }
                     }
                 },
                 {
                     "Accountant", new Dictionary<string, List<string>>
                     {
                         { "จัดการการเงิน", new List<string> { "รหัสใบแจ้งหนี้", "ยอดชำระ", "สถานะ" } }
-                        //สามารถเพิ่มอื่นๆได้
                     }
                 }
             };
         }
 
-        // ฟังก์ชันสำหรับตั้งค่า Role และ Function (ใช้จากฟอร์มอื่น)
+        // ฟอร์มแม่เรียกเมธอดนี้เพื่อเซ็ต Role/Function
         public void SetRoleAndFunction(string role, string function = null)
         {
-            if (searchOptionsByRoleFunction.ContainsKey(role))
+            if (!searchOptionsByRoleFunction.TryGetValue(role, out var functions))
             {
-                var functions = searchOptionsByRoleFunction[role];
-                if (!string.IsNullOrEmpty(function) && functions.ContainsKey(function))
+                MessageBox.Show($"ไม่มีตัวเลือกสำหรับ Role: {role}", "แจ้งเตือน",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(function) && functions.ContainsKey(function))
+            {
+                UpdateSearchOptions(functions[function]);
+            }
+            else if (functions.Count > 0)
+            {
+                // เอา function แรกเป็นค่าเริ่มต้น
+                string defaultFunction = new List<string>(functions.Keys)[0];
+                UpdateSearchOptions(functions[defaultFunction]);
+            }
+            else
+            {
+                cmbSearchBy.Items.Clear();
+                cmbSearchBy.SelectedIndex = -1;
+            }
+        }
+
+        // อัปเดตรายการในคอมโบบ็อกซ์ (คัดทิ้งสายว่าง)
+        private void UpdateSearchOptions(List<string> options)
+        {
+            cmbSearchBy.Items.Clear();
+
+            var clean = new List<string>();
+            if (options != null)
+            {
+                foreach (var s in options)
                 {
-                    UpdateSearchOptions(functions[function]);
+                    var t = (s ?? "").Trim();
+                    if (!string.IsNullOrWhiteSpace(t)) clean.Add(t);
                 }
-                else if (functions.Count > 0)
+            }
+
+            if (clean.Count > 0)
+            {
+                cmbSearchBy.Items.AddRange(clean.ToArray());
+                cmbSearchBy.SelectedIndex = 0;
+            }
+            else
+            {
+                cmbSearchBy.SelectedIndex = -1;
+            }
+        }
+
+        // บังคับอัดค่า default ถ้ายังว่าง
+        private void ApplyDefaultIfEmpty()
+        {
+            if (cmbSearchBy.Items.Count > 0) return;
+
+            if (searchOptionsByRoleFunction != null &&
+                searchOptionsByRoleFunction.TryGetValue(DefaultRole, out var funcs))
+            {
+                if (!string.IsNullOrWhiteSpace(DefaultFunction) && funcs.ContainsKey(DefaultFunction))
                 {
-                    string defaultFunction = new List<string>(functions.Keys)[0];
-                    UpdateSearchOptions(functions[defaultFunction]);
+                    UpdateSearchOptions(funcs[DefaultFunction]);
                 }
-                else
+                else if (funcs.Count > 0)
                 {
-                    MessageBox.Show($"Role '{role}' ไม่มีตัวเลือกการค้นหา", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    // เอาค่าลิสต์แรกของ dictionary values อย่างถูกชนิด
+                    var firstOptionList = funcs.Values.First(); // ต้องมี using System.Linq;
+                    UpdateSearchOptions(firstOptionList);
                 }
             }
             else
             {
-                MessageBox.Show($"ไม่มีตัวเลือกสำหรับ Role: {role}", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                // fallback กันว่าง
+                UpdateSearchOptions(new List<string> { "ชื่อ", "นามสกุล", "ชื่อผู้ใช้", "เบอร์โทร", "อีเมล" });
             }
         }
 
-        // ฟังก์ชันอัปเดตตัวเลือกใน ComboBox
-        private void UpdateSearchOptions(List<string> options)
-        {
-            cmbSearchBy.Items.Clear();
-            cmbSearchBy.Items.AddRange(options.ToArray());
-            if (options.Count > 0)
-            {
-                cmbSearchBy.SelectedIndex = 0; // เลือกตัวเลือกแรกเป็น Default
-            }
-        }
 
-        // Event กดปุ่มค้นหา
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-            TriggerSearch();
-        }
-
-        // Event ค้นหาอัตโนมัติเมื่อพิมพ์ข้อความ
-        private void txtSearchKeyword_TextChanged(object sender, EventArgs e)
-        {
-            TriggerSearch();
-        }
-
+        // ยิงค้นหาออกไป (คีย์เวิร์ดว่างก็ยิง เพื่อให้ฟอร์มแม่ล้างฟิลเตอร์ได้)
         private void TriggerSearch()
         {
-            string selectedOption = cmbSearchBy.SelectedItem?.ToString();
-            string keyword = txtSearchKeyword.Text.Trim();
-
-            if (string.IsNullOrWhiteSpace(selectedOption) || string.IsNullOrWhiteSpace(keyword))
-            {
-                MessageBox.Show("กรุณาเลือกตัวเลือกและกรอกคำค้นหา", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Trigger Event ส่งค่าการค้นหาไปยังฟอร์มที่เรียกใช้
+            string selectedOption = cmbSearchBy.SelectedItem?.ToString() ?? "";
+            string keyword = (txtSearchKeyword.Text ?? "").Trim();
             SearchTriggered?.Invoke(this, new SearchEventArgs(selectedOption, keyword));
         }
     }
 
-    // คลาส EventArgs สำหรับส่งค่าการค้นหาออกไป
     public class SearchEventArgs : EventArgs
     {
         public string SearchBy { get; }

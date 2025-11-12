@@ -1,5 +1,6 @@
 ﻿using JRSApplication.Components;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Net.Mail;
@@ -21,12 +22,15 @@ namespace JRSApplication
         private string originalEmail = "";
         private string originalIDCard = "";
 
+        // ===== ค้นหา/กรองตาราง =====
+        private DataTable employeeTable;
+        private readonly BindingSource employeeBS = new BindingSource();
+
         public UserManagementForm()
         {
             InitializeComponent();
 
             // ===== Input filters =====
-            // บัตรประชาชน: ตัวเลขล้วน + 13 หลัก (ไม่ตรวจ checksum)
             txtIdcard.MaxLength = 13;
             txtIdcard.KeyPress += (s, e) =>
             {
@@ -44,11 +48,10 @@ namespace JRSApplication
                 }
                 else
                 {
-                    txtIdcard.Text = digits; // normalize เป็นตัวเลขล้วน
+                    txtIdcard.Text = digits;
                 }
             };
 
-            // โทรศัพท์: ยอมให้กดเฉพาะตัวเลข/สัญลักษณ์ทั่วไป และ normalize ให้เหลือ 10 หลักขึ้นต้น 0
             txtPhone.MaxLength = 12;
             txtPhone.KeyPress += (s, e) =>
             {
@@ -71,7 +74,6 @@ namespace JRSApplication
                 }
             };
 
-            // อีเมล: รูปแบบเข้มงวด + normalize domain เป็นตัวพิมพ์เล็ก
             txtEmail.Validating += (s, e) =>
             {
                 string email = (txtEmail.Text ?? "").Trim();
@@ -88,7 +90,6 @@ namespace JRSApplication
                 }
             };
 
-            // แสดง/ซ่อนรหัสผ่าน (สำหรับกรณีไฟล์ Designer ผูกอีเวนต์ไว้แล้ว ก็มีเมธอดด้านล่างให้เรียกได้)
             txtPassword.UseSystemPasswordChar = true;
             txtConfirmPassword.UseSystemPasswordChar = true;
             txtPassword.TextChanged += (s, e) => { if (isEditMode) passwordEdited = true; };
@@ -100,6 +101,25 @@ namespace JRSApplication
 
             LoadEmployeeData();
             LoadRoles();
+
+            // ===== ผูก SearchboxControl =====
+            // (กันคอนโทรลยังไม่พร้อม: ย้ายไป this.Load)
+            this.Load += (s, e) =>
+            {
+                // เซ็ตค่าเริ่มต้น (เผื่อคอนโทรลยังไม่ได้อัดเอง)
+                searchboxUserData.SetRoleAndFunction("Admin", "จัดการบัญชีผู้ใช้");
+
+                // เมื่อผู้ใช้เปลี่ยนบทบาท ให้สลับชุดตัวเลือกในกล่องค้นหา
+                cmbRole.SelectedIndexChanged += (s2, e2) =>
+                {
+                    var role = cmbRole.SelectedItem?.ToString();
+                    if (!string.IsNullOrWhiteSpace(role))
+                        searchboxUserData.SetRoleAndFunction(role);
+                };
+
+                // รับอีเวนต์ค้นหาแล้วกรองตาราง
+                searchboxUserData.SearchTriggered += OnSearchTriggered;
+            };
 
             ReadOnlyControlsOff();
             EnableControlsOff();
@@ -118,7 +138,16 @@ namespace JRSApplication
         private void LoadEmployeeData()
         {
             var dal = new EmployeeDAL();
-            dtgvEmployee.DataSource = dal.GetAllEmployees();
+            employeeTable = dal.GetAllEmployees();
+
+            // คง filter เดิมไว้ถ้ามี
+            string keep = employeeBS.Filter;
+
+            employeeBS.DataSource = employeeTable;
+            dtgvEmployee.DataSource = employeeBS;
+
+            if (!string.IsNullOrEmpty(keep))
+                employeeBS.Filter = keep;
         }
 
         private void dtgvEmployee_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -148,7 +177,6 @@ namespace JRSApplication
             string role = dr["ตำแหน่ง"].ToString().Trim();
             cmbRole.SelectedItem = cmbRole.Items.Contains(role) ? role : null;
 
-            // เก็บค่าเดิม
             originalUsername = txtUsername.Text.Trim();
             originalEmail = txtEmail.Text.Trim();
             originalIDCard = txtIdcard.Text.Trim();
@@ -210,7 +238,6 @@ namespace JRSApplication
             }
             else if (starRole != null) starRole.Visible = false;
 
-            // password: เพิ่ม vs แก้ไข
             if (!isEditMode)
             {
                 if (string.IsNullOrWhiteSpace(txtPassword.Text)) { MessageBox.Show("กรุณากรอกรหัสผ่านก่อนบันทึก!", "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
@@ -232,7 +259,6 @@ namespace JRSApplication
                 else passwordEdited = false;
             }
 
-            // Thai ID: ต้องเป็น "ตัวเลข 13 หลัก" เท่านั้น (ไม่ตรวจ checksum)
             string id = Regex.Replace(txtIdcard.Text ?? "", @"\D", "");
             if (id.Length != 13)
             {
@@ -240,9 +266,8 @@ namespace JRSApplication
                     "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtIdcard.Focus(); txtIdcard.SelectAll(); return false;
             }
-            txtIdcard.Text = id; // normalize
+            txtIdcard.Text = id;
 
-            // Phone: 10 digits (normalize +66 → 0XXXXXXXXX)
             string phone10 = NormalizeThaiMobile10(txtPhone.Text);
             if (string.IsNullOrEmpty(phone10))
             {
@@ -252,7 +277,6 @@ namespace JRSApplication
             }
             txtPhone.Text = phone10;
 
-            // Email strict
             string email = (txtEmail.Text ?? "").Trim();
             if (!IsValidEmailStrict(email))
             {
@@ -263,7 +287,6 @@ namespace JRSApplication
 
             return true;
         }
-
 
         // ===== Buttons =====
         private void btnAdd_Click(object sender, EventArgs e)
@@ -286,7 +309,8 @@ namespace JRSApplication
         {
             if (string.IsNullOrEmpty(selectedEmployeeID))
             {
-                MessageBox.Show("กรุณาเลือกพนักงานที่ต้องการแก้ไข!", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกพนักงานที่ต้องการแก้ไข!", "แจ้งเตือน",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -321,12 +345,10 @@ namespace JRSApplication
             string excludeId = (isEditMode && !string.IsNullOrEmpty(selectedEmployeeID))
                                 ? selectedEmployeeID : null;
 
-            // Normalize/Trim ก่อนเช็ค & บันทึก
             string emailToSave = NormalizeEmail((txtEmail.Text ?? "").Trim());
             string usernameToSave = (txtUsername.Text ?? "").Trim();
             string idcardToSave = (txtIdcard.Text ?? "").Trim();
 
-            // ===== กันข้อมูลซ้ำด้วยการเช็คจากแอปก่อน =====
             if (dal.ExistsEmail(emailToSave, excludeId))
             {
                 MessageBox.Show("อีเมลนี้ถูกใช้งานแล้วในระบบ!", "ข้อมูลซ้ำ",
@@ -346,7 +368,6 @@ namespace JRSApplication
                 txtIdcard.Focus(); txtIdcard.SelectAll(); return;
             }
 
-            // ===== ตัดสินรหัสผ่านที่จะบันทึก =====
             string finalPassword = !isEditMode
                 ? BCrypt.Net.BCrypt.HashPassword(txtPassword.Text)
                 : (passwordEdited ? BCrypt.Net.BCrypt.HashPassword(txtPassword.Text) : currentHashedPassword);
@@ -374,7 +395,8 @@ namespace JRSApplication
                     MessageBox.Show("บันทึกข้อมูลสำเร็จ!", "Success",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    LoadEmployeeData();
+                    LoadEmployeeData();   // รีโหลดข้อมูล (คงฟิลเตอร์เดิมไว้แล้ว)
+
                     ReadOnlyControlsOff();
                     EnableControlsOff();
                     ClearForm();
@@ -388,11 +410,10 @@ namespace JRSApplication
                         "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            // ===== ดักซ้ำจาก UNIQUE index ของ DB =====
-            catch (MySqlException ex) when (ex.Number == 1062) // Duplicate entry
+            catch (MySqlException ex) when (ex.Number == 1062)
             {
                 string msg = "ข้อมูลซ้ำกับรายการเดิมในระบบ!";
-                if (ex.Message.Contains("emp_email")) // ชื่อคอลัมน์/ดัชนี
+                if (ex.Message.Contains("emp_email"))
                 {
                     msg = "อีเมลนี้ถูกใช้งานแล้วในระบบ!";
                     txtEmail.Focus(); txtEmail.SelectAll();
@@ -416,7 +437,6 @@ namespace JRSApplication
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
@@ -442,7 +462,8 @@ namespace JRSApplication
                 MessageBox.Show("ลบข้อมูลสำเร็จ!", "สำเร็จ",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                LoadEmployeeData();
+                LoadEmployeeData(); // คงฟิลเตอร์เดิมไว้
+
                 ReadOnlyControlsOff();
                 EnableControlsOff();
                 ClearForm();
@@ -457,9 +478,61 @@ namespace JRSApplication
             }
         }
 
+        // ===== Search Handler =====
+        private void OnSearchTriggered(object sender, SearchEventArgs ev)
+        {
+            if (employeeTable == null) return;
+
+            string keyword = (ev.Keyword ?? "").Trim();
+
+            // คีย์เวิร์ดว่าง = ล้างฟิลเตอร์ (โชว์ทั้งหมด)
+            if (string.IsNullOrEmpty(keyword))
+            {
+                employeeBS.RemoveFilter();
+                return;
+            }
+
+            // mapping display name → ชื่อคอลัมน์จริงใน DataTable
+            var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["ชื่อ"] = "ชื่อ",
+                ["นามสกุล"] = "นามสกุล",
+                ["ชื่อผู้ใช้"] = "ชื่อผู้ใช้",
+                ["เบอร์โทร"] = "เบอร์โทร",
+                ["อีเมล"] = "อีเมล",
+                ["ตำแหน่ง"] = "ตำแหน่ง",
+                ["รหัสพนักงาน"] = "รหัสพนักงาน",
+                ["ที่อยู่"] = "ที่อยู่",
+
+                // เผื่อใช้ข้ามหน้าอื่นในอนาคต
+                ["ชื่อลูกค้า"] = "ชื่อลูกค้า",
+                ["เลขประจำตัว"] = "เลขประจำตัว",
+                ["ชื่อบริษัทซัพพลายเออร์"] = "ชื่อบริษัทซัพพลายเออร์",
+                ["รหัสซัพพลายเออร์"] = "รหัสซัพพลายเออร์",
+                ["รหัสโครงการ"] = "รหัสโครงการ",
+                ["ชื่อโครงการ"] = "ชื่อโครงการ",
+                ["เลขที่สัญญา"] = "เลขที่สัญญา",
+            };
+
+            string display = ev.SearchBy ?? "";
+            string column = map.ContainsKey(display) ? map[display] : display;
+
+            string term = EscapeLikeValue(keyword);
+            employeeBS.Filter = $"CONVERT([{column}], System.String) LIKE '%{term}%'";
+        }
+
+        private static string EscapeLikeValue(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            return value
+                .Replace("[", "[[]")
+                .Replace("%", "[%]")
+                .Replace("*", "[*]")
+                .Replace("_", "[_]")
+                .Replace("'", "''");
+        }
 
         // ===== Helpers =====
-
         private string NormalizeThaiMobile10(string raw)
         {
             if (string.IsNullOrWhiteSpace(raw)) return "";
@@ -471,7 +544,7 @@ namespace JRSApplication
                 if (after.Length == 10 && after.StartsWith("0")) return after;
                 return "";
             }
-            return Regex.IsMatch(digits, @"^0\d{9}$") ? digits : "";
+            return Regex.IsMatch(digits, @"^0\\d{9}$") ? digits : "";
         }
 
         private bool IsValidEmailStrict(string email)
@@ -538,7 +611,6 @@ namespace JRSApplication
             cmbRole.SelectedIndex = -1;
         }
 
-        // ===== Event handlers wired from Designer =====
         private void cbxShowPassword1_CheckedChanged(object sender, EventArgs e)
         {
             txtPassword.UseSystemPasswordChar = !cbxShowPassword1.Checked;
