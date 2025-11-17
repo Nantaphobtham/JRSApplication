@@ -11,16 +11,13 @@ namespace JRSApplication
         {
             InitializeComponent();
 
-            // ✅ ตั้งค่า Password ให้เป็น ***
             txtPassword.PasswordChar = '*';
-
-            // ✅ ตั้งค่าการทำงานของปุ่ม Enter
             txtPassword.KeyDown += TxtPassword_KeyDown;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            PerformLogin(); // ✅ เรียกฟังก์ชันตรวจสอบการเข้าสู่ระบบ
+            PerformLogin();
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -46,22 +43,26 @@ namespace JRSApplication
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("กรุณากรอกชื่อผู้ใช้และรหัสผ่าน", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณากรอกชื่อผู้ใช้และรหัสผ่าน",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
-                string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+                string connectionString =
+                    ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
 
                     string query = @"
-                                SELECT emp_id, emp_password, emp_name, emp_lname, emp_pos
-                                FROM employee
-                                WHERE emp_username = @Username";
+                        SELECT emp_id, emp_password, emp_name, emp_lname, emp_pos
+                        FROM employee
+                        WHERE emp_username = @Username";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -76,15 +77,24 @@ namespace JRSApplication
                                 string role = reader["emp_pos"].ToString();
                                 string empId = reader["emp_id"].ToString();
 
-                                 //✅ ตรวจสอบรหัสผ่านด้วย BCrypt
                                 if (BCrypt.Net.BCrypt.Verify(password, hashedPassword))
                                 {
-                                    MessageBox.Show($"ยินดีต้อยรับเข้าสู่ระบบ {fullName + " ตำแหน่ง :" + role}", "เข้าสู่ระบบสำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    MessageBox.Show(
+                                        $"ยินดีต้อนรับเข้าสู่ระบบ {fullName} ตำแหน่ง : {role}",
+                                        "เข้าสู่ระบบสำเร็จ",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Information);
+
                                     NavigateToDashboard(role, fullName, empId);
                                 }
                                 else
                                 {
-                                    MessageBox.Show("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้องกรุณาลองใหม่อีกครั้ง", "เข้าสู่ระบบล้มเหลว", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    MessageBox.Show(
+                                        "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้องกรุณาลองใหม่อีกครั้ง",
+                                        "เข้าสู่ระบบล้มเหลว",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Error);
+
                                     txtUsername.Clear();
                                     txtPassword.Clear();
                                     txtUsername.Focus();
@@ -92,7 +102,11 @@ namespace JRSApplication
                             }
                             else
                             {
-                                MessageBox.Show("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้องกรุณาลองใหม่อีกครั้ง", "เข้าสู่ระบบล้มเหลว", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show(
+                                    "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้องกรุณาลองใหม่อีกครั้ง",
+                                    "เข้าสู่ระบบล้มเหลว",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
                             }
                         }
                     }
@@ -100,10 +114,13 @@ namespace JRSApplication
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"เกิดข้อผิดพลาด: {ex.Message}", "เข้าสู่ระบบล้มเหลว", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    $"เกิดข้อผิดพลาด: {ex.Message}",
+                    "เข้าสู่ระบบล้มเหลว",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
-
 
         private void NavigateToDashboard(string role, string fullName, string empId)
         {
@@ -112,23 +129,27 @@ namespace JRSApplication
             switch (role)
             {
                 case "Admin":
-                    dashboard = new AdminForm(fullName, role); // ✅ ส่งค่าชื่อและตำแหน่งไป AdminForm
+                    dashboard = new AdminForm(fullName, role);
                     break;
+
                 case "Projectmanager":
-                    dashboard = new ProjectManagerForm(fullName, role, empId); // ✅ ส่งค่าชื่อและตำแหน่ง
+                    dashboard = new ProjectManagerForm(fullName, role, empId);
                     break;
+
                 case "Sitesupervisor":
-                    dashboard = new SiteSupervisorForm(fullName, role, empId); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role
+                    dashboard = new SiteSupervisorForm(fullName, role, empId);
                     break;
+
                 case "Accountant":
-                    dashboard = new AccountantForm(fullName, role, empId); //รอเพิ่ม  ✅ ส่งค่าชื่อและตำแหน่ง  fullName, role
+                    dashboard = new AccountantForm(fullName, role, empId);
                     break;
+
                 default:
                     throw new InvalidOperationException("ตำแหน่งงานไม่ถูกต้อง");
             }
 
             dashboard.Show();
-            this.Hide(); // ✅ ซ่อนหน้า Login
+            this.Hide();
         }
     }
 }

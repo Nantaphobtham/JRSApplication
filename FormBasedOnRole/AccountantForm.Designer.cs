@@ -142,6 +142,7 @@
             // 
             // Profile
             // 
+            this.Profile.BackColor = System.Drawing.Color.White;
             this.Profile.Location = new System.Drawing.Point(30, 23);
             this.Profile.Name = "Profile";
             this.Profile.Size = new System.Drawing.Size(80, 80);

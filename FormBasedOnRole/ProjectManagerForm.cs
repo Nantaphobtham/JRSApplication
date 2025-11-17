@@ -1,12 +1,8 @@
-﻿using JRSApplication.ProjectManager;
+﻿using JRSApplication.Components.Models;
+using JRSApplication.ProjectManager;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace JRSApplication
@@ -16,11 +12,11 @@ namespace JRSApplication
         private string userFullName;
         private string userRole;
         private string _empID;
+
         public ProjectManagerForm(string fullName, string role, string empId)
         {
             InitializeComponent();
 
-            // เก็บค่าที่รับมา
             userFullName = fullName;
             userRole = role;
             _empID = empId;
@@ -30,30 +26,25 @@ namespace JRSApplication
         {
             txtName.Text = userFullName;
             txtPosition.Text = userRole;
+
+            // 🔹 รูปโปรไฟล์ตาม role
+            Profile.Image = RoleIconHelper.GetProfileIcon(userRole);
+            Profile.SizeMode = PictureBoxSizeMode.Zoom;
+            Profile.BackColor = Color.Transparent;
         }
 
         private void LoadUserControl(UserControl userControl)
         {
             if (userControl == null)
-            {
-                return; // **ถ้าไม่มี UserControl ส่งเข้ามา ก็ไม่ต้องทำอะไร**
-            }
+                return;
 
             if (PicLogo != null)
-            {
-                PicLogo.Visible = false; // ซ่อนโลโก้
-            }
+                PicLogo.Visible = false;
 
-            // เคลียร์เนื้อหาทั้งหมดใน Panel Body
             Body.Controls.Clear();
-
-            // ตั้งค่าให้ UserControl เต็ม Panel
             userControl.Dock = DockStyle.Fill;
-
-            // เพิ่ม UserControl ลงใน Panel Body
             Body.Controls.Add(userControl);
         }
-
 
         private void btnProjectInformation_Click(object sender, EventArgs e)
         {
@@ -116,21 +107,22 @@ namespace JRSApplication
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            Application.Exit(); // ปิด Application ทั้งหมด
+            Application.Exit();
         }
 
         private void btnMinimize_Click(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Minimized; // ย่อหน้าต่าง
+            this.WindowState = FormWindowState.Minimized;
         }
 
         bool menuExpand = false;
+
         private void menuTransition_Tick(object sender, EventArgs e)
         {
-            if (menuExpand == false)
+            if (!menuExpand)
             {
                 menuContainer.Height += 10;
-                if(menuContainer.Height >= 246)
+                if (menuContainer.Height >= 246)
                 {
                     menuTransition.Stop();
                     menuExpand = true;
@@ -139,18 +131,12 @@ namespace JRSApplication
             else
             {
                 menuContainer.Height -= 10;
-                if(menuContainer.Height <= 80)
+                if (menuContainer.Height <= 80)
                 {
                     menuTransition.Stop();
                     menuExpand = false;
-
                 }
             }
-
         }
-
-        
-
-        
     }
 }

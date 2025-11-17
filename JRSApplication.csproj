@@ -227,6 +227,7 @@
     <Compile Include="Components\Evaluators\ProjectStatusEvaluator.cs" />
     <Compile Include="Components\Models\project_files.cs" />
     <Compile Include="Components\Models\PurchaseOrder.cs" />
+    <Compile Include="Components\Models\RoleIconHelper.cs" />
     <Compile Include="Components\Models\Supplier.cs" />
     <Compile Include="Components\Models\SupplierAssignmentFile.cs" />
     <Compile Include="Components\Models\SupplierWorkAssignment.cs" />
@@ -347,11 +348,6 @@
     <Compile Include="FormBasedOnRole\SiteSupervisorForm.Designer.cs">
       <DependentUpon>SiteSupervisorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Components\Service\SearchboxControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -383,6 +379,11 @@
       <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\Service\SearchService.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Sitesupervisor\PhaseApprovalResult.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -502,6 +503,10 @@
     <EmbeddedResource Include="Components\Service\SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Resources\Accountant.png" />
+    <None Include="Resources\Sitesupervisor.png" />
+    <None Include="Resources\Projectmanager.png" />
+    <None Include="Resources\Admin.png" />
     <Content Include="Sitesupervisor\POreport.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

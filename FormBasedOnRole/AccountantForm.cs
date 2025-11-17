@@ -3,6 +3,7 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using JRSApplication.Accountant;
+using JRSApplication.Components.Models;
 
 namespace JRSApplication
 {
@@ -15,40 +16,42 @@ namespace JRSApplication
         public AccountantForm(string fullName, string role, string empId)
         {
             InitializeComponent();
-            // ✅ fix shadowing: store the values from login
+
             this.fullName = fullName;
             this.role = role;
             this.empId = empId;
 
             this.Load += AccountantForm_Load;
         }
+
         private void AccountantForm_Load(object sender, EventArgs e)
         {
-            // แสดงชื่อ-ตำแหน่งจากค่าที่ส่งมาจาก Login
             txtName.Text = this.fullName;
             txtPosition.Text = this.role;
+
+            // 🔹 รูปโปรไฟล์ตาม role
+            Profile.Image = RoleIconHelper.GetProfileIcon(this.role);
+            Profile.SizeMode = PictureBoxSizeMode.Zoom;
+            Profile.BackColor = Color.Transparent;
         }
 
         private void btnReceivePaymentMain_Click(object sender, EventArgs e)
         {
-            // Toggle การซ่อน/แสดง
             panelReceivePaymentSub.Visible = !panelReceivePaymentSub.Visible;
         }
 
-        // Generic loader for any page
         private void LoadUserControl(UserControl uc)
         {
-            Body.Controls.Clear();     // ล้างเนื้อหาเก่าออก
-            uc.Dock = DockStyle.Fill;  // ขยายเต็ม panel
-            Body.Controls.Add(uc);     // เพิ่ม UserControl
-            uc.BringToFront();         // ดันไปข้างหน้า
+            Body.Controls.Clear();
+            uc.Dock = DockStyle.Fill;
+            Body.Controls.Add(uc);
+            uc.BringToFront();
         }
 
-        // 🔹 Public navigation API used by Invoice page
         public void ShowConfirmInvoice(string invId)
         {
             var page = new ConfirmInvoice(this.fullName, this.role, this.empId);
-            page.InitFromInvoiceId(invId);   // <-- preload controls
+            page.InitFromInvoiceId(invId);
             LoadUserControl(page);
         }
 
@@ -70,15 +73,14 @@ namespace JRSApplication
             txtFunctionname.Text = "พิมพ์ใบเสร็จรับเงิน";
         }
 
-
         private void btnClose_Click(object sender, EventArgs e)
         {
-            Application.Exit(); // ปิดโปรแกรม
+            Application.Exit();
         }
 
         private void btnMinimize_Click(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Minimized; // ย่อหน้าต่าง
+            this.WindowState = FormWindowState.Minimized;
         }
     }
 }
