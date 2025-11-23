@@ -24,6 +24,9 @@ namespace JRSApplication
         public CustomerRegistration()
         {
             InitializeComponent();
+            this.AutoValidate = AutoValidate.EnableAllowFocusChange;
+            // ถ้าต้องการให้เปลี่ยนหน้า/ปิดฟอร์มได้แม้ Validate ไม่ผ่าน ให้ใช้บรรทัดนี้
+            // this.AutoValidate = AutoValidate.EnableAllowFocusChange;
 
             // ✅ ให้แน่ใจว่า CellClick ถูกผูกอีเวนต์
             dtgvCustomer.CellClick += dtgvCustomer_CellClick;
@@ -36,61 +39,26 @@ namespace JRSApplication
             {
                 e.Handled = !(char.IsControl(e.KeyChar) || char.IsDigit(e.KeyChar));
             };
-            txtIdcard.Validating += (s, e) =>
-            {
-                string digits = Regex.Replace(txtIdcard.Text ?? "", @"\D", "");
-                if (digits.Length != 13)
-                {
-                    e.Cancel = true;
-                    MessageBox.Show("เลขบัตรประชาชนต้องเป็นตัวเลข 13 หลัก",
-                        "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtIdcard.SelectAll();
-                }
-                else
-                {
-                    txtIdcard.Text = digits; // normalize เป็นตัวเลขล้วน
-                }
-            };
 
             // --- Phone: ยอม +66 หรือ 0 นำหน้า -> normalize เป็น 0XXXXXXXXX 10 หลัก ---
-            txtPhone.MaxLength = 12;
-            txtPhone.KeyPress += (s, e) =>
-            {
-                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && "+-() ".IndexOf(e.KeyChar) < 0)
-                    e.Handled = true;
-            };
             txtPhone.Validating += (s, e) =>
             {
+                // แค่ normalize เฉย ๆ ถ้าถูก; ถ้าไม่ถูกก็ปล่อยไว้ให้ไปเช็กตอนกดบันทึก
                 string normalized = NormalizeThaiMobile10(txtPhone.Text);
-                if (string.IsNullOrEmpty(normalized))
-                {
-                    e.Cancel = true;
-                    MessageBox.Show("เบอร์โทรต้องเป็นตัวเลข 10 หลักเท่านั้น\nเช่น 0812345678 หรือ +66812345678",
-                        "กรุณากรอกเบอร์โทรให้ถูกต้อง", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtPhone.SelectAll();
-                }
-                else
-                {
+                if (!string.IsNullOrEmpty(normalized))
                     txtPhone.Text = normalized;
-                }
             };
+
 
             // --- Email: ตรวจรูปแบบเข้ม + normalize โดเมนเป็นตัวพิมพ์เล็ก ---
             txtEmail.Validating += (s, e) =>
             {
                 string email = (txtEmail.Text ?? "").Trim();
-                if (!IsValidEmailStrict(email))
-                {
-                    e.Cancel = true;
-                    MessageBox.Show("รูปแบบอีเมลไม่ถูกต้อง!\nตัวอย่าง: name@example.com",
-                        "กรุณากรอกอีเมลให้ถูกต้อง", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtEmail.SelectAll();
-                }
-                else
-                {
+                // แค่ normalize ถ้ารูปแบบถูกต้อง ไม่ขึ้น error ที่นี่
+                if (!string.IsNullOrEmpty(email) && IsValidEmailStrict(email))
                     txtEmail.Text = NormalizeEmail(email);
-                }
             };
+
 
             CustomizeDataGridView(); // ✅ ปรับแต่ง DataGridView
             LoadCustomerData();      // ✅ โหลดข้อมูลเมื่อฟอร์มเปิด
@@ -452,7 +420,7 @@ namespace JRSApplication
             return false;
         }
 
-        // เช็คทีละช่องตามลำดับ และหยุดทันทีเมื่อพบข้อผิดพลาด (สอดคล้องตัวอย่าง)
+        // เช็คทีละช่องตามลำดับ และหยุดทันทีเมื่อพบข้อผิดพลาด
         private bool CheckRequiredFieldsSequential()
         {
             // ชื่อ
@@ -499,19 +467,41 @@ namespace JRSApplication
             return true;
         }
 
-        // รับ 0XXXXXXXXX หรือ +66XXXXXXXXX -> คืนรูปแบบ 0XXXXXXXXX เท่านั้น (10 หลัก)
+        // รับเบอร์มือถือไทยในรูปแบบต่าง ๆ แล้วคืนเป็น 0XXXXXXXXX (10 หลัก) เท่านั้น
+        // ตัวอย่างที่ยอมรับได้:
+        //   0812345678
+        //   0 81-234-5678
+        //   +66812345678
+        //   66812345678
+        //   0066812345678
         private string NormalizeThaiMobile10(string raw)
         {
-            if (string.IsNullOrWhiteSpace(raw)) return "";
+            if (string.IsNullOrWhiteSpace(raw))
+                return string.Empty;
+
+            // เอาเฉพาะตัวเลขออกมา
             string digits = new string(raw.Where(char.IsDigit).ToArray());
-            if (digits.StartsWith("66"))
+
+            // กรณีเบอร์ภายในประเทศปกติ 0XXXXXXXXX (10 หลัก)
+            if (Regex.IsMatch(digits, @"^0\d{9}$"))
+                return digits;
+
+            // กรณีมีรหัสประเทศ 0066 นำหน้า
+            if (digits.StartsWith("0066"))
             {
-                string after = digits.Substring(2);
-                if (after.Length == 9) return "0" + after;                     // +66 + 9 หลัก -> 0XXXXXXXXX
-                if (after.Length == 10 && after.StartsWith("0")) return after; // เผื่อ +660xxxxxxxx
-                return "";
+                digits = digits.Substring(4); // ตัด 0066 ออก
             }
-            return Regex.IsMatch(digits, @"^0\d{9}$") ? digits : "";
+            else if (digits.StartsWith("66"))
+            {
+                digits = digits.Substring(2); // ตัด 66 ออก
+            }
+
+            // หลังตัดรหัสประเทศแล้ว ต้องเหลือ 9 หลัก (ไม่ขึ้นต้นด้วย 0) -> เติม 0 ข้างหน้า
+            if (Regex.IsMatch(digits, @"^[1-9]\d{8}$"))
+                return "0" + digits;      // 9 หลัก -> 0XXXXXXXXX
+
+            // รูปแบบอื่นถือว่าไม่ถูกต้อง
+            return string.Empty;
         }
 
         private bool IsValidEmailStrict(string email)

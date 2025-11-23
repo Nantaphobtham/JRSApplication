@@ -29,6 +29,7 @@ namespace JRSApplication
         public UserManagementForm()
         {
             InitializeComponent();
+            this.AutoValidate = AutoValidate.EnableAllowFocusChange;
 
             // ===== Input filters =====
             txtIdcard.MaxLength = 13;
@@ -36,21 +37,7 @@ namespace JRSApplication
             {
                 e.Handled = !(char.IsControl(e.KeyChar) || char.IsDigit(e.KeyChar));
             };
-            txtIdcard.Validating += (s, e) =>
-            {
-                string digits = Regex.Replace(txtIdcard.Text ?? "", @"\D", "");
-                if (digits.Length != 13)
-                {
-                    e.Cancel = true;
-                    MessageBox.Show("เลขบัตรประชาชนต้องเป็นตัวเลข 13 หลัก!",
-                        "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtIdcard.SelectAll();
-                }
-                else
-                {
-                    txtIdcard.Text = digits;
-                }
-            };
+           
 
             txtPhone.MaxLength = 12;
             txtPhone.KeyPress += (s, e) =>
@@ -58,37 +45,24 @@ namespace JRSApplication
                 if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && "+-() ".IndexOf(e.KeyChar) < 0)
                     e.Handled = true;
             };
+
             txtPhone.Validating += (s, e) =>
             {
+                // แค่ normalize เฉย ๆ ถ้าถูก; ถ้าไม่ถูกก็ปล่อยไว้ให้ไปเช็กตอนกดบันทึก
                 string normalized = NormalizeThaiMobile10(txtPhone.Text);
-                if (string.IsNullOrEmpty(normalized))
-                {
-                    e.Cancel = true;
-                    MessageBox.Show("เบอร์โทรต้องเป็นตัวเลข 10 หลักเท่านั้น\nตัวอย่าง: 0812345678 หรือ +66812345678",
-                        "กรุณากรอกเบอร์โทรให้ถูกต้อง!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtPhone.SelectAll();
-                }
-                else
-                {
+                if (!string.IsNullOrEmpty(normalized))
                     txtPhone.Text = normalized;
-                }
             };
+
 
             txtEmail.Validating += (s, e) =>
             {
                 string email = (txtEmail.Text ?? "").Trim();
-                if (!IsValidEmailStrict(email))
-                {
-                    e.Cancel = true;
-                    MessageBox.Show("อีเมลไม่ถูกต้อง\nตัวอย่างที่ถูกต้อง: name@example.com",
-                        "กรุณากรอกอีเมลให้ถูกต้อง!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtEmail.SelectAll();
-                }
-                else
-                {
+                // แค่ normalize ถ้ารูปแบบถูกต้อง ไม่ขึ้น error ที่นี่
+                if (!string.IsNullOrEmpty(email) && IsValidEmailStrict(email))
                     txtEmail.Text = NormalizeEmail(email);
-                }
             };
+
 
             txtPassword.UseSystemPasswordChar = true;
             txtConfirmPassword.UseSystemPasswordChar = true;
@@ -532,20 +506,33 @@ namespace JRSApplication
                 .Replace("'", "''");
         }
 
-        // ===== Helpers =====
+        // รับเบอร์มือถือไทยหลายรูปแบบแล้วคืนเป็น 0XXXXXXXXX (10 หลัก) เท่านั้น
         private string NormalizeThaiMobile10(string raw)
         {
-            if (string.IsNullOrWhiteSpace(raw)) return "";
+            if (string.IsNullOrWhiteSpace(raw))
+                return string.Empty;
+
+            // keep only digits
             string digits = Regex.Replace(raw, @"\D", "");
-            if (digits.StartsWith("66"))
-            {
-                string after = digits.Substring(2);
-                if (after.Length == 9) return "0" + after;
-                if (after.Length == 10 && after.StartsWith("0")) return after;
-                return "";
-            }
-            return Regex.IsMatch(digits, @"^0\\d{9}$") ? digits : "";
+
+            // เคสปกติ 0XXXXXXXXX (10 หลัก)
+            if (Regex.IsMatch(digits, @"^0\d{9}$"))
+                return digits;
+
+            // มีรหัสประเทศ 0066 หรือ 66 นำหน้า
+            if (digits.StartsWith("0066"))
+                digits = digits.Substring(4);
+            else if (digits.StartsWith("66"))
+                digits = digits.Substring(2);
+
+            // หลังตัดรหัสประเทศ ต้องเหลือ 9 หลัก (ไม่ขึ้นต้นด้วย 0)
+            if (Regex.IsMatch(digits, @"^[1-9]\d{8}$"))
+                return "0" + digits;
+
+            return string.Empty;
         }
+
+
 
         private bool IsValidEmailStrict(string email)
         {
