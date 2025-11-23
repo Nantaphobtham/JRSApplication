@@ -507,6 +507,10 @@
     <None Include="Resources\Sitesupervisor.png" />
     <None Include="Resources\Projectmanager.png" />
     <None Include="Resources\Admin.png" />
+    <None Include="Resources\Accountant.jpg" />
+    <None Include="Resources\Projectmanager.jpg" />
+    <None Include="Resources\Admin.jpg" />
+    <None Include="Resources\Sitesupervisor.jpg" />
     <Content Include="Sitesupervisor\POreport.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
