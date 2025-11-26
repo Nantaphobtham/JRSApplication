@@ -269,19 +269,30 @@ namespace JRSApplication.Data_Access_Layer
             string where = "";
             string col;
 
+            // รองรับชื่อจากหลายหน้าจอ
             switch (searchBy)
             {
                 case "ชื่อ":
+                case "ชื่อลูกค้า":              // จาก searchboxCustomer
                     col = "cus_name";
                     break;
+
+                case "นามสกุล":
+                case "นามสกูลลูกค้า":           // เผื่ออนาคตมีใช้
+                    col = "cus_lname";
+                    break;
+
                 case "เลขบัตรประชาชน":
+                case "เลขประจำตัว":            // จาก searchboxCustomer
                     col = "cus_id_card";
                     break;
+
                 case "อีเมล":
                     col = "cus_email";
                     break;
+
                 default:
-                    col = ""; // คืนทั้งหมด
+                    col = ""; // ไม่มี column -> จะดึงทั้งหมด
                     break;
             }
 

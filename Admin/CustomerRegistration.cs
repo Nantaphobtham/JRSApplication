@@ -82,6 +82,8 @@ namespace JRSApplication
             dtgvCustomer.DataSource = dt;
         }
 
+
+
         private void CustomizeDataGridView()
         {
             // ✅ ตั้งค่าพื้นฐาน
