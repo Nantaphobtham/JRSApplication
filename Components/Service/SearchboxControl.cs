@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Linq;
-
+using System.Windows.Forms;
 
 namespace JRSApplication
 {
@@ -11,15 +10,16 @@ namespace JRSApplication
         // ยิงอีเวนต์ให้ฟอร์มแม่
         public event EventHandler<SearchEventArgs> SearchTriggered;
 
-        // ค่าดีฟอลต์ (เปลี่ยนได้ตามหน้า)
+        // ค่าดีฟอลต์ (ถ้าไม่เซ็ตจากข้างนอก)
         public string DefaultRole { get; set; } = "Admin";
         public string DefaultFunction { get; set; } = "จัดการบัญชีผู้ใช้";
 
-        // เก็บตัวเลือกค้นหาตาม Role/Function
+        // เก็บตัวเลือกค้นหาตาม Role / Function
         private Dictionary<string, Dictionary<string, List<string>>> searchOptionsByRoleFunction;
 
         // properties เผื่อฟอร์มแม่อยากอ่านค่า
         public string SelectedSearchBy => cmbSearchBy.SelectedItem?.ToString() ?? "";
+
         public string Keyword
         {
             get => (txtSearchKeyword.Text ?? "").Trim();
@@ -31,15 +31,14 @@ namespace JRSApplication
             InitializeComponent();
             InitializeSearchOptions();
 
-            // ใส่ค่า default ให้เลย ตอนคอนโทรลโหลดครั้งแรก
+            // ใส่ค่า default ให้ตอนคอนโทรลโหลด/สร้าง handle ครั้งแรก
             this.Load += (s, e) => ApplyDefaultIfEmpty();
-            // กรณีบางฟอร์ม Load เร็วไป ให้ยิงอีกทีตอน handle ถูกสร้าง
-            // (กันกรณีคอนโทรลอยู่ใน Tab/Panel ที่สร้างช้ากว่า)
             this.HandleCreated += (s, e) => ApplyDefaultIfEmpty();
 
             // พิมพ์แล้วค้นหาอัตโนมัติ
             txtSearchKeyword.TextChanged += (s, e) => TriggerSearch();
-            // กด Enter เพื่อยิงค้นหา, Esc เพื่อล้าง
+
+            // Enter = ค้นหา, Esc = ล้าง
             txtSearchKeyword.KeyDown += (s, e) =>
             {
                 if (e.KeyCode == Keys.Enter)
@@ -57,7 +56,7 @@ namespace JRSApplication
             btnSearch.Click += (s, e) => TriggerSearch();
         }
 
-        // ใส่ชุดตัวเลือก
+        // เซ็ตชุดตัวเลือกทั้งหมด
         private void InitializeSearchOptions()
         {
             searchOptionsByRoleFunction = new Dictionary<string, Dictionary<string, List<string>>>
@@ -65,53 +64,108 @@ namespace JRSApplication
                 {
                     "Admin", new Dictionary<string, List<string>>
                     {
-                        { "จัดการบัญชีผู้ใช้", new List<string> { "ชื่อ", "นามสกุล", "ชื่อผู้ใช้", "เบอร์โทร", "อีเมล", "ตำแหน่ง", "รหัสพนักงาน", "ที่อยู่" } },
-                        { "ทะเบียนลูกค้า", new List<string> { "ชื่อลูกค้า", "เลขประจำตัว", "อีเมล" } },
-                        { "ทะเบียนซัพพลายเออร์", new List<string> { "ชื่อบริษัทซัพพลายเออร์", "รหัสซัพพลายเออร์" } },
-                        { "จัดการข้อมูลโครงการ", new List<string> { "รหัสโครงการ", "ชื่อโครงการ", "เลขที่สัญญา" } }
+                        {
+                            "จัดการบัญชีผู้ใช้",
+                            new List<string>
+                            {
+                                "ชื่อ", "นามสกุล", "ชื่อผู้ใช้",
+                                "เบอร์โทร", "อีเมล", "ตำแหน่ง",
+                                "รหัสพนักงาน", "ที่อยู่"
+                            }
+                        },
+                        {
+                            "ทะเบียนลูกค้า",
+                            new List<string> { "ชื่อลูกค้า", "เลขประจำตัว", "อีเมล" }
+                        },
+                        {
+                            "ทะเบียนซัพพลายเออร์",
+                            new List<string> { "ชื่อบริษัทซัพพลายเออร์", "รหัสซัพพลายเออร์" }
+                        },
+                        {
+                            "จัดการข้อมูลโครงการ",
+                            new List<string> { "รหัสโครงการ", "ชื่อโครงการ", "เลขที่สัญญา" }
+                        }
                     }
                 },
                 {
                     "Projectmanager", new Dictionary<string, List<string>>
                     {
-                        { "ตรวจสอบข้อมูลโครงการ", new List<string> { "รหัสโครงการ", "ชื่อโครงการ", "เลขที่สัญญา" } },
-                        { "อนุมัติคำขอ", new List<string> { "ชื่อคำขอ", "ผู้ส่งคำขอ", "สถานะ" } }
+                        {
+                            "ตรวจสอบข้อมูลโครงการ",
+                            new List<string> { "รหัสโครงการ", "ชื่อโครงการ", "เลขที่สัญญา" }
+                        },
+                        {
+                            "อนุมัติคำขอ",
+                            new List<string> { "ชื่อคำขอ", "ผู้ส่งคำขอ", "สถานะ" }
+                        }
                     }
                 },
                 {
                     "Sitesupervisor", new Dictionary<string, List<string>>
                     {
-                        { "ตรวจสอบข้อมูลโครงการ", new List<string> { "รหัสโครงการ", "ชื่อโครงการ", "เลขที่สัญญา" } }
+                        {
+                            "ตรวจสอบข้อมูลโครงการ",
+                            new List<string> { "รหัสโครงการ", "ชื่อโครงการ", "เลขที่สัญญา" }
+                        }
                     }
                 },
                 {
+                    // ใช้กับฝ่ายบัญชี – role = Accountant
                     "Accountant", new Dictionary<string, List<string>>
                     {
-                        { "จัดการการเงิน", new List<string> { "รหัสใบแจ้งหนี้", "ยอดชำระ", "สถานะ" } }
+                        {
+                            "จัดการการเงิน",
+                            new List<string> { "รหัสใบแจ้งหนี้", "ยอดชำระ", "สถานะ" }
+                        }
+                    }
+                },
+                {
+                    // เผื่อระบบล็อกอินส่ง role = "Account" แทน "Accountant"
+                    "Account", new Dictionary<string, List<string>>
+                    {
+                        {
+                            "จัดการการเงิน",
+                            new List<string> { "รหัสใบแจ้งหนี้", "ยอดชำระ", "สถานะ" }
+                        }
                     }
                 }
             };
         }
 
-        // ฟอร์มแม่เรียกเมธอดนี้เพื่อเซ็ต Role/Function
+        /// <summary>
+        /// ฟอร์มแม่เรียกเมธอดนี้เพื่อเซ็ต Role/Function
+        /// เช่น searchbox.SetRoleAndFunction("Accountant", "จัดการการเงิน");
+        /// </summary>
         public void SetRoleAndFunction(string role, string function = null)
         {
+            if (string.IsNullOrWhiteSpace(role))
+                role = DefaultRole;
+
             if (!searchOptionsByRoleFunction.TryGetValue(role, out var functions))
             {
-                MessageBox.Show($"ไม่มีตัวเลือกสำหรับ Role: {role}", "แจ้งเตือน",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                // ถ้า role ไม่เจอ ใช้ DefaultRole แทน
+                if (!searchOptionsByRoleFunction.TryGetValue(DefaultRole, out functions))
+                {
+                    // ถ้า default ก็ยังไม่มี ให้ fallback แบบง่าย ๆ
+                    UpdateSearchOptions(new List<string> { "ชื่อ", "นามสกุล", "อีเมล" });
+                    return;
+                }
             }
 
             if (!string.IsNullOrEmpty(function) && functions.ContainsKey(function))
             {
                 UpdateSearchOptions(functions[function]);
             }
+            else if (!string.IsNullOrWhiteSpace(DefaultFunction) && functions.ContainsKey(DefaultFunction))
+            {
+                // ถ้าระบุ function ไม่ตรง แต่มี DefaultFunction ให้ใช้ DefaultFunction
+                UpdateSearchOptions(functions[DefaultFunction]);
+            }
             else if (functions.Count > 0)
             {
                 // เอา function แรกเป็นค่าเริ่มต้น
-                string defaultFunction = new List<string>(functions.Keys)[0];
-                UpdateSearchOptions(functions[defaultFunction]);
+                var firstOptionList = functions.Values.First();
+                UpdateSearchOptions(firstOptionList);
             }
             else
             {
@@ -120,7 +174,7 @@ namespace JRSApplication
             }
         }
 
-        // อัปเดตรายการในคอมโบบ็อกซ์ (คัดทิ้งสายว่าง)
+        // เติมรายการคอมโบ (ล้างช่องว่าง/Null)
         private void UpdateSearchOptions(List<string> options)
         {
             cmbSearchBy.Items.Clear();
@@ -131,7 +185,8 @@ namespace JRSApplication
                 foreach (var s in options)
                 {
                     var t = (s ?? "").Trim();
-                    if (!string.IsNullOrWhiteSpace(t)) clean.Add(t);
+                    if (!string.IsNullOrWhiteSpace(t))
+                        clean.Add(t);
                 }
             }
 
@@ -146,38 +201,40 @@ namespace JRSApplication
             }
         }
 
-        // บังคับอัดค่า default ถ้ายังว่าง
+        // ถ้ายังไม่ถูกเซ็ตอะไรเลย ให้ใช้ DefaultRole/DefaultFunction
         private void ApplyDefaultIfEmpty()
         {
-            if (cmbSearchBy.Items.Count > 0) return;
+            if (cmbSearchBy.Items.Count > 0)
+                return;
 
             if (searchOptionsByRoleFunction != null &&
                 searchOptionsByRoleFunction.TryGetValue(DefaultRole, out var funcs))
             {
-                if (!string.IsNullOrWhiteSpace(DefaultFunction) && funcs.ContainsKey(DefaultFunction))
+                if (!string.IsNullOrWhiteSpace(DefaultFunction) &&
+                    funcs.ContainsKey(DefaultFunction))
                 {
                     UpdateSearchOptions(funcs[DefaultFunction]);
                 }
                 else if (funcs.Count > 0)
                 {
-                    // เอาค่าลิสต์แรกของ dictionary values อย่างถูกชนิด
-                    var firstOptionList = funcs.Values.First(); // ต้องมี using System.Linq;
+                    var firstOptionList = funcs.Values.First();
                     UpdateSearchOptions(firstOptionList);
                 }
             }
             else
             {
                 // fallback กันว่าง
-                UpdateSearchOptions(new List<string> { "ชื่อ", "นามสกุล", "ชื่อผู้ใช้", "เบอร์โทร", "อีเมล" });
+                UpdateSearchOptions(
+                    new List<string> { "ชื่อ", "นามสกุล", "ชื่อผู้ใช้", "เบอร์โทร", "อีเมล" });
             }
         }
 
-
-        // ยิงค้นหาออกไป (คีย์เวิร์ดว่างก็ยิง เพื่อให้ฟอร์มแม่ล้างฟิลเตอร์ได้)
+        // ยิงอีเวนต์ค้นหาออกไปให้ฟอร์มแม่
         private void TriggerSearch()
         {
             string selectedOption = cmbSearchBy.SelectedItem?.ToString() ?? "";
             string keyword = (txtSearchKeyword.Text ?? "").Trim();
+
             SearchTriggered?.Invoke(this, new SearchEventArgs(selectedOption, keyword));
         }
     }

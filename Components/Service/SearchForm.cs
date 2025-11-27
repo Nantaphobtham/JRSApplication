@@ -32,7 +32,7 @@ namespace JRSApplication
 
             this.Load += SearchForm_Load;
 
-            // ✅ Title
+            // ตั้ง Title
             if (SearchMode == "Customer")
                 lblTitle.Text = "ค้นหาลูกค้า";
             else if (SearchMode == "Employee")
@@ -48,7 +48,7 @@ namespace JRSApplication
             else
                 lblTitle.Text = "ค้นหา";
 
-            // ✅ Initial data load
+            // โหลดข้อมูลเริ่มต้น
             if (SearchMode == "UnpaidInvoiceByProject")
                 LoadSearchData(optionalProjectId ?? "");
             else
@@ -56,7 +56,6 @@ namespace JRSApplication
 
             CustomizeDataGridViewAlldata();
 
-            // ✅ DoubleClick = เลือก
             dtgvAlldata.CellDoubleClick += dtgvAlldata_CellDoubleClick;
         }
 
@@ -74,6 +73,7 @@ namespace JRSApplication
             }
         }
 
+        // textbox ค้นหา (ชื่อ control = txtSearch, event name จะชื่ออะไรก็ได้)
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             if (SearchMode == "UnpaidInvoiceByProject")
@@ -81,7 +81,7 @@ namespace JRSApplication
                 if (dtgvAlldata.DataSource is DataTable table)
                 {
                     var dv = table.DefaultView;
-                    string q = txtSearch.Text.Trim().Replace("'", "''");
+                    string q = EscapeLikeValue(txtSearch.Text.Trim());
 
                     if (string.IsNullOrEmpty(q))
                     {
@@ -98,11 +98,17 @@ namespace JRSApplication
             }
             else
             {
+                // โหมดอื่นใช้ service ตามเดิม
                 LoadSearchData(txtSearch.Text);
             }
         }
 
-        // ✅ ใช้ฟังก์ชันกลาง
+        // ถ้า designer ยังอ้าง event txtKeyword_TextChanged อยู่ ให้ forward มาที่ตัวหลัก
+        private void txtKeyword_TextChanged(object sender, EventArgs e)
+        {
+            txtSearch_TextChanged(sender, e);
+        }
+
         private void btnConfirm_Click(object sender, EventArgs e)
         {
             ConfirmSelection();
@@ -180,7 +186,8 @@ namespace JRSApplication
             }
             else
             {
-                MessageBox.Show("กรุณาเลือกข้อมูลก่อน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกข้อมูลก่อน", "แจ้งเตือน",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -238,7 +245,6 @@ namespace JRSApplication
             }
             else if (SearchMode == "Supplier")
             {
-                // ✅ ปรับชื่อฟิลด์ค้นหาให้เหมาะกับซัพพลายเออร์
                 cmbSearchBy.Items.Add("ชื่อบริษัท");
                 cmbSearchBy.Items.Add("เลขทะเบียนนิติบุคคล");
                 cmbSearchBy.Items.Add("เบอร์โทรศัพท์");
@@ -253,56 +259,12 @@ namespace JRSApplication
                 cmbSearchBy.SelectedIndex = 0;
         }
 
-        private void txtKeyword_TextChanged(object sender, EventArgs e)
-        {
-            if (dtgvAlldata.DataSource is DataTable table)
-            {
-                string keyword = txtSearch.Text.Trim().Replace("'", "''");
-
-                if (string.IsNullOrEmpty(keyword))
-                {
-                    table.DefaultView.RowFilter = string.Empty;
-                }
-                else
-                {
-                    if (SearchMode == "Project")
-                    {
-                        table.DefaultView.RowFilter =
-                            $"[ชื่อโครงการ] LIKE '%{keyword}%' OR [ลูกค้า] LIKE '%{keyword}%'";
-                    }
-                    else if (SearchMode == "Employee")
-                    {
-                        table.DefaultView.RowFilter =
-                            $"[ชื่อ] LIKE '%{keyword}%' OR [นามสกุล] LIKE '%{keyword}%'";
-                    }
-                    else if (SearchMode == "Customer")
-                    {
-                        table.DefaultView.RowFilter =
-                            $"[ชื่อ] LIKE '%{keyword}%' OR [นามสกุล] LIKE '%{keyword}%'";
-                    }
-                    else if (SearchMode == "Supplier")
-                    {
-                        // ✅ ให้ค้นพร้อมกันจากชื่อบริษัท / เลขทะเบียน / เบอร์ / อีเมล
-                        table.DefaultView.RowFilter =
-                            $"[ชื่อบริษัท] LIKE '%{keyword}%' " +
-                            $"OR [เลขทะเบียนนิติบุคคล] LIKE '%{keyword}%' " +
-                            $"OR [เบอร์โทรศัพท์] LIKE '%{keyword}%' " +
-                            $"OR [อีเมล] LIKE '%{keyword}%'";
-                    }
-                    else if (SearchMode == "Invoice")
-                    {
-                        table.DefaultView.RowFilter =
-                            $"CONVERT([เลขที่ใบแจ้งหนี้], 'System.String') LIKE '%{keyword}%'";
-                    }
-                }
-            }
-        }
-
+        // ปุ่มค้นหาแบบใช้คอลัมน์ที่เลือก
         private void btnSearch_Click(object sender, EventArgs e)
         {
             if (dtgvAlldata.DataSource is DataTable table)
             {
-                string keyword = txtSearch.Text.Trim().Replace("'", "''");
+                string keyword = EscapeLikeValue(txtSearch.Text.Trim());
 
                 if (string.IsNullOrEmpty(keyword))
                 {
@@ -326,6 +288,20 @@ namespace JRSApplication
         private void btnBack_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        // ฟังก์ชัน escape สำหรับ RowFilter
+        private static string EscapeLikeValue(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return string.Empty;
+
+            return value
+                .Replace("[", "[[]")   // escape [
+                                       //.Replace("]", "[]]")  // ไม่ต้อง escape ] แล้ว
+                .Replace("%", "[%]")   // escape %
+                .Replace("*", "[*]")   // escape *
+                .Replace("'", "''");   // escape single quote
         }
     }
 }

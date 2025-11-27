@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
-using System.Windows.Forms;
-using JRSApplication.Components; // ✅ ใช้ Model ใหม่
-using JRSApplication.Data_Access_Layer;
-using Org.BouncyCastle.Asn1.Cmp;
 using System.Globalization;
-using MySql.Data.MySqlClient;
 using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using JRSApplication.Components; // ✅ ใช้ Model ใหม่ + SearchboxControl
+using JRSApplication.Data_Access_Layer;
+using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Asn1.Cmp;
 
 namespace JRSApplication.Accountant
 {
@@ -16,26 +17,131 @@ namespace JRSApplication.Accountant
         public Invoice()
         {
             InitializeComponent();
+
+            // -----------------------------
+            // event เดิมของ Invoice
+            // -----------------------------
             cmbPhase.SelectedIndexChanged += cmbPhase_SelectedIndexChanged;
             this.Load += Invoice_Load;
 
-            // ✅ ทำให้ panel1 ขยายเต็มขอบ UserControl ทุกด้าน
             panel1.Dock = DockStyle.Fill;
 
-            CustomizeInvoiceGrid(); // ✅ เรียกตกแต่ง
-
-            // 👇 menu for grid
+            CustomizeInvoiceGrid();
             BuildInvoiceGridMenu();
-
-            // ensure row selects on right/left click for menu
             dtgvInvoice.CellMouseDown += dtgvInvoice_CellMouseDown;
 
-            // ✅ บังคับช่วง due date ตาม inv date
             dtpInvDate.ValueChanged += dtpInvDate_ValueChanged;
             dtpDueDate.ValueChanged += dtpDueDate_ValueChanged;
 
+            // -----------------------------
+            // NEW: ตั้งค่า Searchbox แบบเดียวกับฟอร์มอื่น
+            // -----------------------------
+            try
+            {
+                // หน้า Invoice ใช้สำหรับบัญชีอยู่แล้ว ฟิกเป็น Accountant + จัดการการเงิน
+                searchboxControl1.DefaultRole = "Accountant";
+                searchboxControl1.DefaultFunction = "จัดการการเงิน";
+
+                searchboxControl1.SetRoleAndFunction("Accountant", "จัดการการเงิน");
+            }
+            catch
+            {
+                // กัน error เวลา designer โหลดคอนโทรล
+            }
+
+            // ผูกอีเวนต์ยิงค้นหา → ไปกรอง DataGridView
+            searchboxControl1.SearchTriggered += SearchboxInvoice_SearchTriggered;
         }
 
+        // --------------------------------------------------
+        // Searchbox → Filter ตาราง dtgvInvoice แบบโค้ดเดิม (row.Visible)
+        // --------------------------------------------------
+        private void SearchboxInvoice_SearchTriggered(object sender, SearchEventArgs e)
+        {
+            ApplyInvoiceGridFilter(e.SearchBy, e.Keyword);
+        }
+
+        private void ApplyInvoiceGridFilter(string searchBy, string keyword)
+        {
+            keyword = (keyword ?? "").Trim();
+
+            if (dtgvInvoice.Rows.Count == 0)
+                return;
+
+            // ====== จุดสำคัญอยู่ตรงนี้ ======
+            CurrencyManager cm = null;
+
+            if (dtgvInvoice.DataSource != null)
+            {
+                // อย่าลืมมี this. และมี dtgvInvoice.DataSource อยู่ใน []
+                cm = (CurrencyManager)this.BindingContext[dtgvInvoice.DataSource];
+            }
+            // =================================
+
+            cm?.SuspendBinding();   // ถ้า cm ไม่ null ให้หยุด binding ก่อน
+
+            try
+            {
+                foreach (DataGridViewRow row in dtgvInvoice.Rows)
+                {
+                    if (row.IsNewRow) continue;
+
+                    // ถ้า keyword ว่างให้โชว์ทุกแถว
+                    if (string.IsNullOrEmpty(keyword))
+                    {
+                        row.Visible = true;
+                        continue;
+                    }
+
+                    string cellValue = "";
+
+                    switch (searchBy)
+                    {
+                        case "รหัสใบแจ้งหนี้":
+                            if (dtgvInvoice.Columns.Contains("inv_id"))
+                                cellValue = row.Cells["inv_id"].Value?.ToString() ?? "";
+                            else if (dtgvInvoice.Columns.Contains("inv_no"))
+                                cellValue = row.Cells["inv_no"].Value?.ToString() ?? "";
+                            break;
+
+                        case "ยอดชำระ":
+                            if (dtgvInvoice.Columns.Contains("inv_grand_total"))
+                                cellValue = row.Cells["inv_grand_total"].Value?.ToString() ?? "";
+                            else if (dtgvInvoice.Columns.Contains("inv_total_amount"))
+                                cellValue = row.Cells["inv_total_amount"].Value?.ToString() ?? "";
+                            break;
+
+                        case "สถานะ":
+                            if (dtgvInvoice.Columns.Contains("inv_status"))
+                                cellValue = row.Cells["inv_status"].Value?.ToString() ?? "";
+                            break;
+
+                        default:
+                            var sb = new StringBuilder();
+                            foreach (DataGridViewCell cell in row.Cells)
+                            {
+                                if (cell.Value != null)
+                                    sb.Append(cell.Value.ToString()).Append(" ");
+                            }
+                            cellValue = sb.ToString();
+                            break;
+                    }
+
+                    bool match = cellValue.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0;
+                    row.Visible = match;
+                }
+            }
+            finally
+            {
+                cm?.ResumeBinding();  // เปิด binding กลับ
+            }
+        }
+
+
+
+        // --------------------------------------------------
+        // โค้ดเดิมทั้งหมดของ Invoice (ปรับแค่ตรง LoadInvoiceTableByProject นิดเดียว)
+        // --------------------------------------------------
 
         private void btnSearchProject_Click(object sender, EventArgs e)
         {
@@ -45,13 +151,12 @@ namespace JRSApplication.Accountant
                 txtProjectID.Text = searchForm.SelectedID;                  // รหัสโครงการ
                 txtContractNumber.Text = searchForm.SelectedContract;       // เลขที่สัญญา
                 txtProjectName.Text = searchForm.SelectedName;              // ชื่อโครงการ
-                txtCusID.Text = searchForm.SelectedCusID;  // ✅ แก้ให้ใช้ cus_id โดยตรง                                                          
-                txtCusName.Text = searchForm.SelectedLastName;             // ชื่อ-นามสกุล ลูกค้า
-
+                txtCusID.Text = searchForm.SelectedCusID;                   // ใช้ cus_id
+                txtCusName.Text = searchForm.SelectedLastName;             // ชื่อลูกค้า
 
                 LoadPhasesToComboBox(searchForm.SelectedID);
 
-                // ✅ โหลดตาราง dtgvInvoice จาก project id
+                // โหลดตาราง dtgvInvoice จาก project id
                 LoadInvoiceTableByProject(searchForm.SelectedID);
             }
         }
@@ -59,10 +164,9 @@ namespace JRSApplication.Accountant
         private void LoadInvoiceTableByProject(string projectId)
         {
             InvoiceDAL dal = new InvoiceDAL();
-            DataTable dt = dal.GetAllInvoicesByProjectId(projectId); // ✅ ใช้เมธอดใหม่
+            DataTable dt = dal.GetAllInvoicesByProjectId(projectId);
             dtgvInvoice.DataSource = dt;
 
-            // ✅ เปลี่ยนชื่อหัวคอลัมน์
             if (dtgvInvoice.Columns.Contains("inv_id")) dtgvInvoice.Columns["inv_id"].HeaderText = "รหัสใบแจ้งหนี้";
             if (dtgvInvoice.Columns.Contains("inv_no")) dtgvInvoice.Columns["inv_no"].HeaderText = "เลขที่ใบแจ้งหนี้";
             if (dtgvInvoice.Columns.Contains("inv_date")) dtgvInvoice.Columns["inv_date"].HeaderText = "วันที่ออก";
@@ -77,13 +181,14 @@ namespace JRSApplication.Accountant
             if (dtgvInvoice.Columns.Contains("cus_id_card")) dtgvInvoice.Columns["cus_id_card"].HeaderText = "เลขบัตรประชาชน";
             if (dtgvInvoice.Columns.Contains("cus_address")) dtgvInvoice.Columns["cus_address"].HeaderText = "ที่อยู่ลูกค้า";
             if (dtgvInvoice.Columns.Contains("phase_no")) dtgvInvoice.Columns["phase_no"].HeaderText = "เฟสที่";
-            if (dtgvInvoice.Columns.Contains("phase_id")) dtgvInvoice.Columns["phase_id"].Visible = false;  // keep id but hide it
+            if (dtgvInvoice.Columns.Contains("phase_id")) dtgvInvoice.Columns["phase_id"].Visible = false;
 
-            // ✅ ซ่อน emp_id ไม่ให้แสดง
             if (dtgvInvoice.Columns.Contains("emp_id"))
                 dtgvInvoice.Columns["emp_id"].Visible = false;
-        }
 
+            // หลังโหลดข้อมูลแล้ว ให้ฟิลเตอร์ตามค่าปัจจุบันใน Searchbox (เหมือน ManageProject)
+            ApplyInvoiceGridFilter(searchboxControl1.SelectedSearchBy, searchboxControl1.Keyword);
+        }
 
         private void LoadPhasesToComboBox(string projectId)
         {
@@ -100,27 +205,25 @@ namespace JRSApplication.Accountant
             cmbPhase.DataSource = dt;
             cmbPhase.SelectedIndex = 0;
         }
+
         private void Invoice_Load(object sender, EventArgs e)
         {
             try
             {
                 var dal = new InvoiceDAL();
-                txtInvNo.Text = dal.PeekNextInvoiceId();   // shows next INV_000x
+                txtInvNo.Text = dal.PeekNextInvoiceId();
             }
             catch
             {
                 txtInvNo.Text = "";
             }
 
-            // if you clear the form and want to show the next number immediately:
             txtInvNo.Text = new InvoiceDAL().PeekNextInvoiceId();
-            ApplyDueDateFloor(); // ✅ บังคับช่วงตั้งแต่แรก
-
-
+            ApplyDueDateFloor();
         }
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            // ต้องเลือกโครงการและลูกค้าก่อนบันทึก
             if (string.IsNullOrWhiteSpace(txtProjectID.Text) || string.IsNullOrWhiteSpace(txtCusID.Text))
             {
                 MessageBox.Show("กรุณาเลือกโครงการและลูกค้าก่อนบันทึก", "แจ้งเตือน",
@@ -128,7 +231,6 @@ namespace JRSApplication.Accountant
                 return;
             }
 
-            // ✅ กันกรณี due < inv
             if (dtpDueDate.Value.Date < dtpInvDate.Value.Date)
             {
                 MessageBox.Show("กำหนดชำระเงินต้องไม่น้อยกว่าวันที่ออกใบแจ้งหนี้",
@@ -141,7 +243,6 @@ namespace JRSApplication.Accountant
             {
                 string proId = txtProjectID.Text.Trim();
 
-                // ❗ ต้องเลือกเฟสก่อนบันทึก (ไม่ auto-select)
                 string phaseIdFromUI = cmbPhase.SelectedValue?.ToString()?.Trim();
                 if (string.IsNullOrWhiteSpace(phaseIdFromUI))
                 {
@@ -152,7 +253,6 @@ namespace JRSApplication.Accountant
                     return;
                 }
 
-                // (ทางเลือก) ตรวจสอบว่า phase นี้อยู่ในโครงการเดียวกัน
                 var searchSvc = new SearchService();
                 var phases = searchSvc.GetPhasesByProjectId(proId);
                 bool belongs = phases.AsEnumerable().Any(r => r["phase_id"]?.ToString() == phaseIdFromUI);
@@ -165,7 +265,6 @@ namespace JRSApplication.Accountant
                     return;
                 }
 
-                // ✅ เตรียม model หลัก (ไม่ต้องใช้ InvNo แล้ว)
                 InvoiceModel model = new InvoiceModel
                 {
                     InvDate = dtpInvDate.Value,
@@ -175,7 +274,7 @@ namespace JRSApplication.Accountant
                     ProId = proId,
                     ProNumber = txtContractNumber.Text.Trim(),
                     ProName = txtProjectName.Text.Trim(),
-                    PhaseId = phaseIdFromUI,             // <-- now guaranteed
+                    PhaseId = phaseIdFromUI,
                     PhaseBudget = txtPhaseBudget.Text.Trim(),
                     PhaseDetail = txtPhaseDetail.Text.Trim(),
                     InvRemark = txtRemark.Text.Trim(),
@@ -183,24 +282,20 @@ namespace JRSApplication.Accountant
                 };
 
                 var dal = new InvoiceDAL();
-                // InsertInvoice() คืนค่า inv_id รูปแบบ "INV_0001"
                 string newInvId = dal.InsertInvoice(model);
 
                 if (!string.IsNullOrWhiteSpace(newInvId))
                 {
-                    txtInvNo.Text = newInvId; // แสดงเลขที่ใบแจ้งหนี้ที่สร้าง
+                    txtInvNo.Text = newInvId;
 
-                    // รายการฝั่งขวา (invoice_detail)
                     string detail = txtDetail.Text.Trim();
-                    string quantityText = txtQuantity.Text.Trim();  // เก็บเป็น string ตามที่ออกแบบ
+                    string quantityText = txtQuantity.Text.Trim();
                     if (!decimal.TryParse(txtPrice.Text.Trim(), out decimal price)) price = 0m;
                     decimal vatRate = 7m;
 
                     var detailDal = new InvoiceDetailDAL();
                     detailDal.InsertInvoiceDetail(newInvId, detail, price, quantityText, vatRate);
 
-                    // ------------------- NEW: อัปเดตยอดรวมในตาราง invoice -------------------
-                    // เหมือนการคำนวณในหน้าพิมพ์: phase_budget + extra price (จำนวนเป็นข้อความ ไม่คูณ)
                     decimal ParseMoney(string s)
                     {
                         if (string.IsNullOrWhiteSpace(s)) return 0m;
@@ -217,19 +312,16 @@ namespace JRSApplication.Accountant
                     }
 
                     decimal phaseBudget = ParseMoney(txtPhaseBudget.Text);
-                    decimal extraPrice = price;                         // จากกล่องราคา
+                    decimal extraPrice = price;
                     decimal subtotal = phaseBudget + extraPrice;
                     decimal vat = Math.Round(subtotal * 0.07m, 2, MidpointRounding.AwayFromZero);
                     decimal grand = subtotal + vat;
 
-                    // อัปเดตคอลัมน์: inv_total_amount, inv_vat_amount, inv_grand_total
                     dal.UpdateInvoiceAmounts(newInvId, subtotal, vat, grand);
-                    // -------------------------------------------------------------------------
 
                     MessageBox.Show("บันทึกข้อมูลสำเร็จ! เลขที่ใบแจ้งหนี้: " + newInvId,
                         "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // ล้างค่าอื่น ๆ แต่คงเลขที่ใบแจ้งหนี้ไว้ให้ผู้ใช้เห็น
                     txtCusID.Text = "";
                     txtCusName.Text = "";
                     txtProjectID.Text = "";
@@ -254,7 +346,6 @@ namespace JRSApplication.Accountant
                     "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         private void btnPrintInvoice_Click(object sender, EventArgs e)
         {
@@ -294,7 +385,6 @@ namespace JRSApplication.Accountant
             }
             catch { }
 
-            // --- Build ONE DataTable for RDLC ---
             var table = new DataTable();
             table.Columns.Add("receipt_id");
             table.Columns.Add("receipt_date");
@@ -316,7 +406,6 @@ namespace JRSApplication.Accountant
             table.Columns.Add("inv_quantity");
             table.Columns.Add("inv_price");
 
-            // --- Calculate totals ---
             decimal subtotal = phaseBudget;
             string invDetail = txtDetail.Text.Trim();
             string invQty = string.IsNullOrWhiteSpace(txtQuantity.Text) ? "1" : txtQuantity.Text.Trim();
@@ -328,14 +417,14 @@ namespace JRSApplication.Accountant
             decimal vat = Math.Round(subtotal * 0.07m, 2, MidpointRounding.AwayFromZero);
             decimal grand = subtotal + vat;
 
-            var thaiCulture = new System.Globalization.CultureInfo("th-TH");
+            var thaiCulture = new CultureInfo("th-TH");
             string toDate = DateTime.Now.ToString("d MMMM yyyy", thaiCulture);
-            // --- Add row ---
+
             table.Rows.Add(
-                DBNull.Value,        // receipt_id (not used for invoice)
-                DBNull.Value,        // receipt_date
+                DBNull.Value,
+                DBNull.Value,
                 invId,
-                dtpInvDate.Value.ToString("d/M/yyyy"),// ✅ inv_date
+                dtpInvDate.Value.ToString("d/M/yyyy"),
                 txtCusName.Text,
                 cusAddress,
                 txtProjectName.Text,
@@ -352,12 +441,9 @@ namespace JRSApplication.Accountant
                 string.IsNullOrWhiteSpace(invPrice) ? "0.00" : invPrice
             );
 
-            // --- Show RDLC ---
             var frm = new InvoicePrintRDLC(table);
             frm.ShowDialog();
         }
-
-
 
         private void cmbPhase_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -385,9 +471,9 @@ namespace JRSApplication.Accountant
                 }
             }
         }
+
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            // ต้องมีรหัสโครงการก่อน
             var projectId = txtProjectID.Text?.Trim();
             if (string.IsNullOrWhiteSpace(projectId))
             {
@@ -396,7 +482,6 @@ namespace JRSApplication.Accountant
                 return;
             }
 
-            // เปิดหน้าค้นหา: ใบแจ้งหนี้สถานะ 'รอชำระเงิน' ของโครงการนี้
             using (var searchForm = new SearchForm("UnpaidInvoiceByProject", projectId))
             {
                 if (searchForm.ShowDialog() != DialogResult.OK) return;
@@ -409,20 +494,15 @@ namespace JRSApplication.Accountant
                     return;
                 }
 
-                // โหลดข้อมูลใบแจ้งหนี้ลงฟอร์ม
                 try
                 {
-                    // ถ้าคอมโบเฟสยังไม่ได้โหลด (หรือโครงการเปลี่ยน) ให้โหลดเฟสของโครงการก่อน
                     if (cmbPhase.DataSource == null ||
                         (cmbPhase.DataSource as DataTable)?.Rows.Count == 0)
                     {
                         LoadPhasesToComboBox(projectId);
                     }
 
-                    // โหลดหัวใบแจ้งหนี้ + รายการ มาใส่กล่อง (ใช้เมธอดที่คุณมีอยู่)
                     LoadInvoiceById(selectedInvoiceId);
-
-                    // ถ้าต้องการ…โฟกัสไปช่อง remark เพื่อแก้ไขต่อ
                     txtRemark.Focus();
                 }
                 catch (Exception ex)
@@ -439,45 +519,34 @@ namespace JRSApplication.Accountant
             dtgvInvoice.MultiSelect = false;
             dtgvInvoice.BorderStyle = BorderStyle.None;
 
-            // ✅ สีสลับแถว
             dtgvInvoice.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
             dtgvInvoice.DefaultCellStyle.BackColor = Color.White;
             dtgvInvoice.DefaultCellStyle.ForeColor = Color.Black;
 
-            // ✅ สีเมื่อเลือกแถว
             dtgvInvoice.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
             dtgvInvoice.DefaultCellStyle.SelectionForeColor = Color.White;
 
-            // ✅ ฟอนต์และการจัดข้อความภายในเซลล์
-            dtgvInvoice.DefaultCellStyle.Font = new Font("Segoe UI", 12); // ขนาดใหญ่เหมือน ConfirmInvoice
+            dtgvInvoice.DefaultCellStyle.Font = new Font("Segoe UI", 12);
             dtgvInvoice.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dtgvInvoice.DefaultCellStyle.Padding = new Padding(2, 3, 2, 3);
 
-            // ✅ หัวตาราง
             dtgvInvoice.EnableHeadersVisualStyles = false;
             dtgvInvoice.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dtgvInvoice.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy; // ใช้สีเดียวกับ ConfirmInvoice
+            dtgvInvoice.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dtgvInvoice.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dtgvInvoice.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
             dtgvInvoice.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dtgvInvoice.ColumnHeadersHeight = 30;
 
-            // ✅ ขนาดแถว
             dtgvInvoice.RowTemplate.Height = 30;
-
-            // ✅ การจัดขนาดคอลัมน์
             dtgvInvoice.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dtgvInvoice.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dtgvInvoice.RowHeadersVisible = false;
             dtgvInvoice.ReadOnly = true;
             dtgvInvoice.AllowUserToAddRows = false;
             dtgvInvoice.AllowUserToResizeRows = false;
-
-            // ✅ สีเส้นตาราง
             dtgvInvoice.GridColor = Color.LightGray;
         }
-
-
 
         private ContextMenuStrip _invoiceMenu;
 
@@ -488,7 +557,6 @@ namespace JRSApplication.Accountant
             miPrint.Click += (s, e) => PrintSelectedInvoiceFromGrid();
             _invoiceMenu.Items.Add(miPrint);
 
-            // (ไว้ล่วงหน้า) เมนูไปหน้ายืนยันการรับชำระเงิน
             var miConfirm = new ToolStripMenuItem("ยืนยันการรับชำระเงิน");
             miConfirm.Click += (s, e) => GoToConfirmPaymentForSelected();
             _invoiceMenu.Items.Add(miConfirm);
@@ -498,19 +566,15 @@ namespace JRSApplication.Accountant
         {
             if (e.RowIndex < 0) return;
 
-            // เลือกแถวก่อน
             dtgvInvoice.ClearSelection();
             dtgvInvoice.Rows[e.RowIndex].Selected = true;
             dtgvInvoice.CurrentCell = dtgvInvoice.Rows[e.RowIndex].Cells[e.ColumnIndex];
 
-            // ตรวจสถานะ
             var row = dtgvInvoice.Rows[e.RowIndex];
             string status = row.Cells["inv_status"]?.Value?.ToString() ?? "";
 
-            // ถ้า “ชำระแล้ว” ไม่ให้พิมพ์ (หรือจะซ่อนไว้ก็ได้)
             _invoiceMenu.Items[0].Enabled = !status.Equals("ชำระแล้ว", StringComparison.OrdinalIgnoreCase);
 
-            // โชว์เมนู
             if (e.RowIndex >= 0 && e.Button == MouseButtons.Left)
             {
                 dtgvInvoice.ClearSelection();
@@ -531,21 +595,17 @@ namespace JRSApplication.Accountant
                 return;
             }
 
-            // 1) ดึง inv_id จากแถว
             string invId = row.Cells["inv_id"]?.Value?.ToString();
             if (string.IsNullOrWhiteSpace(invId)) return;
 
-            // 2) โหลดข้อมูลเต็มของใบแจ้งหนี้ (รวม phase_budget/phase_detail)
             LoadInvoiceById(invId);
-
-            // 3) เรียกพิมพ์ (ใช้โค้ดปุ่มพิมพ์ที่คุณมีอยู่แล้ว)
             btnPrintInvoice_Click(null, EventArgs.Empty);
         }
 
         private void LoadInvoiceById(string invId)
         {
             var invoiceDAL = new InvoiceDAL();
-            DataTable dt = invoiceDAL.GetInvoiceID(invId); // merged query
+            DataTable dt = invoiceDAL.GetInvoiceID(invId);
 
             if (dt.Rows.Count == 0) return;
             DataRow r = dt.Rows[0];
@@ -553,7 +613,6 @@ namespace JRSApplication.Accountant
             string GetStr(string col)
                 => (r.Table.Columns.Contains(col) && r[col] != DBNull.Value) ? r[col].ToString() : "";
 
-            // Header
             txtInvNo.Text = r.Table.Columns.Contains("inv_no") && r["inv_no"] != DBNull.Value
                 ? r["inv_no"].ToString()
                 : GetStr("inv_id");
@@ -563,16 +622,14 @@ namespace JRSApplication.Accountant
             if (r.Table.Columns.Contains("inv_duedate") && r["inv_duedate"] != DBNull.Value)
                 dtpDueDate.Value = Convert.ToDateTime(r["inv_duedate"]);
 
-            // Project
             txtProjectID.Text = GetStr("pro_id");
             txtContractNumber.Text = GetStr("pro_number");
             txtProjectName.Text = GetStr("pro_name");
 
-            // Phase (id + budget/detail)
             string phaseIdStr = GetStr("phase_id");
             if (!string.IsNullOrWhiteSpace(phaseIdStr))
             {
-                try { cmbPhase.SelectedValue = phaseIdStr; } catch { /* ignore type mismatch */ }
+                try { cmbPhase.SelectedValue = phaseIdStr; } catch { }
             }
 
             if (r.Table.Columns.Contains("phase_budget") && r["phase_budget"] != DBNull.Value)
@@ -587,20 +644,17 @@ namespace JRSApplication.Accountant
                     if (string.IsNullOrWhiteSpace(txtPhaseDetail.Text))
                         txtPhaseDetail.Text = ph.detail ?? "";
                 }
-                catch { /* ignore */ }
+                catch { }
             }
 
             if (r.Table.Columns.Contains("phase_detail") && r["phase_detail"] != DBNull.Value)
                 txtPhaseDetail.Text = r["phase_detail"].ToString();
 
-            // Customer
             txtCusID.Text = GetStr("cus_id");
             txtCusName.Text = GetStr("cus_fullname");
 
-            // Remark
             txtRemark.Text = GetStr("inv_remark");
 
-            // Right-panel (detail/qty/price)
             bool hasMergedDetailCols =
                 r.Table.Columns.Contains("inv_detail") ||
                 r.Table.Columns.Contains("inv_quantity") ||
@@ -613,7 +667,6 @@ namespace JRSApplication.Accountant
                 txtPrice.Text = GetStr("inv_price");
             }
 
-            // Fallback: if still empty, get first detail row from invoice_detail
             if (string.IsNullOrWhiteSpace(txtDetail.Text) &&
                 string.IsNullOrWhiteSpace(txtPrice.Text) &&
                 !string.IsNullOrWhiteSpace(invId))
@@ -621,7 +674,7 @@ namespace JRSApplication.Accountant
                 try
                 {
                     var dDal = new InvoiceDetailDAL();
-                    var first = dDal.GetFirstDetailForPrint(invId); // see helper below
+                    var first = dDal.GetFirstDetailForPrint(invId);
                     if (first.HasValue)
                     {
                         if (string.IsNullOrWhiteSpace(txtDetail.Text))
@@ -632,9 +685,10 @@ namespace JRSApplication.Accountant
                             txtPrice.Text = first.Value.Price.ToString("N2");
                     }
                 }
-                catch { /* ignore */ }
+                catch { }
             }
         }
+
         private void GoToConfirmPaymentForSelected()
         {
             if (dtgvInvoice.SelectedRows.Count == 0) return;
@@ -642,14 +696,12 @@ namespace JRSApplication.Accountant
             var invId = dtgvInvoice.SelectedRows[0].Cells["inv_id"]?.Value?.ToString();
             if (string.IsNullOrWhiteSpace(invId)) return;
 
-            // ask the main host form to switch page
             var host = this.FindForm() as AccountantForm;
             if (host != null)
             {
                 host.ShowConfirmInvoice(invId);
             }
         }
-
 
         private void ShowInvoiceActionPopup()
         {
@@ -663,7 +715,6 @@ namespace JRSApplication.Accountant
                 return;
             }
 
-            // Create custom form
             Form popup = new Form();
             popup.Text = "เลือกการดำเนินการ";
             popup.StartPosition = FormStartPosition.CenterParent;
@@ -714,12 +765,10 @@ namespace JRSApplication.Accountant
             }
         }
 
-        // ====== บังคับ Due Date ต้องไม่ก่อน Inv Date ======
         private void ApplyDueDateFloor()
         {
             var inv = dtpInvDate.Value.Date;
 
-            // ถ้า due ปัจจุบัน < inv ให้ยกค่าก่อน แล้วค่อยตั้ง MinDate
             if (dtpDueDate.Value.Date < inv)
                 dtpDueDate.Value = inv;
 
@@ -742,8 +791,5 @@ namespace JRSApplication.Accountant
                     "วันที่ไม่ถูกต้อง", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
-
-
     }
 }
