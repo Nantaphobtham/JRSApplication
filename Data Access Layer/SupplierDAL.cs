@@ -44,12 +44,12 @@ namespace JRSApplication.Data_Access_Layer
                 try
                 {
                     string sql = @"SELECT 
-                                     sup_id      AS 'รหัสซัพพลายเออร์',
-                                     sup_name    AS 'ชื่อบริษัท',
+                                     sup_id       AS 'รหัสซัพพลายเออร์',
+                                     sup_name     AS 'ชื่อบริษัท',
                                      sup_juristic AS 'นิติบุคคล',
-                                     sup_tel     AS 'เบอร์โทรศัพท์',
-                                     sup_email   AS 'อีเมล',
-                                     sup_address AS 'ที่อยู่'
+                                     sup_tel      AS 'เบอร์โทรศัพท์',
+                                     sup_email    AS 'อีเมล',
+                                     sup_address  AS 'ที่อยู่'
                                    FROM supplier
                                    ORDER BY sup_name";
                     using (var adapter = new MySqlDataAdapter(sql, conn))
@@ -95,7 +95,7 @@ namespace JRSApplication.Data_Access_Layer
             }
         }
 
-        // ---------- Exists รายฟิลด์ (ใช้ได้ถ้าต้องการเช็คจุดเดียว) ----------
+        // ---------- Exists รายฟิลด์ ----------
         public bool ExistsEmail(string email, string excludeId = null)
             => ExistsByColumn("sup_email", email, excludeId);
 
@@ -125,7 +125,7 @@ namespace JRSApplication.Data_Access_Layer
             }
         }
 
-        // ---------- เช็คซ้ำแบบสรุปรวม (ของเดิม) ----------
+        // ---------- เช็คซ้ำแบบสรุปรวม ----------
         public bool CheckDuplicateSupplier(string email, string phone, string juristic, string name, string supplierID)
         {
             using (var conn = new MySqlConnection(connectionString))
@@ -168,7 +168,6 @@ namespace JRSApplication.Data_Access_Layer
         // ---------- Insert ----------
         public bool InsertSupplier(Supplier sup)
         {
-            // เช็คซ้ำแบบระบุช่องก่อน
             var dup = CheckDuplicateSupplierDetailed(sup.Email, sup.Phone, sup.Juristic, sup.Name, null);
             if (dup.HasAny)
             {
@@ -198,7 +197,7 @@ namespace JRSApplication.Data_Access_Layer
                     int rows = cmd.ExecuteNonQuery();
                     return rows > 0;
                 }
-                catch (MySqlException ex) when (ex.Number == 1062) // Duplicate entry
+                catch (MySqlException ex) when (ex.Number == 1062)
                 {
                     string msg = MapDuplicateKeyMessage(ex);
                     MessageBox.Show(msg, "ข้อมูลซ้ำ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -216,7 +215,6 @@ namespace JRSApplication.Data_Access_Layer
         // ---------- Update ----------
         public bool UpdateSupplier(string supplierID, string name, string juristic, string phone, string email, string address)
         {
-            // เช็คซ้ำแบบระบุช่องก่อน (ยกเว้นตัวเอง)
             var dup = CheckDuplicateSupplierDetailed(email, phone, juristic, name, supplierID);
             if (dup.HasAny)
             {
@@ -250,7 +248,7 @@ namespace JRSApplication.Data_Access_Layer
                     int rows = cmd.ExecuteNonQuery();
                     return rows > 0;
                 }
-                catch (MySqlException ex) when (ex.Number == 1062) // Duplicate entry
+                catch (MySqlException ex) when (ex.Number == 1062)
                 {
                     string msg = MapDuplicateKeyMessage(ex);
                     MessageBox.Show(msg, "ข้อมูลซ้ำ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -277,40 +275,63 @@ namespace JRSApplication.Data_Access_Layer
             }
         }
 
-        // ---------- Search (แก้ให้ใช้ตาราง/คอลัมน์เดียวกับที่อื่น) ----------
+        // ---------- Search ----------
         public DataTable SearchSuppliers(string searchBy, string keyword)
         {
             DataTable dt = new DataTable();
             string sql;
+            bool useLike = true;   // ปกติใช้ LIKE %kw%
 
             switch (searchBy)
             {
+                case "รหัสซัพพลาย":
+                case "รหัสซัพพลายเออร์":
+                    sql = @"SELECT sup_id AS 'รหัสซัพพลายเออร์', sup_name AS 'ชื่อบริษัท',
+                           sup_juristic AS 'นิติบุคคล', sup_tel AS 'เบอร์โทรศัพท์',
+                           sup_email AS 'อีเมล', sup_address AS 'ที่อยู่'
+                    FROM supplier
+                    WHERE sup_id LIKE @kw";      // จากเดิม sup_id = @kw
+                    useLike = true;                      // ใช้ prefix
+                    break;
+
                 case "ชื่อบริษัท":
                     sql = @"SELECT sup_id AS 'รหัสซัพพลายเออร์', sup_name AS 'ชื่อบริษัท',
-                                   sup_juristic AS 'นิติบุคคล', sup_tel AS 'เบอร์โทรศัพท์',
-                                   sup_email AS 'อีเมล', sup_address AS 'ที่อยู่'
-                            FROM supplier
-                            WHERE sup_name LIKE @kw";
+                           sup_juristic AS 'นิติบุคคล', sup_tel AS 'เบอร์โทรศัพท์',
+                           sup_email AS 'อีเมล', sup_address AS 'ที่อยู่'
+                    FROM supplier
+                    WHERE sup_name LIKE @kw";
                     break;
+
                 case "เลขทะเบียนนิติบุคคล":
                     sql = @"SELECT sup_id AS 'รหัสซัพพลายเออร์', sup_name AS 'ชื่อบริษัท',
-                                   sup_juristic AS 'นิติบุคคล', sup_tel AS 'เบอร์โทรศัพท์',
-                                   sup_email AS 'อีเมล', sup_address AS 'ที่อยู่'
-                            FROM supplier
-                            WHERE sup_juristic LIKE @kw";
+                           sup_juristic AS 'นิติบุคคล', sup_tel AS 'เบอร์โทรศัพท์',
+                           sup_email AS 'อีเมล', sup_address AS 'ที่อยู่'
+                    FROM supplier
+                    WHERE sup_juristic LIKE @kw";
                     break;
+
+                case "เบอร์โทรศัพท์":
+                    sql = @"SELECT sup_id AS 'รหัสซัพพลายเออร์', sup_name AS 'ชื่อบริษัท',
+                           sup_juristic AS 'นิติบุคคล', sup_tel AS 'เบอร์โทรศัพท์',
+                           sup_email AS 'อีเมล', sup_address AS 'ที่อยู่'
+                    FROM supplier
+                    WHERE sup_tel LIKE @kw";
+                    break;
+
                 case "อีเมล":
                     sql = @"SELECT sup_id AS 'รหัสซัพพลายเออร์', sup_name AS 'ชื่อบริษัท',
-                                   sup_juristic AS 'นิติบุคคล', sup_tel AS 'เบอร์โทรศัพท์',
-                                   sup_email AS 'อีเมล', sup_address AS 'ที่อยู่'
-                            FROM supplier
-                            WHERE sup_email LIKE @kw";
+                           sup_juristic AS 'นิติบุคคล', sup_tel AS 'เบอร์โทรศัพท์',
+                           sup_email AS 'อีเมล', sup_address AS 'ที่อยู่'
+                    FROM supplier
+                    WHERE sup_email LIKE @kw";
                     break;
+
                 default:
                     sql = @"SELECT sup_id AS 'รหัสซัพพลายเออร์', sup_name AS 'ชื่อบริษัท',
-                                   sup_juristic AS 'นิติบุคคล', sup_tel AS 'เบอร์โทรศัพท์',
-                                   sup_email AS 'อีเมล', sup_address AS 'ที่อยู่'
-                            FROM supplier";
+                           sup_juristic AS 'นิติบุคคล', sup_tel AS 'เบอร์โทรศัพท์',
+                           sup_email AS 'อีเมล', sup_address AS 'ที่อยู่'
+                    FROM supplier";
+                    useLike = false;
                     break;
             }
 
@@ -318,7 +339,15 @@ namespace JRSApplication.Data_Access_Layer
             using (var cmd = new MySqlCommand(sql, conn))
             {
                 if (sql.Contains("@kw"))
-                    cmd.Parameters.AddWithValue("@kw", "%" + (keyword ?? "") + "%");
+                {
+                    string kw = keyword ?? "";
+
+                    // ถ้าเป็นรหัส / ชื่อ / อื่น ๆ ใช้ LIKE
+                    if (useLike)
+                        kw = kw + "%";   // prefix match: 2511% → เจอ 25119788
+
+                    cmd.Parameters.AddWithValue("@kw", kw);
+                }
 
                 using (var ad = new MySqlDataAdapter(cmd))
                 {
@@ -326,14 +355,14 @@ namespace JRSApplication.Data_Access_Layer
                     ad.Fill(dt);
                 }
             }
+
             return dt;
         }
+
 
         // ---------- Map MySQL duplicate key -> ข้อความไทย ----------
         private string MapDuplicateKeyMessage(MySqlException ex)
         {
-            // ตัวอย่างข้อความ MySQL:
-            // "Duplicate entry 'xxx' for key 'uq_supplier_email'"
             string m = ex.Message ?? "";
             if (m.Contains("uq_supplier_email") || m.Contains("sup_email")) return "อีเมลนี้มีอยู่แล้วในระบบ";
             if (m.Contains("uq_supplier_phone") || m.Contains("sup_tel")) return "เบอร์โทรนี้มีอยู่แล้วในระบบ";

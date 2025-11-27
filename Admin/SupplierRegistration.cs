@@ -70,7 +70,7 @@ namespace JRSApplication
             LoadSupplierData();
 
             // search box (คัสตอมของคุณ)
-            searchboxSuppiler.SetRoleAndFunction("Admin", "ทะเบียนลูกค้า");
+            searchboxSuppiler.SetRoleAndFunction("Admin", "ทะเบียนซัพพลายเออร์");
             searchboxSuppiler.SearchTriggered += searchboxSuppiler_SearchTriggered;
 
             // ปิดการแก้ไขเริ่มต้น

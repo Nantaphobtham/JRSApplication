@@ -56,7 +56,7 @@ namespace JRSApplication
 
             CustomizeDataGridViewAlldata();
 
-            // ✅ เพิ่ม Event DoubleClick
+            // ✅ DoubleClick = เลือก
             dtgvAlldata.CellDoubleClick += dtgvAlldata_CellDoubleClick;
         }
 
@@ -238,8 +238,11 @@ namespace JRSApplication
             }
             else if (SearchMode == "Supplier")
             {
+                // ✅ ปรับชื่อฟิลด์ค้นหาให้เหมาะกับซัพพลายเออร์
                 cmbSearchBy.Items.Add("ชื่อบริษัท");
                 cmbSearchBy.Items.Add("เลขทะเบียนนิติบุคคล");
+                cmbSearchBy.Items.Add("เบอร์โทรศัพท์");
+                cmbSearchBy.Items.Add("อีเมล");
             }
             else if (SearchMode == "Invoice")
             {
@@ -279,8 +282,12 @@ namespace JRSApplication
                     }
                     else if (SearchMode == "Supplier")
                     {
+                        // ✅ ให้ค้นพร้อมกันจากชื่อบริษัท / เลขทะเบียน / เบอร์ / อีเมล
                         table.DefaultView.RowFilter =
-                            $"[ชื่อบริษัท] LIKE '%{keyword}%' OR [เลขทะเบียนนิติบุคคล] LIKE '%{keyword}%'";
+                            $"[ชื่อบริษัท] LIKE '%{keyword}%' " +
+                            $"OR [เลขทะเบียนนิติบุคคล] LIKE '%{keyword}%' " +
+                            $"OR [เบอร์โทรศัพท์] LIKE '%{keyword}%' " +
+                            $"OR [อีเมล] LIKE '%{keyword}%'";
                     }
                     else if (SearchMode == "Invoice")
                     {
