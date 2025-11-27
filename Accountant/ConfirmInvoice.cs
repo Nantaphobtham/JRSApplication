@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using JRSApplication.Data_Access_Layer;
 using MySql.Data.MySqlClient;
+using JRSApplication.Components;   // ถ้า SearchboxControl อยู่ namespace นี้
 
 namespace JRSApplication.Accountant
 {
@@ -38,6 +39,95 @@ namespace JRSApplication.Accountant
 
             PopulatePaymentMethod();
             this.empId = empId;
+
+            // ================== ตั้งค่า Searchbox ==================
+            try
+            {
+                // role Accountant / function จัดการการเงิน
+                searchboxControl1.DefaultRole = "Accountant";
+                searchboxControl1.DefaultFunction = "จัดการการเงิน";
+                searchboxControl1.SetRoleAndFunction("Accountant", "จัดการการเงิน");
+
+                // ผูก event ยิงค้นหา → ไปกรอง dgvInvoices
+                searchboxControl1.SearchTriggered += SearchboxConfirm_SearchTriggered;
+            }
+            catch
+            {
+                // กัน error ตอนออกแบบฟอร์มใน Designer
+            }
+        }
+
+        // -------------------- Searchbox event --------------------
+        private void SearchboxConfirm_SearchTriggered(object sender, SearchEventArgs e)
+        {
+            ApplyInvoiceGridFilter(e.SearchBy, e.Keyword);
+        }
+
+        private static string EscapeLikeValue(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return string.Empty;
+
+            // escape สำหรับ RowFilter
+            return value
+                .Replace("[", "[[]")   // escape [
+                                       // ไม่ escape ] ป้องกัน pattern พัง
+                .Replace("%", "[%]")   // escape %
+                .Replace("*", "[*]")   // escape *
+                .Replace("'", "''");   // escape '
+        }
+
+        private void ApplyInvoiceGridFilter(string searchBy, string keyword)
+        {
+            if (!(dgvInvoices.DataSource is DataTable table))
+                return;
+
+            keyword = (keyword ?? "").Trim();
+            keyword = EscapeLikeValue(keyword);
+
+            var dv = table.DefaultView;
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                dv.RowFilter = string.Empty;
+                return;
+            }
+
+            string expr = null;
+
+            switch (searchBy)
+            {
+                case "รหัสใบแจ้งหนี้":
+                    if (table.Columns.Contains("inv_id"))
+                        expr = $"CONVERT(inv_id, 'System.String') LIKE '%{keyword}%'";
+                    break;
+
+                case "ยอดชำระ":
+                    if (table.Columns.Contains("inv_grand_total"))
+                        expr = $"CONVERT(inv_grand_total, 'System.String') LIKE '%{keyword}%'";
+                    else if (table.Columns.Contains("inv_total_amount"))
+                        expr = $"CONVERT(inv_total_amount, 'System.String') LIKE '%{keyword}%'";
+                    break;
+
+                case "สถานะ":
+                    if (table.Columns.Contains("inv_status"))
+                        expr = $"CONVERT(inv_status, 'System.String') LIKE '%{keyword}%'";
+                    break;
+            }
+
+            // ถ้าไม่ระบุ หรือคอลัมน์ไม่เจอ → ค้นทุกคอลัมน์
+            if (expr == null)
+            {
+                var filters = new List<string>();
+                foreach (DataColumn col in table.Columns)
+                {
+                    filters.Add(
+                        $"CONVERT([{col.ColumnName}], 'System.String') LIKE '%{keyword}%'");
+                }
+                expr = string.Join(" OR ", filters);
+            }
+
+            dv.RowFilter = expr;
         }
 
         // -------------------- Helpers: money/decimal --------------------
@@ -45,13 +135,16 @@ namespace JRSApplication.Accountant
         {
             if (val == null || val == DBNull.Value) return 0m;
 
-            var s = new string(val.ToString().Where(ch => char.IsDigit(ch) || ch == '.' || ch == ',').ToArray());
+            var s = new string(val.ToString()
+                .Where(ch => char.IsDigit(ch) || ch == '.' || ch == ',').ToArray());
             if (string.IsNullOrWhiteSpace(s)) return 0m;
 
-            if (decimal.TryParse(s, NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
-                                 CultureInfo.CurrentCulture, out var d)) return d;
-            if (decimal.TryParse(s, NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
-                                 CultureInfo.InvariantCulture, out d)) return d;
+            if (decimal.TryParse(s,
+                    NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
+                    CultureInfo.CurrentCulture, out var d)) return d;
+            if (decimal.TryParse(s,
+                    NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
+                    CultureInfo.InvariantCulture, out d)) return d;
 
             return 0m;
         }
@@ -106,7 +199,6 @@ namespace JRSApplication.Accountant
         private void LoadInvoiceData()
         {
             SearchService service = new SearchService();
-            // ต้องให้ service คืน inv_status มาด้วย
             DataTable dt = service.GetAllInvoices();
             dgvInvoices.DataSource = dt;
 
@@ -121,7 +213,6 @@ namespace JRSApplication.Accountant
                 dgvInvoices.BackgroundColor = SystemColors.AppWorkspace;
             }
 
-            // Headers (ใช้ inv_id เป็นเลขที่ใบแจ้งหนี้)
             if (dgvInvoices.Columns.Contains("inv_id")) dgvInvoices.Columns["inv_id"].HeaderText = "เลขที่ใบแจ้งหนี้";
             if (dgvInvoices.Columns.Contains("inv_date")) dgvInvoices.Columns["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
             if (dgvInvoices.Columns.Contains("inv_duedate")) dgvInvoices.Columns["inv_duedate"].HeaderText = "กำหนดชำระ";
@@ -129,8 +220,10 @@ namespace JRSApplication.Accountant
             if (dgvInvoices.Columns.Contains("pro_id")) dgvInvoices.Columns["pro_id"].HeaderText = "รหัสโครงการ";
             if (dgvInvoices.Columns.Contains("phase_id")) dgvInvoices.Columns["phase_id"].HeaderText = "รหัสเฟส";
 
-            // ★ เพิ่มคอลัมน์สถานะ (Method A)
             ApplyInvoiceGridStatusColumn();
+
+            // หลังโหลดข้อมูล ให้ฟิลเตอร์ตามค่าปัจจุบันใน searchbox ด้วย
+            ApplyInvoiceGridFilter(searchboxControl1.SelectedSearchBy, searchboxControl1.Keyword);
         }
 
         // -------------------- Customer / Project --------------------
@@ -180,8 +273,7 @@ namespace JRSApplication.Accountant
                 int.TryParse(row.Cells["phase_id"].Value.ToString(), out phaseId);
             string phaseNo = dal.GetPhaseNoById(phaseId);
 
-            // Header fields
-            txtInvoiceNumber.Text = invId; // ใช้ inv_id เป็นเลขที่ใบแจ้งหนี้
+            txtInvoiceNumber.Text = invId;
             if (!string.IsNullOrWhiteSpace(invDate))
                 dtpInvoiceDate.Value = Convert.ToDateTime(invDate);
 
@@ -220,14 +312,11 @@ namespace JRSApplication.Accountant
                     total += price;
             }
 
-            // add summary row
             DataRow totalRow = dt.NewRow();
             totalRow["inv_detail"] = "รวม";
             dt.Rows.Add(totalRow);
 
             dgvInvoiceDetails.DataSource = dt;
-
-            // keep total for last row formatting
             dgvInvoiceDetails.Tag = total;
         }
 
@@ -295,7 +384,6 @@ namespace JRSApplication.Accountant
                     string selectedProjectId = searchForm.SelectedID;
 
                     SearchService service = new SearchService();
-                    // ต้องมี inv_status ในผลลัพธ์
                     DataTable filtered = service.GetDraftInvoicesByProject(selectedProjectId);
                     dgvInvoices.DataSource = filtered;
 
@@ -304,7 +392,6 @@ namespace JRSApplication.Accountant
                         dgvInvoices.Enabled = true;
                         dgvInvoices.BackgroundColor = Color.White;
 
-                        // Auto-select first row
                         dgvInvoices.Rows[0].Selected = true;
                         dgvInvoices_CellContentClick(dgvInvoices, new DataGridViewCellEventArgs(0, 0));
                     }
@@ -321,8 +408,10 @@ namespace JRSApplication.Accountant
                     if (dgvInvoices.Columns.Contains("phase_id")) dgvInvoices.Columns["phase_id"].HeaderText = "รหัสเฟส";
                     if (dgvInvoices.Columns.Contains("cus_id")) dgvInvoices.Columns["cus_id"].HeaderText = "รหัสลูกค้า";
 
-                    // ★ เพิ่มคอลัมน์สถานะ (Method A)
                     ApplyInvoiceGridStatusColumn();
+
+                    // ให้เคารพค่าที่พิมพ์ใน searchbox ปัจจุบันด้วย
+                    ApplyInvoiceGridFilter(searchboxControl1.SelectedSearchBy, searchboxControl1.Keyword);
                 }
             }
         }
@@ -392,7 +481,6 @@ namespace JRSApplication.Accountant
             var grid = dgvInvoiceDetails;
             var row = grid.Rows[e.RowIndex];
 
-            // Last row "รวม"
             if (row.Cells["inv_detail"].Value?.ToString() == "รวม")
             {
                 if (grid.Columns[e.ColumnIndex].Name == "subtotal")
@@ -417,7 +505,6 @@ namespace JRSApplication.Accountant
                 return;
             }
 
-            // Subtotal for normal rows
             if (grid.Columns[e.ColumnIndex].Name == "subtotal")
             {
                 var qObj = row.Cells["inv_quantity"].Value;
@@ -434,7 +521,6 @@ namespace JRSApplication.Accountant
                 return;
             }
 
-            // Auto number
             if (grid.Columns[e.ColumnIndex].Name == "No")
             {
                 e.Value = (e.RowIndex + 1).ToString();
@@ -495,7 +581,7 @@ namespace JRSApplication.Accountant
 
             MessageBox.Show("บันทึกข้อมูลเรียบร้อยแล้ว", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            LoadInvoiceData(); // Refresh
+            LoadInvoiceData();
             dgvInvoices.ClearSelection();
         }
 
@@ -509,7 +595,6 @@ namespace JRSApplication.Accountant
             }
         }
 
-        // -------------------- Init from external (open by invId) --------------------
         public void InitFromInvoiceId(string invId)
         {
             if (string.IsNullOrWhiteSpace(invId)) return;
@@ -521,14 +606,12 @@ namespace JRSApplication.Accountant
 
             var r = dt.Rows[0];
 
-            // Header
             txtInvoiceNumber.Text = invId;
             if (r.Table.Columns.Contains("inv_date") && r["inv_date"] != DBNull.Value)
                 dtpInvoiceDate.Value = Convert.ToDateTime(r["inv_date"]);
 
             txtDueDate.Text = r["inv_duedate"]?.ToString() ?? "";
 
-            // Project / phase
             txtProjectID.Text = r["pro_id"]?.ToString() ?? "";
             txtProjectName.Text = r["pro_name"]?.ToString() ?? "";
 
@@ -537,12 +620,10 @@ namespace JRSApplication.Accountant
             else if (r.Table.Columns.Contains("phase_id"))
                 textBox7.Text = r["phase_id"]?.ToString() ?? "";
 
-            // Customer
             txtCustomerName.Text = r["cus_fullname"]?.ToString() ?? "";
             txtCustomerIDCard.Text = r["cus_id_card"]?.ToString() ?? "";
             txtCustomerAddress.Text = r["cus_address"]?.ToString() ?? "";
 
-            // Details
             LoadInvoiceDetails(invId);
 
             dgvInvoices.Enabled = true;
@@ -554,12 +635,11 @@ namespace JRSApplication.Accountant
             dtpInvoiceDate.Enabled = false;
             dtpInvoiceDate.TabStop = false;
 
-            // ถ้า txtDueDate เป็น TextBox ให้คงไว้; ถ้าเป็น DateTimePicker ควรแก้ชื่อ control ให้ตรงชนิด
             txtDueDate.Enabled = false;
             txtDueDate.TabStop = false;
         }
 
-        // ==================== Method A: Status column on dgvInvoices ====================
+        // ==================== Status column on dgvInvoices ====================
         private string NormalizeStatus(string status)
         {
             if (string.IsNullOrWhiteSpace(status)) return "ไม่พบสถานะ";
@@ -582,10 +662,9 @@ namespace JRSApplication.Accountant
             col.HeaderText = "สถานะการชำระเงิน";
             col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            col.DisplayIndex = g.Columns.Count - 1; // ไปท้ายสุด
+            col.DisplayIndex = g.Columns.Count - 1;
             col.SortMode = DataGridViewColumnSortMode.Automatic;
 
-            // กันผูกซ้ำ
             g.CellFormatting -= DgvInvoices_CellFormatting_StatusColor;
             g.CellFormatting += DgvInvoices_CellFormatting_StatusColor;
         }
@@ -601,14 +680,12 @@ namespace JRSApplication.Accountant
             string raw = row.Cells["inv_status"]?.Value?.ToString() ?? "";
             string status = NormalizeStatus(raw);
 
-            // แสดงคำ normalize ที่คอลัมน์ inv_status
             if (grid.Columns[e.ColumnIndex].Name == "inv_status")
             {
                 e.Value = status;
                 e.FormattingApplied = true;
             }
 
-            // สีทั้งแถว
             if (status.Contains("ชำระแล้ว"))
             {
                 row.DefaultCellStyle.BackColor = Color.Honeydew;
