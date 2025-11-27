@@ -10,6 +10,7 @@ namespace JRSApplication.Components
     {
         public int ProjectID { get; set; }  // pro_id (Primary Key)
         public string ProjectName { get; set; }  // pro_name
+        
         public string ProjectDetail { get; set; }  // pro_detail
         public string ProjectAddress { get; set; }  // pro_address
         public decimal ProjectBudget { get; set; }  // pro_budget

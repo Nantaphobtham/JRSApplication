@@ -4,15 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JRSApplication.Data_Access_Layer
 {
     public class ProjectDAL
     {
-        private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+        private string connectionString =
+            ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
+        // ------------------------------------------------------------
+        // ดึงรายการโครงการทั้งหมด (ใช้ในตารางหน้า ManageProject)
+        // ------------------------------------------------------------
         public List<Project> GetAllProjects()
         {
             List<Project> projects = new List<Project>();
@@ -20,20 +22,21 @@ namespace JRSApplication.Data_Access_Layer
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 string sql = @"
-                        SELECT 
-                            p.pro_id, 
-                            p.pro_name, 
-                            p.pro_detail, 
-                            p.pro_address, 
-                            p.pro_budget, 
-                            p.pro_start, 
-                            p.pro_end, 
-                            p.pro_currentphasenumber, 
-                            CONCAT(c.cus_name, ' ', c.cus_lname) AS CustomerFullName,
-                            CONCAT(e.emp_name, ' ', e.emp_lname) AS EmployeeFullName
-                        FROM project p
-                        LEFT JOIN customer c ON p.cus_id = c.cus_id
-                        LEFT JOIN employee e ON p.emp_id = e.emp_id";
+                    SELECT 
+                        p.pro_id, 
+                        p.pro_name, 
+                        p.pro_number, 
+                        p.pro_detail, 
+                        p.pro_address, 
+                        p.pro_budget, 
+                        p.pro_start, 
+                        p.pro_end, 
+                        p.pro_currentphasenumber, 
+                        CONCAT(c.cus_name, ' ', c.cus_lname) AS CustomerFullName,
+                        CONCAT(e.emp_name, ' ', e.emp_lname) AS EmployeeFullName
+                    FROM project p
+                    LEFT JOIN customer c ON p.cus_id = c.cus_id
+                    LEFT JOIN employee e ON p.emp_id = e.emp_id";
 
                 using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                 {
@@ -42,21 +45,45 @@ namespace JRSApplication.Data_Access_Layer
                     {
                         while (reader.Read())
                         {
-                            projects.Add(new Project
+                            var project = new Project
                             {
                                 ProjectID = reader.GetInt32("pro_id"),
                                 ProjectName = reader.GetString("pro_name"),
-                                ProjectDetail = reader.IsDBNull(reader.GetOrdinal("pro_detail")) ? "" : reader.GetString("pro_detail"),
-                                ProjectAddress = reader.IsDBNull(reader.GetOrdinal("pro_address")) ? "" : reader.GetString("pro_address"),
-                                ProjectBudget = reader.IsDBNull(reader.GetOrdinal("pro_budget")) ? 0 : reader.GetDecimal("pro_budget"),
+
+                                // เลขที่สัญญา
+                                ProjectNumber = reader["pro_number"] == DBNull.Value
+                                    ? string.Empty
+                                    : reader["pro_number"].ToString(),
+
+                                ProjectDetail = reader.IsDBNull(reader.GetOrdinal("pro_detail"))
+                                    ? string.Empty
+                                    : reader.GetString("pro_detail"),
+
+                                ProjectAddress = reader.IsDBNull(reader.GetOrdinal("pro_address"))
+                                    ? string.Empty
+                                    : reader.GetString("pro_address"),
+
+                                ProjectBudget = reader.IsDBNull(reader.GetOrdinal("pro_budget"))
+                                    ? 0
+                                    : reader.GetDecimal("pro_budget"),
+
                                 ProjectStart = reader.GetDateTime("pro_start"),
                                 ProjectEnd = reader.GetDateTime("pro_end"),
-                                CurrentPhaseNumber = reader.IsDBNull(reader.GetOrdinal("pro_currentphasenumber")) ? 0 : reader.GetInt32("pro_currentphasenumber"),
 
-                                //  แสดงชื่อ-นามสกุลรวม
-                                CustomerName = reader.IsDBNull(reader.GetOrdinal("CustomerFullName")) ? "ไม่ระบุ" : reader.GetString("CustomerFullName"),
-                                EmployeeName = reader.IsDBNull(reader.GetOrdinal("EmployeeFullName")) ? "ไม่ระบุ" : reader.GetString("EmployeeFullName")
-                            });
+                                CurrentPhaseNumber = reader.IsDBNull(reader.GetOrdinal("pro_currentphasenumber"))
+                                    ? 0
+                                    : reader.GetInt32("pro_currentphasenumber"),
+
+                                CustomerName = reader.IsDBNull(reader.GetOrdinal("CustomerFullName"))
+                                    ? "ไม่ระบุ"
+                                    : reader.GetString("CustomerFullName"),
+
+                                EmployeeName = reader.IsDBNull(reader.GetOrdinal("EmployeeFullName"))
+                                    ? "ไม่ระบุ"
+                                    : reader.GetString("EmployeeFullName")
+                            };
+
+                            projects.Add(project);
                         }
                     }
                 }
@@ -65,6 +92,9 @@ namespace JRSApplication.Data_Access_Layer
             return projects;
         }
 
+        // ------------------------------------------------------------
+        // ดึงรายละเอียดโครงการ + Phase + File ตาม ProjectID
+        // ------------------------------------------------------------
         public Project GetProjectDetailsById(int projectId)
         {
             Project project = null;
@@ -73,31 +103,29 @@ namespace JRSApplication.Data_Access_Layer
             {
                 conn.Open();
 
-                // ✅ โหลด Project + Customer + Employee + Files
                 string sql = @"
-                            SELECT 
-                                p.pro_id AS ProjectID,
-                                p.pro_name AS ProjectName,
-                                p.pro_start AS ProjectStart,
-                                p.pro_end AS ProjectEnd,
-                                p.pro_number AS ContractNumber,
-                                p.pro_budget AS ProjectBudget,
-                                p.pro_detail AS ProjectDetail,
-                                p.pro_address AS ProjectAddress,
-                                p.pro_currentphasenumber AS CurrentPhaseNumber,
-                                p.pro_remark AS Remark,
+                    SELECT 
+                        p.pro_id              AS ProjectID,
+                        p.pro_name            AS ProjectName,
+                        p.pro_start           AS ProjectStart,
+                        p.pro_end             AS ProjectEnd,
+                        p.pro_number          AS ContractNumber,
+                        p.pro_budget          AS ProjectBudget,
+                        p.pro_detail          AS ProjectDetail,
+                        p.pro_address         AS ProjectAddress,
+                        p.pro_currentphasenumber AS CurrentPhaseNumber,
+                        p.pro_remark          AS Remark,
 
-                                CONCAT(c.cus_name, ' ', c.cus_lname) AS CustomerFullName,
-                                CONCAT(e.emp_name, ' ', e.emp_lname) AS ProjectManagerFullName,
+                        CONCAT(c.cus_name, ' ', c.cus_lname) AS CustomerFullName,
+                        CONCAT(e.emp_name, ' ', e.emp_lname) AS ProjectManagerFullName,
 
-                                pf.con_blueprint AS ConstructionBlueprint,
-                                pf.demolition_model AS DemolitionModel
-
-                            FROM project p
-                            LEFT JOIN customer c ON p.cus_id = c.cus_id
-                            LEFT JOIN employee e ON p.emp_id = e.emp_id
-                            LEFT JOIN project_files pf ON p.pro_id = pf.pro_id
-                            WHERE p.pro_id = @ProjectID";
+                        pf.con_blueprint      AS ConstructionBlueprint,
+                        pf.demolition_model   AS DemolitionModel
+                    FROM project p
+                    LEFT JOIN customer c   ON p.cus_id = c.cus_id
+                    LEFT JOIN employee e   ON p.emp_id = e.emp_id
+                    LEFT JOIN project_files pf ON p.pro_id = pf.pro_id
+                    WHERE p.pro_id = @ProjectID";
 
                 using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                 {
@@ -109,49 +137,75 @@ namespace JRSApplication.Data_Access_Layer
                         {
                             project = new Project
                             {
-                                ProjectID = reader.GetInt32("ProjectID"),
-                                ProjectName = reader.GetString("ProjectName"),
-                                ProjectStart = reader.GetDateTime("ProjectStart"),
-                                ProjectEnd = reader.GetDateTime("ProjectEnd"),
-                                ProjectNumber = reader.GetString("ContractNumber"),
-                                ProjectDetail = reader.GetString("ProjectDetail"),
-                                ProjectAddress = reader.IsDBNull(reader.GetOrdinal("ProjectAddress")) ? "" : reader.GetString("ProjectAddress"),
-                                ProjectBudget = reader.GetDecimal("ProjectBudget"),
-                                Remark = reader.IsDBNull(reader.GetOrdinal("Remark")) ? "" : reader.GetString("Remark"),
-                                CurrentPhaseNumber = reader.IsDBNull(reader.GetOrdinal("CurrentPhaseNumber")) ? 0 : reader.GetInt32("CurrentPhaseNumber"),
+                                ProjectID = reader.GetInt32(reader.GetOrdinal("ProjectID")),
+                                ProjectName = reader.GetString(reader.GetOrdinal("ProjectName")),
+                                ProjectStart = reader.GetDateTime(reader.GetOrdinal("ProjectStart")),
+                                ProjectEnd = reader.GetDateTime(reader.GetOrdinal("ProjectEnd")),
 
-                                CustomerName = reader.IsDBNull(reader.GetOrdinal("CustomerFullName")) ? "ไม่มีข้อมูล" : reader.GetString("CustomerFullName"),
-                                EmployeeName = reader.IsDBNull(reader.GetOrdinal("ProjectManagerFullName")) ? "ไม่มีข้อมูล" : reader.GetString("ProjectManagerFullName"),
+                                // เลขที่สัญญา
+                                ProjectNumber = reader.IsDBNull(reader.GetOrdinal("ContractNumber"))
+                                    ? string.Empty
+                                    : reader.GetString(reader.GetOrdinal("ContractNumber")),
+
+                                ProjectDetail = reader.IsDBNull(reader.GetOrdinal("ProjectDetail"))
+                                    ? string.Empty
+                                    : reader.GetString(reader.GetOrdinal("ProjectDetail")),
+
+                                ProjectAddress = reader.IsDBNull(reader.GetOrdinal("ProjectAddress"))
+                                    ? string.Empty
+                                    : reader.GetString(reader.GetOrdinal("ProjectAddress")),
+
+                                ProjectBudget = reader.GetDecimal(reader.GetOrdinal("ProjectBudget")),
+
+                                Remark = reader.IsDBNull(reader.GetOrdinal("Remark"))
+                                    ? string.Empty
+                                    : reader.GetString(reader.GetOrdinal("Remark")),
+
+                                CurrentPhaseNumber = reader.IsDBNull(reader.GetOrdinal("CurrentPhaseNumber"))
+                                    ? 0
+                                    : reader.GetInt32(reader.GetOrdinal("CurrentPhaseNumber")),
+
+                                CustomerName = reader.IsDBNull(reader.GetOrdinal("CustomerFullName"))
+                                    ? "ไม่มีข้อมูล"
+                                    : reader.GetString(reader.GetOrdinal("CustomerFullName")),
+
+                                EmployeeName = reader.IsDBNull(reader.GetOrdinal("ProjectManagerFullName"))
+                                    ? "ไม่มีข้อมูล"
+                                    : reader.GetString(reader.GetOrdinal("ProjectManagerFullName")),
 
                                 ProjectFile = new ProjectFile
                                 {
-                                    ConstructionBlueprint = reader["ConstructionBlueprint"] != DBNull.Value
-                                        ? (byte[])reader["ConstructionBlueprint"]
-                                        : null,
-                                    DemolitionModel = reader["DemolitionModel"] != DBNull.Value
-                                        ? (byte[])reader["DemolitionModel"]
-                                        : null
+                                    ConstructionBlueprint =
+                                        reader["ConstructionBlueprint"] != DBNull.Value
+                                            ? (byte[])reader["ConstructionBlueprint"]
+                                            : null,
+                                    DemolitionModel =
+                                        reader["DemolitionModel"] != DBNull.Value
+                                            ? (byte[])reader["DemolitionModel"]
+                                            : null
                                 }
                             };
                         }
                     }
                 }
 
-                // ✅ โหลดเฟสทั้งหมดที่เกี่ยวกับ ProjectID
+                // โหลด Phase
                 if (project != null)
                 {
                     string phaseSql = @"
-                                    SELECT phase_no, phase_detail, phase_budget, phase_percent
-                                    FROM project_phase
-                                    WHERE pro_id = @ProjectID
-                                    ORDER BY phase_no";
+                        SELECT phase_no, phase_detail, phase_budget, phase_percent, phase_status
+                        FROM project_phase
+                        WHERE pro_id = @ProjectID
+                        ORDER BY phase_no";
 
                     using (MySqlCommand phaseCmd = new MySqlCommand(phaseSql, conn))
                     {
                         phaseCmd.Parameters.AddWithValue("@ProjectID", projectId);
+
                         using (MySqlDataReader phaseReader = phaseCmd.ExecuteReader())
                         {
                             List<ProjectPhase> phases = new List<ProjectPhase>();
+
                             while (phaseReader.Read())
                             {
                                 phases.Add(new ProjectPhase
@@ -159,7 +213,10 @@ namespace JRSApplication.Data_Access_Layer
                                     PhaseNumber = phaseReader.GetInt32("phase_no"),
                                     PhaseDetail = phaseReader.GetString("phase_detail"),
                                     PhaseBudget = phaseReader.GetDecimal("phase_budget"),
-                                    PhasePercent = phaseReader.GetDecimal("phase_percent")
+                                    PhasePercent = phaseReader.GetDecimal("phase_percent"),
+                                    PhaseStatus = phaseReader["phase_status"] == DBNull.Value
+                                        ? null
+                                        : phaseReader["phase_status"].ToString()
                                 });
                             }
 
@@ -172,11 +229,13 @@ namespace JRSApplication.Data_Access_Layer
             return project;
         }
 
-
+        // ------------------------------------------------------------
+        // ออก pro_id ใหม่
+        // ------------------------------------------------------------
         public int GenerateProjectID()
         {
-            int baseID = int.Parse(DateTime.Now.ToString("yyMM") + "000"); // เช่น 2503000
-            int newID = baseID + 1; // ให้ค่าแรกเป็น 2503001
+            int baseID = int.Parse(DateTime.Now.ToString("yyMM") + "000");
+            int newID = baseID + 1;
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
@@ -188,18 +247,22 @@ namespace JRSApplication.Data_Access_Layer
                     var result = cmd.ExecuteScalar();
                     if (result != DBNull.Value && result != null)
                     {
-                        newID = Convert.ToInt32(result) + 1; // ถ้ามีข้อมูล ให้เพิ่มจาก MAX
+                        newID = Convert.ToInt32(result) + 1;
                     }
-                    // else newID จะเป็น baseID + 1 = 2503001
                 }
             }
+
             return newID;
         }
 
-
-        public bool InsertProjectWithPhases(Project project, List<ProjectPhase> phases, byte[] constructionBlueprint, byte[] demolitionModel)
+        // ------------------------------------------------------------
+        // Insert Project + Phases + Files
+        // ------------------------------------------------------------
+        public bool InsertProjectWithPhases(Project project, List<ProjectPhase> phases,
+                                            byte[] constructionBlueprint, byte[] demolitionModel)
         {
             bool isSuccess = false;
+
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
@@ -207,12 +270,17 @@ namespace JRSApplication.Data_Access_Layer
                 {
                     try
                     {
-                        //  1️ Insert into project
                         string sqlProject = @"
-                                INSERT INTO project (pro_id, pro_name, pro_detail, pro_address, pro_budget, pro_start, pro_end,
-                                                     pro_currentphasenumber, pro_remark, pro_number, emp_id, cus_id)
-                                VALUES (@ProjectID, @ProjectName, @ProjectDetail, @ProjectAddress, @ProjectBudget, @ProjectStart, @ProjectEnd,
-                                        @CurrentPhaseNumber, @Remark, @ProjectNumber, @EmployeeID, @CustomerID)";
+                            INSERT INTO project (
+                                pro_id, pro_name, pro_detail, pro_address, pro_budget,
+                                pro_start, pro_end, pro_currentphasenumber,
+                                pro_remark, pro_number, emp_id, cus_id
+                            )
+                            VALUES (
+                                @ProjectID, @ProjectName, @ProjectDetail, @ProjectAddress, @ProjectBudget,
+                                @ProjectStart, @ProjectEnd, @CurrentPhaseNumber,
+                                @Remark, @ProjectNumber, @EmployeeID, @CustomerID
+                            );";
 
                         using (MySqlCommand cmd = new MySqlCommand(sqlProject, conn, transaction))
                         {
@@ -232,12 +300,17 @@ namespace JRSApplication.Data_Access_Layer
                             cmd.ExecuteNonQuery();
                         }
 
-                        //  2️ Insert into project_phase
                         foreach (var phase in phases)
                         {
                             string sqlPhase = @"
-                                    INSERT INTO project_phase (phase_no, phase_detail, phase_budget, phase_percent, pro_id, phase_status)
-                                    VALUES (@PhaseNo, @PhaseDetail, @PhaseBudget, @PhasePercent, @ProjectID , @PhaseStatus)";
+                                INSERT INTO project_phase (
+                                    phase_no, phase_detail, phase_budget, phase_percent,
+                                    pro_id, phase_status
+                                )
+                                VALUES (
+                                    @PhaseNo, @PhaseDetail, @PhaseBudget, @PhasePercent,
+                                    @ProjectID, @PhaseStatus
+                                );";
 
                             using (MySqlCommand cmdPhase = new MySqlCommand(sqlPhase, conn, transaction))
                             {
@@ -246,18 +319,17 @@ namespace JRSApplication.Data_Access_Layer
                                 cmdPhase.Parameters.AddWithValue("@PhaseBudget", phase.PhaseBudget);
                                 cmdPhase.Parameters.AddWithValue("@PhasePercent", phase.PhasePercent);
                                 cmdPhase.Parameters.AddWithValue("@ProjectID", project.ProjectID);
-                                cmdPhase.Parameters.AddWithValue("@PhaseStatus", phase.PhaseStatus?? "waiting"); // กำหนดค่าเริ่มต้นเป็น "รอเริ่มงาน" "waiting"
+                                cmdPhase.Parameters.AddWithValue("@PhaseStatus", phase.PhaseStatus ?? "waiting");
 
                                 cmdPhase.ExecuteNonQuery();
                             }
                         }
 
-                        //  3️ Insert into project_files (เฉพาะเมื่อ ConstructionBlueprint มีข้อมูล)
                         if (constructionBlueprint != null)
                         {
                             string sqlFile = @"
-                                    INSERT INTO project_files (pro_id, con_blueprint, demolition_model)
-                                    VALUES (@ProjectID, @ConstructionBlueprint, @DemolitionModel)";
+                                INSERT INTO project_files (pro_id, con_blueprint, demolition_model)
+                                VALUES (@ProjectID, @ConstructionBlueprint, @DemolitionModel);";
 
                             using (MySqlCommand cmdFile = new MySqlCommand(sqlFile, conn, transaction))
                             {
@@ -270,7 +342,6 @@ namespace JRSApplication.Data_Access_Layer
                             }
                         }
 
-                        //  4️ Commit
                         transaction.Commit();
                         isSuccess = true;
                     }
@@ -281,10 +352,15 @@ namespace JRSApplication.Data_Access_Layer
                     }
                 }
             }
+
             return isSuccess;
         }
 
-        public bool UpdateProjectWithPhases(Project project, List<ProjectPhase> updatedPhases, byte[] blueprintBytes, byte[] demolitionBytes)
+        // ------------------------------------------------------------
+        // Update Project + Phases + Files
+        // ------------------------------------------------------------
+        public bool UpdateProjectWithPhases(Project project, List<ProjectPhase> updatedPhases,
+                                            byte[] blueprintBytes, byte[] demolitionBytes)
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
@@ -293,21 +369,20 @@ namespace JRSApplication.Data_Access_Layer
                 {
                     try
                     {
-                        // ✅ 1) UPDATE Project
                         string updateProjectSql = @"
-                                                UPDATE project SET
-                                                    pro_name = @ProjectName,
-                                                    pro_detail = @ProjectDetail,
-                                                    pro_address = @ProjectAddress,
-                                                    pro_budget = @ProjectBudget,
-                                                    pro_start = @ProjectStart,
-                                                    pro_end = @ProjectEnd,
-                                                    pro_currentphasenumber = @CurrentPhaseNumber,
-                                                    pro_remark = @Remark,
-                                                    pro_number = @ProjectNumber,
-                                                    emp_id = @EmployeeID,
-                                                    cus_id = @CustomerID
-                                                WHERE pro_id = @ProjectID";
+                            UPDATE project SET
+                                pro_name = @ProjectName,
+                                pro_detail = @ProjectDetail,
+                                pro_address = @ProjectAddress,
+                                pro_budget = @ProjectBudget,
+                                pro_start = @ProjectStart,
+                                pro_end = @ProjectEnd,
+                                pro_currentphasenumber = @CurrentPhaseNumber,
+                                pro_remark = @Remark,
+                                pro_number = @ProjectNumber,
+                                emp_id = @EmployeeID,
+                                cus_id = @CustomerID
+                            WHERE pro_id = @ProjectID;";
 
                         using (MySqlCommand cmd = new MySqlCommand(updateProjectSql, conn, tran))
                         {
@@ -326,9 +401,11 @@ namespace JRSApplication.Data_Access_Layer
                             cmd.ExecuteNonQuery();
                         }
 
-                        // ✅ 2) ดึง Phase ปัจจุบันจาก DB
                         List<ProjectPhase> existingPhases = new List<ProjectPhase>();
-                        string selectPhaseSql = "SELECT phase_no, phase_detail, phase_budget, phase_percent FROM project_phase WHERE pro_id = @ProjectID";
+                        string selectPhaseSql = @"
+                            SELECT phase_no, phase_detail, phase_budget, phase_percent, phase_status
+                            FROM project_phase
+                            WHERE pro_id = @ProjectID;";
 
                         using (MySqlCommand cmdSelect = new MySqlCommand(selectPhaseSql, conn, tran))
                         {
@@ -342,26 +419,28 @@ namespace JRSApplication.Data_Access_Layer
                                         PhaseNumber = Convert.ToInt32(reader["phase_no"]),
                                         PhaseDetail = reader["phase_detail"].ToString(),
                                         PhaseBudget = Convert.ToDecimal(reader["phase_budget"]),
-                                        PhasePercent = Convert.ToDecimal(reader["phase_percent"])
+                                        PhasePercent = Convert.ToDecimal(reader["phase_percent"]),
+                                        PhaseStatus = reader["phase_status"] == DBNull.Value
+                                            ? null
+                                            : reader["phase_status"].ToString()
                                     });
                                 }
                             }
                         }
 
-                        // ✅ 3) Loop UPDATE หรือ INSERT
                         foreach (var phase in updatedPhases)
                         {
                             var match = existingPhases.FirstOrDefault(p => p.PhaseNumber == phase.PhaseNumber);
 
                             if (match != null)
                             {
-                                // ✅ UPDATE
                                 string updatePhaseSql = @"
-                                                UPDATE project_phase
-                                                SET phase_detail = @PhaseDetail,
-                                                    phase_budget = @PhaseBudget,
-                                                    phase_percent = @PhasePercent
-                                                WHERE pro_id = @ProjectID AND phase_no = @PhaseNo";
+                                    UPDATE project_phase SET
+                                        phase_detail = @PhaseDetail,
+                                        phase_budget = @PhaseBudget,
+                                        phase_percent = @PhasePercent,
+                                        phase_status = @PhaseStatus
+                                    WHERE pro_id = @ProjectID AND phase_no = @PhaseNo;";
 
                                 using (MySqlCommand cmdUpdate = new MySqlCommand(updatePhaseSql, conn, tran))
                                 {
@@ -370,15 +449,19 @@ namespace JRSApplication.Data_Access_Layer
                                     cmdUpdate.Parameters.AddWithValue("@PhaseDetail", phase.PhaseDetail);
                                     cmdUpdate.Parameters.AddWithValue("@PhaseBudget", phase.PhaseBudget);
                                     cmdUpdate.Parameters.AddWithValue("@PhasePercent", phase.PhasePercent);
+                                    cmdUpdate.Parameters.AddWithValue("@PhaseStatus", phase.PhaseStatus ?? match.PhaseStatus ?? "waiting");
                                     cmdUpdate.ExecuteNonQuery();
                                 }
                             }
                             else
                             {
-                                // ✅ INSERT
                                 string insertSql = @"
-                            INSERT INTO project_phase (pro_id, phase_no, phase_detail, phase_budget, phase_percent)
-                            VALUES (@ProjectID, @PhaseNo, @PhaseDetail, @PhaseBudget, @PhasePercent)";
+                                    INSERT INTO project_phase (
+                                        pro_id, phase_no, phase_detail, phase_budget, phase_percent, phase_status
+                                    )
+                                    VALUES (
+                                        @ProjectID, @PhaseNo, @PhaseDetail, @PhaseBudget, @PhasePercent, @PhaseStatus
+                                    );";
 
                                 using (MySqlCommand cmdInsert = new MySqlCommand(insertSql, conn, tran))
                                 {
@@ -387,19 +470,19 @@ namespace JRSApplication.Data_Access_Layer
                                     cmdInsert.Parameters.AddWithValue("@PhaseDetail", phase.PhaseDetail);
                                     cmdInsert.Parameters.AddWithValue("@PhaseBudget", phase.PhaseBudget);
                                     cmdInsert.Parameters.AddWithValue("@PhasePercent", phase.PhasePercent);
+                                    cmdInsert.Parameters.AddWithValue("@PhaseStatus", phase.PhaseStatus ?? "waiting");
                                     cmdInsert.ExecuteNonQuery();
                                 }
                             }
                         }
 
-                        // ✅ 4) DELETE Phase ที่ไม่อยู่ในรายการใหม่
                         var toDelete = existingPhases
                             .Where(old => !updatedPhases.Any(up => up.PhaseNumber == old.PhaseNumber))
                             .ToList();
 
                         foreach (var del in toDelete)
                         {
-                            string deleteSql = "DELETE FROM project_phase WHERE pro_id = @ProjectID AND phase_no = @PhaseNo";
+                            string deleteSql = "DELETE FROM project_phase WHERE pro_id = @ProjectID AND phase_no = @PhaseNo;";
                             using (MySqlCommand cmdDelete = new MySqlCommand(deleteSql, conn, tran))
                             {
                                 cmdDelete.Parameters.AddWithValue("@ProjectID", project.ProjectID);
@@ -408,13 +491,12 @@ namespace JRSApplication.Data_Access_Layer
                             }
                         }
 
-                        // ✅ 5) UPDATE/INSERT ไฟล์
                         string upsertFileSql = @"
-                                        INSERT INTO project_files (pro_id, con_blueprint, demolition_model)
-                                        VALUES (@ProjectID, @Blueprint, @Demolition)
-                                        ON DUPLICATE KEY UPDATE
-                                            con_blueprint = @Blueprint,
-                                            demolition_model = @Demolition";
+                            INSERT INTO project_files (pro_id, con_blueprint, demolition_model)
+                            VALUES (@ProjectID, @Blueprint, @Demolition)
+                            ON DUPLICATE KEY UPDATE
+                                con_blueprint = @Blueprint,
+                                demolition_model = @Demolition;";
 
                         using (MySqlCommand cmdFile = new MySqlCommand(upsertFileSql, conn, tran))
                         {
@@ -436,22 +518,23 @@ namespace JRSApplication.Data_Access_Layer
             }
         }
 
+        // ------------------------------------------------------------
+        // Delete Project + Phase + PhaseWorking
+        // ------------------------------------------------------------
         public bool DeleteProjectWithPhases(int projectId)
         {
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
-
                 MySqlTransaction transaction = conn.BeginTransaction();
 
                 try
                 {
-                    // 1. Delete phase_working
                     string deleteWorkSql = @"
                         DELETE pw 
                         FROM phase_working pw
                         JOIN project_phase pp ON pw.phase_id = pp.phase_id
-                        WHERE pp.pro_id = @ProjectID";
+                        WHERE pp.pro_id = @ProjectID;";
 
                     using (MySqlCommand cmd = new MySqlCommand(deleteWorkSql, conn, transaction))
                     {
@@ -459,35 +542,29 @@ namespace JRSApplication.Data_Access_Layer
                         cmd.ExecuteNonQuery();
                     }
 
-                    // 2. Delete project_phase
-                    string deletePhaseSql = "DELETE FROM project_phase WHERE pro_id = @ProjectID";
+                    string deletePhaseSql = "DELETE FROM project_phase WHERE pro_id = @ProjectID;";
                     using (MySqlCommand cmd = new MySqlCommand(deletePhaseSql, conn, transaction))
                     {
                         cmd.Parameters.AddWithValue("@ProjectID", projectId);
                         cmd.ExecuteNonQuery();
                     }
 
-                    // 3. Delete project
-                    string deleteProjectSql = "DELETE FROM project WHERE pro_id = @ProjectID";
+                    string deleteProjectSql = "DELETE FROM project WHERE pro_id = @ProjectID;";
                     using (MySqlCommand cmd = new MySqlCommand(deleteProjectSql, conn, transaction))
                     {
                         cmd.Parameters.AddWithValue("@ProjectID", projectId);
                         cmd.ExecuteNonQuery();
                     }
-                    // Delete somthing more
 
                     transaction.Commit();
                     return true;
                 }
-                catch (Exception)
+                catch
                 {
                     transaction.Rollback();
                     return false;
                 }
             }
         }
-
-
-      
     }
 }
