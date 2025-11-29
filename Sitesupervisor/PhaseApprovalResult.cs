@@ -1,28 +1,41 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
 
 namespace JRSApplication.Sitesupervisor
 {
     public partial class PhaseApprovalResult : UserControl
     {
-        private readonly string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+        private readonly string connectionString =
+            System.Configuration.ConfigurationManager
+                .ConnectionStrings["MySqlConnection"].ConnectionString;
 
         private readonly string _empId;
         private readonly string _role;
+
         public PhaseApprovalResult()
         {
             InitializeComponent();
+
             SetupGrid();
             EnableThaiStatusDisplay();
+
+            // ✅ ผูก SearchboxControl สำหรับ Sitesupervisor / ผลการอนุมัติ
+            try
+            {
+                searchboxControl1.DefaultRole = "Sitesupervisor";
+                searchboxControl1.DefaultFunction = "ผลการอนุมัติ";
+                searchboxControl1.SetRoleAndFunction("Sitesupervisor", "ผลการอนุมัติ");
+
+                searchboxControl1.SearchTriggered += SearchboxPhase_SearchTriggered;
+            }
+            catch
+            {
+                // กัน error ตอนเปิดใน Designer
+            }
+
             LoadPhaseSummaryToGrid();
             //LoadPhaseSummaryToGrid(proIdSelected);
         }
@@ -32,6 +45,8 @@ namespace JRSApplication.Sitesupervisor
             _empId = empId;
             _role = role;
         }
+
+        // ================== ดึงข้อมูลจากฐานข้อมูล ==================
         private DataTable GetPhaseSummaryDataTable(int? proId = null)
         {
             var dt = new DataTable();
@@ -87,9 +102,9 @@ namespace JRSApplication.Sitesupervisor
                         " + (proId.HasValue ? "  AND t.ProjectId = @proId" : "") + @"
                         ORDER BY t.ProjectId, t.PhaseNo;";
 
-            using (var conn = new MySql.Data.MySqlClient.MySqlConnection(connectionString))
-            using (var cmd = new MySql.Data.MySqlClient.MySqlCommand(sql, conn))
-            using (var da = new MySql.Data.MySqlClient.MySqlDataAdapter(cmd))
+            using (var conn = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, conn))
+            using (var da = new MySqlDataAdapter(cmd))
             {
                 if (proId.HasValue)
                     cmd.Parameters.AddWithValue("@proId", proId.Value);
@@ -104,6 +119,78 @@ namespace JRSApplication.Sitesupervisor
         {
             var table = GetPhaseSummaryDataTable(proId);
             dtgvPhaseApprovalResult.DataSource = table;
+
+            // ✅ ถ้ามีค่าปัจจุบันใน searchbox ให้ฟิลเตอร์ทันที
+            if (searchboxControl1 != null)
+            {
+                ApplyPhaseGridFilter(searchboxControl1.SelectedSearchBy, searchboxControl1.Keyword);
+            }
+        }
+
+        // ================== Searchbox → filter dtgvPhaseApprovalResult ==================
+        private void SearchboxPhase_SearchTriggered(object sender, SearchEventArgs e)
+        {
+            ApplyPhaseGridFilter(e.SearchBy, e.Keyword);
+        }
+
+        private void ApplyPhaseGridFilter(string searchBy, string keyword)
+        {
+            if (!(dtgvPhaseApprovalResult.DataSource is DataTable table))
+                return;
+
+            string q = (keyword ?? "").Trim();
+
+            if (string.IsNullOrEmpty(q))
+            {
+                // ไม่มีคำค้น → แสดงทุกแถว
+                table.DefaultView.RowFilter = string.Empty;
+                return;
+            }
+
+            q = EscapeLikeValue(q);
+            string filter = "";
+
+            switch (searchBy)
+            {
+                case "รหัสโครงการ":
+                    filter = $"CONVERT(ProjectId, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                case "เลขที่สัญญา":
+                    filter = $"CONVERT(ProjectNumber, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                case "เฟสที่":
+                    filter = $"CONVERT(PhaseNo, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                default:
+                    // ค้นหลายคอลัมน์หลัก
+                    filter =
+                        $"CONVERT(ProjectId, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(ProjectNumber, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(PhaseNo, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(PhaseDetail, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(CombinedStatus, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(CombinedRemark, 'System.String') LIKE '%{q}%'";
+                    break;
+            }
+
+            table.DefaultView.RowFilter = filter;
+        }
+
+        // กัน error เวลา user พิมพ์ [ ] % * '
+        private static string EscapeLikeValue(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return string.Empty;
+
+            return value
+                .Replace("[", "[[]")
+                .Replace("]", "[]]")
+                .Replace("%", "[%]")
+                .Replace("*", "[*]")
+                .Replace("'", "''");
         }
 
         // ====== ตั้งค่าตาราง/คอลัมน์และสไตล์ ======
@@ -183,7 +270,7 @@ namespace JRSApplication.Sitesupervisor
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
                 FillWeight = 28,
                 MinimumWidth = 260,
-                DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleLeft, WrapMode = DataGridViewTriState.False }
+                DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleCenter, WrapMode = DataGridViewTriState.False }
             };
             dtgvPhaseApprovalResult.Columns.Add(colDetail);
 
@@ -227,9 +314,9 @@ namespace JRSApplication.Sitesupervisor
                 DataPropertyName = "CombinedRemark",
                 FillWeight = 6,
                 MinimumWidth = 120,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,   // ไม่ให้ขยาย
-                Width = 140,                                           // คุมขนาดจริง
-                DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleLeft, WrapMode = DataGridViewTriState.False }
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                Width = 140,
+                DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleCenter, WrapMode = DataGridViewTriState.False }
             };
             dtgvPhaseApprovalResult.Columns.Add(colRemark);
 
@@ -261,8 +348,6 @@ namespace JRSApplication.Sitesupervisor
             };
         }
 
-
-
         private void CustomizeGridStyling(DataGridView grid)
         {
             grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -289,7 +374,8 @@ namespace JRSApplication.Sitesupervisor
             grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
         }
-        // 1) ฟังก์ชันแมปสถานะ => ไทย (เพิ่ม/แก้ได้ภายหลัง)
+
+        // ====== แสดงสถานะเป็นภาษาไทย ======
         private static string MapStatusToThai(string status)
         {
             if (string.IsNullOrWhiteSpace(status)) return string.Empty;
@@ -299,18 +385,17 @@ namespace JRSApplication.Sitesupervisor
                 case "Completed": return "เสร็จสิ้น";
                 case "InProgress": return "กำลังดำเนินการ";
                 case "Waiting": return "รอดำเนินการ";
-                case "รออนุมัติ": return "รออนุมัติ"; // เผื่อกรณี SQL ส่งมาเป็นไทยอยู่แล้ว
-                default: return status;       // คงเดิมถ้ายังไม่ครอบคลุม
+                case "รออนุมัติ": return "รออนุมัติ"; // เผื่อ SQL ส่งมาเป็นไทยแล้ว
+                default: return status;
             }
         }
-        // 2) เปิดการแปลสถานะเฉพาะคอลัมน์ "สถานะ" บน UI
+
         private void EnableThaiStatusDisplay()
         {
-            // ป้องกันการสมัครซ้ำ
             dtgvPhaseApprovalResult.CellFormatting -= DtgvPhaseApprovalResult_CellFormatting;
             dtgvPhaseApprovalResult.CellFormatting += DtgvPhaseApprovalResult_CellFormatting;
         }
-        // 3) ตัวจัดการ CellFormatting (เรนเดอร์เป็นไทยเฉพาะตอนแสดงผล)
+
         private void DtgvPhaseApprovalResult_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
@@ -318,10 +403,8 @@ namespace JRSApplication.Sitesupervisor
             var grid = (DataGridView)sender;
             var col = grid.Columns[e.ColumnIndex];
 
-            // แปลเฉพาะคอลัมน์ "สถานะ"
             if (col != null && col.Name == "colStatus")
             {
-                // Convert.ToString จะคืน "" ถ้า e.Value เป็น null (รองรับ C# 7.3)
                 var original = Convert.ToString(e.Value);
                 var display = MapStatusToThai(original);
 
@@ -332,8 +415,5 @@ namespace JRSApplication.Sitesupervisor
                 }
             }
         }
-
-
-
     }
 }

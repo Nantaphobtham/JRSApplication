@@ -21,6 +21,7 @@ namespace JRSApplication
     {
         private readonly string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         private readonly string _empId;
+
         private BindingList<MaterialDetail> materialList = new BindingList<MaterialDetail>();
         private int? editingRowIndex = null;
 
@@ -33,6 +34,9 @@ namespace JRSApplication
             "ตัว","ท่อน","วง","เมตร","ตร.ม.","ลบ.ม.",
             "ลัง","แกลลอน","ถ้วย","คู่","เม็ด","ฟุต","ตัน","ชั้น","ช่อง"
         };
+
+        // ✅ เก็บรายการใบสั่งซื้อทั้งหมด ไว้ใช้กับ Searchbox
+        private List<PurchaseOrder> _allPurchaseOrders = new List<PurchaseOrder>();
 
         public PurchaseOrderForm(string empId)
         {
@@ -56,21 +60,130 @@ namespace JRSApplication
             cmbUnit.AutoCompleteMode = AutoCompleteMode.None;
             cmbUnit.AutoCompleteSource = AutoCompleteSource.None;
 
+            // ✅ โหลดข้อมูลใบสั่งซื้อ (เก็บใน _allPurchaseOrders ด้วย)
             LoadAllPurchaseOrders();
 
-            // Event
+            // ✅ ผูก Searchbox ให้ใช้ role Sitesupervisor / ฟังก์ชัน "ออกใบสั่งซื้อ"
+            try
+            {
+                searchboxControl1.DefaultRole = "Sitesupervisor";
+                searchboxControl1.DefaultFunction = "ออกใบสั่งซื้อ";
+                searchboxControl1.SetRoleAndFunction("Sitesupervisor", "ออกใบสั่งซื้อ");
+
+                searchboxControl1.SearchTriggered += SearchboxPO_SearchTriggered;
+            }
+            catch
+            {
+                // กัน error ตอนเปิดใน Designer
+            }
+
+            // Event เดิม
             dtgvPurchaseOrderList.CellDoubleClick += dtgvPurchaseOrderList_CellDoubleClick;
             dtgvPurchaseOrderList.CellFormatting += dtgvPurchaseOrderList_CellFormatting;
             dtgvMaterialList.CellClick += dtgvMaterialList_CellClick;
+
             txtQuantity.TextChanged += txtQuantity_TextChanged;
             txtUnitPrice.TextChanged += txtUnitPrice_TextChanged;
             cmbUnit.TextUpdate += txtUnit_TextUpdate;
+
             btnAddMaterial.Click += btnAddMaterial_Click;
             btnEditMaterial.Click += btnEditMaterial_Click;
             btnAddOrder.Click += btnAddOrder_Click;
             btnSaveOrder.Click += btnSaveOrder_Click;
-            
         }
+
+        // ================= Searchbox → filter dtgvPurchaseOrderList =================
+
+        // ================= Searchbox → filter dtgvPurchaseOrderList =================
+
+        private void SearchboxPO_SearchTriggered(object sender, SearchEventArgs e)
+        {
+            ApplyPOFilter(e.SearchBy, e.Keyword);
+        }
+
+        private void ApplyPOFilter(string searchBy, string keyword)
+        {
+            if (_allPurchaseOrders == null || _allPurchaseOrders.Count == 0)
+                return;
+
+            var baseList = _allPurchaseOrders;
+
+            string q = (keyword ?? "").Trim();
+            if (string.IsNullOrEmpty(q))
+            {
+                dtgvPurchaseOrderList.DataSource = null;
+                dtgvPurchaseOrderList.DataSource = baseList.ToList();
+                dtgvPurchaseOrderList.ClearSelection();
+                return;
+            }
+
+            string qLower = q.ToLowerInvariant();
+
+            // แมปคำค้นสถานะ (ไทย/อังกฤษ) -> code ที่เก็บใน OrderStatus
+            string MapStatusKeyword(string text)
+            {
+                if (string.IsNullOrWhiteSpace(text))
+                    return text;
+
+                // ไทย
+                if (text.Contains("อนุมัติแล้ว") || text.Contains("อนุมัติ"))
+                    return "approved";
+                if (text.Contains("รอดำเนินการ") || text.Contains("รออนุมัติ") || text.Contains("รอ"))
+                    return "submitted";
+                if (text.Contains("ไม่อนุมัติ") || text.Contains("ปฏิเสธ"))
+                    return "rejected";
+                if (text.Contains("ยกเลิก"))
+                    return "canceled";
+
+                // ถ้าพิมพ์อังกฤษอยู่แล้ว เช่น approved, submitted
+                return text;
+            }
+
+            bool ContainsProp(PurchaseOrder o, string propName, string text)
+            {
+                var prop = typeof(PurchaseOrder).GetProperty(propName);
+                if (prop == null) return false;
+
+                var val = prop.GetValue(o, null)?.ToString();
+                return !string.IsNullOrEmpty(val) &&
+                       val.ToLowerInvariant().Contains(text);
+            }
+
+            IEnumerable<PurchaseOrder> filtered;
+
+            switch (searchBy)
+            {
+                case "เลขที่ใบสั่งซื้อ":
+                    filtered = baseList.Where(o => ContainsProp(o, "OrderNumber", qLower));
+                    break;
+
+                case "สถานะใบสั่งซื้อ":
+                    string statusKey = MapStatusKeyword(qLower);   // แปลงไทย -> code
+                    filtered = baseList.Where(o =>
+                        !string.IsNullOrEmpty(o.OrderStatus) &&
+                        o.OrderStatus.ToLowerInvariant().Contains(statusKey));
+                    break;
+
+                default:
+                    // ค้นทุกช่องหลัก ๆ
+                    filtered = baseList.Where(o =>
+                           ContainsProp(o, "OrderNumber", qLower)
+                        || ContainsProp(o, "OrderDetail", qLower)
+                        || ContainsProp(o, "EmpName", qLower)
+                        || ContainsProp(o, "ApprovedByName", qLower)
+                        || o.OrderStatus != null &&
+                           o.OrderStatus.ToLowerInvariant().Contains(MapStatusKeyword(qLower))
+                    );
+                    break;
+            }
+
+            var list = filtered.ToList();
+
+            dtgvPurchaseOrderList.DataSource = null;
+            dtgvPurchaseOrderList.DataSource = list;
+            dtgvPurchaseOrderList.ClearSelection();
+        }
+
 
         // ---------------- Grid Column ----------------
         private void InitializePOGridColumns()
@@ -140,7 +253,7 @@ namespace JRSApplication
             dtgvMaterialList.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "MatNo",
-                Name = "MatNo", 
+                Name = "MatNo",
                 HeaderText = "ลำดับ",
                 Width = 60
             });
@@ -214,20 +327,16 @@ namespace JRSApplication
         {
             string filterParam = cmbUnit.Text.Trim();
 
-            // Filter the unit list based on the input text
             var filtered = unitList
-                .Skip(1) // Skip the first item ("--เลือก--")
+                .Skip(1)
                 .Where(x => x.Contains(filterParam))
                 .ToList();
 
-            // Add the default option back to the filtered list
             filtered.Insert(0, "--เลือก--");
 
-            // If no matches, reset to the full list
             if (filtered.Count == 1)
                 filtered = new List<string>(unitList);
 
-            // Update the ComboBox data source
             cmbUnit.DataSource = null;
             cmbUnit.DataSource = filtered;
             cmbUnit.Text = filterParam;
@@ -269,10 +378,7 @@ namespace JRSApplication
                     OrderDetail = txtOrderDetail.Text.Trim(),
                     OrderDate = dtpOrderDate.Value.Date,
                     OrderDueDate = CalculateDueDate(),
-
-                    // ✅ เปลี่ยนตรงนี้
-                    OrderStatus = "submitted",  // ENUM ที่ถูกต้อง
-
+                    OrderStatus = "submitted",
                     ProId = int.Parse(txtProjectID.Text),
                     EmpId = _empId,
                     MaterialDetails = materialList.ToList()
@@ -301,7 +407,6 @@ namespace JRSApplication
                 MessageBox.Show("เกิดข้อผิดพลาด: " + ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         private void btnAddMaterial_Click(object sender, EventArgs e)
         {
@@ -370,30 +475,24 @@ namespace JRSApplication
         {
             if (e.RowIndex >= 0 && e.RowIndex < dtgvMaterialList.Rows.Count)
             {
-                // ดึงข้อมูลจาก DataGridViewRow ที่ถูกเลือก
                 DataGridViewRow row = dtgvMaterialList.Rows[e.RowIndex];
 
-                // สมมุติ ColumnNames ตาม code คุณ: MatDetail, MatPrice, MatQuantity, MatUnit
                 txtMaterialName.Text = row.Cells["MatDetail"].Value?.ToString();
                 txtUnitPrice.Text = row.Cells["MatPrice"].Value?.ToString();
                 txtQuantity.Text = row.Cells["MatQuantity"].Value?.ToString();
                 cmbUnit.Text = row.Cells["MatUnit"].Value?.ToString();
 
-                // คำนวณราคาสุทธิใหม่ (option)
                 CalculateTotalPrice();
-                // 🟡 จำ index ไว้
                 editingRowIndex = e.RowIndex;
 
-                // เก็บ material ที่เลือกไว้สำหรับแก้ไข (option)
-                // currentEditingMaterial = ... หาได้จาก BindingList ถ้ามี Primary Key หรือ index
-                txtMaterialName.ReadOnly = true; // ป้องกันการแก้ไขโดยตรง
-                txtUnitPrice.ReadOnly = true; // ป้องกันการแก้ไขโดยตรง
-                txtQuantity.ReadOnly = true; // ป้องกันการแก้ไขโดยตรง
-                cmbUnit.Enabled = false; // ป้องกันการเปลี่ยนแปลงหน่วย
+                txtMaterialName.ReadOnly = true;
+                txtUnitPrice.ReadOnly = true;
+                txtQuantity.ReadOnly = true;
+                cmbUnit.Enabled = false;
 
                 btnAddMaterial.Text = "บันทึกแก้ไข";
-                btnAddMaterial.BackColor = Color.Orange; // สีแยก (option)
-                btnEditMaterial.Enabled = true; // ให้ user ปลด ReadOnly ได้
+                btnAddMaterial.BackColor = Color.Orange;
+                btnEditMaterial.Enabled = true;
             }
         }
 
@@ -562,7 +661,8 @@ namespace JRSApplication
         private DateTime CalculateDueDate()
         {
             if (cmbDueDate.SelectedItem == null) return DateTime.Today;
-            if (int.TryParse(cmbDueDate.SelectedItem.ToString(), out int days))
+            int days;
+            if (int.TryParse(cmbDueDate.SelectedItem.ToString(), out days))
             {
                 return dtpOrderDate.Value.AddDays(days);
             }
@@ -579,25 +679,24 @@ namespace JRSApplication
             var dal = new PurchaseOrderDAL();
             var orderList = dal.GetAllPurchaseOrders();
 
-            // 🔐 ป้องกันกรณีไม่มีข้อมูล
             if (orderList == null || orderList.Count == 0)
             {
-                MessageBox.Show("ไม่พบข้อมูลใบสั่งซื้อ", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 dtgvPurchaseOrderList.DataSource = null;
+                _allPurchaseOrders = new List<PurchaseOrder>();
                 return;
             }
 
-            // 🧱 ใช้ BindingSource เพื่อความยืดหยุ่น
-            var bindingSource = new BindingSource();
-            bindingSource.DataSource = orderList;
-
-            // 🧼 เคลียร์คอลัมน์เก่าหากมี (สำคัญมาก ถ้ามี reload หลายรอบ)
-            dtgvPurchaseOrderList.Columns.Clear();
-            InitializePOGridColumns(); // 🏗️ สร้างคอลัมน์ใหม่
+            _allPurchaseOrders = orderList.ToList();
 
             dtgvPurchaseOrderList.AutoGenerateColumns = false;
-            dtgvPurchaseOrderList.DataSource = bindingSource;
+            dtgvPurchaseOrderList.DataSource = _allPurchaseOrders.ToList();
             dtgvPurchaseOrderList.ClearSelection();
+
+            // ถ้ามีคำค้นอยู่แล้ว ให้ฟิลเตอร์ตาม Searchbox
+            if (searchboxControl1 != null)
+            {
+                ApplyPOFilter(searchboxControl1.SelectedSearchBy, searchboxControl1.Keyword);
+            }
         }
 
         private void dtgvPurchaseOrderList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -636,7 +735,6 @@ namespace JRSApplication
                         case "canceled":
                             e.Value = "ไม่อนุมัติ";
                             break;
-                            // Add more cases as needed
                     }
                 }
             }
@@ -644,15 +742,17 @@ namespace JRSApplication
 
         private Timer hoverTimer = new Timer();
         private int hoveredRowIndex = -1;
+
         private void StartHoverPreviewTimer(int rowIndex)
         {
             hoveredRowIndex = rowIndex;
 
-            hoverTimer.Interval = 1000; // วินาที
-            hoverTimer.Tick -= HoverTimer_Tick; // ป้องกันซ้ำ
+            hoverTimer.Interval = 1000;
+            hoverTimer.Tick -= HoverTimer_Tick;
             hoverTimer.Tick += HoverTimer_Tick;
             hoverTimer.Start();
         }
+
         private void HoverTimer_Tick(object sender, EventArgs e)
         {
             hoverTimer.Stop();
@@ -664,7 +764,6 @@ namespace JRSApplication
 
                 if (po != null)
                 {
-                    // เรียก POForm แบบ preview
                     var previewForm = new POForm(po.OrderId, _empId, true);
                     previewForm.ShowDialog();
                 }
@@ -672,6 +771,7 @@ namespace JRSApplication
 
             hoveredRowIndex = -1;
         }
+
         private void dtgvPurchaseOrderList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -679,6 +779,7 @@ namespace JRSApplication
                 StartHoverPreviewTimer(e.RowIndex);
             }
         }
+
         private void dtgvPurchaseOrderList_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
         {
             hoverTimer.Stop();
@@ -691,12 +792,10 @@ namespace JRSApplication
             reportViewer.ProcessingMode = ProcessingMode.Local;
             reportViewer.LocalReport.ReportPath = "POreport.rdlc";
 
-            // Set data sources
             reportViewer.LocalReport.DataSources.Clear();
             reportViewer.LocalReport.DataSources.Add(new ReportDataSource("PurchaseOrderDataSet", new List<PurchaseOrder> { po }));
             reportViewer.LocalReport.DataSources.Add(new ReportDataSource("MaterialDetailDataSet", materials));
 
-            // Refresh and show
             reportViewer.RefreshReport();
         }
 

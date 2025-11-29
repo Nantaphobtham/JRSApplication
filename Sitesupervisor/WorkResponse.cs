@@ -11,7 +11,11 @@ namespace JRSApplication.Sitesupervisor
 {
     public partial class WorkResponse : UserControl
     {
-        private static readonly string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+        private static readonly string connectionString =
+            System.Configuration.ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
+        // เก็บรายการทั้งหมดไว้ใช้ฟิลเตอร์
+        private List<Response> _allResponses = new List<Response>();
 
         public enum RowType
         {
@@ -48,7 +52,7 @@ namespace JRSApplication.Sitesupervisor
             public string OrderRemark { get; set; }
             public string WorkRemark { get; set; }
 
-            // ✅ เพิ่ม 2 บรรทัดนี้
+            // ✅ เพิ่ม 2 บรรทัดนี้ (ยังไม่ได้ใช้ในโค้ดนี้ แต่เผื่อใช้ต่อ)
             public string OrderByEmpId { get; set; }
             public string ApprovedByEmpId { get; set; }
 
@@ -92,7 +96,256 @@ namespace JRSApplication.Sitesupervisor
         {
             InitializeComponent();
             SetupGrid();
+
+            // ✅ ผูก SearchboxControl ให้ใช้ role Sitesupervisor / ผลการอนุมัติ
+            try
+            {
+                searchboxControl1.DefaultRole = "Sitesupervisor";
+                searchboxControl1.DefaultFunction = "ผลการอนุมัติ";
+                searchboxControl1.SetRoleAndFunction("Sitesupervisor", "ผลการอนุมัติใบสั่งซื้อ");
+
+                searchboxControl1.SearchTriggered += SearchboxWork_SearchTriggered;
+            }
+            catch
+            {
+                // กัน error ตอนออกแบบ (Designer)
+            }
+
             LoadWorkResponse();
+        }
+
+        // ================= Searchbox → filter dtgvWorkResponse =================
+
+        private void SearchboxWork_SearchTriggered(object sender, SearchEventArgs e)
+        {
+            ApplyWorkResponseFilter(e.SearchBy, e.Keyword);
+        }
+
+        private void ApplyWorkResponseFilter(string searchBy, string keyword)
+        {
+            if (_allResponses == null || _allResponses.Count == 0)
+                return;
+
+            var baseList = _allResponses;
+
+            string q = (keyword ?? "").Trim();
+            if (string.IsNullOrEmpty(q))
+            {
+                // ไม่มีคำค้น → แสดงทั้งหมด
+                dtgvWorkResponse.DataSource = null;
+                dtgvWorkResponse.DataSource = baseList.ToList();
+                return;
+            }
+
+            q = q.ToLowerInvariant();
+
+            bool ContainsProp(Response r, string propName, string text)
+            {
+                var prop = typeof(Response).GetProperty(propName);
+                if (prop == null) return false;
+
+                var val = prop.GetValue(r, null)?.ToString();
+                return !string.IsNullOrEmpty(val) &&
+                       val.ToLowerInvariant().Contains(text);
+            }
+
+            IEnumerable<Response> filtered;
+
+            switch (searchBy)
+            {
+                case "รหัสโครงการ":
+                    filtered = baseList.Where(r => ContainsProp(r, nameof(Response.ProjectId), q));
+                    break;
+
+                case "เลขที่สัญญา":
+                    filtered = baseList.Where(r => ContainsProp(r, nameof(Response.ProjectNumber), q));
+                    break;
+
+                case "เฟสที่":
+                    filtered = baseList.Where(r => ContainsProp(r, nameof(Response.PhaseNo), q));
+                    break;
+
+                default:
+                    // ค้นหลายช่องหลัก
+                    filtered = baseList.Where(r =>
+                           ContainsProp(r, nameof(Response.ProjectId), q)
+                        || ContainsProp(r, nameof(Response.ProjectNumber), q)
+                        || ContainsProp(r, nameof(Response.PhaseNo), q)
+                        || ContainsProp(r, nameof(Response.OrderNumber), q)
+                        || ContainsProp(r, nameof(Response.OrderDetail), q)
+                        || ContainsProp(r, nameof(Response.WorkId), q)
+                        || ContainsProp(r, nameof(Response.WorkDetail), q)
+                        || ContainsProp(r, nameof(Response.CombinedStatus), q)
+                        || ContainsProp(r, nameof(Response.CombinedRemark), q));
+                    break;
+            }
+
+            dtgvWorkResponse.DataSource = null;
+            dtgvWorkResponse.DataSource = filtered.ToList();
+        }
+
+        // ================= โหลดข้อมูล =================
+
+        private void LoadWorkResponse()
+        {
+            var responses = LoadResponses();
+            _allResponses = responses ?? new List<Response>();
+
+            dtgvWorkResponse.DataSource = null;
+            dtgvWorkResponse.DataSource = _allResponses.ToList();
+
+            // หลังโหลดแล้ว ถ้าใน searchbox มีค่าอยู่แล้ว ให้ฟิลเตอร์ตามนั้น
+            if (searchboxControl1 != null)
+            {
+                ApplyWorkResponseFilter(searchboxControl1.SelectedSearchBy, searchboxControl1.Keyword);
+            }
+        }
+
+        private List<Response> LoadResponses()
+        {
+            // ตอนนี้ดึงเฉพาะใบสั่งซื้อ (Order) ถ้าจะรวมงาน PhaseWorking ให้เอา
+            // LoadPhaseWorkings() มา Concat เพิ่มได้
+            return LoadPurchaseOrders();
+            // ตัวอย่างถ้าจะรวม:
+            // var orders = LoadPurchaseOrders();
+            // var works = LoadPhaseWorkings();
+            // return orders.Concat(works).ToList();
+        }
+
+        private List<Response> LoadPurchaseOrders()
+        {
+            var list = new List<Response>();
+            string sql = @"
+                SELECT 
+                    po.order_id,
+                    po.order_number,
+                    po.order_detail,
+                    po.order_date,
+                    po.order_status,
+                    po.order_duedate,
+                    po.approved_date,
+                    po.order_remark,
+                    po.pro_id,
+                    p.pro_number,
+                    (SELECT MIN(pp.phase_no)
+                     FROM project_phase pp
+                     WHERE pp.pro_id = po.pro_id) AS phase_no
+                FROM purchaseorder po
+                INNER JOIN project p ON po.pro_id = p.pro_id
+                WHERE po.order_status IN ('approved','submitted')
+                ORDER BY po.order_id;";
+
+            using (var con = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, con))
+            using (var da = new MySqlDataAdapter(cmd))
+            {
+                var dt = new DataTable();
+                da.Fill(dt);
+
+                var groupKeys = new HashSet<string>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    string orderNumber = row["order_number"]?.ToString();
+                    string groupKey = orderNumber;
+
+                    if (!groupKeys.Contains(groupKey))
+                    {
+                        list.Add(new Response
+                        {
+                            RowType = RowType.Order,
+                            ProjectId = row["pro_id"]?.ToString(),
+                            ProjectNumber = row["pro_number"]?.ToString(),
+                            PhaseNo = row["phase_no"]?.ToString(),
+                            OrderId = Convert.ToInt32(row["order_id"]),
+                            OrderNumber = orderNumber,
+                            OrderDetail = row["order_detail"]?.ToString(),
+                            OrderDate = row["order_date"] != DBNull.Value
+                                ? Convert.ToDateTime(row["order_date"])
+                                : (DateTime?)null,
+                            DueDate = row["order_duedate"] != DBNull.Value
+                                ? Convert.ToDateTime(row["order_duedate"])
+                                : (DateTime?)null,
+                            ApproveDate = row["approved_date"] != DBNull.Value
+                                ? Convert.ToDateTime(row["approved_date"])
+                                : (DateTime?)null,
+                            OrderStatus = row["order_status"]?.ToString(),
+                            OrderRemark = row["order_remark"]?.ToString()
+                        });
+
+                        groupKeys.Add(groupKey);
+                    }
+                }
+            }
+
+            return list;
+        }
+
+        public static List<Response> LoadPhaseWorkings()
+        {
+            var list = new List<Response>();
+            string sql = @"
+                SELECT 
+                    pw.work_id,
+                    pw.work_detail,
+                    pw.work_date,
+                    pw.work_end_date,
+                    pw.work_status,
+                    pw.work_remark,
+                    pp.phase_id,
+                    pp.phase_no,
+                    pp.pro_id,
+                    p.pro_number
+                FROM phase_working pw
+                INNER JOIN project_phase pp ON pw.phase_id = pp.phase_id
+                INNER JOIN project p ON pp.pro_id = p.pro_id
+                WHERE pw.work_status IN ('Completed', 'Waiting')
+                ORDER BY pw.work_id;";
+
+            using (var con = new MySqlConnection(connectionString))
+            using (var cmd = new MySqlCommand(sql, con))
+            using (var da = new MySqlDataAdapter(cmd))
+            {
+                var dt = new DataTable();
+                da.Fill(dt);
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    list.Add(new Response
+                    {
+                        RowType = RowType.Work,
+                        ProjectId = row["pro_id"]?.ToString(),
+                        ProjectNumber = row["pro_number"]?.ToString(),
+                        PhaseNo = row["phase_no"]?.ToString(),
+                        WorkId = row["work_id"]?.ToString(),
+                        WorkDetail = row["work_detail"]?.ToString(),
+                        WorkDate = row["work_date"] != DBNull.Value
+                            ? Convert.ToDateTime(row["work_date"])
+                            : (DateTime?)null,
+                        WorkendDate = row["work_end_date"] != DBNull.Value
+                            ? Convert.ToDateTime(row["work_end_date"])
+                            : (DateTime?)null,
+                        WorkStatus = row["work_status"]?.ToString(),
+                        WorkRemark = row["work_remark"]?.ToString()
+                    });
+                }
+            }
+
+            return list;
+        }
+
+        private void PrintApprovedOrder(Response row)
+        {
+            try
+            {
+                var frm = new PurchaseOrderPrintForm(row.OrderId);
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("เกิดข้อผิดพลาดระหว่างพิมพ์: " + ex.Message,
+                    "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void SetupGrid()
@@ -130,7 +383,7 @@ namespace JRSApplication.Sitesupervisor
                 DataPropertyName = "ProjectNumber"
             });
 
-            //// 🧩 เฟสที่
+            //// 🧩 เฟสที่ (ถ้าต้องการแสดง ให้เอา comment ออก)
             //dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
             //{
             //    Name = "colPhase",
@@ -138,7 +391,7 @@ namespace JRSApplication.Sitesupervisor
             //    DataPropertyName = "PhaseNo"
             //});
 
-            // 📎 รหัสรายการ / รหัสงาน
+            // 📎 เลขที่ใบสั่งซื้อ / รหัสงาน
             dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "colItemCode",
@@ -154,16 +407,16 @@ namespace JRSApplication.Sitesupervisor
                 DataPropertyName = "OrderDetail"
             });
 
-            // 🕒 วันที่เริ่ม
+            // 🕒 วันที่ออกใบสั่งซื้อ / เริ่มงาน
             dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "colStartDate",
-                HeaderText = "วันที่ออกใบสังซื้อ",
+                HeaderText = "วันที่ออกใบสั่งซื้อ",
                 DataPropertyName = "OrderDate",
                 DefaultCellStyle = { Format = "dd/MM/yyyy" }
             });
 
-            // 📅 วันที่ครบกำหนด / เสร็จสิ้น
+            // 📅 วันที่ครบกำหนด / วันที่สิ้นสุด
             dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "colEndDate",
@@ -172,7 +425,7 @@ namespace JRSApplication.Sitesupervisor
                 DefaultCellStyle = { Format = "dd/MM/yyyy" }
             });
 
-            // ✅ วันที่อนุมัติ / วันที่เสร็จสิ้น
+            // ✅ วันที่อนุมัติ
             dtgvWorkResponse.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "colApproved",
@@ -198,23 +451,29 @@ namespace JRSApplication.Sitesupervisor
             });
 
             // 🖨️ ปุ่มปริ้น
-            DataGridViewButtonColumn printButtonColumn = new DataGridViewButtonColumn();
-            printButtonColumn.Name = "colPrint";
-            printButtonColumn.HeaderText = "พิมพ์";
-            printButtonColumn.Text = "พิมพ์เอกสาร";
-            printButtonColumn.UseColumnTextForButtonValue = true;
-            printButtonColumn.Width = 100;
+            var printButtonColumn = new DataGridViewButtonColumn
+            {
+                Name = "colPrint",
+                HeaderText = "พิมพ์",
+                Text = "พิมพ์เอกสาร",
+                UseColumnTextForButtonValue = true,
+                Width = 100
+            };
             dtgvWorkResponse.Columns.Add(printButtonColumn);
 
             // 🔢 ลำดับอัตโนมัติ
             dtgvWorkResponse.RowPostPaint += (s, e) =>
             {
-                dtgvWorkResponse.Rows[e.RowIndex].Cells["colIndex"].Value = (e.RowIndex + 1).ToString();
+                if (e.RowIndex >= 0)
+                    dtgvWorkResponse.Rows[e.RowIndex].Cells["colIndex"].Value =
+                        (e.RowIndex + 1).ToString();
             };
 
-            // 🎨 แยกสีระหว่าง Order / Work
+            // 🎨 แยกสีและ mapping สำหรับแถว Work
             dtgvWorkResponse.CellFormatting += (s, e) =>
             {
+                if (e.RowIndex < 0) return;
+
                 if (dtgvWorkResponse.Rows[e.RowIndex].DataBoundItem is Response row)
                 {
                     if (row.RowType == RowType.Work)
@@ -238,7 +497,8 @@ namespace JRSApplication.Sitesupervisor
             // 🎯 คลิกปุ่มปริ้น
             dtgvWorkResponse.CellClick += (s, e) =>
             {
-                if (e.RowIndex >= 0 && e.ColumnIndex == dtgvWorkResponse.Columns["colPrint"].Index)
+                if (e.RowIndex >= 0 &&
+                    e.ColumnIndex == dtgvWorkResponse.Columns["colPrint"].Index)
                 {
                     var row = dtgvWorkResponse.Rows[e.RowIndex].DataBoundItem as Response;
                     if (row != null)
@@ -246,9 +506,10 @@ namespace JRSApplication.Sitesupervisor
                         bool canPrint =
                             (row.RowType == RowType.Order &&
                              row.OrderStatus?.Equals("approved", StringComparison.OrdinalIgnoreCase) == true);
-                            //||
-                            //(row.RowType == RowType.Work &&
-                            // row.WorkStatus?.Equals("completed", StringComparison.OrdinalIgnoreCase) == true);
+                        // ถ้าจะให้ print ได้จากงานที่ Completed ด้วย ให้ uncomment ด้านล่าง
+                        // ||
+                        // (row.RowType == RowType.Work &&
+                        //  row.WorkStatus?.Equals("Completed", StringComparison.OrdinalIgnoreCase) == true);
 
                         if (canPrint)
                         {
@@ -256,160 +517,18 @@ namespace JRSApplication.Sitesupervisor
                         }
                         else
                         {
-                            MessageBox.Show("อนุญาตให้พิมพ์ได้เฉพาะรายการที่ 'อนุมัติแล้ว' เท่านั้น",
-                                "ไม่สามารถพิมพ์ได้", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show(
+                                "อนุญาตให้พิมพ์ได้เฉพาะรายการที่ 'อนุมัติแล้ว' เท่านั้น",
+                                "ไม่สามารถพิมพ์ได้",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
                         }
                     }
                 }
             };
 
-
             CustomizeGridStyling(dtgvWorkResponse);
         }
-
-        private void LoadWorkResponse()
-        {
-            var responses = LoadResponses();
-            dtgvWorkResponse.DataSource = responses;
-        }
-        private List<Response> LoadResponses()
-        {
-            return LoadPurchaseOrders();
-        }
-
-        private List<Response> LoadPurchaseOrders()
-        {
-            var list = new List<Response>();
-            string sql = @"
-                        SELECT 
-                    po.order_id,
-                    po.order_number,
-                    po.order_detail,
-                    po.order_date,
-                    po.order_status,
-                    po.order_duedate,
-                    po.approved_date,
-                    po.order_remark,
-                    po.pro_id,
-
-                    p.pro_number,
-
-                    (SELECT MIN(pp.phase_no)
-                     FROM project_phase pp
-                     WHERE pp.pro_id = po.pro_id) AS phase_no
-
-                FROM purchaseorder po
-                INNER JOIN project p ON po.pro_id = p.pro_id
-                WHERE po.order_status IN ('approved','submitted')
-                ORDER BY po.order_id;";
-
-            using (var con = new MySqlConnection(connectionString))
-            using (var cmd = new MySqlCommand(sql, con))
-            using (var da = new MySqlDataAdapter(cmd))
-            {
-                var dt = new DataTable();
-                da.Fill(dt);
-
-                var groupKeys = new HashSet<string>();
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    string orderNumber = row["order_number"]?.ToString();
-                    string groupKey = orderNumber;
-
-                    if (!groupKeys.Contains(groupKey))
-                    {
-                        list.Add(new Response
-                        {
-                            RowType = RowType.Order,
-                            ProjectId = row["pro_id"]?.ToString(),
-                            ProjectNumber = row["pro_number"]?.ToString(),
-                            //PhaseNo = row["phase_no"]?.ToString(),
-                            OrderId = Convert.ToInt32(row["order_id"]),
-                            OrderNumber = orderNumber,
-                            OrderDetail = row["order_detail"]?.ToString(),
-                            OrderDate = row["order_date"] != DBNull.Value ? Convert.ToDateTime(row["order_date"]) : (DateTime?)null,
-                            DueDate = row["order_duedate"] != DBNull.Value ? Convert.ToDateTime(row["order_duedate"]) : (DateTime?)null,
-                            ApproveDate = row["approved_date"] != DBNull.Value ? Convert.ToDateTime(row["approved_date"]) : (DateTime?)null,
-                            OrderStatus = row["order_status"]?.ToString(),
-                            OrderRemark = row["order_remark"]?.ToString()
-                        });
-
-                        groupKeys.Add(groupKey);
-                    }
-                }
-            }
-
-            return list;
-        }
-
-        public static List<Response> LoadPhaseWorkings()
-        {
-            var list = new List<Response>();
-            string sql = @"
-        SELECT 
-            pw.work_id,
-            pw.work_detail,
-            pw.work_date,
-            pw.work_end_date,
-            pw.work_status,
-            pw.work_remark,
-
-            pp.phase_id,
-            pp.phase_no,
-            pp.pro_id,
-
-            p.pro_number
-
-        FROM phase_working pw
-        INNER JOIN project_phase pp ON pw.phase_id = pp.phase_id
-        INNER JOIN project p ON pp.pro_id = p.pro_id
-        WHERE pw.work_status IN ('Completed', 'Waiting')
-        ORDER BY pw.work_id;";
-
-            using (var con = new MySqlConnection(connectionString))
-            using (var cmd = new MySqlCommand(sql, con))
-            using (var da = new MySqlDataAdapter(cmd))
-            {
-                var dt = new DataTable();
-                da.Fill(dt);
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    list.Add(new Response
-                    {
-                        RowType = RowType.Work,
-                        ProjectId = row["pro_id"]?.ToString(),
-                        ProjectNumber = row["pro_number"]?.ToString(),
-                        PhaseNo = row["phase_no"]?.ToString(),
-                        WorkId = row["work_id"]?.ToString(),
-                        WorkDetail = row["work_detail"]?.ToString(),
-                        WorkDate = row["work_date"] != DBNull.Value ? Convert.ToDateTime(row["work_date"]) : (DateTime?)null,
-                        WorkendDate = row["work_end_date"] != DBNull.Value ? Convert.ToDateTime(row["work_end_date"]) : (DateTime?)null,
-                        WorkStatus = row["work_status"]?.ToString(),
-                        WorkRemark = row["work_remark"]?.ToString()
-                    });
-                }
-            }
-
-            return list;
-        }
-
-        private void PrintApprovedOrder(Response row)
-        {
-            try
-            {
-                // 🔹 เปิดหน้ารายงานใบสั่งซื้อ (เชื่อมกับ RDLC)
-                var frm = new PurchaseOrderPrintForm(row.OrderId);
-                frm.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("เกิดข้อผิดพลาดระหว่างพิมพ์: " + ex.Message,
-                    "ข้อผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        
 
         private void CustomizeGridStyling(DataGridView grid)
         {
