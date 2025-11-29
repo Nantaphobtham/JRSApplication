@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace JRSApplication.ProjectManager
@@ -17,10 +18,100 @@ namespace JRSApplication.ProjectManager
         public CheckProjectPay()
         {
             InitializeComponent();
+
             dtgvInvoice.CellClick += dtgvInvoice_CellClick;
 
+            // ================== ตั้งค่า SearchboxControl ให้เป็น Projectmanager ==================
+            try
+            {
+                // role หน้านี้คือ Projectmanager
+                searchboxControl1.DefaultRole = "Projectmanager";
+                searchboxControl1.DefaultFunction = "ตรวจสอบข้อมูลการเงินโครงการ";
+
+                searchboxControl1.SetRoleAndFunction("Projectmanager", "ตรวจสอบข้อมูลการเงินโครงการ");
+
+                // ผูก event → ฟิลเตอร์ dtgvInvoice
+                searchboxControl1.SearchTriggered += SearchboxInvoice_SearchTriggered;
+            }
+            catch
+            {
+                // กัน error ตอนเปิดใน Designer
+            }
         }
 
+        // ================== Searchbox → Filter dtgvInvoice ==================
+        private void SearchboxInvoice_SearchTriggered(object sender, SearchEventArgs e)
+        {
+            ApplyInvoiceGridFilter(e.SearchBy, e.Keyword);
+        }
+
+        private void ApplyInvoiceGridFilter(string searchBy, string keyword)
+        {
+            if (!(dtgvInvoice.DataSource is DataTable table))
+                return;
+
+            string q = (keyword ?? "").Trim();
+
+            if (string.IsNullOrEmpty(q))
+            {
+                table.DefaultView.RowFilter = string.Empty;
+                return;
+            }
+
+            q = EscapeLikeValue(q);
+            string filter = "";
+
+            switch (searchBy)
+            {
+                case "รหัสใบแจ้งหนี้":
+                    if (table.Columns.Contains("inv_id"))
+                        filter = $"CONVERT(inv_id, 'System.String') LIKE '%{q}%'";
+                    else if (table.Columns.Contains("inv_no"))
+                        filter = $"CONVERT(inv_no, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                case "ยอดชำระ":
+                    if (table.Columns.Contains("inv_grand_total"))
+                        filter = $"CONVERT(inv_grand_total, 'System.String') LIKE '%{q}%'";
+                    else if (table.Columns.Contains("inv_total_amount"))
+                        filter = $"CONVERT(inv_total_amount, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                case "สถานะ":
+                    if (table.Columns.Contains("inv_status"))
+                        filter = $"CONVERT(inv_status, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                default:
+                    // fallback: ค้นทุกคอลัมน์
+                    var sb = new StringBuilder();
+                    foreach (DataColumn col in table.Columns)
+                    {
+                        if (sb.Length > 0) sb.Append(" OR ");
+                        sb.Append($"CONVERT([{col.ColumnName}], 'System.String') LIKE '%{q}%'");
+                    }
+                    filter = sb.ToString();
+                    break;
+            }
+
+            table.DefaultView.RowFilter = filter;
+        }
+
+        private static string EscapeLikeValue(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return string.Empty;
+
+            // escape ตัวอักษรพิเศษของ RowFilter: [, ], %, *
+            return value
+                .Replace("[", "[[]")
+                .Replace("]", "[]]")
+                .Replace("%", "[%]")
+                .Replace("*", "[*]")
+                .Replace("'", "''");
+        }
+
+        // ================== ปุ่มค้นหาโครงการ ==================
         private void btnSearchProject_Click_1(object sender, EventArgs e)
         {
             SearchForm searchForm = new SearchForm("Project");
@@ -39,7 +130,7 @@ namespace JRSApplication.ProjectManager
         {
             DataTable dt = searchService.GetPaidInvoicesByProject(projectId);
 
-            // ---- ensure we have phase_no; if not, derive it from phase_id ----
+            // ensure we have phase_no; if not, derive it from phase_id
             if (!dt.Columns.Contains("phase_no") && dt.Columns.Contains("phase_id"))
             {
                 dt.Columns.Add("phase_no", typeof(string));
@@ -51,7 +142,7 @@ namespace JRSApplication.ProjectManager
                     {
                         if (int.TryParse(Convert.ToString(r["phase_id"]), out int pid))
                         {
-                            r["phase_no"] = dal.GetPhaseNoById(pid); // e.g. "50"
+                            r["phase_no"] = dal.GetPhaseNoById(pid);
                         }
                     }
                 }
@@ -60,9 +151,12 @@ namespace JRSApplication.ProjectManager
             dtgvInvoice.DataSource = dt;
             RenameInvoiceGridHeaders();
             CustomizeInvoiceGridStyle();
+
+            // หลังโหลดข้อมูลให้ฟิลเตอร์ตามค่าปัจจุบันใน Searchbox
+            ApplyInvoiceGridFilter(searchboxControl1.SelectedSearchBy, searchboxControl1.Keyword);
         }
 
-
+        // ================== ปุ่มค้นหาใบชำระ (ด้วย SearchForm Invoice เดิม) ==================
         private void btnSearchPayment_Click(object sender, EventArgs e)
         {
             SearchForm searchForm = new SearchForm("Invoice");
@@ -74,7 +168,7 @@ namespace JRSApplication.ProjectManager
                 string empId = searchForm.SelectedIDCardOrRole;
                 string paymentMethod = searchForm.SelectedPhone;
 
-                // 🟢 ลูกค้า
+                // ลูกค้า
                 CustomerDAL customerDAL = new CustomerDAL();
                 var customer = customerDAL.GetCustomerById(cusId);
                 if (customer != null)
@@ -84,7 +178,7 @@ namespace JRSApplication.ProjectManager
                     txtAddress.Text = customer.Address;
                 }
 
-                // 🔵 โครงการ
+                // โครงการ
                 ProjectDAL projectDAL = new ProjectDAL();
                 var project = projectDAL.GetProjectDetailsById(Convert.ToInt32(proId));
                 if (project != null)
@@ -94,7 +188,7 @@ namespace JRSApplication.ProjectManager
                     txtPhase.Text = project.CurrentPhaseNumber.ToString();
                 }
 
-                // 🟡 ชำระเงิน
+                // ชำระเงิน
                 txtInvoiceNo.Text = invNo;
                 txtEmpName.Text = new EmployeeDAL().GetEmployeeFullNameById(empId);
                 txtPaymentDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
@@ -102,34 +196,38 @@ namespace JRSApplication.ProjectManager
             }
         }
 
-        private void dtgvInvoice_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        // ================== คลิกแถวใน dtgvInvoice ==================
+        private void dtgvInvoice_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
+            if (e.RowIndex >= 0) // ไม่ใช่ Header row
             {
                 DataGridViewRow row = dtgvInvoice.Rows[e.RowIndex];
 
-                txtInvoiceNo.Text = row.Cells["inv_no"].Value?.ToString();
+                // ลูกค้า
+                txtCustomer.Text = row.Cells["cus_name"].Value?.ToString();
+                txtIDCard.Text = row.Cells["cus_id_card"].Value?.ToString();
+                txtAddress.Text = row.Cells["cus_address"].Value?.ToString();
+
+                // โครงการ
+                txtContractNumber.Text = row.Cells["pro_number"].Value?.ToString();
+                txtProjectName2.Text = row.Cells["pro_name"].Value?.ToString();
+                txtPhase.Text = row.Cells["phase_no"].Value?.ToString();
+
+                // การชำระเงิน
+                txtInvoiceNo.Text = row.Cells["inv_id"].Value?.ToString();
                 txtPaymentMethod.Text = row.Cells["inv_method"].Value?.ToString();
 
                 if (row.Cells["paid_date"].Value != DBNull.Value)
                 {
                     DateTime paidDate = Convert.ToDateTime(row.Cells["paid_date"].Value);
-                    txtPaymentDate.Text = paidDate.ToString("yyyy-MM-dd");
+                    txtPaymentDate.Text = paidDate.ToString("dd/MM/yyyy HH:mm");
                 }
-
-                txtCustomer.Text = row.Cells["cus_name"].Value?.ToString();
-                txtIDCard.Text = row.Cells["cus_id_card"].Value?.ToString();
-                txtAddress.Text = row.Cells["cus_address"].Value?.ToString();
-
-                txtContractNumber.Text = row.Cells["pro_number"].Value?.ToString();
-                txtProjectName2.Text = row.Cells["pro_name"].Value?.ToString();
 
                 string empName = row.Cells["emp_name"].Value?.ToString();
                 string empLname = row.Cells["emp_lname"].Value?.ToString();
                 txtEmpName.Text = $"{empName} {empLname}";
 
-                txtPhase.Text = row.Cells["phase_id"].Value?.ToString();
-
+                // โหลดรูปหลักฐาน
                 string invId = row.Cells["inv_id"]?.Value?.ToString();
                 if (!string.IsNullOrWhiteSpace(invId))
                 {
@@ -176,7 +274,7 @@ namespace JRSApplication.ProjectManager
             }
         }
 
-        // ✅ เปลี่ยนชื่อหัวตารางให้เป็นไทย
+        // เปลี่ยนชื่อหัวตารางให้เป็นไทย
         private void RenameInvoiceGridHeaders()
         {
             if (dtgvInvoice.Columns.Contains("inv_id")) dtgvInvoice.Columns["inv_id"].HeaderText = "รหัสงาน";
@@ -186,7 +284,6 @@ namespace JRSApplication.ProjectManager
             if (dtgvInvoice.Columns.Contains("inv_method")) dtgvInvoice.Columns["inv_method"].HeaderText = "วิธีชำระเงิน";
             if (dtgvInvoice.Columns.Contains("paid_date")) dtgvInvoice.Columns["paid_date"].HeaderText = "วันที่บันทึก";
 
-            // 🔻 show phase_no and hide phase_id
             if (dtgvInvoice.Columns.Contains("phase_no")) dtgvInvoice.Columns["phase_no"].HeaderText = "เฟสงาน";
             if (dtgvInvoice.Columns.Contains("phase_id")) dtgvInvoice.Columns["phase_id"].Visible = false;
 
@@ -203,9 +300,7 @@ namespace JRSApplication.ProjectManager
             if (dtgvInvoice.Columns.Contains("emp_lname")) dtgvInvoice.Columns["emp_lname"].HeaderText = "นามสกุลพนักงาน";
         }
 
-
-
-        // ✅ ปรับสไตล์ DataGridView
+        // ปรับสไตล์ DataGridView
         private void CustomizeInvoiceGridStyle()
         {
             dtgvInvoice.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -242,56 +337,10 @@ namespace JRSApplication.ProjectManager
             dtgvInvoice.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             dtgvInvoice.ScrollBars = ScrollBars.Both;
 
-            // กำหนดความกว้างแต่ละคอลัมน์
             foreach (DataGridViewColumn col in dtgvInvoice.Columns)
             {
                 col.Width = 200;
             }
         }
-
-        private void dtgvInvoice_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0) // ไม่ใช่ Header row
-            {
-                DataGridViewRow row = dtgvInvoice.Rows[e.RowIndex];
-
-                // ✅ กรอกข้อมูลลูกค้า
-                txtCustomer.Text = row.Cells["cus_name"].Value?.ToString();
-                txtIDCard.Text = row.Cells["cus_id_card"].Value?.ToString();
-                txtAddress.Text = row.Cells["cus_address"].Value?.ToString();
-
-                // ✅ กรอกข้อมูลโครงการ
-                txtContractNumber.Text = row.Cells["pro_number"].Value?.ToString();
-                txtProjectName2.Text = row.Cells["pro_name"].Value?.ToString();
-                txtPhase.Text = row.Cells["phase_no"].Value?.ToString();
-
-                // ✅ กรอกข้อมูลการชำระเงิน
-                txtInvoiceNo.Text = row.Cells["inv_id"].Value?.ToString();
-                txtPaymentMethod.Text = row.Cells["inv_method"].Value?.ToString();
-
-                if (row.Cells["paid_date"].Value != DBNull.Value)
-                {
-                    DateTime paidDate = Convert.ToDateTime(row.Cells["paid_date"].Value);
-                    txtPaymentDate.Text = paidDate.ToString("dd/MM/yyyy HH:mm");
-                }
-
-                string empName = row.Cells["emp_name"].Value?.ToString();
-                string empLname = row.Cells["emp_lname"].Value?.ToString();
-                txtEmpName.Text = $"{empName} {empLname}";
-
-                // ✅ โหลดรูปภาพ
-                string invId = row.Cells["inv_id"]?.Value?.ToString();
-                if (!string.IsNullOrWhiteSpace(invId))
-                {
-                    LoadPaymentProofImage(invId);
-                }
-                else
-                {
-                    pictureBoxProof.Image = null;
-                }
-            }
-        }
-
-
     }
 }
