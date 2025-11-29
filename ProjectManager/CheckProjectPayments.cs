@@ -23,8 +23,95 @@ namespace JRSApplication
         {
             InitializeComponent();
             CustomizeDataGridViewInvoice();
-            //LoadPaidInvoices();
+
+            // ✅ ผูก SearchboxControl ให้ใช้ role Accountant / จัดการการเงิน
+            try
+            {
+                searchboxControl1.DefaultRole = "Accountant";
+                searchboxControl1.DefaultFunction = "จัดการการเงิน";
+                searchboxControl1.SetRoleAndFunction("Accountant", "จัดการการเงิน");
+
+                searchboxControl1.SearchTriggered += SearchboxInvoice_SearchTriggered;
+            }
+            catch
+            {
+                // กัน error ตอนออกแบบ
+            }
         }
+
+        // ================= Searchbox → filter dtgvInvoice ================
+
+        private void SearchboxInvoice_SearchTriggered(object sender, SearchEventArgs e)
+        {
+            ApplyInvoiceGridFilter(e.SearchBy, e.Keyword);
+        }
+
+        private void ApplyInvoiceGridFilter(string searchBy, string keyword)
+        {
+            if (!(dtgvInvoice.DataSource is DataTable table))
+                return;
+
+            string q = (keyword ?? "").Trim();
+
+            if (string.IsNullOrEmpty(q))
+            {
+                table.DefaultView.RowFilter = string.Empty;
+                return;
+            }
+
+            q = EscapeLikeValue(q);
+            string filter = "";
+
+            switch (searchBy)
+            {
+                case "รหัสใบแจ้งหนี้":
+                    if (table.Columns.Contains("inv_id"))
+                        filter = $"CONVERT(inv_id, 'System.String') LIKE '%{q}%'";
+                    else if (table.Columns.Contains("inv_no"))
+                        filter = $"CONVERT(inv_no, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                case "ยอดชำระ":
+                    if (table.Columns.Contains("inv_grand_total"))
+                        filter = $"CONVERT(inv_grand_total, 'System.String') LIKE '%{q}%'";
+                    else if (table.Columns.Contains("inv_total_amount"))
+                        filter = $"CONVERT(inv_total_amount, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                case "สถานะ":
+                    if (table.Columns.Contains("inv_status"))
+                        filter = $"CONVERT(inv_status, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                default:
+                    filter =
+                        $"CONVERT(inv_id, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(inv_no, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(inv_status, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(cus_name, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(pro_name, 'System.String') LIKE '%{q}%'";
+                    break;
+            }
+
+            table.DefaultView.RowFilter = filter;
+        }
+
+        private static string EscapeLikeValue(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return string.Empty;
+
+            return value
+                .Replace("[", "[[]")
+                .Replace("]", "[]]")
+                .Replace("%", "[%]")
+                .Replace("*", "[*]")
+                .Replace("'", "''");
+        }
+
+
+        // ================= logic เดิม =================
+
         private void btnSearchProject_Click(object sender, EventArgs e)
         {
             SearchForm searchForm = new SearchForm("Project");
@@ -43,6 +130,9 @@ namespace JRSApplication
         {
             DataTable dt = searchService.GetPaidInvoicesByProject(projectId);
             dtgvInvoice.DataSource = dt;
+
+            // ✅ ให้ฟิลเตอร์ตามค่าปัจจุบันในช่องค้นหา
+            ApplyInvoiceGridFilter(searchboxControl1.SelectedSearchBy, searchboxControl1.Keyword);
         }
 
         private void btnSearchPayment_Click(object sender, EventArgs e)

@@ -3,8 +3,10 @@ using JRSApplication.Data_Access_Layer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +18,9 @@ namespace JRSApplication.ProjectManager
     {
         private readonly string _empId;
 
+        // เก็บรายการ PO ทั้งหมดไว้สำหรับฟิลเตอร์
+        private List<object> _allPurchaseOrders = new List<object>();
+
         public ApprovePurchaseOrder(string empId)
         {
             InitializeComponent();
@@ -25,8 +30,133 @@ namespace JRSApplication.ProjectManager
             CustomizePOGridStyling();           // ✅ ตั้งค่ารูปแบบ DataGridView
             dtgvListofPO.CellFormatting += dtgvListofPO_CellFormatting; // ✅ กำหนด event
 
+            // ✅ ผูก SearchboxControl ให้ใช้ role Projectmanager / อนุมัติใบสั่งซื้อ
+            try
+            {
+                searchboxControl1.DefaultRole = "Projectmanager";
+                searchboxControl1.DefaultFunction = "อนุมัติใบสั่งซื้อ";
+                searchboxControl1.SetRoleAndFunction("Projectmanager", "อนุมัติใบสั่งซื้อ");
+
+                searchboxControl1.SearchTriggered += SearchboxPO_SearchTriggered;
+            }
+            catch
+            {
+                // กัน error ตอนออกแบบ
+            }
+
             LoadAllPurchaseOrders();            // ✅ โหลดข้อมูลหลังตั้งคอลัมน์แล้ว
         }
+
+        // ================= Searchbox → filter dtgvListofPO =================
+
+        private void SearchboxPO_SearchTriggered(object sender, SearchEventArgs e)
+        {
+            ApplyPOGridFilter(e.SearchBy, e.Keyword);
+        }
+
+        private void ApplyPOGridFilter(string searchBy, string keyword)
+        {
+            if (_allPurchaseOrders == null)
+                return;
+
+            var baseList = _allPurchaseOrders;
+
+            string q = (keyword ?? "").Trim();
+            string qLower = q.ToLowerInvariant();
+
+            if (string.IsNullOrEmpty(q))
+            {
+                dtgvListofPO.DataSource = null;
+                dtgvListofPO.DataSource = baseList.ToList();
+                return;
+            }
+
+            bool ContainsProp(object obj, string propName, string textLower)
+            {
+                var prop = obj.GetType().GetProperty(propName);
+                if (prop == null) return false;
+
+                var val = prop.GetValue(obj, null)?.ToString();
+                return !string.IsNullOrEmpty(val) &&
+                       val.ToLowerInvariant().Contains(textLower);
+            }
+
+            bool MatchStatus(object obj, string keywordText)
+            {
+                var prop = obj.GetType().GetProperty("OrderStatus");
+                if (prop == null) return false;
+
+                var raw = (prop.GetValue(obj, null)?.ToString() ?? "")
+                            .Trim().ToLowerInvariant();
+
+                if (string.IsNullOrEmpty(raw))
+                    raw = "submitted";
+
+                string thai;
+                switch (raw)
+                {
+                    case "approved":
+                        thai = "อนุมัติ";
+                        break;
+                    case "rejected":
+                        thai = "ไม่อนุมัติ";
+                        break;
+                    case "submitted":
+                        thai = "รออนุมัติ";
+                        break;
+                    case "draft":
+                        thai = "แบบร่าง";
+                        break;
+                    case "canceled":
+                        thai = "ยกเลิก";
+                        break;
+                    default:
+                        thai = string.Empty;
+                        break;
+                }
+
+                var k = (keywordText ?? "").Trim().ToLowerInvariant();
+
+                // เทียบแบบตรงตัว ไม่ใช้ Contains
+                return k == raw || k == thai.ToLowerInvariant();
+            }
+
+            var filtered = baseList.Where(o =>
+            {
+                switch (searchBy)
+                {
+                    case "เลขที่ใบสั่งซื้อ":
+                        return ContainsProp(o, "OrderNumber", qLower);
+
+                    case "สถานะใบสั่งซื้อ":
+                    case "สถานะ":
+                        return MatchStatus(o, q);
+
+                    case "ผู้ออกใบสั่งซื้อ":
+                        return ContainsProp(o, "EmpName", qLower);
+
+                    case "ผู้อนุมัติ":
+                        return ContainsProp(o, "ApprovedByName", qLower);
+
+                    case "รหัสโครงการ":
+                        return ContainsProp(o, "ProId", qLower);
+
+                    default:
+                        return ContainsProp(o, "OrderNumber", qLower)
+                               || MatchStatus(o, q)
+                               || ContainsProp(o, "EmpName", qLower)
+                               || ContainsProp(o, "ApprovedByName", qLower)
+                               || ContainsProp(o, "OrderDetail", qLower);
+                }
+            }).ToList();
+
+            dtgvListofPO.DataSource = null;
+            dtgvListofPO.DataSource = filtered;
+        }
+
+
+
+
 
         // -----------------------------
         // Grid: Define Columns
@@ -159,12 +289,15 @@ namespace JRSApplication.ProjectManager
 
                 if (orderList == null || orderList.Count == 0)
                 {
+                    _allPurchaseOrders = new List<object>();
                     dtgvListofPO.DataSource = null;
                     return;
                 }
 
+                _allPurchaseOrders = orderList.Cast<object>().ToList();
+
                 dtgvListofPO.AutoGenerateColumns = false;
-                dtgvListofPO.DataSource = orderList;
+                dtgvListofPO.DataSource = _allPurchaseOrders.ToList();
                 dtgvListofPO.ClearSelection();
             }
             catch (Exception ex)
@@ -181,9 +314,6 @@ namespace JRSApplication.ProjectManager
         {
             if (e.RowIndex < 0) return;
             string col = dtgvListofPO.Columns[e.ColumnIndex].Name;
-
-            // ✅ Debug เผื่อดูค่าจริงจาก DB (เปิดได้ตอนทดสอบ)
-            // Console.WriteLine($"Row {e.RowIndex} | Col {col} | Value = '{e.Value}'");
 
             // ✅ แสดงสถานะใบสั่งซื้อเป็นภาษาไทย + สีพื้นหลัง
             if (col == "colStatus")

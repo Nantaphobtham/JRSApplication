@@ -63,6 +63,7 @@ namespace JRSApplication.ProjectManager
 
             switch (searchBy)
             {
+                case "รหัสงาน":              // ✅ สำหรับหน้านี้
                 case "รหัสใบแจ้งหนี้":
                     if (table.Columns.Contains("inv_id"))
                         filter = $"CONVERT(inv_id, 'System.String') LIKE '%{q}%'";
@@ -102,14 +103,36 @@ namespace JRSApplication.ProjectManager
             if (string.IsNullOrEmpty(value))
                 return string.Empty;
 
-            // escape ตัวอักษรพิเศษของ RowFilter: [, ], %, *
-            return value
-                .Replace("[", "[[]")
-                .Replace("]", "[]]")
-                .Replace("%", "[%]")
-                .Replace("*", "[*]")
-                .Replace("'", "''");
+            var sb = new StringBuilder();
+
+            foreach (char c in value)
+            {
+                switch (c)
+                {
+                    case '[':
+                        sb.Append("[[]");   // escape [
+                        break;
+                    case ']':
+                        sb.Append("[]]");   // escape ]
+                        break;
+                    case '%':
+                        sb.Append("[%]");   // escape %
+                        break;
+                    case '*':
+                        sb.Append("[*]");   // escape *
+                        break;
+                    case '\'':
+                        sb.Append("''");    // escape ' สำหรับ RowFilter
+                        break;
+                    default:
+                        sb.Append(c);
+                        break;
+                }
+            }
+
+            return sb.ToString();
         }
+
 
         // ================== ปุ่มค้นหาโครงการ ==================
         private void btnSearchProject_Click_1(object sender, EventArgs e)

@@ -34,7 +34,123 @@ namespace JRSApplication
             isEditing = true;           // ✅ อนุญาตให้พิมพ์
             currentEditId = null;       // ✅ ไม่มีรายการที่เลือก
             SetFormEditable(true);      // ✅ เปิดให้แก้ทุกช่องตอนเริ่ม
+
+            // ✅ ผูก SearchboxControl ให้ใช้ role Projectmanager / ตรวจสอบข้อมูลโครงการ
+            try
+            {
+                searchboxControl1.DefaultRole = "Projectmanager";
+                searchboxControl1.DefaultFunction = "ตรวจสอบข้อมูลโครงการ";
+                searchboxControl1.SetRoleAndFunction("Projectmanager", "จัดสรรบุคลากร");
+
+                searchboxControl1.SearchTriggered += SearchboxAllocate_SearchTriggered;
+            }
+            catch
+            {
+                // กัน error ตอนเปิดใน Designer
+            }
         }
+
+        // ================= Searchbox → filter dtgvCustomer ================
+
+        private void SearchboxAllocate_SearchTriggered(object sender, SearchEventArgs e)
+        {
+            ApplyAllocateGridFilter(e.SearchBy, e.Keyword);
+        }
+
+        private void ApplyAllocateGridFilter(string searchBy, string keyword)
+        {
+            if (!(dtgvCustomer.DataSource is DataTable table))
+                return;
+
+            string q = (keyword ?? "").Trim();
+
+            // ไม่กรอกอะไรเลย = แสดงทุกแถว
+            if (string.IsNullOrEmpty(q))
+            {
+                table.DefaultView.RowFilter = string.Empty;
+                return;
+            }
+
+            q = EscapeLikeValue(q);
+            string filter = "";
+
+            switch (searchBy)
+            {
+                case "รหัสงาน":
+                    // id ของตาราง project_employee_supervision
+                    filter = $"CONVERT(id, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                case "รหัสโครงการ":
+                    filter = $"CONVERT(project_id, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                case "ชื่อโครงการ":
+                    filter = $"CONVERT(project_name, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                case "เลขที่สัญญา":
+                    filter = $"CONVERT(contract_number, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                case "ชื่อลูกค้า":
+                    filter = $"CONVERT(customer_name, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                case "อีเมลลูกค้า":
+                    filter = $"CONVERT(customer_email, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                case "รหัสพนักงาน":
+                    filter = $"CONVERT(emp_id, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                case "ชื่อพนักงาน":
+                    filter =
+                        $"CONVERT(emp_first_name, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(emp_last_name, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                case "ตำแหน่ง":
+                    filter = $"CONVERT(emp_position, 'System.String') LIKE '%{q}%'";
+                    break;
+
+                default:
+                    // ค้นทุกคอลัมน์หลัก
+                    filter =
+                        $"CONVERT(id, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(project_id, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(project_name, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(contract_number, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(customer_name, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(customer_email, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(emp_id, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(emp_first_name, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(emp_last_name, 'System.String') LIKE '%{q}%'" +
+                        $" OR CONVERT(emp_position, 'System.String') LIKE '%{q}%'";
+                    break;
+            }
+
+            table.DefaultView.RowFilter = filter;
+        }
+
+
+
+        private static string EscapeLikeValue(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return string.Empty;
+
+            // escape ตัวอักษรพิเศษของ RowFilter: [, ], %, *
+            return value
+                .Replace("[", "[[]")
+                .Replace("]", "[]]")
+                .Replace("%", "[%]")
+                .Replace("*", "[*]")
+                .Replace("'", "''");
+        }
+
+        // ================= logic เดิมทั้งหมด =================
 
         private void SetFormEditable(bool editable)
         {
@@ -362,4 +478,3 @@ namespace JRSApplication
         }
     }
 }
-

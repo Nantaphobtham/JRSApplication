@@ -1,4 +1,6 @@
 ﻿using JRSApplication.Components;
+using JRSApplication.Components.Models;
+using JRSApplication.Components.Service;
 using JRSApplication.Data_Access_Layer;
 using Mysqlx.Crud;
 using System;
@@ -16,13 +18,109 @@ namespace JRSApplication
 {
     public partial class ProjectData : UserControl
     {
+        private List<Project> _allProjects = new List<Project>();
+
         public ProjectData()
         {
             InitializeComponent();
             InitializeDataGridViewProject();
             InitializeDataGridViewPhase();
             LoadProjectData();
+
+            // ✅ ผูก Searchbox สำหรับค้นหาโครงการ
+            try
+            {
+                searchboxControl1.DefaultRole = "Projectmanager";
+                searchboxControl1.DefaultFunction = "ข้อมูลโครงการ";
+                searchboxControl1.SetRoleAndFunction("Projectmanager", "ตรวจสอบข้อมูลโครงการ2");
+
+                searchboxControl1.SearchTriggered += SearchboxProject_SearchTriggered;
+            }
+            catch { }
         }
+
+        // ============== Searchbox -> Filter Projects =================
+
+        private void SearchboxProject_SearchTriggered(object sender, SearchEventArgs e)
+        {
+            ApplyProjectFilter(e.SearchBy, e.Keyword);
+        }
+
+        private void ApplyProjectFilter(string searchBy, string keyword)
+        {
+            if (_allProjects == null) return;
+
+            string q = (keyword ?? "").Trim().ToLowerInvariant();
+            IEnumerable<Project> baseList = _allProjects;
+
+            if (string.IsNullOrEmpty(q))
+            {
+                FillProjectGrid(baseList);
+                return;
+            }
+
+            IEnumerable<Project> filtered;
+
+            switch (searchBy)
+            {
+                case "รหัสโครงการ":
+                    filtered = baseList.Where(p =>
+                        p.ProjectID.ToString().ToLowerInvariant().Contains(q));
+                    break;
+
+                case "ชื่อโครงการ":
+                    filtered = baseList.Where(p =>
+                        !string.IsNullOrEmpty(p.ProjectName) &&
+                        p.ProjectName.ToLowerInvariant().Contains(q));
+                    break;
+
+                case "ชื่อลูกค้า":
+                    filtered = baseList.Where(p =>
+                        !string.IsNullOrEmpty(p.CustomerName) &&
+                        p.CustomerName.ToLowerInvariant().Contains(q));
+                    break;
+
+                case "ผู้ดูแลโครงการ":
+                    filtered = baseList.Where(p =>
+                        !string.IsNullOrEmpty(p.EmployeeName) &&
+                        p.EmployeeName.ToLowerInvariant().Contains(q));
+                    break;
+
+                default: // ทั้งหมด
+                    filtered = baseList.Where(p =>
+                        p.ProjectID.ToString().ToLowerInvariant().Contains(q) ||
+                        (!string.IsNullOrEmpty(p.ProjectName) &&
+                         p.ProjectName.ToLowerInvariant().Contains(q)) ||
+                        (!string.IsNullOrEmpty(p.CustomerName) &&
+                         p.CustomerName.ToLowerInvariant().Contains(q)) ||
+                        (!string.IsNullOrEmpty(p.EmployeeName) &&
+                         p.EmployeeName.ToLowerInvariant().Contains(q)));
+                    break;
+            }
+
+            FillProjectGrid(filtered);
+        }
+
+        private void FillProjectGrid(IEnumerable<Project> projects)
+        {
+            dtgvProjectData.Rows.Clear();
+
+            foreach (var project in projects)
+            {
+                dtgvProjectData.Rows.Add(
+                    project.ProjectID,
+                    project.ProjectName,
+                    project.ProjectStart.ToString("dd/MM/yyyy"),
+                    project.ProjectEnd.ToString("dd/MM/yyyy"),
+                    project.ProjectBudget.ToString("N2"),
+                    project.CurrentPhaseNumber,
+                    project.CustomerName,
+                    project.EmployeeName
+                );
+            }
+        }
+
+        // ============== โค้ดเดิมของ ProjectData ====================
 
         private void LoadProjectDetails(int projectId)
         {
@@ -52,29 +150,15 @@ namespace JRSApplication
 
         private void LoadProjectStatus(int projectID, int totalPhaseNumber)
         {
-            // ไม่ได้ใช้แล้ว (คงไว้ได้ หรือจะลบก็ได้)
         }
 
         private void LoadProjectData()
         {
             InitializeDataGridViewProject();
             ProjectDAL dal = new ProjectDAL();
-            List<Project> projects = dal.GetAllProjects();
+            _allProjects = dal.GetAllProjects();
 
-            dtgvProjectData.Rows.Clear();
-            foreach (var project in projects)
-            {
-                dtgvProjectData.Rows.Add(
-                    project.ProjectID,
-                    project.ProjectName,
-                    project.ProjectStart.ToString("dd/MM/yyyy"),
-                    project.ProjectEnd.ToString("dd/MM/yyyy"),
-                    project.ProjectBudget.ToString("N2"),
-                    project.CurrentPhaseNumber,
-                    project.CustomerName,
-                    project.EmployeeName
-                );
-            }
+            FillProjectGrid(_allProjects);
         }
 
         private void CustomizeDataGridViewProject()
@@ -122,7 +206,6 @@ namespace JRSApplication
                 dtgvProjectData.Columns.Add("CustomerName", "ชื่อลูกค้า");
                 dtgvProjectData.Columns.Add("EmployeeName", "ชื่อผู้ดูแลโครงการ");
 
-                // ✅ กำหนดการจัดตำแหน่งเป็นกลางทั้งหมด
                 foreach (DataGridViewColumn col in dtgvProjectData.Columns)
                 {
                     col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -130,7 +213,6 @@ namespace JRSApplication
                     col.ReadOnly = true;
                 }
 
-                // ✅ ความกว้างและรูปแบบ
                 dtgvProjectData.Columns["ProjectID"].Width = 80;
 
                 dtgvProjectData.Columns["ProjectStart"].Width = 120;
@@ -146,11 +228,9 @@ namespace JRSApplication
                 dtgvProjectData.Columns["CustomerName"].Width = 150;
                 dtgvProjectData.Columns["EmployeeName"].Width = 150;
 
-                // ✅ ไม่ใช้ MiddleLeft อีกต่อไป เพื่อให้กลางจริง
                 CustomizeDataGridViewProject();
             }
         }
-
 
         private void dtgvProjectData_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -204,21 +284,13 @@ namespace JRSApplication
 
             string status;
             if (sumPercent == 100)
-            {
                 status = "เสร็จสิ้น";
-            }
             else if (hasInProgress)
-            {
                 status = "กำลังดำเนินการ";
-            }
             else if (hasNotStarted)
-            {
                 status = "ยังไม่เริ่ม";
-            }
             else
-            {
                 status = "ไม่ทราบสถานะ";
-            }
 
             txtStatus.Text = status;
         }
@@ -235,19 +307,16 @@ namespace JRSApplication
             dtgvPhaseDetail.EnableHeadersVisualStyles = false;
             dtgvPhaseDetail.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
 
-            // ✅ หัวตาราง
             dtgvPhaseDetail.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dtgvPhaseDetail.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dtgvPhaseDetail.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
             dtgvPhaseDetail.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dtgvPhaseDetail.ColumnHeadersHeight = 40;
 
-            // ✅ เนื้อหาตาราง
             dtgvPhaseDetail.DefaultCellStyle.Font = new Font("Segoe UI", 12);
             dtgvPhaseDetail.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dtgvPhaseDetail.DefaultCellStyle.Padding = new Padding(5, 3, 5, 3);
 
-            // ✅ ขนาดและสไตล์ทั่วไป
             dtgvPhaseDetail.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dtgvPhaseDetail.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dtgvPhaseDetail.RowTemplate.Height = 35;
@@ -257,8 +326,6 @@ namespace JRSApplication
             dtgvPhaseDetail.AllowUserToAddRows = false;
             dtgvPhaseDetail.AllowUserToResizeRows = false;
         }
-
-
 
         private void InitializeDataGridViewPhase()
         {
@@ -272,7 +339,6 @@ namespace JRSApplication
                 dtgvPhaseDetail.Columns.Add("PhasePercent", "เปอร์เซ็นต์ (%)");
                 dtgvPhaseDetail.Columns.Add("PhaseStatus", "สถานะเฟส");
 
-                // ✅ ตำแหน่งให้กึ่งกลางทั้งหมด
                 dtgvPhaseDetail.Columns["PhaseNumber"].Width = 80;
                 dtgvPhaseDetail.Columns["PhaseNumber"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
@@ -290,11 +356,9 @@ namespace JRSApplication
                 dtgvPhaseDetail.Columns["PhaseStatus"].Width = 150;
                 dtgvPhaseDetail.Columns["PhaseStatus"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                // ✅ เรียกใช้ตกแต่งสไตล์รวม
                 CustomizeDataGridViewPhase();
             }
         }
-
 
         private void ShowPdfFromByteArray(byte[] pdfBytes, AxAcroPDFLib.AxAcroPDF viewerControl, Panel panelToShow, Label labelIfNotAvailable)
         {

@@ -6,84 +6,181 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace JRSApplication
 {
     public partial class DetermineSubcontractors : UserControl
     {
-        //  เก็บ ID ต่าง ๆ ที่ใช้ขณะทำงาน
         private string supplierID = "";
         private string projectID = "";
-        private string currentAssignmentId = ""; // ใช้สำหรับ Edit/Delete
-        private bool isEditing = false; // ตรวจสอบว่าอยู่ในโหมดแก้ไขหรือไม่
-        private SupplierAssignmentFile currentFile; // เก็บไฟล์ PDF ที่แนบล่าสุด
-        private string _empId; // เก็บ empId ของ user ที่ login อยู่
+        private string currentAssignmentId = "";
+        private bool isEditing = false;
+        private SupplierAssignmentFile currentFile;
+        private string _empId;
 
-        private FormPDFPreview pdfPreviewForm = null; // ✅ ฟอร์ม Preview
-        private Timer hoverCheckTimer;                // ✅ Timer เช็กเมาส์ออก
+        private FormPDFPreview pdfPreviewForm = null;
+        private Timer hoverCheckTimer;
+
+        // เก็บ DataTable ทั้งหมดสำหรับ filter
+        private DataTable _allAssignments;
 
         public DetermineSubcontractors(string empId)
         {
             InitializeComponent();
             _empId = empId;
-            CustomizeDataGridViewAssignment();
-            LoadAssignments(); // ปิดฟิลด์ทั้งหมดไม่ให้แก้ไขก่อน
 
-            // ✅ ผูกอีเวนต์ป้องกัน end < start
+            CustomizeDataGridViewAssignment();
+            LoadAssignments();
+
             startDate.ValueChanged += startDate_ValueChanged;
             dueDate.ValueChanged += dueDate_ValueChanged;
-
-            // ✅ ตั้งค่าขอบเขตเบื้องต้น
             ApplyDateGuards();
+
+            // ✅ ผูก Searchbox สำหรับค้นหาใบมอบหมายงาน
+            try
+            {
+                searchboxControl1.DefaultRole = "Projectmanager";
+                searchboxControl1.DefaultFunction = "กำหนดผู้รับเหมาช่วง";
+                searchboxControl1.SetRoleAndFunction("Projectmanager", "กำหนดผู้รับเหมา");
+
+                searchboxControl1.SearchTriggered += SearchboxAssignment_SearchTriggered;
+            }
+            catch { }
         }
 
-        //  โหลดข้อมูลเฟสของโครงการลง ComboBox
+        // ============== Searchbox -> Filter Assignments ===============
+
+        private void SearchboxAssignment_SearchTriggered(object sender, SearchEventArgs e)
+        {
+            ApplyAssignmentFilter(e.SearchBy, e.Keyword);
+        }
+
+        private void ApplyAssignmentFilter(string searchBy, string keyword)
+        {
+            if (_allAssignments == null) return;
+
+            string q = (keyword ?? "").Trim().ToLowerInvariant();
+
+            if (string.IsNullOrEmpty(q))
+            {
+                dtgvAssignment.DataSource = _allAssignments;
+                return;
+            }
+
+            var rows = _allAssignments.AsEnumerable();
+
+            bool HasCol(string col) => _allAssignments.Columns.Contains(col);
+
+            Func<DataRow, bool> containsIn = r =>
+            {
+                bool any = false;
+
+                if (HasCol("รหัสงาน"))
+                    any |= (r["รหัสงาน"]?.ToString() ?? "").ToLowerInvariant().Contains(q);
+                if (HasCol("รหัสโครงการ"))
+                    any |= (r["รหัสโครงการ"]?.ToString() ?? "").ToLowerInvariant().Contains(q);
+                if (HasCol("เฟสที่"))
+                    any |= (r["เฟสที่"]?.ToString() ?? "").ToLowerInvariant().Contains(q);
+                if (HasCol("รหัสผู้รับเหมา"))
+                    any |= (r["รหัสผู้รับเหมา"]?.ToString() ?? "").ToLowerInvariant().Contains(q);
+                if (HasCol("ชื่อผู้รับเหมา"))
+                    any |= (r["ชื่อผู้รับเหมา"]?.ToString() ?? "").ToLowerInvariant().Contains(q);
+                if (HasCol("รายละเอียดงาน"))
+                    any |= (r["รายละเอียดงาน"]?.ToString() ?? "").ToLowerInvariant().Contains(q);
+
+                return any;
+            };
+
+            switch (searchBy)
+            {
+                case "รหัสงาน":
+                    if (HasCol("รหัสงาน"))
+                        rows = rows.Where(r => (r["รหัสงาน"]?.ToString() ?? "").ToLowerInvariant().Contains(q));
+                    break;
+
+                case "รหัสโครงการ":
+                    if (HasCol("รหัสโครงการ"))
+                        rows = rows.Where(r => (r["รหัสโครงการ"]?.ToString() ?? "").ToLowerInvariant().Contains(q));
+                    break;
+
+                case "เฟสที่":
+                    if (HasCol("เฟสที่"))
+                        rows = rows.Where(r => (r["เฟสที่"]?.ToString() ?? "").ToLowerInvariant().Contains(q));
+                    break;
+
+                case "รหัสผู้รับเหมา":          // ✅ เพิ่มตรงนี้
+                    if (HasCol("รหัสผู้รับเหมา"))
+                        rows = rows.Where(r => (r["รหัสผู้รับเหมา"]?.ToString() ?? "").ToLowerInvariant().Contains(q));
+                    break;
+
+                case "ชื่อผู้รับเหมา":
+                    if (HasCol("ชื่อผู้รับเหมา"))
+                        rows = rows.Where(r => (r["ชื่อผู้รับเหมา"]?.ToString() ?? "").ToLowerInvariant().Contains(q));
+                    break;
+
+                default: // ค้นทุกคอลัมน์หลัก
+                    rows = rows.Where(containsIn);
+                    break;
+            }
+
+            DataTable filtered;
+            if (rows.Any())
+                filtered = rows.CopyToDataTable();
+            else
+                filtered = _allAssignments.Clone();
+
+            dtgvAssignment.DataSource = filtered;
+        }
+
+
+        // ============== โค้ดเดิมของ DetermineSubcontractors ==============
+
         private void LoadPhasesToComboBox(string projectId)
         {
             SearchService service = new SearchService();
             DataTable dt = service.GetPhasesByProjectId(projectId);
 
-            // เพิ่ม row สำหรับ 'เลือกเฟส'
             DataRow dr = dt.NewRow();
-            dr["phase_id"] = DBNull.Value;     // หรือ 0 ก็ได้ (แต่ DBNull.Value จะปลอดภัยกว่า)
+            dr["phase_id"] = DBNull.Value;
             dr["phase_no"] = "-- เลือกเฟส --";
-            dt.Rows.InsertAt(dr, 0);           // เพิ่มเป็น index 0
+            dt.Rows.InsertAt(dr, 0);
 
-            cmbSelectPhase.DisplayMember = "phase_no";    // แสดงหมายเลขเฟส
-            cmbSelectPhase.ValueMember = "phase_id";      // เก็บค่า id ตอน save
-            cmbSelectPhase.DataSource = dt;               // ใส่ data ลง combobox
-            cmbSelectPhase.SelectedIndex = 0;             // ให้ชี้มาที่ "เลือกเฟส" ทันที
+            cmbSelectPhase.DisplayMember = "phase_no";
+            cmbSelectPhase.ValueMember = "phase_id";
+            cmbSelectPhase.DataSource = dt;
+            cmbSelectPhase.SelectedIndex = 0;
         }
 
-        // โหลดรายการทั้งหมดจาก DB
         private void LoadAssignments()
         {
             SupplierWorkAssignmentDAL dal = new SupplierWorkAssignmentDAL();
-            dtgvAssignment.DataSource = dal.GetAllAssignmentsWithPhase();
+            var dt = dal.GetAllAssignmentsWithPhase();
+
+            _allAssignments = dt;
+            dtgvAssignment.DataSource = dt;
         }
 
-        // ปุ่มค้นหาโครงการ
         private void btnSearchProject_Click(object sender, EventArgs e)
         {
             SearchForm searchForm = new SearchForm("Project");
             if (searchForm.ShowDialog() == DialogResult.OK)
             {
-                projectID = searchForm.SelectedID; // เก็บ id ไว้ใช้ตอน save
+                projectID = searchForm.SelectedID;
                 txtPorjectID.Text = searchForm.SelectedID;
                 txtProjectName.Text = searchForm.SelectedName;
                 txtContractnumber.Text = searchForm.SelectedContract;
-                LoadPhasesToComboBox(projectID); // โหลด phase มาให้เลือก
+                LoadPhasesToComboBox(projectID);
             }
         }
 
-        // ปุ่มค้นหาผู้รับเหมา
         private void btnSearchSupplier_Click(object sender, EventArgs e)
         {
             SearchForm searchForm = new SearchForm("Supplier");
             if (searchForm.ShowDialog() == DialogResult.OK)
             {
-                supplierID = searchForm.SelectedID; // เก็บ id ไว้ใช้ตอน save
+                supplierID = searchForm.SelectedID;
                 txtSupplierName.Text = searchForm.SelectedName;
                 txtSupplierJuristic.Text = searchForm.SelectedIDCardOrRole;
                 txtSupplierPhone.Text = searchForm.SelectedPhone;
@@ -191,11 +288,6 @@ namespace JRSApplication
                 MessageBox.Show("กรุณาเลือกผู้รับเหมา", "คำเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
-            if (cmbSelectPhase.SelectedIndex == -1 || cmbSelectPhase.SelectedValue == null)
-            {
-                MessageBox.Show("กรุณาเลือกเฟสที่ต้องการดำเนินงาน", "คำเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
             if (startDate.Value > dueDate.Value)
             {
                 MessageBox.Show("วันที่เริ่มต้นต้องไม่มากกว่าวันที่สิ้นสุด", "คำเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -214,22 +306,21 @@ namespace JRSApplication
             return true;
         }
 
-        // กดปุ่มบันทึกข้อมูล (ทั้งเพิ่มใหม่ และ แก้ไข)
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (!ValidateBeforeSave()) return;
 
             SupplierWorkAssignment model = new SupplierWorkAssignment
             {
-                AssignmentId = isEditing ? currentAssignmentId : "",   // ถ้าแก้ไขให้ใช้รหัสเดิม, ถ้าเพิ่มใหม่ให้ว่างไว้ เดี๋ยว generate
+                AssignmentId = isEditing ? currentAssignmentId : "",
                 SupId = supplierID,
                 StartDate = startDate.Value,
                 DueDate = dueDate.Value,
                 AssignDescription = txtAssignDescription.Text.Trim(),
                 AssignRemark = txtRemark.Text.Trim(),
                 PhaseId = Convert.ToInt32(cmbSelectPhase.SelectedValue),
-                AssignStatus = "InProgress", // ทำไมไม่ทำงาน
-                EmployeeID = _empId   // ทำไมไม่ทำงาน
+                AssignStatus = "InProgress",
+                EmployeeID = _empId
             };
 
             SupplierWorkAssignmentDAL dal = new SupplierWorkAssignmentDAL();
@@ -240,7 +331,6 @@ namespace JRSApplication
                 {
                     dal.Update(model);
 
-                    // ✅ จัดการไฟล์แนบ (AssignmentId เป็น string)
                     if (currentFile != null)
                     {
                         var fileDal = new SupplierAssignmentFileDAL();
@@ -252,9 +342,7 @@ namespace JRSApplication
                 }
                 else
                 {
-                    // ✅ สร้างรหัสใหม่ (SWO6807001...) แล้วเซ็ตให้ AssignmentId
                     model.AssignmentId = dal.GenerateWorkOrderId();
-
                     dal.Insert(model);
 
                     if (currentFile != null)
@@ -277,15 +365,12 @@ namespace JRSApplication
             }
         }
 
-
-        // ปุ่ม Add เปิดให้กรอกข้อมูลใหม่
         private void btnAdd_Click(object sender, EventArgs e)
         {
             ClearandClossForm();
             EnableFormFields();
         }
 
-        // ปุ่ม Edit → เปิดให้แก้ไขฟิลด์
         private void btnEdit_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(currentAssignmentId))
@@ -298,7 +383,6 @@ namespace JRSApplication
             EnableFormFields();
         }
 
-        // ปุ่ม นี้จะเป็นยกเลิกการจ้างแทน
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(currentAssignmentId))
@@ -313,11 +397,9 @@ namespace JRSApplication
 
             try
             {
-                // ลบไฟล์แนบก่อน (ถ้ามี)
                 var fileDal = new SupplierAssignmentFileDAL();
                 fileDal.DeleteByAssignmentId(currentAssignmentId);
 
-                // ลบตัว assignment
                 var dal = new SupplierWorkAssignmentDAL();
                 dal.Delete(currentAssignmentId);
 
@@ -332,9 +414,6 @@ namespace JRSApplication
             }
         }
 
-
-
-        // เมื่อคลิกตาราง เพื่อโหลดข้อมูลขึ้นฟอร์ม (แต่ยังไม่ให้แก้ไข)
         private void dtgvAssignment_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -354,16 +433,20 @@ namespace JRSApplication
                 if (DateTime.TryParse(dueDateStr, out DateTime dDate)) dueDate.Value = dDate;
 
                 LoadSupplierDetail(supplierID);
-                foreach (DataRowView item in cmbSelectPhase.Items)
+
+                if (cmbSelectPhase.Items.Count > 0)
                 {
-                    if (item["phase_no"].ToString() == phaseNo)
+                    foreach (DataRowView item in cmbSelectPhase.Items)
                     {
-                        cmbSelectPhase.SelectedValue = item["phase_id"];
-                        break;
+                        if (item["phase_no"].ToString() == phaseNo)
+                        {
+                            cmbSelectPhase.SelectedValue = item["phase_id"];
+                            break;
+                        }
                     }
                 }
 
-                DisableFormFields(); // ห้ามแก้ไขทันที ต้องกดปุ่ม Edit ก่อน
+                DisableFormFields();
             }
         }
 
@@ -409,7 +492,7 @@ namespace JRSApplication
                     }
 
                     FileInfo fileInfo = new FileInfo(filePath);
-                    long maxSizeInBytes = 20 * 1024 * 1024; // 20 MB
+                    long maxSizeInBytes = 20 * 1024 * 1024;
 
                     if (fileInfo.Length > maxSizeInBytes)
                     {
@@ -417,26 +500,18 @@ namespace JRSApplication
                         return;
                     }
 
-                    // ✅ โหลดไฟล์เป็น byte[]
                     byte[] fileData = File.ReadAllBytes(filePath);
 
-                    // ✅ สร้าง object
                     SupplierAssignmentFile fileModel = new SupplierAssignmentFile
                     {
                         FileName = Path.GetFileName(filePath),
                         FileType = "application/pdf",
                         FileData = fileData,
                         UploadedAt = DateTime.Now,
-                        UploadedBy = _empId // ใช้ empId ที่ส่งมาจาก Formณ
-                                            // AssignmentId ยังไม่ต้องใส่ถ้ายังไม่ได้เลือก assignment
+                        UploadedBy = _empId
                     };
 
-                    // ✅ ตัวอย่าง: แสดงชื่อไฟล์ใน TextBox หรือ Label
-                    MessageBox.Show("ไฟล์เตรียมข้อมูลเรียบร้อย: " + fileModel.FileName, "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // 📌 ถ้าอยากเก็บ object นี้ไว้ใช้ตอนกด Save, สามารถเก็บไว้ใน class-level field เช่น
-                     this.currentFile = fileModel;
-                    // 👉 เปลี่ยนชื่อปุ่มเป็นชื่อไฟล์ที่เลือก
+                    this.currentFile = fileModel;
                     btnInsertFile.Text = fileModel.FileName;
                 }
             }
@@ -444,38 +519,27 @@ namespace JRSApplication
 
         private void cmbSelectPhase_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // กรองเฉพาะถ้าเลือก phase จริง (index 0 เป็น "-- เลือกเฟส --" ไม่ต้องโชว์ detail)
             if (cmbSelectPhase.SelectedIndex > 0 && cmbSelectPhase.SelectedItem is DataRowView row)
-            {
                 txtPhaseDetail.Text = row["phase_detail"].ToString();
-            }
             else
-            {
-                txtPhaseDetail.Text = ""; // หรือ "--" ถ้าอยากให้มีค่า default
-            }
+                txtPhaseDetail.Text = "";
         }
 
-        //เมธอดเปิดฟอร์ม Preview
         private void ShowPDFPreviewFromBytes(byte[] pdfBytes, Control targetControl)
         {
             if (pdfBytes == null) return;
 
-            // ถ้า Form ยังไม่ได้เปิด
             if (pdfPreviewForm == null || pdfPreviewForm.IsDisposed)
             {
-                // ✅ สร้างและเปิด Form ใหม่
                 pdfPreviewForm = new FormPDFPreview(pdfBytes);
-
-                // ✅ วางตำแหน่ง Form ใต้ปุ่ม
                 var location = targetControl.PointToScreen(new Point(0, targetControl.Height));
                 pdfPreviewForm.Location = location;
-
                 pdfPreviewForm.Show();
             }
 
-            StartHoverTimer(targetControl); // เริ่มเช็กเมื่อเมาส์ออก
+            StartHoverTimer(targetControl);
         }
-        //Timer เช็กเมาส์ "ออก" แล้วปิด Form
+
         private void StartHoverTimer(Control buttonControl)
         {
             if (hoverCheckTimer == null)
@@ -486,13 +550,9 @@ namespace JRSApplication
                 {
                     Point mousePos = Cursor.Position;
 
-                    // ✅ เช็กเมาส์อยู่บนปุ่ม
                     bool overButton = buttonControl.Bounds.Contains(buttonControl.Parent.PointToClient(mousePos));
-
-                    // ✅ เช็กเมาส์อยู่บนฟอร์ม Preview
                     bool overPreview = pdfPreviewForm != null && !pdfPreviewForm.IsDisposed && pdfPreviewForm.Bounds.Contains(mousePos);
 
-                    // ❌ ถ้าเมาส์อยู่นอกทั้ง 2 จุด ให้ปิดฟอร์ม
                     if (!overButton && !overPreview)
                     {
                         if (pdfPreviewForm != null && !pdfPreviewForm.IsDisposed)
@@ -500,12 +560,10 @@ namespace JRSApplication
                             pdfPreviewForm.Close();
                             pdfPreviewForm = null;
                         }
-
                         hoverCheckTimer.Stop();
                     }
                 };
             }
-
             hoverCheckTimer.Start();
         }
 
@@ -532,12 +590,12 @@ namespace JRSApplication
                 current = current.AddDays(1);
             }
 
-            // ถ้า dueDate ตรงกับวันอาทิตย์ → ขยับเป็นวันจันทร์
             if (current.DayOfWeek == DayOfWeek.Sunday)
                 current = current.AddDays(1);
 
             return current;
         }
+
         private void UpdateDueDate()
         {
             int workDays;
@@ -546,51 +604,41 @@ namespace JRSApplication
                 DateTime start = startDate.Value.Date;
                 DateTime due = CalculateDueDate(start, workDays);
 
-                // ✅ เคารพ MinDate: ห้ามก่อน start
                 if (due < start) due = start;
 
-                dueDate.MinDate = start;   // อัปเดตกรอบทุกครั้ง
+                dueDate.MinDate = start;
                 dueDate.Value = due;
             }
             else
             {
-                // ไม่มีจำนวนวัน → ให้วันสิ้นสุด = วันเริ่ม
                 dueDate.MinDate = startDate.Value.Date;
                 dueDate.Value = startDate.Value.Date;
             }
         }
 
-
         private void ApplyDateGuards()
         {
-            // วันสิ้นสุดต้องไม่ก่อนวันเริ่ม
             dueDate.MinDate = startDate.Value.Date;
 
-            // ถ้าปัจจุบัน dueDate เล็กกว่า MinDate ให้เด้งกลับ
             if (dueDate.Value.Date < dueDate.MinDate.Date)
                 dueDate.Value = dueDate.MinDate;
         }
 
         private void startDate_ValueChanged(object sender, EventArgs e)
         {
-            // อัปเดต MinDate ของ dueDate ทุกครั้งที่เปลี่ยน start
             ApplyDateGuards();
-
-            // ถ้าคุณใช้การคำนวณวันทำงาน ให้คง logic เดิมไว้
             UpdateDueDate();
         }
 
         private void dueDate_ValueChanged(object sender, EventArgs e)
         {
-            // กันกรณีผู้ใช้คลิกปฏิทินย้อนหลัง (แม้จะมี MinDate แล้ว)
             if (dueDate.Value.Date < startDate.Value.Date)
                 dueDate.Value = startDate.Value.Date;
         }
+
         private void txtDate_TextChanged(object sender, EventArgs e)
         {
             UpdateDueDate();
         }
-
-
     }
 }
