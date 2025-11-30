@@ -1046,12 +1046,13 @@ namespace JRSApplication
         private void btnSearchCustomer_Click(object sender, EventArgs e)
         {
             OpenSearchForm("Customer",
-                txtCustomerEmail,      // ชื่อ
+                txtCustomerName,      // ชื่อ
                 txtCustomerLastName,  // นามสกุล
                 txtCustomerIDCard,    // เลขบัตรประชาชน
                 txtCustomerPhone,     // เบอร์โทร
-                txtCustomerName);    // อีเมล
+                txtCustomerEmail);    // อีเมล
         }
+
 
 
         private void OpenSearchForm(string searchType, TextBox nameTextBox, TextBox lastNameTextBox, TextBox idCardOrRoleTextBox, TextBox phoneTextBox = null, TextBox emailTextBox = null)
