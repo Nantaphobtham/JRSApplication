@@ -1,4 +1,5 @@
 ﻿using JRSApplication.Components.Models;
+using JRSApplication.Components.Service;
 using System;
 using System.Data;
 using System.Drawing;
@@ -10,13 +11,15 @@ namespace JRSApplication
     {
         private string userFullName;
         private string userRole;
+        private string empId;
 
-        public AdminForm(string fullName, string role)
+        public AdminForm(string fullName, string role, string empId)
         {
             InitializeComponent();
 
             userFullName = fullName;
             userRole = role;
+            this.empId = empId;
         }
 
         private void AdminForm_Load(object sender, EventArgs e)
@@ -99,6 +102,17 @@ namespace JRSApplication
             btnManageUser.BackColor = Color.Transparent;
             btnRegisCustomer.BackColor = Color.Transparent;
             btnRegisSupplier.BackColor = Color.Transparent;
+        }
+        private void Profile_Click(object sender, EventArgs e)
+        {
+            // Create an instance of your new user control, passing the required data
+            var changePasswordControl = new ChangePassword1(this.empId, this.userFullName, this.userRole);
+
+            // Use your existing method to load it into the body
+            LoadUserControl(changePasswordControl);
+
+            // Optionally update the header text
+            txtFunctionname.Text = "เปลี่ยนรหัสผ่าน";
         }
     }
 }

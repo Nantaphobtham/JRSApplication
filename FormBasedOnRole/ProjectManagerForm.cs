@@ -1,9 +1,11 @@
 ﻿using JRSApplication.Components.Models;
+using JRSApplication.Components.Service;
 using JRSApplication.ProjectManager;
 using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using JRSApplication.Components.Service;
 
 namespace JRSApplication
 {
@@ -137,6 +139,17 @@ namespace JRSApplication
                     menuExpand = false;
                 }
             }
+        }
+        private void Profile_Click(object sender, EventArgs e)
+        {
+            // Create an instance of your new user control, passing the required data
+            var changePasswordControl = new ChangePassword1(this._empID, this.userFullName, this.userRole);
+
+            // Use your existing method to load it into the body
+            LoadUserControl(changePasswordControl);
+
+            // Optionally update the header text
+            txtFunctionname.Text = "เปลี่ยนรหัสผ่าน";
         }
     }
 }
