@@ -81,7 +81,7 @@ namespace JRSApplication
         {
             LoadUserControl(new SupplierRegistration());
             txtFunctionname.Text = "ทะเบียนซัพพลายเออร์";
-            txtFunctionname.Location = new Point(826, 45);
+            txtFunctionname.Location = new Point(875, 45);
 
             btnRegisSupplier.BackColor = Color.White;
             btnManageUser.BackColor = Color.Transparent;
@@ -93,7 +93,7 @@ namespace JRSApplication
         {
             LoadUserControl(new ManageProject(userFullName, userRole));
             txtFunctionname.Text = "จัดการข้อมูลโครงการ";
-            txtFunctionname.Location = new Point(830, 45);
+            txtFunctionname.Location = new Point(875, 45);
 
             btnManageProject.BackColor = Color.White;
             btnManageUser.BackColor = Color.Transparent;
