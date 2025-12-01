@@ -233,6 +233,12 @@
     <Compile Include="Components\Models\SupplierWorkAssignment.cs" />
     <Compile Include="Components\Models\WorkingPicture.cs" />
     <Compile Include="Components\Evaluators\WorkStatus.cs" />
+    <Compile Include="Components\Service\ChangePassword1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\Service\ChangePassword1.Designer.cs">
+      <DependentUpon>ChangePassword1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\Service\CheckphaseWorking.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -437,6 +443,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Admin\CustomerRegistration.resx">
       <DependentUpon>CustomerRegistration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Service\ChangePassword1.resx">
+      <DependentUpon>ChangePassword1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\Service\CheckphaseWorking.resx">
       <DependentUpon>CheckphaseWorking.cs</DependentUpon>

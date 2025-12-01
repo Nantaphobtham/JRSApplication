@@ -146,6 +146,7 @@
             this.Profile.Size = new System.Drawing.Size(80, 80);
             this.Profile.TabIndex = 1;
             this.Profile.TabStop = false;
+            this.Profile.Click += new System.EventHandler(this.Profile_Click);
             // 
             // Siderbar
             // 
@@ -210,7 +211,6 @@
             this.btnPhaseApprovalResult.Text = "ผลการอนุมัติเฟส";
             this.btnPhaseApprovalResult.UseVisualStyleBackColor = false;
             this.btnPhaseApprovalResult.Click += new System.EventHandler(this.btnPhaseApprovalResult_Click);
-
             // 
             // btnUpdatePhase
             // 

@@ -139,15 +139,17 @@
             this.txtName.Size = new System.Drawing.Size(191, 32);
             this.txtName.TabIndex = 2;
             this.txtName.Text = "Name Lastname";
+            this.txtName.Click += new System.EventHandler(this.Profile_Click);
             // 
             // Profile
             // 
             this.Profile.BackColor = System.Drawing.Color.White;
-            this.Profile.Location = new System.Drawing.Point(30, 23);
+            this.Profile.Location = new System.Drawing.Point(37, 23);
             this.Profile.Name = "Profile";
             this.Profile.Size = new System.Drawing.Size(80, 80);
             this.Profile.TabIndex = 1;
             this.Profile.TabStop = false;
+            this.Profile.Click += new System.EventHandler(this.Profile_Click);
             // 
             // Siderbar
             // 

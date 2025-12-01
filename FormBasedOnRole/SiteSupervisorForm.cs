@@ -1,4 +1,5 @@
 ﻿using JRSApplication.Components.Models;
+using JRSApplication.Components.Service;
 using JRSApplication.Sitesupervisor;
 using System;
 using System.Data;
@@ -81,6 +82,17 @@ namespace JRSApplication
         private void btnPhaseApprovalResult_Click(object sender, EventArgs e)
         {
             LoadUserControl(new PhaseApprovalResult(_empId, userRole), "ผลการอนุมัติเฟส");
+        }
+        private void Profile_Click(object sender, EventArgs e)
+        {
+            // Create an instance of your new user control, passing the required data
+            var changePasswordControl = new ChangePassword1(this._empId, this._fullName, this.userRole);
+
+            // Use your existing method to load it into the body
+            LoadUserControl(changePasswordControl);
+
+            // Optionally update the header text
+            txtFunctionname.Text = "เปลี่ยนรหัสผ่าน";
         }
     }
 }
