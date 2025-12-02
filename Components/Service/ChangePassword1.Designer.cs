@@ -43,13 +43,14 @@
             this.lblUsername = new System.Windows.Forms.Label();
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.pnlPassword = new System.Windows.Forms.Panel();
+            this.txtOldPassword = new System.Windows.Forms.TextBox();
             this.chkShowOldPassword = new System.Windows.Forms.CheckBox();
             this.starPassword = new System.Windows.Forms.Label();
             this.lblPassword = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnSaveChanges = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.txtOldPassword = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.pnlRole.SuspendLayout();
             this.pnlconfirmPassword.SuspendLayout();
             this.pnlUsername.SuspendLayout();
@@ -62,7 +63,7 @@
             this.pnlRole.Controls.Add(this.txtPosition);
             this.pnlRole.Controls.Add(this.starRole);
             this.pnlRole.Controls.Add(this.lblRole);
-            this.pnlRole.Location = new System.Drawing.Point(568, 175);
+            this.pnlRole.Location = new System.Drawing.Point(600, 111);
             this.pnlRole.Margin = new System.Windows.Forms.Padding(2);
             this.pnlRole.Name = "pnlRole";
             this.pnlRole.Size = new System.Drawing.Size(311, 74);
@@ -109,7 +110,7 @@
             this.pnlconfirmPassword.Controls.Add(this.starConfirmPassword);
             this.pnlconfirmPassword.Controls.Add(this.lblconfirmPassword);
             this.pnlconfirmPassword.Controls.Add(this.txtNewPassword);
-            this.pnlconfirmPassword.Location = new System.Drawing.Point(568, 256);
+            this.pnlconfirmPassword.Location = new System.Drawing.Point(600, 192);
             this.pnlconfirmPassword.Margin = new System.Windows.Forms.Padding(2);
             this.pnlconfirmPassword.Name = "pnlconfirmPassword";
             this.pnlconfirmPassword.Size = new System.Drawing.Size(311, 98);
@@ -166,7 +167,7 @@
             this.pnlUsername.Controls.Add(this.starUsername);
             this.pnlUsername.Controls.Add(this.lblUsername);
             this.pnlUsername.Controls.Add(this.txtUsername);
-            this.pnlUsername.Location = new System.Drawing.Point(244, 175);
+            this.pnlUsername.Location = new System.Drawing.Point(276, 111);
             this.pnlUsername.Margin = new System.Windows.Forms.Padding(2);
             this.pnlUsername.Name = "pnlUsername";
             this.pnlUsername.Size = new System.Drawing.Size(311, 74);
@@ -213,11 +214,21 @@
             this.pnlPassword.Controls.Add(this.chkShowOldPassword);
             this.pnlPassword.Controls.Add(this.starPassword);
             this.pnlPassword.Controls.Add(this.lblPassword);
-            this.pnlPassword.Location = new System.Drawing.Point(244, 256);
+            this.pnlPassword.Location = new System.Drawing.Point(276, 192);
             this.pnlPassword.Margin = new System.Windows.Forms.Padding(2);
             this.pnlPassword.Name = "pnlPassword";
             this.pnlPassword.Size = new System.Drawing.Size(311, 98);
             this.pnlPassword.TabIndex = 19;
+            // 
+            // txtOldPassword
+            // 
+            this.txtOldPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtOldPassword.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOldPassword.Location = new System.Drawing.Point(0, 37);
+            this.txtOldPassword.Margin = new System.Windows.Forms.Padding(2);
+            this.txtOldPassword.Name = "txtOldPassword";
+            this.txtOldPassword.Size = new System.Drawing.Size(308, 36);
+            this.txtOldPassword.TabIndex = 4;
             // 
             // chkShowOldPassword
             // 
@@ -258,10 +269,15 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.pnlRole);
             this.panel1.Controls.Add(this.btnSaveChanges);
-            this.panel1.Location = new System.Drawing.Point(211, 131);
+            this.panel1.Controls.Add(this.pnlconfirmPassword);
+            this.panel1.Controls.Add(this.pnlUsername);
+            this.panel1.Controls.Add(this.pnlPassword);
+            this.panel1.Location = new System.Drawing.Point(222, 58);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(699, 300);
+            this.panel1.Size = new System.Drawing.Size(1177, 470);
             this.panel1.TabIndex = 22;
             // 
             // btnSaveChanges
@@ -271,7 +287,7 @@
             this.btnSaveChanges.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
             this.btnSaveChanges.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSaveChanges.Font = new System.Drawing.Font("Segoe UI", 12.75F);
-            this.btnSaveChanges.Location = new System.Drawing.Point(493, 239);
+            this.btnSaveChanges.Location = new System.Drawing.Point(493, 336);
             this.btnSaveChanges.Name = "btnSaveChanges";
             this.btnSaveChanges.Size = new System.Drawing.Size(175, 58);
             this.btnSaveChanges.TabIndex = 1;
@@ -284,27 +300,23 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // txtOldPassword
+            // label1
             // 
-            this.txtOldPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtOldPassword.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtOldPassword.Location = new System.Drawing.Point(0, 37);
-            this.txtOldPassword.Margin = new System.Windows.Forms.Padding(2);
-            this.txtOldPassword.Name = "txtOldPassword";
-            this.txtOldPassword.Size = new System.Drawing.Size(308, 36);
-            this.txtOldPassword.TabIndex = 4;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(487, 40);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(171, 32);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "เปลี่ยนรหัสผ่าน";
             // 
             // ChangePassword1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.pnlRole);
-            this.Controls.Add(this.pnlconfirmPassword);
-            this.Controls.Add(this.pnlUsername);
-            this.Controls.Add(this.pnlPassword);
             this.Controls.Add(this.panel1);
             this.Name = "ChangePassword1";
-            this.Size = new System.Drawing.Size(1120, 563);
+            this.Size = new System.Drawing.Size(1584, 954);
             this.Load += new System.EventHandler(this.uc_ChangePassword_Load);
             this.pnlRole.ResumeLayout(false);
             this.pnlRole.PerformLayout();
@@ -315,6 +327,7 @@
             this.pnlPassword.ResumeLayout(false);
             this.pnlPassword.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -342,5 +355,6 @@
         private System.Windows.Forms.Button btnSaveChanges;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.TextBox txtOldPassword;
+        private System.Windows.Forms.Label label1;
     }
 }
