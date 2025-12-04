@@ -60,18 +60,21 @@ namespace JRSApplication
         {
             LoadUserControl(new Invoice());
             txtFunctionname.Text = "เรียกชำระเงิน";
+            txtFunctionname.Location = new Point(857, 45);
         }
 
         private void btnConfirmInvoice_Click(object sender, EventArgs e)
         {
             LoadUserControl(new ConfirmInvoice(this.fullName, this.role, this.empId));
             txtFunctionname.Text = "ยืนยันการรับชำระเงิน";
+            txtFunctionname.Location = new Point(857, 45);
         }
 
         private void btnPrintReceipt_Click(object sender, EventArgs e)
         {
             LoadUserControl(new Receipt());
             txtFunctionname.Text = "พิมพ์ใบเสร็จรับเงิน";
+            txtFunctionname.Location = new Point(857, 45);
         }
 
         private void btnClose_Click(object sender, EventArgs e)

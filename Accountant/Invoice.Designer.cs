@@ -124,9 +124,9 @@
             this.button8.AutoSize = true;
             this.button8.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.button8.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button8.Location = new System.Drawing.Point(887, 445);
+            this.button8.Location = new System.Drawing.Point(886, 430);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(180, 51);
+            this.button8.Size = new System.Drawing.Size(194, 69);
             this.button8.TabIndex = 46;
             this.button8.Text = "พิมพ์ใบแจ้งหนี้";
             this.button8.UseVisualStyleBackColor = false;
@@ -136,7 +136,7 @@
             // 
             this.ddd.AutoSize = true;
             this.ddd.Font = new System.Drawing.Font("Segoe UI", 17.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ddd.Location = new System.Drawing.Point(881, 355);
+            this.ddd.Location = new System.Drawing.Point(1115, 287);
             this.ddd.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ddd.Name = "ddd";
             this.ddd.Size = new System.Drawing.Size(96, 31);
@@ -147,16 +147,16 @@
             // 
             this.txtRemark.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtRemark.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRemark.Location = new System.Drawing.Point(887, 389);
+            this.txtRemark.Location = new System.Drawing.Point(1117, 321);
             this.txtRemark.Name = "txtRemark";
-            this.txtRemark.Size = new System.Drawing.Size(441, 35);
+            this.txtRemark.Size = new System.Drawing.Size(261, 35);
             this.txtRemark.TabIndex = 48;
             // 
             // label18
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Segoe UI", 17.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(881, 187);
+            this.label18.Location = new System.Drawing.Point(885, 77);
             this.label18.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(105, 31);
@@ -167,7 +167,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Segoe UI", 17.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(881, 259);
+            this.label17.Location = new System.Drawing.Point(885, 149);
             this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(109, 31);
@@ -203,9 +203,9 @@
             // 
             this.button2.AutoSize = true;
             this.button2.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(1154, 441);
+            this.button2.Location = new System.Drawing.Point(1137, 430);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(146, 47);
+            this.button2.Size = new System.Drawing.Size(194, 69);
             this.button2.TabIndex = 43;
             this.button2.Text = "แก้ไขใบแจ้งหนี้";
             this.button2.UseVisualStyleBackColor = true;
@@ -270,7 +270,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Segoe UI", 17.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(1117, 259);
+            this.label16.Location = new System.Drawing.Point(885, 287);
             this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(80, 31);
@@ -323,9 +323,9 @@
             // 
             this.txtPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPrice.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPrice.Location = new System.Drawing.Point(1123, 292);
+            this.txtPrice.Location = new System.Drawing.Point(887, 321);
             this.txtPrice.Name = "txtPrice";
-            this.txtPrice.Size = new System.Drawing.Size(235, 35);
+            this.txtPrice.Size = new System.Drawing.Size(223, 35);
             this.txtPrice.TabIndex = 26;
             // 
             // label6
@@ -343,9 +343,10 @@
             // 
             this.txtQuantity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtQuantity.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtQuantity.Location = new System.Drawing.Point(887, 292);
+            this.txtQuantity.Location = new System.Drawing.Point(887, 183);
+            this.txtQuantity.Multiline = true;
             this.txtQuantity.Name = "txtQuantity";
-            this.txtQuantity.Size = new System.Drawing.Size(223, 35);
+            this.txtQuantity.Size = new System.Drawing.Size(491, 76);
             this.txtQuantity.TabIndex = 26;
             // 
             // txtProjectName
@@ -362,9 +363,9 @@
             // 
             this.txtDetail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtDetail.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDetail.Location = new System.Drawing.Point(887, 221);
+            this.txtDetail.Location = new System.Drawing.Point(886, 111);
             this.txtDetail.Name = "txtDetail";
-            this.txtDetail.Size = new System.Drawing.Size(441, 35);
+            this.txtDetail.Size = new System.Drawing.Size(491, 35);
             this.txtDetail.TabIndex = 26;
             // 
             // label1
@@ -464,9 +465,9 @@
             this.button7.AutoSize = true;
             this.button7.BackColor = System.Drawing.Color.Lime;
             this.button7.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.Location = new System.Drawing.Point(1333, 439);
+            this.button7.Location = new System.Drawing.Point(1350, 430);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(146, 51);
+            this.button7.Size = new System.Drawing.Size(194, 69);
             this.button7.TabIndex = 43;
             this.button7.Text = "เพิ่ม";
             this.button7.UseVisualStyleBackColor = false;
@@ -538,6 +539,9 @@
             // searchboxControl1
             // 
             this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.DefaultFunction = "จัดการบัญชีผู้ใช้";
+            this.searchboxControl1.DefaultRole = "Admin";
+            this.searchboxControl1.Keyword = "";
             this.searchboxControl1.Location = new System.Drawing.Point(871, 542);
             this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.searchboxControl1.Name = "searchboxControl1";
@@ -555,7 +559,7 @@
             this.Controls.Add(this.dtgvInvoice);
             this.Controls.Add(this.panel1);
             this.Name = "Invoice";
-            this.Size = new System.Drawing.Size(1440, 834);
+            this.Size = new System.Drawing.Size(1406, 800);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
