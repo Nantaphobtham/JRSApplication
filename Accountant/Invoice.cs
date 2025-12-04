@@ -566,6 +566,7 @@ namespace JRSApplication.Accountant
         {
             if (e.RowIndex < 0) return;
 
+            // เลือกแถวที่คลิก
             dtgvInvoice.ClearSelection();
             dtgvInvoice.Rows[e.RowIndex].Selected = true;
             dtgvInvoice.CurrentCell = dtgvInvoice.Rows[e.RowIndex].Cells[e.ColumnIndex];
@@ -573,15 +574,28 @@ namespace JRSApplication.Accountant
             var row = dtgvInvoice.Rows[e.RowIndex];
             string status = row.Cells["inv_status"]?.Value?.ToString() ?? "";
 
-            _invoiceMenu.Items[0].Enabled = !status.Equals("ชำระแล้ว", StringComparison.OrdinalIgnoreCase);
-
-            if (e.RowIndex >= 0 && e.Button == MouseButtons.Left)
+            // ถ้าเป็นใบที่ "ชำระแล้ว" ให้ปิดเมนูพิมพ์
+            if (_invoiceMenu != null && _invoiceMenu.Items.Count > 0)
             {
-                dtgvInvoice.ClearSelection();
-                dtgvInvoice.Rows[e.RowIndex].Selected = true;
-                ShowInvoiceActionPopup();
+                _invoiceMenu.Items[0].Enabled =
+                    !status.Equals("ชำระแล้ว", StringComparison.OrdinalIgnoreCase);
             }
+
+            // แสดงเมนูเฉพาะตอนคลิกขวาเท่านั้น (ไม่ต้องมี popup ฟอร์มแล้ว)
+            if (e.Button == MouseButtons.Right && _invoiceMenu != null)
+            {
+                _invoiceMenu.Show(dtgvInvoice, new Point(e.X, e.Y));
+            }
+
+            // ❌ ลบบรรทัดนี้ออก (หรือคอมเมนต์ทิ้ง)
+            // if (e.RowIndex >= 0 && e.Button == MouseButtons.Left)
+            // {
+            //     dtgvInvoice.ClearSelection();
+            //     dtgvInvoice.Rows[e.RowIndex].Selected = true;
+            //     ShowInvoiceActionPopup();
+            // }
         }
+
 
         private void PrintSelectedInvoiceFromGrid()
         {
