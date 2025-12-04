@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JRSApplication", "JRSApplication.csproj", "{348BF148-B135-48B8-BD99-81E6AD508593}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup1", "D:\Work\INSTALLER\JRSInstaller\Setup1\Setup1.vdproj", "{387EE72E-0EA6-C446-111B-37FCDD138BA6}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "JRSINTALL", "D:\Work\INSTALLER\JRSINTALL\JRSINTALL.vdproj", "{82341E90-584C-79DF-F386-ECC19B316ECD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,8 +17,8 @@ Global
 		{348BF148-B135-48B8-BD99-81E6AD508593}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{348BF148-B135-48B8-BD99-81E6AD508593}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{348BF148-B135-48B8-BD99-81E6AD508593}.Release|Any CPU.Build.0 = Release|Any CPU
-		{387EE72E-0EA6-C446-111B-37FCDD138BA6}.Debug|Any CPU.ActiveCfg = Debug
-		{387EE72E-0EA6-C446-111B-37FCDD138BA6}.Release|Any CPU.ActiveCfg = Release
+		{82341E90-584C-79DF-F386-ECC19B316ECD}.Debug|Any CPU.ActiveCfg = Debug
+		{82341E90-584C-79DF-F386-ECC19B316ECD}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
