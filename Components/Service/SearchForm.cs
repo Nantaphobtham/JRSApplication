@@ -209,13 +209,41 @@ namespace JRSApplication
                 }
                 else if (SearchMode == "UnpaidInvoiceByProject" || SearchMode == "PaidInvoiceByProject")
                 {
-                    // ชื่อคอลัมน์ใน DataTable ยังใช้ inv_* อยู่ เหมือนเดิม
-                    SelectedID = selectedRow.Cells["inv_id"].Value?.ToString() ?? "";
-                    SelectedCusID = selectedRow.Cells["cus_id"].Value?.ToString() ?? "";
-                    SelectedLastName = selectedRow.Cells["pro_id"].Value?.ToString() ?? "";
-                    SelectedPhone = selectedRow.Cells["inv_method"].Value?.ToString() ?? "";
-                    SelectedEmail = selectedRow.Cells["inv_status"].Value?.ToString() ?? "";
+                    // หา key ของใบแจ้งหนี้ให้ได้แน่ ๆ
+                    string invKey = "";
+
+                    // 1) ถ้ามีคอลัมน์ inv_id ใช้อันนี้ก่อน
+                    if (dtgvAlldata.Columns.Contains("inv_id"))
+                    {
+                        invKey = selectedRow.Cells["inv_id"].Value?.ToString() ?? "";
+                    }
+                    // 2) บางกรณี query อาจตั้งชื่อว่า inv_no
+                    else if (dtgvAlldata.Columns.Contains("inv_no"))
+                    {
+                        invKey = selectedRow.Cells["inv_no"].Value?.ToString() ?? "";
+                    }
+                    // 3) เผื่อในอนาคตไปเปลี่ยนชื่อคอลัมน์เป็นภาษาไทย
+                    else if (dtgvAlldata.Columns.Contains("เลขที่ใบแจ้งหนี้"))
+                    {
+                        invKey = selectedRow.Cells["เลขที่ใบแจ้งหนี้"].Value?.ToString() ?? "";
+                    }
+
+                    SelectedID = invKey;
+
+                    // อื่น ๆ เหมือนเดิม แต่ใส่เงื่อนไขเผื่อคอลัมน์ไม่มี
+                    if (dtgvAlldata.Columns.Contains("cus_id"))
+                        SelectedCusID = selectedRow.Cells["cus_id"].Value?.ToString() ?? "";
+
+                    if (dtgvAlldata.Columns.Contains("pro_id"))
+                        SelectedLastName = selectedRow.Cells["pro_id"].Value?.ToString() ?? "";
+
+                    if (dtgvAlldata.Columns.Contains("inv_method"))
+                        SelectedPhone = selectedRow.Cells["inv_method"].Value?.ToString() ?? "";
+
+                    if (dtgvAlldata.Columns.Contains("inv_status"))
+                        SelectedEmail = selectedRow.Cells["inv_status"].Value?.ToString() ?? "";
                 }
+
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
