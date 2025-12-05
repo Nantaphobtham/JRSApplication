@@ -497,8 +497,87 @@ namespace JRSApplication.Accountant
             frm.ShowDialog();
         }
 
+        // This goes into your ReceiptForm.cs
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            // Step 1: Get the Project ID from your form's textbox (e.g., txtProjectID)
+            var projectId = txtContractNo.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(projectId))
+            {
+                MessageBox.Show("กรุณาเลือกโครงการก่อน", "แจ้งเตือน",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            // Step 2: Open the SearchForm in "PaidInvoiceByProject" mode
+            // This will show only invoices that have already been paid for the selected project.
+            using (var searchForm = new SearchForm("PaidInvoiceByProject", projectId))
+            {
+                // If the user closes the form without selecting anything, stop.
+                if (searchForm.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
 
+                // Step 3: Get the ID of the selected *paid* invoice
+                var selectedInvoiceId = searchForm.SelectedID;
+                if (string.IsNullOrWhiteSpace(selectedInvoiceId))
+                {
+                    // This case is unlikely if DialogResult is OK, but it's good practice to check.
+                    MessageBox.Show("ไม่พบเลขที่ใบแจ้งหนี้ที่เลือก", "แจ้งเตือน",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Step 4: Load the existing receipt data using the invoice ID
+                try
+                {
+                    // Call a new method to load the receipt and its details
+                    LoadReceiptByInvoiceId(selectedInvoiceId);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("โหลดข้อมูลใบเสร็จรับเงินไม่สำเร็จ: " + ex.Message,
+                        "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void LoadReceiptByInvoiceId(string invoiceId)
+        {
+            // Use 'receiptDAL' which is defined in your class.
+            // This calls the new method we will add to ReceiptDAL.cs.
+            DataTable receiptData = receiptDAL.GetReceiptDetailsByInvoiceId(invoiceId);
+
+            if (receiptData == null || receiptData.Rows.Count == 0)
+            {
+                throw new Exception("ไม่พบข้อมูลใบเสร็จที่ตรงกับใบแจ้งหนี้ที่เลือก");
+            }
+
+            DataRow row = receiptData.Rows[0];
+
+            // --- Populate all the textboxes and controls ---
+            // Customer Info
+            txtCusName.Text = row["cus_fullname"].ToString();
+            txtCusIDCard.Text = row["cus_id_card"].ToString();
+            txtCusAddress.Text = row["cus_address"].ToString();
+
+            // Project Info
+            txtContractNo.Text = row["pro_id"].ToString(); // Assuming this is where you show the project ID
+            txtProName.Text = row["pro_name"].ToString();
+            txtPhaseID.Text = row["phase_no"].ToString();
+
+            // Payment Info
+            txtInvNo.Text = row["inv_id"].ToString();
+            txtEmpName.Text = row["emp_fullname"].ToString();
+            dtpPaidDate.Value = Convert.ToDateTime(row["paid_date"]);
+            textBox1.Text = row["inv_method"].ToString(); // The payment method textbox
+
+            // Receipt Info
+            txtReceiptNo.Text = row["receipt_id"].ToString();
+            dtpReceiptDate.Value = Convert.ToDateTime(row["receipt_date"]);
+            txtReason.Text = row["receipt_remark"].ToString(); // The remark you want to edit
+        }
 
     }
 }

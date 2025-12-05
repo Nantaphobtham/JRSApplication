@@ -141,6 +141,8 @@
             // 
             // txtCusName
             // 
+            this.txtCusName.BackColor = System.Drawing.SystemColors.Control;
+            this.txtCusName.Enabled = false;
             this.txtCusName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCusName.Location = new System.Drawing.Point(184, 402);
             this.txtCusName.Name = "txtCusName";
@@ -172,6 +174,8 @@
             // 
             // txtCusIDCard
             // 
+            this.txtCusIDCard.BackColor = System.Drawing.SystemColors.Control;
+            this.txtCusIDCard.Enabled = false;
             this.txtCusIDCard.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCusIDCard.Location = new System.Drawing.Point(184, 443);
             this.txtCusIDCard.Name = "txtCusIDCard";
@@ -192,6 +196,8 @@
             // 
             // txtCusAddress
             // 
+            this.txtCusAddress.BackColor = System.Drawing.SystemColors.Control;
+            this.txtCusAddress.Enabled = false;
             this.txtCusAddress.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCusAddress.Location = new System.Drawing.Point(184, 484);
             this.txtCusAddress.Multiline = true;
@@ -213,6 +219,8 @@
             // 
             // txtPhaseID
             // 
+            this.txtPhaseID.BackColor = System.Drawing.SystemColors.Control;
+            this.txtPhaseID.Enabled = false;
             this.txtPhaseID.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPhaseID.Location = new System.Drawing.Point(728, 484);
             this.txtPhaseID.Name = "txtPhaseID";
@@ -233,6 +241,8 @@
             // 
             // txtProName
             // 
+            this.txtProName.BackColor = System.Drawing.SystemColors.Control;
+            this.txtProName.Enabled = false;
             this.txtProName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProName.Location = new System.Drawing.Point(728, 443);
             this.txtProName.Name = "txtProName";
@@ -253,6 +263,8 @@
             // 
             // txtContractNo
             // 
+            this.txtContractNo.BackColor = System.Drawing.SystemColors.Control;
+            this.txtContractNo.Enabled = false;
             this.txtContractNo.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtContractNo.Location = new System.Drawing.Point(728, 402);
             this.txtContractNo.Name = "txtContractNo";
@@ -284,6 +296,8 @@
             // 
             // txtEmpName
             // 
+            this.txtEmpName.BackColor = System.Drawing.SystemColors.Control;
+            this.txtEmpName.Enabled = false;
             this.txtEmpName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtEmpName.Location = new System.Drawing.Point(1302, 439);
             this.txtEmpName.Name = "txtEmpName";
@@ -304,6 +318,8 @@
             // 
             // txtInvNo
             // 
+            this.txtInvNo.BackColor = System.Drawing.SystemColors.Control;
+            this.txtInvNo.Enabled = false;
             this.txtInvNo.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtInvNo.Location = new System.Drawing.Point(1302, 396);
             this.txtInvNo.Name = "txtInvNo";
@@ -346,6 +362,7 @@
             // 
             // txtReceiptNo
             // 
+            this.txtReceiptNo.Enabled = false;
             this.txtReceiptNo.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtReceiptNo.Location = new System.Drawing.Point(25, 691);
             this.txtReceiptNo.Name = "txtReceiptNo";
@@ -446,9 +463,11 @@
             this.button3.TabIndex = 44;
             this.button3.Text = "แก้ไขข้อมูล";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // dtpPaidDate
             // 
+            this.dtpPaidDate.CalendarMonthBackground = System.Drawing.SystemColors.Control;
             this.dtpPaidDate.Enabled = false;
             this.dtpPaidDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpPaidDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
@@ -476,6 +495,8 @@
             // 
             // textBox1
             // 
+            this.textBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.textBox1.Enabled = false;
             this.textBox1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(1302, 524);
             this.textBox1.Name = "textBox1";
@@ -485,6 +506,7 @@
             // 
             // dtpReceiptDate
             // 
+            this.dtpReceiptDate.CalendarMonthBackground = System.Drawing.SystemColors.Control;
             this.dtpReceiptDate.Enabled = false;
             this.dtpReceiptDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpReceiptDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
@@ -537,7 +559,7 @@
             this.Controls.Add(this.dtgvInvoice);
             this.Controls.Add(this.Topic1);
             this.Name = "Receipt";
-            this.Size = new System.Drawing.Size(1423, 817);
+            this.Size = new System.Drawing.Size(1406, 800);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvReceiptDetail)).EndInit();
             this.panel4.ResumeLayout(false);

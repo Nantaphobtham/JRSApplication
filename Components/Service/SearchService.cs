@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data;
 using MySql.Data.MySqlClient;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace JRSApplication
 {
@@ -110,32 +111,41 @@ namespace JRSApplication
                 WHERE pro_id LIKE @Keyword OR CAST(inv_id AS CHAR) LIKE @Keyword
             ";
                 }
-                else if (searchType == "UnpaidInvoiceByProject")
+                else if (searchType == "UnpaidInvoiceByProject" || searchType == "PaidInvoiceByProject")
                 {
-                    query = @"
-                SELECT 
-                    inv_id,
-                    DATE_FORMAT(inv_date,'%Y-%m-%d')     AS inv_date,
-                    DATE_FORMAT(inv_duedate,'%Y-%m-%d')  AS inv_duedate,
-                    pro_id,
-                    cus_id,
-                    emp_id,
-                    inv_method,
-                    inv_status
-                FROM invoice
-                WHERE pro_id = @projectId
-                  AND inv_status = 'รอชำระเงิน'
-                ORDER BY inv_date DESC, inv_id DESC;
-            ";
+                    // 1. Determine the status string based on the mode.
+                    string statusToSearch = (searchType == "PaidInvoiceByProject") ? "ชำระแล้ว" : "ยังไม่ชำระ";
 
+                    // 2. Define the query with parameters for both project ID and status.
+                    query = @"
+                    SELECT 
+                        inv_id,
+                        DATE_FORMAT(inv_date, '%Y-%m-%d') AS inv_date,
+                        DATE_FORMAT(inv_duedate, '%Y-%m-%d') AS inv_duedate,
+                        pro_id,
+                        cus_id,
+                        emp_id,
+                        inv_method,
+                        inv_status
+                    FROM invoice
+                    WHERE pro_id = @projectId 
+                      AND inv_status = @status
+                    ORDER BY inv_date DESC, inv_id DESC;
+                ";
+
+                    // 3. Create and execute the command.
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@projectId", keyword); // keyword = pro_id
+                        // Add values for the parameters.
+                        cmd.Parameters.AddWithValue("@projectId", keyword); // 'keyword' is the project ID passed in
+                        cmd.Parameters.AddWithValue("@status", statusToSearch);
+
                         using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                         {
                             adapter.Fill(dt);
                         }
                     }
+                    // Return the data table immediately for this specific case.
                     return dt;
                 }
 

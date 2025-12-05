@@ -45,11 +45,13 @@ namespace JRSApplication
                 lblTitle.Text = "ค้นหาใบแจ้งหนี้";
             else if (SearchMode == "UnpaidInvoiceByProject")
                 lblTitle.Text = "เลือกใบแจ้งหนี้ที่ยังไม่ชำระ";
+            else if (SearchMode == "PaidInvoiceByProject") // New mode
+                lblTitle.Text = "เลือกใบแจ้งหนี้ที่ชำระแล้ว";
             else
                 lblTitle.Text = "ค้นหา";
 
             // โหลดข้อมูลเริ่มต้น
-            if (SearchMode == "UnpaidInvoiceByProject")
+            if (SearchMode == "UnpaidInvoiceByProject" || SearchMode == "PaidInvoiceByProject")
                 LoadSearchData(optionalProjectId ?? "");
             else
                 LoadSearchData("");
@@ -63,7 +65,7 @@ namespace JRSApplication
         {
             dtgvAlldata.AutoGenerateColumns = true;
 
-            if (SearchMode == "UnpaidInvoiceByProject")
+            if (SearchMode == "UnpaidInvoiceByProject" || SearchMode == "PaidInvoiceByProject")
             {
                 dtgvAlldata.DataSource = searchService.SearchData(SearchMode, keywordOrProjectId);
 
@@ -111,7 +113,7 @@ namespace JRSApplication
         // textbox ค้นหา
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (SearchMode == "UnpaidInvoiceByProject")
+            if (SearchMode == "UnpaidInvoiceByProject" || SearchMode == "PaidInvoiceByProject")
             {
                 if (dtgvAlldata.DataSource is DataTable table)
                 {
@@ -205,7 +207,7 @@ namespace JRSApplication
                     SelectedPhone = selectedRow.Cells["วิธีชำระเงิน"].Value?.ToString() ?? "";
                     SelectedEmail = selectedRow.Cells["สถานะ"].Value?.ToString() ?? "";
                 }
-                else if (SearchMode == "UnpaidInvoiceByProject")
+                else if (SearchMode == "UnpaidInvoiceByProject" || SearchMode == "PaidInvoiceByProject")
                 {
                     // ชื่อคอลัมน์ใน DataTable ยังใช้ inv_* อยู่ เหมือนเดิม
                     SelectedID = selectedRow.Cells["inv_id"].Value?.ToString() ?? "";
