@@ -61,6 +61,10 @@ namespace JRSApplication
             LoadUserControl(new Invoice());
             txtFunctionname.Text = "เรียกชำระเงิน";
             txtFunctionname.Location = new Point(857, 45);
+
+            button1.BackColor = Color.White;
+            button2.BackColor = Color.Transparent;
+            button3.BackColor = Color.Transparent;
         }
 
         private void btnConfirmInvoice_Click(object sender, EventArgs e)
@@ -68,6 +72,10 @@ namespace JRSApplication
             LoadUserControl(new ConfirmInvoice(this.fullName, this.role, this.empId));
             txtFunctionname.Text = "ยืนยันการรับชำระเงิน";
             txtFunctionname.Location = new Point(857, 45);
+
+            button1.BackColor = Color.Transparent;
+            button2.BackColor = Color.White;
+            button3.BackColor = Color.Transparent;
         }
 
         private void btnPrintReceipt_Click(object sender, EventArgs e)
@@ -75,6 +83,10 @@ namespace JRSApplication
             LoadUserControl(new Receipt());
             txtFunctionname.Text = "พิมพ์ใบเสร็จรับเงิน";
             txtFunctionname.Location = new Point(857, 45);
+
+            button1.BackColor = Color.Transparent;
+            button2.BackColor = Color.Transparent;
+            button3.BackColor = Color.White;
         }
 
         private void btnClose_Click(object sender, EventArgs e)

@@ -62,26 +62,56 @@ namespace JRSApplication
         private void btnCheckProjectInformation_Click(object sender, EventArgs e)
         {
             LoadUserControl(new ProjectData(), "ตรวจสอบข้อมูลโครงการ");
+
+            btnCheckProjectInformation.BackColor = Color.White;
+            btnUpdatePhase.BackColor = Color.Transparent;
+            btnPhaseApprovalResult.BackColor = Color.Transparent;
+            btnWorkResponse.BackColor = Color.Transparent;
+            btnPurchaseOrder.BackColor = Color.Transparent;
         }
 
         private void btnPurchaseOrder_Click(object sender, EventArgs e)
         {
             LoadUserControl(new PurchaseOrderForm(_empId), "ออกใบสั่งซื้อ");
+
+            btnCheckProjectInformation.BackColor = Color.Transparent;
+            btnUpdatePhase.BackColor = Color.Transparent;
+            btnPhaseApprovalResult.BackColor = Color.Transparent;
+            btnWorkResponse.BackColor = Color.Transparent;
+            btnPurchaseOrder.BackColor = Color.White;
         }
 
         private void btnUpdatePhase_Click(object sender, EventArgs e)
         {
             LoadUserControl(new UpdateProjectPhase(_empId, userRole), "ปรับปรุงข้อมูลเฟส");
+
+            btnCheckProjectInformation.BackColor = Color.Transparent;
+            btnUpdatePhase.BackColor = Color.White;
+            btnPhaseApprovalResult.BackColor = Color.Transparent;
+            btnWorkResponse.BackColor = Color.Transparent;
+            btnPurchaseOrder.BackColor = Color.Transparent;
         }
 
         private void btnWorkResponse_Click(object sender, EventArgs e)
         {
             LoadUserControl(new WorkResponse(), "ผลการอนุมัติใบสั่งซื้อ");
+
+            btnCheckProjectInformation.BackColor = Color.Transparent;
+            btnUpdatePhase.BackColor = Color.Transparent;
+            btnPhaseApprovalResult.BackColor = Color.Transparent;
+            btnWorkResponse.BackColor = Color.White;
+            btnPurchaseOrder.BackColor = Color.Transparent;
         }
 
         private void btnPhaseApprovalResult_Click(object sender, EventArgs e)
         {
             LoadUserControl(new PhaseApprovalResult(_empId, userRole), "ผลการอนุมัติเฟส");
+
+            btnCheckProjectInformation.BackColor = Color.Transparent;
+            btnUpdatePhase.BackColor = Color.Transparent;
+            btnPhaseApprovalResult.BackColor = Color.White;
+            btnWorkResponse.BackColor = Color.Transparent;
+            btnPurchaseOrder.BackColor = Color.Transparent;
         }
         private void Profile_Click(object sender, EventArgs e)
         {
