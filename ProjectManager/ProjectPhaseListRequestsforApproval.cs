@@ -224,25 +224,23 @@ namespace JRSApplication
             var workDal = new PhaseWorkDAL();
             var allWorkings = workDal.GetAllPhaseWorking();
 
-            var validStatuses = new[]
-            {
-                WorkStatus.InProgress,
-                WorkStatus.Completed,
-                WorkStatus.Rejected
-            };
-
             var displayList = allPhases
                 .Select(p =>
                 {
+                    // งานทั้งหมดของเฟสนี้
                     var works = allWorkings
                         .Where(w => w.PhaseID == p.PhaseID)
                         .ToList();
 
+                    // งานล่าสุด (ถ้ามี)
                     var lastWork = works
                         .OrderByDescending(w => w.WorkDate)
                         .FirstOrDefault();
 
+                    // เอาสถานะจากงานล่าสุดก่อน ถ้าไม่มีให้ใช้ phase_status จากตาราง phase
                     string lastStatus = lastWork?.WorkStatus;
+                    if (string.IsNullOrEmpty(lastStatus))
+                        lastStatus = p.PhaseStatus;   // สมมติว่า PhaseModel มี property PhaseStatus แม็พกับคอลัมน์ phase_status
 
                     return new ProjectPhaseWithWorkCount
                     {
@@ -256,23 +254,23 @@ namespace JRSApplication
                         WorkID = lastWork?.WorkID,
                         PhaseStatus = lastStatus ?? string.Empty,
                         PhaseStatusThai = !string.IsNullOrEmpty(lastStatus)
-                            ? WorkStatus.GetDisplayName(lastStatus)
-                            : string.Empty
+                                            ? WorkStatus.GetDisplayName(lastStatus)
+                                            : string.Empty
                     };
                 })
-                .Where(x =>
-                    x.WorkCount > 0 &&
-                    x.WorkID != null &&
-                    validStatuses.Contains(
-                        allWorkings.First(w => w.WorkID == x.WorkID).WorkStatus
-                    )
-                )
+                // เรียงให้โครงการเหมือนเดิม แต่ให้ Completed ไปอยู่ล่างสุด
                 .OrderBy(p => p.ProID)
+                .ThenBy(p =>
+                    string.Equals(p.PhaseStatus, WorkStatus.Completed,
+                                  StringComparison.OrdinalIgnoreCase)
+                        ? 1  // Completed → กลุ่มล่าง
+                        : 0) // อื่น ๆ → กลุ่มบน
                 .ThenBy(p => p.PhaseNo)
                 .ToList();
 
             _displayList = displayList;
 
+            // ถ้ายังไม่มีเงื่อนไขค้นหา → แสดงทั้งหมด
             if (string.IsNullOrWhiteSpace(_currentKeyword) || _currentSearchBy == "ทั้งหมด")
             {
                 BindGrid(_displayList);
@@ -282,6 +280,7 @@ namespace JRSApplication
                 ApplyPhaseListFilter(_currentSearchBy, _currentKeyword);
             }
         }
+
 
         private void CustomProjectPhaseGrid()
         {
