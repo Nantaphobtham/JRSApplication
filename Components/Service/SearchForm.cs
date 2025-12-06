@@ -318,9 +318,16 @@ namespace JRSApplication
             {
                 cmbSearchBy.Items.Add("เลขที่ใบแจ้งหนี้");
             }
-            // โหมด UnpaidInvoiceByProject ใช้ filter แบบพิเศษจาก txtSearch_TextChanged อยู่แล้ว
-            // เลยไม่จำเป็นต้องเติมใน cmbSearchBy ก็ได้
-
+            // --- We now check for BOTH invoice modes here ---
+            else if (SearchMode == "UnpaidInvoiceByProject" || SearchMode == "PaidInvoiceByProject")
+            {
+                // Now, this will run for both paid and unpaid invoice searches.
+                cmbSearchBy.Items.Add("เลขที่ใบแจ้งหนี้");
+                cmbSearchBy.Items.Add("สถานะใบแจ้งหนี้");
+                cmbSearchBy.Items.Add("วันที่ออก");
+                cmbSearchBy.Items.Add("กำหนดชำระ");
+                cmbSearchBy.Items.Add("รหัสลูกค้า");
+            }
             if (cmbSearchBy.Items.Count > 0)
                 cmbSearchBy.SelectedIndex = 0;
         }

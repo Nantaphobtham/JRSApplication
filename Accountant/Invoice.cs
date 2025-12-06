@@ -323,6 +323,8 @@ namespace JRSApplication.Accountant
                     MessageBox.Show("บันทึกข้อมูลสำเร็จ! เลขที่ใบแจ้งหนี้: " + newInvId,
                         "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                    LoadInvoiceTableByProject(proId);
+
                     txtCusID.Text = "";
                     txtCusName.Text = "";
                     txtProjectID.Text = "";
