@@ -51,6 +51,7 @@ namespace JRSApplication.Accountant
 
             // ผูกอีเวนต์ยิงค้นหา → ไปกรอง DataGridView
             searchboxControl1.SearchTriggered += SearchboxInvoice_SearchTriggered;
+            dtgvInvoice.CellClick += dtgvInvoice_CellClick;
         }
 
         // --------------------------------------------------
@@ -369,16 +370,12 @@ namespace JRSApplication.Accountant
                 if (headTable.Rows.Count > 0)
                 {
                     var r = headTable.Rows[0];
-
                     if (headTable.Columns.Contains("phase_budget") && r["phase_budget"] != DBNull.Value)
                         phaseBudget = Convert.ToDecimal(r["phase_budget"]);
-
                     if (headTable.Columns.Contains("phase_detail") && r["phase_detail"] != DBNull.Value)
                         phaseDetail = Convert.ToString(r["phase_detail"]);
-
                     if (headTable.Columns.Contains("inv_date") && r["inv_date"] != DBNull.Value)
                         invDate = Convert.ToDateTime(r["inv_date"]).ToString("d/M/yyyy");
-
                     if (headTable.Columns.Contains("cus_address") && r["cus_address"] != DBNull.Value)
                         cusAddress = r["cus_address"].ToString();
                 }
@@ -398,10 +395,9 @@ namespace JRSApplication.Accountant
             table.Columns.Add("phase_budget", typeof(decimal));
             table.Columns.Add("inv_remark");
             table.Columns.Add("subtotal", typeof(decimal));
-            table.Columns.Add("vat", typeof(decimal));
+            table.Columns.Add("vat", typeof(string)); // Keep as string
             table.Columns.Add("grand_total", typeof(decimal));
             table.Columns.Add("ToDate");
-
             table.Columns.Add("inv_detail");
             table.Columns.Add("inv_quantity");
             table.Columns.Add("inv_price");
@@ -414,8 +410,15 @@ namespace JRSApplication.Accountant
             if (decimal.TryParse(invPrice, out decimal extraPrice))
                 subtotal += extraPrice;
 
-            decimal vat = Math.Round(subtotal * 0.07m, 2, MidpointRounding.AwayFromZero);
-            decimal grand = subtotal + vat;
+            // --- MODIFIED CODE STARTS HERE ---
+
+            // 1. Force the VAT display text to always be a dash.
+            string vatDisplayText = "-";
+
+            // 2. Make the grand total equal to the subtotal.
+            decimal grand = subtotal;
+
+            // --- MODIFIED CODE ENDS HERE ---
 
             var thaiCulture = new CultureInfo("th-TH");
             string toDate = DateTime.Now.ToString("d MMMM yyyy", thaiCulture);
@@ -433,8 +436,8 @@ namespace JRSApplication.Accountant
                 phaseBudget,
                 remark,
                 subtotal,
-                vat,
-                grand,
+                vatDisplayText, // This will now always be "-"
+                grand,          // This will now be the same as subtotal
                 toDate,
                 string.IsNullOrWhiteSpace(invDetail) ? "" : invDetail,
                 invQty,
@@ -595,7 +598,37 @@ namespace JRSApplication.Accountant
             //     ShowInvoiceActionPopup();
             // }
         }
+        private void dtgvInvoice_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Make sure the click is on a valid row (not the header)
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
 
+            // Get the row that was clicked
+            var row = dtgvInvoice.Rows[e.RowIndex];
+
+            // Get the invoice ID from the clicked row's "inv_id" column.
+            string selectedInvoiceId = row.Cells["inv_id"]?.Value?.ToString();
+
+            // If we couldn't get an ID, stop.
+            if (string.IsNullOrWhiteSpace(selectedInvoiceId))
+            {
+                return;
+            }
+
+            // Use your existing method to load all the data into the textboxes.
+            try
+            {
+                LoadInvoiceById(selectedInvoiceId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("เกิดข้อผิดพลาดในการโหลดข้อมูล: " + ex.Message, "ผิดพลาด",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private void PrintSelectedInvoiceFromGrid()
         {

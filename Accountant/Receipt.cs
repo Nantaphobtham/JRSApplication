@@ -418,17 +418,14 @@ namespace JRSApplication.Accountant
                     var r = headTable.Rows[0];
                     if (headTable.Columns.Contains("phase_budget") && r["phase_budget"] != DBNull.Value)
                         phaseBudget = Convert.ToDecimal(r["phase_budget"]);
-
                     if (headTable.Columns.Contains("phase_detail") && r["phase_detail"] != DBNull.Value)
                         phaseDetail = Convert.ToString(r["phase_detail"]);
-
                     if (headTable.Columns.Contains("paid_date") && r["paid_date"] != DBNull.Value)
                         paidDate = Convert.ToDateTime(r["paid_date"]).ToString("d/M/yyyy");
                 }
             }
             catch { }
 
-            // --- Build ONE DataTable for RDLC ---
             var table = new DataTable();
             table.Columns.Add("receipt_id");
             table.Columns.Add("receipt_date");
@@ -440,16 +437,13 @@ namespace JRSApplication.Accountant
             table.Columns.Add("phase_budget", typeof(decimal));
             table.Columns.Add("inv_remark");
             table.Columns.Add("subtotal", typeof(decimal));
-            table.Columns.Add("vat", typeof(decimal));
+            table.Columns.Add("vat", typeof(string)); // Keep as string
             table.Columns.Add("grand_total", typeof(decimal));
             table.Columns.Add("ToDate");
-
-            // ✅ Add the item columns too (so RDLC finds them)
             table.Columns.Add("inv_detail");
             table.Columns.Add("inv_quantity");
             table.Columns.Add("inv_price");
 
-            // --- Calculate totals ---
             decimal subtotal = phaseBudget;
             string invDetail = null, invQty = null, invPrice = null;
 
@@ -464,12 +458,19 @@ namespace JRSApplication.Accountant
                     subtotal += extraPrice;
             }
 
-            decimal vat = Math.Round(subtotal * 0.07m, 2, MidpointRounding.AwayFromZero);
-            decimal grand = subtotal + vat;
+            // --- MODIFIED CODE STARTS HERE ---
+
+            // 1. Force the VAT display text to always be a dash.
+            string vatDisplayText = "-";
+
+            // 2. Make the grand total equal to the subtotal.
+            decimal grand = subtotal;
+
+            // --- MODIFIED CODE ENDS HERE ---
 
             var thaiCulture = new System.Globalization.CultureInfo("th-TH");
             string toDate = DateTime.Now.ToString("d MMMM yyyy", thaiCulture);
-            // --- Add row ---
+
             table.Rows.Add(
                 receiptNo,
                 paidDate,
@@ -481,18 +482,15 @@ namespace JRSApplication.Accountant
                 phaseBudget,
                 remark,
                 subtotal,
-                vat,
-                grand,
-                toDate, 
+                vatDisplayText, // This will now always be "-"
+                grand,          // This will now be the same as subtotal
+                toDate,
                 invDetail ?? DBNull.Value.ToString(),
                 invQty ?? DBNull.Value.ToString(),
                 invPrice ?? DBNull.Value.ToString()
             );
 
-            // ดึงค่า 'งวดงาน' จากหน้าฟอร์ม (ในโค้ด Natsu ใช้ txtPhaseID เก็บเลขงวด)
             var phaseNo = txtPhaseID.Text?.Trim() ?? "";
-
-            // ส่งทั้ง DataTable และ phaseNo เข้าไป
             var frm = new ReceiptPrintRDLC(table, phaseNo);
             frm.ShowDialog();
         }
