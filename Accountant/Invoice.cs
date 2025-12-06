@@ -181,7 +181,7 @@ namespace JRSApplication.Accountant
             if (dtgvInvoice.Columns.Contains("cus_fullname")) dtgvInvoice.Columns["cus_fullname"].HeaderText = "ชื่อลูกค้า";
             if (dtgvInvoice.Columns.Contains("cus_id_card")) dtgvInvoice.Columns["cus_id_card"].HeaderText = "เลขบัตรประชาชน";
             if (dtgvInvoice.Columns.Contains("cus_address")) dtgvInvoice.Columns["cus_address"].HeaderText = "ที่อยู่ลูกค้า";
-            if (dtgvInvoice.Columns.Contains("phase_no")) dtgvInvoice.Columns["phase_no"].HeaderText = "เฟสที่";
+            if (dtgvInvoice.Columns.Contains("phase_no")) dtgvInvoice.Columns["phase_no"].HeaderText = "ลำดับเฟสงาน";
             if (dtgvInvoice.Columns.Contains("phase_id")) dtgvInvoice.Columns["phase_id"].Visible = false;
 
             if (dtgvInvoice.Columns.Contains("emp_id"))

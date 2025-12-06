@@ -201,9 +201,14 @@ namespace JRSApplication.Accountant
                 dtgvInvoice.Columns["cus_id_card"].HeaderText = "เลขบัตรประชาชนลูกค้า";
                 dtgvInvoice.Columns["cus_address"].HeaderText = "ที่อยู่ลูกค้า";
 
-                dtgvInvoice.Columns["phase_id"].HeaderText = "รหัสเฟสงาน";
+                //dtgvInvoice.Columns["phase_id"].HeaderText = "รหัสเฟสงาน";
                 dtgvInvoice.Columns["phase_no"].HeaderText = "ลำดับเฟสงาน";
+                if (dtgvInvoice.Columns.Contains("phase_id"))
+                {
+                    dtgvInvoice.Columns["phase_id"].Visible = false;
+                }
             }
+
             catch { /* ถ้ามีบางคอลัมน์ไม่มี ไม่ต้อง Error */ }
         }
 
