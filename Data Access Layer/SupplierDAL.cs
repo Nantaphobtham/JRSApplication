@@ -267,13 +267,79 @@ namespace JRSApplication.Data_Access_Layer
         public bool DeleteSupplier(string supplierID)
         {
             using (var conn = new MySqlConnection(connectionString))
-            using (var cmd = new MySqlCommand("DELETE FROM supplier WHERE sup_id = @SupplierID", conn))
             {
-                cmd.Parameters.AddWithValue("@SupplierID", supplierID);
-                conn.Open();
-                return cmd.ExecuteNonQuery() > 0;
+                try
+                {
+                    conn.Open();
+
+                    // 1) เช็กก่อนว่า sup_id ถูกใช้งานอยู่ในตารางลูกหรือเปล่า
+                    using (var checkCmd = new MySqlCommand(
+                        "SELECT COUNT(*) FROM supplier_work_assignment WHERE sup_id = @SupplierID", conn))
+                    {
+                        checkCmd.Parameters.AddWithValue("@SupplierID", supplierID);
+
+                        int usedCount = Convert.ToInt32(checkCmd.ExecuteScalar());
+                        if (usedCount > 0)
+                        {
+                            MessageBox.Show(
+                                "ไม่สามารถลบซัพพลายเออร์นี้ได้ เนื่องจากได้รับการมอบหมายงานอยู่",
+                                "ลบไม่ได้",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+
+                            return false;
+                        }
+                    }
+
+                    // 2) ถ้าไม่ถูกใช้งาน → ค่อยลบจาก supplier
+                    using (var cmd = new MySqlCommand(
+                        "DELETE FROM supplier WHERE sup_id = @SupplierID", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@SupplierID", supplierID);
+                        int rows = cmd.ExecuteNonQuery();
+
+                        if (rows > 0)
+                        {
+                            MessageBox.Show(
+                                "ลบข้อมูลซัพพลายเออร์เรียบร้อยแล้ว",
+                                "สำเร็จ",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                            return true;
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                "ไม่พบรหัสซัพพลายเออร์นี้ในระบบ",
+                                "ไม่พบข้อมูล",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                            return false;
+                        }
+                    }
+                }
+                catch (MySqlException ex) when (ex.Number == 1451)
+                {
+                    // กันกรณีมี Foreign Key จากตารางอื่น ๆ ด้วย
+                    MessageBox.Show(
+                        "ไม่สามารถลบซัพพลายเออร์นี้ได้ เนื่องจากมีการใช้งานอยู่ในข้อมูลอื่น (ข้อจำกัด Foreign Key)",
+                        "ลบไม่ได้",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "เกิดข้อผิดพลาดในการลบข้อมูล: " + ex.Message,
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return false;
+                }
             }
         }
+
 
         // ---------- Search ----------
         public DataTable SearchSuppliers(string searchBy, string keyword)
