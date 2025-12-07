@@ -70,12 +70,16 @@
             this.dtgvInvoice = new System.Windows.Forms.DataGridView();
             this.lblToppic2 = new System.Windows.Forms.Label();
             this.searchboxControl1 = new JRSApplication.SearchboxControl();
+            this.starIdcard = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.label14);
+            this.panel1.Controls.Add(this.starIdcard);
             this.panel1.Controls.Add(this.button8);
             this.panel1.Controls.Add(this.ddd);
             this.panel1.Controls.Add(this.txtRemark);
@@ -548,6 +552,30 @@
             this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
             this.searchboxControl1.TabIndex = 16;
             // 
+            // starIdcard
+            // 
+            this.starIdcard.AutoSize = true;
+            this.starIdcard.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starIdcard.ForeColor = System.Drawing.Color.Red;
+            this.starIdcard.Location = new System.Drawing.Point(450, 356);
+            this.starIdcard.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.starIdcard.Name = "starIdcard";
+            this.starIdcard.Size = new System.Drawing.Size(22, 30);
+            this.starIdcard.TabIndex = 50;
+            this.starIdcard.Text = "*";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.Color.Red;
+            this.label14.Location = new System.Drawing.Point(755, 356);
+            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(22, 30);
+            this.label14.TabIndex = 51;
+            this.label14.Text = "*";
+            // 
             // Invoice
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -559,7 +587,7 @@
             this.Controls.Add(this.dtgvInvoice);
             this.Controls.Add(this.panel1);
             this.Name = "Invoice";
-            this.Size = new System.Drawing.Size(1406, 800);
+            this.Size = new System.Drawing.Size(1389, 783);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
@@ -616,5 +644,7 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label ddd;
         private System.Windows.Forms.TextBox txtRemark;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label starIdcard;
     }
 }

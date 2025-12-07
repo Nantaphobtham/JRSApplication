@@ -133,7 +133,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1194, 555);
+            this.panel1.Size = new System.Drawing.Size(1177, 555);
             this.panel1.TabIndex = 0;
             // 
             // cmbUnit
@@ -276,7 +276,6 @@
             this.starOrderDetail.Size = new System.Drawing.Size(22, 30);
             this.starOrderDetail.TabIndex = 5;
             this.starOrderDetail.Text = "*";
-            this.starOrderDetail.Visible = false;
             // 
             // starOrderNO
             // 
@@ -288,7 +287,6 @@
             this.starOrderNO.Size = new System.Drawing.Size(22, 30);
             this.starOrderNO.TabIndex = 5;
             this.starOrderNO.Text = "*";
-            this.starOrderNO.Visible = false;
             // 
             // starDueDate
             // 
@@ -300,7 +298,6 @@
             this.starDueDate.Size = new System.Drawing.Size(22, 30);
             this.starDueDate.TabIndex = 5;
             this.starDueDate.Text = "*";
-            this.starDueDate.Visible = false;
             // 
             // starOrderDate
             // 
@@ -312,7 +309,6 @@
             this.starOrderDate.Size = new System.Drawing.Size(22, 30);
             this.starOrderDate.TabIndex = 5;
             this.starOrderDate.Text = "*";
-            this.starOrderDate.Visible = false;
             // 
             // label18
             // 
@@ -576,7 +572,7 @@
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 555);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1194, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1177, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDeleteOrder
@@ -656,7 +652,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 649);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1194, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1177, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // panel4
@@ -668,7 +664,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel4.Location = new System.Drawing.Point(0, 659);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1194, 305);
+            this.panel4.Size = new System.Drawing.Size(1177, 305);
             this.panel4.TabIndex = 3;
             // 
             // dtgvPurchaseOrderList
@@ -714,7 +710,7 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.panel1);
             this.Name = "PurchaseOrderForm";
-            this.Size = new System.Drawing.Size(1194, 915);
+            this.Size = new System.Drawing.Size(1177, 915);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvMaterialList)).EndInit();
