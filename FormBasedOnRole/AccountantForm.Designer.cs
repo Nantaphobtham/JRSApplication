@@ -240,7 +240,7 @@
             // PicLogo
             // 
             this.PicLogo.Image = global::JRSApplication.Properties.Resources.logo;
-            this.PicLogo.Location = new System.Drawing.Point(312, 32);
+            this.PicLogo.Location = new System.Drawing.Point(110, 32);
             this.PicLogo.Name = "PicLogo";
             this.PicLogo.Size = new System.Drawing.Size(1365, 891);
             this.PicLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
