@@ -87,8 +87,9 @@
             this.pnlProjectdata.Controls.Add(this.txtHeaderSearch);
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 0);
+            this.pnlProjectdata.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1457, 274);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1892, 337);
             this.pnlProjectdata.TabIndex = 0;
             // 
             // dtgvProjectData
@@ -96,13 +97,13 @@
             this.dtgvProjectData.AllowUserToAddRows = false;
             this.dtgvProjectData.AllowUserToDeleteRows = false;
             this.dtgvProjectData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvProjectData.Location = new System.Drawing.Point(27, 80);
-            this.dtgvProjectData.Margin = new System.Windows.Forms.Padding(2);
+            this.dtgvProjectData.Location = new System.Drawing.Point(36, 98);
+            this.dtgvProjectData.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dtgvProjectData.Name = "dtgvProjectData";
             this.dtgvProjectData.ReadOnly = true;
             this.dtgvProjectData.RowHeadersWidth = 51;
             this.dtgvProjectData.RowTemplate.Height = 24;
-            this.dtgvProjectData.Size = new System.Drawing.Size(1529, 187);
+            this.dtgvProjectData.Size = new System.Drawing.Size(2039, 230);
             this.dtgvProjectData.TabIndex = 3;
             this.dtgvProjectData.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvProjectData_CellClick);
             // 
@@ -110,8 +111,7 @@
             // 
             this.txtHeaderSearch.AutoSize = true;
             this.txtHeaderSearch.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtHeaderSearch.Location = new System.Drawing.Point(22, 17);
-            this.txtHeaderSearch.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.txtHeaderSearch.Location = new System.Drawing.Point(29, 21);
             this.txtHeaderSearch.Name = "txtHeaderSearch";
             this.txtHeaderSearch.Size = new System.Drawing.Size(151, 30);
             this.txtHeaderSearch.TabIndex = 1;
@@ -121,17 +121,17 @@
             // 
             this.pnlStep.Controls.Add(this.txtNormalData);
             this.pnlStep.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlStep.Location = new System.Drawing.Point(0, 274);
+            this.pnlStep.Location = new System.Drawing.Point(0, 337);
+            this.pnlStep.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlStep.Name = "pnlStep";
-            this.pnlStep.Size = new System.Drawing.Size(1457, 46);
+            this.pnlStep.Size = new System.Drawing.Size(1892, 57);
             this.pnlStep.TabIndex = 1;
             // 
             // txtNormalData
             // 
             this.txtNormalData.AutoSize = true;
             this.txtNormalData.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNormalData.Location = new System.Drawing.Point(22, 8);
-            this.txtNormalData.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.txtNormalData.Location = new System.Drawing.Point(29, 10);
             this.txtNormalData.Name = "txtNormalData";
             this.txtNormalData.Size = new System.Drawing.Size(150, 30);
             this.txtNormalData.TabIndex = 2;
@@ -167,17 +167,17 @@
             this.pnlInfomationview.Controls.Add(this.lbContractnumber);
             this.pnlInfomationview.Controls.Add(this.lbProjectID);
             this.pnlInfomationview.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlInfomationview.Location = new System.Drawing.Point(0, 320);
+            this.pnlInfomationview.Location = new System.Drawing.Point(0, 394);
+            this.pnlInfomationview.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlInfomationview.Name = "pnlInfomationview";
-            this.pnlInfomationview.Size = new System.Drawing.Size(1457, 2756);
+            this.pnlInfomationview.Size = new System.Drawing.Size(1892, 3392);
             this.pnlInfomationview.TabIndex = 2;
             // 
             // txtDemolition
             // 
             this.txtDemolition.AutoSize = true;
             this.txtDemolition.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDemolition.Location = new System.Drawing.Point(40, 1650);
-            this.txtDemolition.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.txtDemolition.Location = new System.Drawing.Point(53, 2031);
             this.txtDemolition.Name = "txtDemolition";
             this.txtDemolition.Size = new System.Drawing.Size(118, 30);
             this.txtDemolition.TabIndex = 30;
@@ -187,16 +187,18 @@
             // 
             this.pnlDemolition.Controls.Add(this.lblDemolitionNA);
             this.pnlDemolition.Controls.Add(this.axPdfDemolition);
-            this.pnlDemolition.Location = new System.Drawing.Point(27, 1691);
+            this.pnlDemolition.Location = new System.Drawing.Point(36, 2081);
+            this.pnlDemolition.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlDemolition.Name = "pnlDemolition";
-            this.pnlDemolition.Size = new System.Drawing.Size(1496, 985);
+            this.pnlDemolition.Size = new System.Drawing.Size(1995, 1212);
             this.pnlDemolition.TabIndex = 29;
             // 
             // lblDemolitionNA
             // 
             this.lblDemolitionNA.AutoSize = true;
             this.lblDemolitionNA.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDemolitionNA.Location = new System.Drawing.Point(199, 71);
+            this.lblDemolitionNA.Location = new System.Drawing.Point(265, 87);
+            this.lblDemolitionNA.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDemolitionNA.Name = "lblDemolitionNA";
             this.lblDemolitionNA.Size = new System.Drawing.Size(0, 37);
             this.lblDemolitionNA.TabIndex = 1;
@@ -206,17 +208,17 @@
             this.axPdfDemolition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.axPdfDemolition.Enabled = true;
             this.axPdfDemolition.Location = new System.Drawing.Point(0, 0);
+            this.axPdfDemolition.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.axPdfDemolition.Name = "axPdfDemolition";
             this.axPdfDemolition.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axPdfDemolition.OcxState")));
-            this.axPdfDemolition.Size = new System.Drawing.Size(1496, 985);
+            this.axPdfDemolition.Size = new System.Drawing.Size(1995, 1212);
             this.axPdfDemolition.TabIndex = 0;
             // 
             // txtBlueprint
             // 
             this.txtBlueprint.AutoSize = true;
             this.txtBlueprint.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBlueprint.Location = new System.Drawing.Point(40, 608);
-            this.txtBlueprint.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.txtBlueprint.Location = new System.Drawing.Point(53, 748);
             this.txtBlueprint.Name = "txtBlueprint";
             this.txtBlueprint.Size = new System.Drawing.Size(126, 30);
             this.txtBlueprint.TabIndex = 28;
@@ -226,16 +228,18 @@
             // 
             this.pnlBlueprint.Controls.Add(this.lblBlueprintNA);
             this.pnlBlueprint.Controls.Add(this.axPdfBlueprint);
-            this.pnlBlueprint.Location = new System.Drawing.Point(27, 652);
+            this.pnlBlueprint.Location = new System.Drawing.Point(36, 802);
+            this.pnlBlueprint.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlBlueprint.Name = "pnlBlueprint";
-            this.pnlBlueprint.Size = new System.Drawing.Size(1496, 985);
+            this.pnlBlueprint.Size = new System.Drawing.Size(1995, 1212);
             this.pnlBlueprint.TabIndex = 27;
             // 
             // lblBlueprintNA
             // 
             this.lblBlueprintNA.AutoSize = true;
             this.lblBlueprintNA.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBlueprintNA.Location = new System.Drawing.Point(164, 52);
+            this.lblBlueprintNA.Location = new System.Drawing.Point(219, 64);
+            this.lblBlueprintNA.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblBlueprintNA.Name = "lblBlueprintNA";
             this.lblBlueprintNA.Size = new System.Drawing.Size(0, 37);
             this.lblBlueprintNA.TabIndex = 1;
@@ -245,18 +249,20 @@
             this.axPdfBlueprint.Dock = System.Windows.Forms.DockStyle.Fill;
             this.axPdfBlueprint.Enabled = true;
             this.axPdfBlueprint.Location = new System.Drawing.Point(0, 0);
+            this.axPdfBlueprint.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.axPdfBlueprint.Name = "axPdfBlueprint";
             this.axPdfBlueprint.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axPdfBlueprint.OcxState")));
-            this.axPdfBlueprint.Size = new System.Drawing.Size(1496, 985);
+            this.axPdfBlueprint.Size = new System.Drawing.Size(1995, 1212);
             this.axPdfBlueprint.TabIndex = 0;
             // 
             // pnlPhaseDetail
             // 
             this.pnlPhaseDetail.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(215)))), ((int)(((byte)(215)))));
             this.pnlPhaseDetail.Controls.Add(this.dtgvPhaseDetail);
-            this.pnlPhaseDetail.Location = new System.Drawing.Point(27, 212);
+            this.pnlPhaseDetail.Location = new System.Drawing.Point(36, 261);
+            this.pnlPhaseDetail.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlPhaseDetail.Name = "pnlPhaseDetail";
-            this.pnlPhaseDetail.Size = new System.Drawing.Size(1496, 375);
+            this.pnlPhaseDetail.Size = new System.Drawing.Size(1995, 462);
             this.pnlPhaseDetail.TabIndex = 26;
             // 
             // dtgvPhaseDetail
@@ -264,13 +270,13 @@
             this.dtgvPhaseDetail.AllowUserToAddRows = false;
             this.dtgvPhaseDetail.AllowUserToDeleteRows = false;
             this.dtgvPhaseDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvPhaseDetail.Location = new System.Drawing.Point(12, 15);
-            this.dtgvPhaseDetail.Margin = new System.Windows.Forms.Padding(2);
+            this.dtgvPhaseDetail.Location = new System.Drawing.Point(16, 18);
+            this.dtgvPhaseDetail.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dtgvPhaseDetail.Name = "dtgvPhaseDetail";
             this.dtgvPhaseDetail.ReadOnly = true;
             this.dtgvPhaseDetail.RowHeadersWidth = 51;
             this.dtgvPhaseDetail.RowTemplate.Height = 24;
-            this.dtgvPhaseDetail.Size = new System.Drawing.Size(1473, 345);
+            this.dtgvPhaseDetail.Size = new System.Drawing.Size(1964, 425);
             this.dtgvPhaseDetail.TabIndex = 4;
             // 
             // txtSumpercent
@@ -279,11 +285,11 @@
             this.txtSumpercent.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSumpercent.Enabled = false;
             this.txtSumpercent.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSumpercent.Location = new System.Drawing.Point(1293, 159);
-            this.txtSumpercent.Margin = new System.Windows.Forms.Padding(2);
+            this.txtSumpercent.Location = new System.Drawing.Point(1724, 196);
+            this.txtSumpercent.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSumpercent.Name = "txtSumpercent";
             this.txtSumpercent.ReadOnly = true;
-            this.txtSumpercent.Size = new System.Drawing.Size(117, 36);
+            this.txtSumpercent.Size = new System.Drawing.Size(155, 36);
             this.txtSumpercent.TabIndex = 25;
             this.txtSumpercent.TextChanged += new System.EventHandler(this.txtSumpercent_TextChanged);
             // 
@@ -291,8 +297,7 @@
             // 
             this.lbPercent.AutoSize = true;
             this.lbPercent.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbPercent.Location = new System.Drawing.Point(1414, 159);
-            this.lbPercent.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbPercent.Location = new System.Drawing.Point(1885, 196);
             this.lbPercent.Name = "lbPercent";
             this.lbPercent.Size = new System.Drawing.Size(109, 30);
             this.lbPercent.TabIndex = 23;
@@ -302,8 +307,7 @@
             // 
             this.lbSumpercent.AutoSize = true;
             this.lbSumpercent.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbSumpercent.Location = new System.Drawing.Point(1048, 161);
-            this.lbSumpercent.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbSumpercent.Location = new System.Drawing.Point(1397, 198);
             this.lbSumpercent.Name = "lbSumpercent";
             this.lbSumpercent.Size = new System.Drawing.Size(241, 30);
             this.lbSumpercent.TabIndex = 24;
@@ -315,11 +319,11 @@
             this.txtStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtStatus.Enabled = false;
             this.txtStatus.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStatus.Location = new System.Drawing.Point(194, 159);
-            this.txtStatus.Margin = new System.Windows.Forms.Padding(2);
+            this.txtStatus.Location = new System.Drawing.Point(259, 196);
+            this.txtStatus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtStatus.Name = "txtStatus";
             this.txtStatus.ReadOnly = true;
-            this.txtStatus.Size = new System.Drawing.Size(328, 36);
+            this.txtStatus.Size = new System.Drawing.Size(437, 36);
             this.txtStatus.TabIndex = 22;
             this.txtStatus.TextChanged += new System.EventHandler(this.txtStatus_TextChanged);
             // 
@@ -327,8 +331,7 @@
             // 
             this.lbStatus.AutoSize = true;
             this.lbStatus.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbStatus.Location = new System.Drawing.Point(32, 159);
-            this.lbStatus.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbStatus.Location = new System.Drawing.Point(43, 196);
             this.lbStatus.Name = "lbStatus";
             this.lbStatus.Size = new System.Drawing.Size(158, 30);
             this.lbStatus.TabIndex = 21;
@@ -340,11 +343,11 @@
             this.txtStartdate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtStartdate.Enabled = false;
             this.txtStartdate.Font = new System.Drawing.Font("Segoe UI", 16.2F);
-            this.txtStartdate.Location = new System.Drawing.Point(771, 104);
-            this.txtStartdate.Margin = new System.Windows.Forms.Padding(2);
+            this.txtStartdate.Location = new System.Drawing.Point(1028, 128);
+            this.txtStartdate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtStartdate.Name = "txtStartdate";
             this.txtStartdate.ReadOnly = true;
-            this.txtStartdate.Size = new System.Drawing.Size(200, 36);
+            this.txtStartdate.Size = new System.Drawing.Size(266, 36);
             this.txtStartdate.TabIndex = 20;
             // 
             // txtEnddate
@@ -353,11 +356,11 @@
             this.txtEnddate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEnddate.Enabled = false;
             this.txtEnddate.Font = new System.Drawing.Font("Segoe UI", 16.2F);
-            this.txtEnddate.Location = new System.Drawing.Point(1075, 104);
-            this.txtEnddate.Margin = new System.Windows.Forms.Padding(2);
+            this.txtEnddate.Location = new System.Drawing.Point(1433, 128);
+            this.txtEnddate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtEnddate.Name = "txtEnddate";
             this.txtEnddate.ReadOnly = true;
-            this.txtEnddate.Size = new System.Drawing.Size(200, 36);
+            this.txtEnddate.Size = new System.Drawing.Size(266, 36);
             this.txtEnddate.TabIndex = 18;
             // 
             // txtSumdate
@@ -366,11 +369,11 @@
             this.txtSumdate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSumdate.Enabled = false;
             this.txtSumdate.Font = new System.Drawing.Font("Segoe UI", 16.2F);
-            this.txtSumdate.Location = new System.Drawing.Point(1374, 104);
-            this.txtSumdate.Margin = new System.Windows.Forms.Padding(2);
+            this.txtSumdate.Location = new System.Drawing.Point(1832, 128);
+            this.txtSumdate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSumdate.Name = "txtSumdate";
             this.txtSumdate.ReadOnly = true;
-            this.txtSumdate.Size = new System.Drawing.Size(109, 36);
+            this.txtSumdate.Size = new System.Drawing.Size(145, 36);
             this.txtSumdate.TabIndex = 17;
             // 
             // txtProjectManager
@@ -379,11 +382,11 @@
             this.txtProjectManager.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtProjectManager.Enabled = false;
             this.txtProjectManager.Font = new System.Drawing.Font("Segoe UI", 16.2F);
-            this.txtProjectManager.Location = new System.Drawing.Point(1213, 60);
-            this.txtProjectManager.Margin = new System.Windows.Forms.Padding(2);
+            this.txtProjectManager.Location = new System.Drawing.Point(1617, 74);
+            this.txtProjectManager.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtProjectManager.Name = "txtProjectManager";
             this.txtProjectManager.ReadOnly = true;
-            this.txtProjectManager.Size = new System.Drawing.Size(310, 36);
+            this.txtProjectManager.Size = new System.Drawing.Size(413, 36);
             this.txtProjectManager.TabIndex = 16;
             // 
             // txtContractnumber
@@ -392,11 +395,11 @@
             this.txtContractnumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtContractnumber.Enabled = false;
             this.txtContractnumber.Font = new System.Drawing.Font("Segoe UI", 16.2F);
-            this.txtContractnumber.Location = new System.Drawing.Point(1213, 18);
-            this.txtContractnumber.Margin = new System.Windows.Forms.Padding(2);
+            this.txtContractnumber.Location = new System.Drawing.Point(1617, 22);
+            this.txtContractnumber.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtContractnumber.Name = "txtContractnumber";
             this.txtContractnumber.ReadOnly = true;
-            this.txtContractnumber.Size = new System.Drawing.Size(310, 36);
+            this.txtContractnumber.Size = new System.Drawing.Size(413, 36);
             this.txtContractnumber.TabIndex = 15;
             // 
             // txtCustomername
@@ -405,11 +408,11 @@
             this.txtCustomername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCustomername.Enabled = false;
             this.txtCustomername.Font = new System.Drawing.Font("Segoe UI", 16.2F);
-            this.txtCustomername.Location = new System.Drawing.Point(159, 103);
-            this.txtCustomername.Margin = new System.Windows.Forms.Padding(2);
+            this.txtCustomername.Location = new System.Drawing.Point(212, 127);
+            this.txtCustomername.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtCustomername.Name = "txtCustomername";
             this.txtCustomername.ReadOnly = true;
-            this.txtCustomername.Size = new System.Drawing.Size(310, 36);
+            this.txtCustomername.Size = new System.Drawing.Size(552, 36);
             this.txtCustomername.TabIndex = 14;
             // 
             // txtProjectname
@@ -418,11 +421,11 @@
             this.txtProjectname.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtProjectname.Enabled = false;
             this.txtProjectname.Font = new System.Drawing.Font("Segoe UI", 16.2F);
-            this.txtProjectname.Location = new System.Drawing.Point(159, 62);
-            this.txtProjectname.Margin = new System.Windows.Forms.Padding(2);
+            this.txtProjectname.Location = new System.Drawing.Point(212, 76);
+            this.txtProjectname.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtProjectname.Name = "txtProjectname";
             this.txtProjectname.ReadOnly = true;
-            this.txtProjectname.Size = new System.Drawing.Size(310, 36);
+            this.txtProjectname.Size = new System.Drawing.Size(552, 36);
             this.txtProjectname.TabIndex = 13;
             // 
             // txtProjectID
@@ -431,19 +434,18 @@
             this.txtProjectID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtProjectID.Enabled = false;
             this.txtProjectID.Font = new System.Drawing.Font("Segoe UI", 16.2F);
-            this.txtProjectID.Location = new System.Drawing.Point(159, 19);
-            this.txtProjectID.Margin = new System.Windows.Forms.Padding(2);
+            this.txtProjectID.Location = new System.Drawing.Point(212, 23);
+            this.txtProjectID.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtProjectID.Name = "txtProjectID";
             this.txtProjectID.ReadOnly = true;
-            this.txtProjectID.Size = new System.Drawing.Size(310, 36);
+            this.txtProjectID.Size = new System.Drawing.Size(552, 36);
             this.txtProjectID.TabIndex = 19;
             // 
             // lbCustomerName
             // 
             this.lbCustomerName.AutoSize = true;
             this.lbCustomerName.Font = new System.Drawing.Font("Segoe UI", 16.2F);
-            this.lbCustomerName.Location = new System.Drawing.Point(32, 103);
-            this.lbCustomerName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbCustomerName.Location = new System.Drawing.Point(43, 127);
             this.lbCustomerName.Name = "lbCustomerName";
             this.lbCustomerName.Size = new System.Drawing.Size(61, 30);
             this.lbCustomerName.TabIndex = 12;
@@ -453,8 +455,7 @@
             // 
             this.lbProjectName.AutoSize = true;
             this.lbProjectName.Font = new System.Drawing.Font("Segoe UI", 16.2F);
-            this.lbProjectName.Location = new System.Drawing.Point(32, 60);
-            this.lbProjectName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbProjectName.Location = new System.Drawing.Point(43, 74);
             this.lbProjectName.Name = "lbProjectName";
             this.lbProjectName.Size = new System.Drawing.Size(107, 30);
             this.lbProjectName.TabIndex = 11;
@@ -464,8 +465,7 @@
             // 
             this.lbDate.AutoSize = true;
             this.lbDate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbDate.Location = new System.Drawing.Point(1487, 102);
-            this.lbDate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbDate.Location = new System.Drawing.Point(1983, 126);
             this.lbDate.Name = "lbDate";
             this.lbDate.Size = new System.Drawing.Size(36, 30);
             this.lbDate.TabIndex = 9;
@@ -475,8 +475,7 @@
             // 
             this.blSumdate.AutoSize = true;
             this.blSumdate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.blSumdate.Location = new System.Drawing.Point(1288, 102);
-            this.blSumdate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.blSumdate.Location = new System.Drawing.Point(1717, 126);
             this.blSumdate.Name = "blSumdate";
             this.blSumdate.Size = new System.Drawing.Size(82, 30);
             this.blSumdate.TabIndex = 8;
@@ -486,8 +485,7 @@
             // 
             this.lbEnddate.AutoSize = true;
             this.lbEnddate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbEnddate.Location = new System.Drawing.Point(975, 102);
-            this.lbEnddate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbEnddate.Location = new System.Drawing.Point(1300, 126);
             this.lbEnddate.Name = "lbEnddate";
             this.lbEnddate.Size = new System.Drawing.Size(99, 30);
             this.lbEnddate.TabIndex = 7;
@@ -497,8 +495,7 @@
             // 
             this.lbStartdate.AutoSize = true;
             this.lbStartdate.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbStartdate.Location = new System.Drawing.Point(692, 101);
-            this.lbStartdate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbStartdate.Location = new System.Drawing.Point(923, 124);
             this.lbStartdate.Name = "lbStartdate";
             this.lbStartdate.Size = new System.Drawing.Size(76, 30);
             this.lbStartdate.TabIndex = 6;
@@ -508,8 +505,7 @@
             // 
             this.lbProjectManager.AutoSize = true;
             this.lbProjectManager.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbProjectManager.Location = new System.Drawing.Point(1070, 60);
-            this.lbProjectManager.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbProjectManager.Location = new System.Drawing.Point(1427, 74);
             this.lbProjectManager.Name = "lbProjectManager";
             this.lbProjectManager.Size = new System.Drawing.Size(131, 30);
             this.lbProjectManager.TabIndex = 5;
@@ -519,8 +515,7 @@
             // 
             this.lbContractnumber.AutoSize = true;
             this.lbContractnumber.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbContractnumber.Location = new System.Drawing.Point(1084, 18);
-            this.lbContractnumber.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbContractnumber.Location = new System.Drawing.Point(1445, 22);
             this.lbContractnumber.Name = "lbContractnumber";
             this.lbContractnumber.Size = new System.Drawing.Size(115, 30);
             this.lbContractnumber.TabIndex = 10;
@@ -530,8 +525,7 @@
             // 
             this.lbProjectID.AutoSize = true;
             this.lbProjectID.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbProjectID.Location = new System.Drawing.Point(32, 19);
-            this.lbProjectID.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbProjectID.Location = new System.Drawing.Point(43, 23);
             this.lbProjectID.Name = "lbProjectID";
             this.lbProjectID.Size = new System.Drawing.Size(116, 30);
             this.lbProjectID.TabIndex = 4;
@@ -540,22 +534,26 @@
             // searchboxControl1
             // 
             this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.Location = new System.Drawing.Point(906, 17);
-            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl1.DefaultFunction = "จัดการบัญชีผู้ใช้";
+            this.searchboxControl1.DefaultRole = "Admin";
+            this.searchboxControl1.Keyword = "";
+            this.searchboxControl1.Location = new System.Drawing.Point(1208, 21);
+            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.searchboxControl1.Name = "searchboxControl1";
-            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl1.Size = new System.Drawing.Size(867, 62);
             this.searchboxControl1.TabIndex = 2;
             // 
             // ProjectData
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.Controls.Add(this.pnlInfomationview);
             this.Controls.Add(this.pnlStep);
             this.Controls.Add(this.pnlProjectdata);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ProjectData";
-            this.Size = new System.Drawing.Size(1457, 954);
+            this.Size = new System.Drawing.Size(1892, 1174);
             this.pnlProjectdata.ResumeLayout(false);
             this.pnlProjectdata.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvProjectData)).EndInit();
