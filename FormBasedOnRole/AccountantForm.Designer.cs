@@ -37,18 +37,18 @@
             this.txtName = new System.Windows.Forms.Label();
             this.Profile = new System.Windows.Forms.PictureBox();
             this.Siderbar = new System.Windows.Forms.Panel();
+            this.Body = new System.Windows.Forms.Panel();
+            this.PicLogo = new System.Windows.Forms.PictureBox();
             this.panelReceivePaymentSub = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.Body = new System.Windows.Forms.Panel();
-            this.PicLogo = new System.Windows.Forms.PictureBox();
             this.Header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Profile)).BeginInit();
             this.Siderbar.SuspendLayout();
-            this.panelReceivePaymentSub.SuspendLayout();
             this.Body.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicLogo)).BeginInit();
+            this.panelReceivePaymentSub.SuspendLayout();
             this.SuspendLayout();
             // 
             // Header
@@ -64,7 +64,7 @@
             this.Header.Dock = System.Windows.Forms.DockStyle.Top;
             this.Header.Location = new System.Drawing.Point(0, 0);
             this.Header.Name = "Header";
-            this.Header.Size = new System.Drawing.Size(1455, 126);
+            this.Header.Size = new System.Drawing.Size(1920, 126);
             this.Header.TabIndex = 1;
             // 
             // btnClose
@@ -110,7 +110,8 @@
             this.txtFunctionname.AutoSize = true;
             this.txtFunctionname.BackColor = System.Drawing.Color.Transparent;
             this.txtFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFunctionname.Location = new System.Drawing.Point(884, 45);
+            this.txtFunctionname.Location = new System.Drawing.Point(1179, 55);
+            this.txtFunctionname.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.txtFunctionname.Name = "txtFunctionname";
             this.txtFunctionname.Size = new System.Drawing.Size(152, 37);
             this.txtFunctionname.TabIndex = 4;
@@ -158,8 +159,27 @@
             this.Siderbar.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Siderbar.Location = new System.Drawing.Point(0, 126);
             this.Siderbar.Name = "Siderbar";
-            this.Siderbar.Size = new System.Drawing.Size(336, 768);
+            this.Siderbar.Size = new System.Drawing.Size(448, 945);
             this.Siderbar.TabIndex = 2;
+            // 
+            // Body
+            // 
+            this.Body.Controls.Add(this.PicLogo);
+            this.Body.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Body.Location = new System.Drawing.Point(336, 126);
+            this.Body.Name = "Body";
+            this.Body.Size = new System.Drawing.Size(1584, 954);
+            this.Body.TabIndex = 3;
+            // 
+            // PicLogo
+            // 
+            this.PicLogo.Image = global::JRSApplication.Properties.Resources.logo;
+            this.PicLogo.Location = new System.Drawing.Point(312, 32);
+            this.PicLogo.Name = "PicLogo";
+            this.PicLogo.Size = new System.Drawing.Size(1365, 891);
+            this.PicLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.PicLogo.TabIndex = 0;
+            this.PicLogo.TabStop = false;
             // 
             // panelReceivePaymentSub
             // 
@@ -239,7 +259,8 @@
             // PicLogo
             // 
             this.PicLogo.Image = global::JRSApplication.Properties.Resources.logo;
-            this.PicLogo.Location = new System.Drawing.Point(110, 32);
+            this.PicLogo.Location = new System.Drawing.Point(416, 39);
+            this.PicLogo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PicLogo.Name = "PicLogo";
             this.PicLogo.Size = new System.Drawing.Size(1365, 891);
             this.PicLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -250,7 +271,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1455, 894);
+            this.ClientSize = new System.Drawing.Size(1940, 1100);
             this.Controls.Add(this.Body);
             this.Controls.Add(this.Siderbar);
             this.Controls.Add(this.Header);
@@ -262,9 +283,9 @@
             this.Header.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Profile)).EndInit();
             this.Siderbar.ResumeLayout(false);
-            this.panelReceivePaymentSub.ResumeLayout(false);
             this.Body.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PicLogo)).EndInit();
+            this.panelReceivePaymentSub.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
