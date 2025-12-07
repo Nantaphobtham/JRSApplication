@@ -263,8 +263,15 @@ namespace JRSApplication
             cmbWorkstatusOfSupplier.Items.Add(defaultItem);
             cmbWorkStatus.Items.Add(defaultItem);
 
-            // เฉพาะของ PM
-            var pmStatuses = new List<string> { WorkStatus.InProgress, WorkStatus.Completed };
+            // เดิม: มี Completed ด้วย
+            // var pmStatuses = new List<string> { WorkStatus.InProgress, WorkStatus.Completed };
+
+            // แก้เป็น: เอา Completed (อนุมัติแล้ว) ออก
+            var pmStatuses = new List<string>
+    {
+        WorkStatus.InProgress   // กำลังดำเนินการ
+        // ถ้าต้องการเพิ่มสถานะอื่นก็ใส่เพิ่มตรงนี้ เช่น WorkStatus.NotStarted
+    };
 
             foreach (var status in pmStatuses)
             {
@@ -273,6 +280,7 @@ namespace JRSApplication
                     Text = WorkStatus.GetDisplayName(status),
                     Value = status
                 });
+
                 cmbWorkStatus.Items.Add(new ComboBoxItem
                 {
                     Text = WorkStatus.GetDisplayName(status),
@@ -285,6 +293,7 @@ namespace JRSApplication
             cmbWorkstatusOfSupplier.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbWorkStatus.DropDownStyle = ComboBoxStyle.DropDownList;
         }
+
 
         private string GetSelectedStatus(ComboBox cmb)
         {
