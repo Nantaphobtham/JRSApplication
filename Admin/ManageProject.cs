@@ -50,6 +50,13 @@ namespace JRSApplication
 
         private int? selectedProjectID = null; // null = ยังไม่มีการเลือก
 
+        protected override Point ScrollToControl(Control activeControl)
+        {
+            // ไม่ต้องเลื่อนจออัตโนมัติเมื่อ focus เปลี่ยน
+            return this.DisplayRectangle.Location;
+            // หรือใช้ return this.AutoScrollPosition; ก็ได้เช่นกัน
+        }
+
         public ManageProject(string fullName, string role)
         {
             InitializeComponent();
@@ -515,7 +522,7 @@ namespace JRSApplication
                 totalBoqPercent += (p.PhaseBudget * 100) / totalBudget;
             }
 
-            if (btnAddPhase.Text == "บันทึก" && currentEditingPhase != null)
+            if (btnAddPhase.Text == "บันทึกข้อมูล" && currentEditingPhase != null)
             {
                 totalCompletionPercent -= currentEditingPhase.PhasePercent;
                 totalBoqPercent -= (currentEditingPhase.PhaseBudget * 100) / totalBudget;
@@ -535,7 +542,7 @@ namespace JRSApplication
                 return;
             }
 
-            if (btnAddPhase.Text == "บันทึก" && currentEditingPhase != null)
+            if (btnAddPhase.Text == "บันทึกข้อมูล" && currentEditingPhase != null)
             {
                 currentEditingPhase.PhaseDetail = txtPhaseDetail.Text.Trim();
                 currentEditingPhase.PhasePercent = completionPercent;
@@ -779,7 +786,7 @@ namespace JRSApplication
                 EnableControls_close();
                 selectedProjectID = null;
 
-                btnSave.Text = "บันทึก";
+                
             }
             catch (Exception ex)
             {
@@ -806,7 +813,7 @@ namespace JRSApplication
                 txtNumber.ReadOnly = false;
                 txtNumber.Enabled = true;
 
-                btnSave.Text = "บันทึก";
+                
 
                 txtProjectName.Focus();
             }
