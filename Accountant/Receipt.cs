@@ -173,7 +173,7 @@ namespace JRSApplication.Accountant
 
             RenameInvoiceHeadersAndOrder();
             // ✅ เปลี่ยนชื่อหัวคอลัมน์เป็นภาษาไทย
-            RenameInvoiceHeaders();
+            //RenameInvoiceHeaders();
             ArrangeInvoiceColumns();
         }
 
@@ -184,40 +184,64 @@ namespace JRSApplication.Accountant
         {
             try
             {
-                dtgvInvoice.Columns["inv_id"].HeaderText = "เลขที่ใบแจ้งหนี้";
-                dtgvInvoice.Columns["pro_id"].HeaderText = "เลขที่สัญญา";
-                dtgvInvoice.Columns["pro_name"].HeaderText = "ชื่อโครงการ";
-                dtgvInvoice.Columns["phase_no"].HeaderText = "เฟสที่";
-                if (dtgvInvoice.Columns.Contains("phase_id"))
-                {
-                    dtgvInvoice.Columns["phase_id"].Visible = false;
-                }
+                var cols = dtgvInvoice.Columns;
+                int idx = 0;
 
-                dtgvInvoice.Columns["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
-                dtgvInvoice.Columns["inv_duedate"].HeaderText = "วันครบกำหนดชำระ";
-                dtgvInvoice.Columns["inv_status"].HeaderText = "สถานะใบแจ้งหนี้";
-                dtgvInvoice.Columns["inv_method"].HeaderText = "วิธีการชำระเงิน";
-                dtgvInvoice.Columns["paid_date"].HeaderText = "วันที่ชำระเงิน";
-                dtgvInvoice.Columns["emp_fullname"].HeaderText = "ชื่อพนักงานผู้ออกใบแจ้งหนี้";
+                // ตั้งชื่อหัวคอลัมน์
+                if (cols.Contains("inv_id"))
+                    cols["inv_id"].HeaderText = "เลขที่ใบแจ้งหนี้";
 
-            }
+                if (cols.Contains("pro_id"))
+                    cols["pro_id"].HeaderText = "เลขที่สัญญา";
 
-                if (cols.Contains("emp_id"))
-                {
-                    cols["emp_id"].HeaderText = "รหัสพนักงาน";
-                    cols["emp_id"].DisplayIndex = idx++;
-                }
+                if (cols.Contains("pro_name"))
+                    cols["pro_name"].HeaderText = "ชื่อโครงการ";
 
-                // ===== คอลัมน์ที่ไม่ใช้ ซ่อนออก =====
+                if (cols.Contains("phase_no"))
+                    cols["phase_no"].HeaderText = "เฟสที่";
+
+                if (cols.Contains("phase_id"))
+                    cols["phase_id"].Visible = false;
+
+                if (cols.Contains("inv_date"))
+                    cols["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
+
+                if (cols.Contains("inv_duedate"))
+                    cols["inv_duedate"].HeaderText = "วันครบกำหนดชำระ";
+
+                if (cols.Contains("inv_status"))
+                    cols["inv_status"].HeaderText = "สถานะใบแจ้งหนี้";
+
+                if (cols.Contains("inv_method"))
+                    cols["inv_method"].HeaderText = "วิธีการชำระเงิน";
+
+                if (cols.Contains("paid_date"))
+                    cols["paid_date"].HeaderText = "วันที่ชำระเงิน";
+
+                if (cols.Contains("emp_fullname"))
+                    cols["emp_fullname"].HeaderText = "ชื่อพนักงานผู้ออกใบแจ้งหนี้";
+
+                // จัดลำดับคอลัมน์ (ปรับตามต้องการ)
+                if (cols.Contains("inv_id")) cols["inv_id"].DisplayIndex = idx++;
+                if (cols.Contains("pro_id")) cols["pro_id"].DisplayIndex = idx++;
+                if (cols.Contains("pro_name")) cols["pro_name"].DisplayIndex = idx++;
+                if (cols.Contains("phase_no")) cols["phase_no"].DisplayIndex = idx++;
+                if (cols.Contains("inv_date")) cols["inv_date"].DisplayIndex = idx++;
+                if (cols.Contains("inv_duedate")) cols["inv_duedate"].DisplayIndex = idx++;
+                if (cols.Contains("inv_status")) cols["inv_status"].DisplayIndex = idx++;
+                if (cols.Contains("inv_method")) cols["inv_method"].DisplayIndex = idx++;
+                if (cols.Contains("paid_date")) cols["paid_date"].DisplayIndex = idx++;
+                if (cols.Contains("emp_fullname")) cols["emp_fullname"].DisplayIndex = idx++;
+
+                // ซ่อนคอลัมน์ที่ไม่ใช้
                 string[] unused =
                 {
-                    "inv_method",
-                    "emp_fullname",
-                    "cus_fullname",
-                    "cus_id_card",
-                    "cus_address",
-                    "phase_id"
-                };
+            "cus_fullname",
+            "cus_id_card",
+            "cus_address",
+            "phase_id",
+            "emp_id"
+        };
 
                 foreach (var name in unused)
                 {
@@ -230,6 +254,10 @@ namespace JRSApplication.Accountant
                 // ถ้าบางคอลัมน์ไม่มี ก็ข้ามไป
             }
         }
+
+
+
+
 
         private void SetupReceiptDetailGrid()
         {
