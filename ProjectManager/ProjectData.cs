@@ -277,22 +277,37 @@ namespace JRSApplication
                 }
             }
 
-            txtSumpercent.Text = $"{sumPercent:N2} %";
+            txtSumpercent.Text = $"{sumPercent:N2}";
 
             string status;
             if (sumPercent >= 100m)
             {
                 status = "เสร็จสิ้น";
+                txtStatus.BackColor = Color.LightGreen;
+                txtStatus.ForeColor= Color.Black;
+
+                txtSumpercent.BackColor = Color.LightGreen;
+                txtSumpercent.ForeColor = Color.Black;
             }
             else if (hasInProgress || hasCompleted)
             {
                 // มีเฟสที่ทำไปแล้วบางส่วน (Completed บางเฟส หรือ InProgress บางเฟส)
                 status = "กำลังดำเนินการ";
+                txtStatus.BackColor = Color.Yellow;
+                txtStatus.ForeColor = Color.Black;
+
+                txtSumpercent.BackColor = Color.Yellow;
+                txtSumpercent.ForeColor = Color.Black;
             }
             else
             {
                 // ยังไม่มีเฟสไหนเริ่มเลย
                 status = "ยังไม่เริ่ม";
+                txtStatus.BackColor = Color.Yellow;
+                txtStatus.ForeColor = Color.Black;
+
+                txtSumpercent.BackColor = Color.Yellow;
+                txtSumpercent.ForeColor = Color.Black;
             }
 
             txtStatus.Text = status;
