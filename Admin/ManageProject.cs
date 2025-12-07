@@ -799,10 +799,6 @@ namespace JRSApplication
                 currentEditingPhase = null;
                 selectedProjectID = null;
 
-                dtpkStartDate.Value = DateTime.Now;
-                dtpkEndDate.Value = DateTime.Now;
-                txtWorkingDate.Text = string.Empty;
-
                 EnableControls_open();
                 ReadOnlyControls_open();
 
