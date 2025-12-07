@@ -138,12 +138,6 @@ namespace JRSApplication.Accountant
             }
         }
 
-
-
-        // --------------------------------------------------
-        // โค้ดเดิมทั้งหมดของ Invoice (ปรับแค่ตรง LoadInvoiceTableByProject นิดเดียว)
-        // --------------------------------------------------
-
         private void btnSearchProject_Click(object sender, EventArgs e)
         {
             SearchForm searchForm = new SearchForm("Project");
@@ -168,24 +162,39 @@ namespace JRSApplication.Accountant
             DataTable dt = dal.GetAllInvoicesByProjectId(projectId);
             dtgvInvoice.DataSource = dt;
 
+            // === Step 1: Set all column headers first ===
             if (dtgvInvoice.Columns.Contains("inv_id")) dtgvInvoice.Columns["inv_id"].HeaderText = "รหัสใบแจ้งหนี้";
-            if (dtgvInvoice.Columns.Contains("inv_no")) dtgvInvoice.Columns["inv_no"].HeaderText = "เลขที่ใบแจ้งหนี้";
+            if (dtgvInvoice.Columns.Contains("pro_id")) dtgvInvoice.Columns["pro_id"].HeaderText = "รหัสโครงการ";
+            if (dtgvInvoice.Columns.Contains("pro_name")) dtgvInvoice.Columns["pro_name"].HeaderText = "ชื่อโครงการ";
+            if (dtgvInvoice.Columns.Contains("phase_no")) dtgvInvoice.Columns["phase_no"].HeaderText = "เฟสที่";
             if (dtgvInvoice.Columns.Contains("inv_date")) dtgvInvoice.Columns["inv_date"].HeaderText = "วันที่ออก";
             if (dtgvInvoice.Columns.Contains("inv_duedate")) dtgvInvoice.Columns["inv_duedate"].HeaderText = "กำหนดชำระ";
             if (dtgvInvoice.Columns.Contains("inv_status")) dtgvInvoice.Columns["inv_status"].HeaderText = "สถานะใบแจ้งหนี้";
             if (dtgvInvoice.Columns.Contains("inv_method")) dtgvInvoice.Columns["inv_method"].HeaderText = "วิธีการชำระเงิน";
             if (dtgvInvoice.Columns.Contains("paid_date")) dtgvInvoice.Columns["paid_date"].HeaderText = "วันที่ชำระเงิน";
             if (dtgvInvoice.Columns.Contains("emp_fullname")) dtgvInvoice.Columns["emp_fullname"].HeaderText = "ผู้รับเงิน";
-            if (dtgvInvoice.Columns.Contains("pro_id")) dtgvInvoice.Columns["pro_id"].HeaderText = "รหัสโครงการ";
-            if (dtgvInvoice.Columns.Contains("pro_name")) dtgvInvoice.Columns["pro_name"].HeaderText = "ชื่อโครงการ";
-            if (dtgvInvoice.Columns.Contains("cus_fullname")) dtgvInvoice.Columns["cus_fullname"].HeaderText = "ชื่อลูกค้า";
-            if (dtgvInvoice.Columns.Contains("cus_id_card")) dtgvInvoice.Columns["cus_id_card"].HeaderText = "เลขบัตรประชาชน";
-            if (dtgvInvoice.Columns.Contains("cus_address")) dtgvInvoice.Columns["cus_address"].HeaderText = "ที่อยู่ลูกค้า";
-            if (dtgvInvoice.Columns.Contains("phase_no")) dtgvInvoice.Columns["phase_no"].HeaderText = "ลำดับเฟสงาน";
-            if (dtgvInvoice.Columns.Contains("phase_id")) dtgvInvoice.Columns["phase_id"].Visible = false;
 
-            if (dtgvInvoice.Columns.Contains("emp_id"))
-                dtgvInvoice.Columns["emp_id"].Visible = false;
+
+            // === Step 2: Hide the columns you don't want (marked with 'X') ===
+            if (dtgvInvoice.Columns.Contains("cus_fullname")) dtgvInvoice.Columns["cus_fullname"].Visible = false;
+            if (dtgvInvoice.Columns.Contains("cus_id_card")) dtgvInvoice.Columns["cus_id_card"].Visible = false;
+            if (dtgvInvoice.Columns.Contains("cus_address")) dtgvInvoice.Columns["cus_address"].Visible = false;
+            if (dtgvInvoice.Columns.Contains("phase_id")) dtgvInvoice.Columns["phase_id"].Visible = false;
+            if (dtgvInvoice.Columns.Contains("emp_id")) dtgvInvoice.Columns["emp_id"].Visible = false;
+
+            // === Step 3: Set the DisplayIndex for each VISIBLE column based on your image ===
+            int i = 0; // A counter for the display order
+            if (dtgvInvoice.Columns.Contains("inv_id")) dtgvInvoice.Columns["inv_id"].DisplayIndex = i++;             // 1. รหัสใบแจ้งหนี้
+            if (dtgvInvoice.Columns.Contains("pro_id")) dtgvInvoice.Columns["pro_id"].DisplayIndex = i++;             // 2. รหัสโครงการ
+            if (dtgvInvoice.Columns.Contains("pro_name")) dtgvInvoice.Columns["pro_name"].DisplayIndex = i++;         // 3. ชื่อโครงการ
+            if (dtgvInvoice.Columns.Contains("phase_no")) dtgvInvoice.Columns["phase_no"].DisplayIndex = i++;
+            if (dtgvInvoice.Columns.Contains("inv_date")) dtgvInvoice.Columns["inv_date"].DisplayIndex = i++;         // 5. วันที่ออก
+            if (dtgvInvoice.Columns.Contains("inv_duedate")) dtgvInvoice.Columns["inv_duedate"].DisplayIndex = i++;   // 6. กำหนดชำระ
+            if (dtgvInvoice.Columns.Contains("inv_status")) dtgvInvoice.Columns["inv_status"].DisplayIndex = i++;     // 7. สถานะใบแจ้งหนี้
+            if (dtgvInvoice.Columns.Contains("inv_method")) dtgvInvoice.Columns["inv_method"].DisplayIndex = i++;     // 8. วิธีการชำระเงิน
+            if (dtgvInvoice.Columns.Contains("paid_date")) dtgvInvoice.Columns["paid_date"].DisplayIndex = i++;       // 9. วันที่ชำระเงิน
+            if (dtgvInvoice.Columns.Contains("emp_fullname")) dtgvInvoice.Columns["emp_fullname"].DisplayIndex = i++; // 10. ผู้รับเงิน
+
 
             // หลังโหลดข้อมูลแล้ว ให้ฟิลเตอร์ตามค่าปัจจุบันใน Searchbox (เหมือน ManageProject)
             ApplyInvoiceGridFilter(searchboxControl1.SelectedSearchBy, searchboxControl1.Keyword);

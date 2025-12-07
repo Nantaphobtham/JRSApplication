@@ -32,7 +32,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.starIdcard = new System.Windows.Forms.Label();
-            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.txtDueDate = new System.Windows.Forms.DateTimePicker();
             this.label16 = new System.Windows.Forms.Label();
             this.dtpInvoiceDate = new System.Windows.Forms.DateTimePicker();
@@ -64,6 +63,7 @@
             this.dgvInvoices = new System.Windows.Forms.DataGridView();
             this.label20 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInvoiceDetails)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInvoices)).BeginInit();
@@ -119,7 +119,8 @@
             this.label7.BackColor = System.Drawing.Color.Transparent;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.Color.Red;
-            this.label7.Location = new System.Drawing.Point(1985, 859);
+            this.label7.Location = new System.Drawing.Point(1489, 698);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(22, 30);
             this.label7.TabIndex = 91;
@@ -130,7 +131,8 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(1801, 862);
+            this.label2.Location = new System.Drawing.Point(1351, 700);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(22, 30);
             this.label2.TabIndex = 90;
@@ -141,23 +143,12 @@
             this.starIdcard.AutoSize = true;
             this.starIdcard.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.starIdcard.ForeColor = System.Drawing.Color.Red;
-            this.starIdcard.Location = new System.Drawing.Point(1431, 862);
+            this.starIdcard.Location = new System.Drawing.Point(1073, 700);
+            this.starIdcard.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.starIdcard.Name = "starIdcard";
             this.starIdcard.Size = new System.Drawing.Size(22, 30);
             this.starIdcard.TabIndex = 89;
             this.starIdcard.Text = "*";
-            // 
-            // searchboxControl1
-            // 
-            this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.DefaultFunction = "จัดการบัญชีผู้ใช้";
-            this.searchboxControl1.DefaultRole = "Admin";
-            this.searchboxControl1.Keyword = "";
-            this.searchboxControl1.Location = new System.Drawing.Point(1196, 18);
-            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.searchboxControl1.Name = "searchboxControl1";
-            this.searchboxControl1.Size = new System.Drawing.Size(867, 62);
-            this.searchboxControl1.TabIndex = 68;
             // 
             // txtDueDate
             // 
@@ -483,6 +474,18 @@
             this.button1.Text = "ค้นหาโครงการ";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.btnSearchProject_Click);
+            // 
+            // searchboxControl1
+            // 
+            this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.DefaultFunction = "จัดการบัญชีผู้ใช้";
+            this.searchboxControl1.DefaultRole = "Admin";
+            this.searchboxControl1.Keyword = "";
+            this.searchboxControl1.Location = new System.Drawing.Point(897, 15);
+            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.searchboxControl1.Name = "searchboxControl1";
+            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
+            this.searchboxControl1.TabIndex = 68;
             // 
             // ConfirmInvoice
             // 

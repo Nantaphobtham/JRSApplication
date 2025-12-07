@@ -23,12 +23,10 @@ namespace JRSApplication.Accountant
         private string fullName; // reserved for future use
         private string role;     // reserved for future use
 
-        public ConfirmInvoice() : this(fullName: "", role: "", empId: "") { }
-
         public ConfirmInvoice(string fullName, string role, string empId)
         {
             InitializeComponent();
-            CustomizeDataGridView();
+            SetupInvoiceDetailGrid();
 
             // 🔒 ล็อกให้แก้วันที่ไม่ได้
             MakeHeaderFieldsReadOnly();
@@ -171,13 +169,13 @@ namespace JRSApplication.Accountant
             dgvInvoices.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvInvoices.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
             dgvInvoices.DefaultCellStyle.SelectionForeColor = Color.White;
-            dgvInvoices.BackgroundColor = Color.White;
+            dgvInvoices.BackgroundColor = Color.FromArgb(171, 171, 171);
 
             dgvInvoices.EnableHeadersVisualStyles = false;
             dgvInvoices.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvInvoices.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dgvInvoices.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvInvoices.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            dgvInvoices.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
             dgvInvoices.ColumnHeadersHeight = 30;
 
             dgvInvoices.DefaultCellStyle.Font = new Font("Segoe UI", 12);
@@ -200,12 +198,18 @@ namespace JRSApplication.Accountant
         {
             SearchService service = new SearchService();
             DataTable dt = service.GetAllInvoices();
+
+            dgvInvoices.Columns.Clear();          // important: avoid “old” columns
+            dgvInvoices.AutoGenerateColumns = true;
             dgvInvoices.DataSource = dt;
 
             if (dt.Rows.Count > 0)
             {
                 dgvInvoices.Enabled = true;
                 dgvInvoices.BackgroundColor = Color.White;
+
+                dgvInvoices.Rows[0].Selected = true;
+                dgvInvoices_CellContentClick(dgvInvoices, new DataGridViewCellEventArgs(0, 0));
             }
             else
             {
@@ -213,18 +217,49 @@ namespace JRSApplication.Accountant
                 dgvInvoices.BackgroundColor = SystemColors.AppWorkspace;
             }
 
-            if (dgvInvoices.Columns.Contains("inv_id")) dgvInvoices.Columns["inv_id"].HeaderText = "เลขที่ใบแจ้งหนี้";
-            if (dgvInvoices.Columns.Contains("inv_date")) dgvInvoices.Columns["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
-            if (dgvInvoices.Columns.Contains("inv_duedate")) dgvInvoices.Columns["inv_duedate"].HeaderText = "กำหนดชำระ";
-            if (dgvInvoices.Columns.Contains("cus_id")) dgvInvoices.Columns["cus_id"].HeaderText = "รหัสลูกค้า";
-            if (dgvInvoices.Columns.Contains("pro_id")) dgvInvoices.Columns["pro_id"].HeaderText = "รหัสโครงการ";
-            if (dgvInvoices.Columns.Contains("phase_id")) dgvInvoices.Columns["phase_id"].HeaderText = "รหัสเฟส";
-
+            RenameInvoiceHeaders();
             ApplyInvoiceGridStatusColumn();
-
-            // หลังโหลดข้อมูล ให้ฟิลเตอร์ตามค่าปัจจุบันใน searchbox ด้วย
             ApplyInvoiceGridFilter(searchboxControl1.SelectedSearchBy, searchboxControl1.Keyword);
         }
+
+
+
+        private void RenameInvoiceHeaders()
+        {
+            var g = dgvInvoices;
+
+            try
+            {
+                if (g.Columns.Contains("inv_id"))
+                    g.Columns["inv_id"].HeaderText = "เลขที่ใบแจ้งหนี้";
+
+                if (g.Columns.Contains("pro_id"))
+                    g.Columns["pro_id"].HeaderText = "รหัสโครงการ";
+
+                if (g.Columns.Contains("phase_no"))
+                    g.Columns["phase_no"].HeaderText = "เฟสที่";
+
+                if (g.Columns.Contains("cus_id"))
+                    g.Columns["cus_id"].HeaderText = "รหัสลูกค้า";
+
+                if (g.Columns.Contains("inv_date"))
+                    g.Columns["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
+
+                if (g.Columns.Contains("inv_duedate"))
+                    g.Columns["inv_duedate"].HeaderText = "กำหนดชำระ";
+
+
+                if (g.Columns.Contains("inv_status"))
+                    g.Columns["inv_status"].HeaderText = "สถานะการชำระเงิน";
+
+
+                if (g.Columns.Contains("phase_id"))
+                    g.Columns["phase_id"].Visible = false;
+            }
+            catch { }
+        }
+
+
 
         // -------------------- Customer / Project --------------------
         private void LoadCustomerDetails(string cusId)
@@ -376,48 +411,45 @@ namespace JRSApplication.Accountant
         }
 
         private void btnSearchProject_Click(object sender, EventArgs e)
+{
+    using (var searchForm = new SearchForm("Project"))
+    {
+        if (searchForm.ShowDialog() == DialogResult.OK)
         {
-            using (var searchForm = new SearchForm("Project"))
+            string selectedProjectId = searchForm.SelectedID;
+
+            SearchService service = new SearchService();
+            DataTable filtered = service.GetDraftInvoicesByProject(selectedProjectId);
+
+            dgvInvoices.Columns.Clear();
+            dgvInvoices.AutoGenerateColumns = true;
+            dgvInvoices.DataSource = filtered;
+
+            if (filtered.Rows.Count > 0)
             {
-                if (searchForm.ShowDialog() == DialogResult.OK)
-                {
-                    string selectedProjectId = searchForm.SelectedID;
+                dgvInvoices.Enabled = true;
+                dgvInvoices.BackgroundColor = Color.White;
 
-                    SearchService service = new SearchService();
-                    DataTable filtered = service.GetDraftInvoicesByProject(selectedProjectId);
-                    dgvInvoices.DataSource = filtered;
-
-                    if (filtered.Rows.Count > 0)
-                    {
-                        dgvInvoices.Enabled = true;
-                        dgvInvoices.BackgroundColor = Color.White;
-
-                        dgvInvoices.Rows[0].Selected = true;
-                        dgvInvoices_CellContentClick(dgvInvoices, new DataGridViewCellEventArgs(0, 0));
-                    }
-                    else
-                    {
-                        dgvInvoices.Enabled = false;
-                        dgvInvoices.BackgroundColor = Color.LightGray;
-                    }
-
-                    if (dgvInvoices.Columns.Contains("inv_id")) dgvInvoices.Columns["inv_id"].HeaderText = "เลขที่ใบแจ้งหนี้";
-                    if (dgvInvoices.Columns.Contains("inv_date")) dgvInvoices.Columns["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
-                    if (dgvInvoices.Columns.Contains("inv_duedate")) dgvInvoices.Columns["inv_duedate"].HeaderText = "กำหนดชำระ";
-                    if (dgvInvoices.Columns.Contains("pro_id")) dgvInvoices.Columns["pro_id"].HeaderText = "รหัสโครงการ";
-                    if (dgvInvoices.Columns.Contains("phase_id")) dgvInvoices.Columns["phase_id"].HeaderText = "รหัสเฟส";
-                    if (dgvInvoices.Columns.Contains("cus_id")) dgvInvoices.Columns["cus_id"].HeaderText = "รหัสลูกค้า";
-
-                    ApplyInvoiceGridStatusColumn();
-
-                    // ให้เคารพค่าที่พิมพ์ใน searchbox ปัจจุบันด้วย
-                    ApplyInvoiceGridFilter(searchboxControl1.SelectedSearchBy, searchboxControl1.Keyword);
-                }
+                dgvInvoices.Rows[0].Selected = true;
+                dgvInvoices_CellContentClick(dgvInvoices, new DataGridViewCellEventArgs(0, 0));
             }
+            else
+            {
+                dgvInvoices.Enabled = false;
+                dgvInvoices.BackgroundColor = Color.LightGray;
+            }
+
+            RenameInvoiceHeaders();                 // same headers (phase_no etc.)
+            ApplyInvoiceGridStatusColumn();
+            ApplyInvoiceGridFilter(searchboxControl1.SelectedSearchBy, searchboxControl1.Keyword);
         }
+    }
+}
+
 
         private void SetupInvoiceDetailGrid()
         {
+
             dgvInvoiceDetails.Columns.Clear();
             dgvInvoiceDetails.AutoGenerateColumns = false;
             dgvInvoiceDetails.RowHeadersVisible = false;
@@ -473,6 +505,8 @@ namespace JRSApplication.Accountant
             });
 
             dgvInvoiceDetails.CellFormatting += dgvInvoiceDetails_CellFormatting;
+
+            CustomizeDataGridView();
         }
 
         private void dgvInvoiceDetails_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)

@@ -54,6 +54,7 @@ namespace JRSApplication
             // 
             // Body
             // 
+            this.Body.BackColor = System.Drawing.Color.White;
             this.Body.Controls.Add(this.PicLogo);
             this.Body.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Body.Location = new System.Drawing.Point(336, 126);
