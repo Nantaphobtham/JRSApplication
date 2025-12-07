@@ -212,10 +212,7 @@ namespace JRSApplication
                 ReadOnlyControls_close();
                 EnableControls_close();
             }
-            else
-            {
-                MessageBox.Show("เกิดข้อผิดพลาดในการลบข้อมูล!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            
         }
 
         private void btnSave_Click(object sender, EventArgs e)
