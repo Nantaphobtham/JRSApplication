@@ -559,7 +559,7 @@
             this.Controls.Add(this.dtgvInvoice);
             this.Controls.Add(this.Topic1);
             this.Name = "Receipt";
-            this.Size = new System.Drawing.Size(1389, 783);
+            this.Size = new System.Drawing.Size(1406, 800);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvReceiptDetail)).EndInit();
             this.panel4.ResumeLayout(false);
