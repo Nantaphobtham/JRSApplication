@@ -171,7 +171,7 @@
             this.pnlInfomation.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlInfomation.Location = new System.Drawing.Point(0, 0);
             this.pnlInfomation.Name = "pnlInfomation";
-            this.pnlInfomation.Size = new System.Drawing.Size(1263, 738);
+            this.pnlInfomation.Size = new System.Drawing.Size(1127, 738);
             this.pnlInfomation.TabIndex = 0;
             // 
             // subInfo
@@ -1373,7 +1373,7 @@
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 738);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1263, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1127, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDelete
@@ -1442,7 +1442,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 832);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1263, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1127, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // pnlProjectdata
@@ -1453,7 +1453,7 @@
             this.pnlProjectdata.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlProjectdata.Location = new System.Drawing.Point(0, 842);
             this.pnlProjectdata.Name = "pnlProjectdata";
-            this.pnlProjectdata.Size = new System.Drawing.Size(1263, 371);
+            this.pnlProjectdata.Size = new System.Drawing.Size(1127, 371);
             this.pnlProjectdata.TabIndex = 3;
             // 
             // dtgvProject
@@ -1498,7 +1498,7 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.pnlInfomation);
             this.Name = "ManageProject";
-            this.Size = new System.Drawing.Size(1263, 954);
+            this.Size = new System.Drawing.Size(1127, 886);
             this.pnlInfomation.ResumeLayout(false);
             this.subInfo.ResumeLayout(false);
             this.subInfo.PerformLayout();
