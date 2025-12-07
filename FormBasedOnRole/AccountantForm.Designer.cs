@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AccountantForm));
             this.Header = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnMinimize = new System.Windows.Forms.Button();
@@ -64,8 +63,9 @@
             this.Header.Controls.Add(this.Profile);
             this.Header.Dock = System.Windows.Forms.DockStyle.Top;
             this.Header.Location = new System.Drawing.Point(0, 0);
+            this.Header.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Header.Name = "Header";
-            this.Header.Size = new System.Drawing.Size(1920, 126);
+            this.Header.Size = new System.Drawing.Size(1940, 155);
             this.Header.TabIndex = 1;
             // 
             // btnClose
@@ -74,9 +74,10 @@
             this.btnClose.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.ForeColor = System.Drawing.Color.Red;
-            this.btnClose.Location = new System.Drawing.Point(1842, 3);
+            this.btnClose.Location = new System.Drawing.Point(2456, 4);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.Size = new System.Drawing.Size(100, 28);
             this.btnClose.TabIndex = 5;
             this.btnClose.Text = "X";
             this.btnClose.UseVisualStyleBackColor = false;
@@ -87,9 +88,10 @@
             this.btnMinimize.BackColor = System.Drawing.Color.Transparent;
             this.btnMinimize.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMinimize.Location = new System.Drawing.Point(1761, 3);
+            this.btnMinimize.Location = new System.Drawing.Point(2348, 4);
+            this.btnMinimize.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnMinimize.Name = "btnMinimize";
-            this.btnMinimize.Size = new System.Drawing.Size(75, 23);
+            this.btnMinimize.Size = new System.Drawing.Size(100, 28);
             this.btnMinimize.TabIndex = 5;
             this.btnMinimize.Text = "_";
             this.btnMinimize.UseVisualStyleBackColor = false;
@@ -100,7 +102,8 @@
             this.txtSubFunctionname.AutoSize = true;
             this.txtSubFunctionname.BackColor = System.Drawing.Color.Transparent;
             this.txtSubFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSubFunctionname.Location = new System.Drawing.Point(1128, 75);
+            this.txtSubFunctionname.Location = new System.Drawing.Point(1504, 92);
+            this.txtSubFunctionname.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.txtSubFunctionname.Name = "txtSubFunctionname";
             this.txtSubFunctionname.Size = new System.Drawing.Size(0, 37);
             this.txtSubFunctionname.TabIndex = 4;
@@ -111,7 +114,8 @@
             this.txtFunctionname.AutoSize = true;
             this.txtFunctionname.BackColor = System.Drawing.Color.Transparent;
             this.txtFunctionname.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFunctionname.Location = new System.Drawing.Point(1052, 23);
+            this.txtFunctionname.Location = new System.Drawing.Point(1179, 55);
+            this.txtFunctionname.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.txtFunctionname.Name = "txtFunctionname";
             this.txtFunctionname.Size = new System.Drawing.Size(152, 37);
             this.txtFunctionname.TabIndex = 4;
@@ -123,7 +127,8 @@
             this.txtPosition.AutoSize = true;
             this.txtPosition.BackColor = System.Drawing.Color.Transparent;
             this.txtPosition.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPosition.Location = new System.Drawing.Point(137, 73);
+            this.txtPosition.Location = new System.Drawing.Point(183, 90);
+            this.txtPosition.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.txtPosition.Name = "txtPosition";
             this.txtPosition.Size = new System.Drawing.Size(86, 30);
             this.txtPosition.TabIndex = 3;
@@ -134,20 +139,24 @@
             this.txtName.AutoSize = true;
             this.txtName.BackColor = System.Drawing.Color.Transparent;
             this.txtName.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtName.Location = new System.Drawing.Point(136, 23);
+            this.txtName.Location = new System.Drawing.Point(181, 28);
+            this.txtName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(191, 32);
             this.txtName.TabIndex = 2;
             this.txtName.Text = "Name Lastname";
+            this.txtName.Click += new System.EventHandler(this.Profile_Click);
             // 
             // Profile
             // 
             this.Profile.BackColor = System.Drawing.Color.White;
-            this.Profile.Location = new System.Drawing.Point(30, 23);
+            this.Profile.Location = new System.Drawing.Point(49, 28);
+            this.Profile.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Profile.Name = "Profile";
-            this.Profile.Size = new System.Drawing.Size(80, 80);
+            this.Profile.Size = new System.Drawing.Size(107, 98);
             this.Profile.TabIndex = 1;
             this.Profile.TabStop = false;
+            this.Profile.Click += new System.EventHandler(this.Profile_Click);
             // 
             // Siderbar
             // 
@@ -155,26 +164,28 @@
             this.Siderbar.Controls.Add(this.panelReceivePaymentSub);
             this.Siderbar.Dock = System.Windows.Forms.DockStyle.Left;
             this.Siderbar.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Siderbar.Location = new System.Drawing.Point(0, 126);
+            this.Siderbar.Location = new System.Drawing.Point(0, 155);
+            this.Siderbar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Siderbar.Name = "Siderbar";
-            this.Siderbar.Size = new System.Drawing.Size(336, 954);
+            this.Siderbar.Size = new System.Drawing.Size(448, 945);
             this.Siderbar.TabIndex = 2;
             // 
             // panelReceivePaymentSub
             // 
+            this.panelReceivePaymentSub.BackColor = System.Drawing.Color.Transparent;
             this.panelReceivePaymentSub.Controls.Add(this.button3);
             this.panelReceivePaymentSub.Controls.Add(this.button2);
             this.panelReceivePaymentSub.Controls.Add(this.button1);
             this.panelReceivePaymentSub.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelReceivePaymentSub.Location = new System.Drawing.Point(0, 0);
+            this.panelReceivePaymentSub.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panelReceivePaymentSub.Name = "panelReceivePaymentSub";
-            this.panelReceivePaymentSub.Size = new System.Drawing.Size(336, 159);
+            this.panelReceivePaymentSub.Size = new System.Drawing.Size(448, 196);
             this.panelReceivePaymentSub.TabIndex = 1;
             // 
             // button3
             // 
             this.button3.BackColor = System.Drawing.Color.Transparent;
-            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
             this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.button3.Dock = System.Windows.Forms.DockStyle.Top;
             this.button3.FlatAppearance.BorderColor = System.Drawing.Color.White;
@@ -182,9 +193,10 @@
             this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(0, 104);
+            this.button3.Location = new System.Drawing.Point(0, 128);
+            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(336, 55);
+            this.button3.Size = new System.Drawing.Size(448, 68);
             this.button3.TabIndex = 6;
             this.button3.Text = "พิมพ์ใบเสร็จรับเงิน";
             this.button3.UseVisualStyleBackColor = false;
@@ -193,7 +205,6 @@
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.Transparent;
-            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
             this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.button2.Dock = System.Windows.Forms.DockStyle.Top;
             this.button2.FlatAppearance.BorderColor = System.Drawing.Color.White;
@@ -201,9 +212,10 @@
             this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(0, 52);
+            this.button2.Location = new System.Drawing.Point(0, 64);
+            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(336, 52);
+            this.button2.Size = new System.Drawing.Size(448, 64);
             this.button2.TabIndex = 5;
             this.button2.Text = "ยืนยันการรับชำระเงิน";
             this.button2.UseVisualStyleBackColor = false;
@@ -212,7 +224,6 @@
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
             this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.button1.Dock = System.Windows.Forms.DockStyle.Top;
             this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
@@ -221,8 +232,9 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.Location = new System.Drawing.Point(0, 0);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(336, 52);
+            this.button1.Size = new System.Drawing.Size(448, 64);
             this.button1.TabIndex = 4;
             this.button1.Text = "เรียกชำระเงิน";
             this.button1.UseVisualStyleBackColor = false;
@@ -232,9 +244,10 @@
             // 
             this.Body.Controls.Add(this.PicLogo);
             this.Body.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Body.Location = new System.Drawing.Point(336, 126);
+            this.Body.Location = new System.Drawing.Point(448, 155);
+            this.Body.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Body.Name = "Body";
-            this.Body.Size = new System.Drawing.Size(1584, 954);
+            this.Body.Size = new System.Drawing.Size(1492, 945);
             this.Body.TabIndex = 3;
             // 
             // PicLogo
@@ -242,20 +255,21 @@
             this.PicLogo.Image = global::JRSApplication.Properties.Resources.logo;
             this.PicLogo.Location = new System.Drawing.Point(110, 32);
             this.PicLogo.Name = "PicLogo";
-            this.PicLogo.Size = new System.Drawing.Size(1365, 891);
+            this.PicLogo.Size = new System.Drawing.Size(1820, 1097);
             this.PicLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PicLogo.TabIndex = 0;
             this.PicLogo.TabStop = false;
             // 
             // AccountantForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1920, 1080);
+            this.ClientSize = new System.Drawing.Size(1940, 1100);
             this.Controls.Add(this.Body);
             this.Controls.Add(this.Siderbar);
             this.Controls.Add(this.Header);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "AccountantForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AccountantDashboard";

@@ -32,7 +32,7 @@ namespace JRSApplication
 
             this.Load += SearchForm_Load;
 
-            // ตั้ง Title
+            // Title
             if (SearchMode == "Customer")
                 lblTitle.Text = "ค้นหาลูกค้า";
             else if (SearchMode == "Employee")
@@ -45,11 +45,13 @@ namespace JRSApplication
                 lblTitle.Text = "ค้นหาใบแจ้งหนี้";
             else if (SearchMode == "UnpaidInvoiceByProject")
                 lblTitle.Text = "เลือกใบแจ้งหนี้ที่ยังไม่ชำระ";
+            else if (SearchMode == "PaidInvoiceByProject") // New mode
+                lblTitle.Text = "เลือกใบแจ้งหนี้ที่ชำระแล้ว";
             else
                 lblTitle.Text = "ค้นหา";
 
             // โหลดข้อมูลเริ่มต้น
-            if (SearchMode == "UnpaidInvoiceByProject")
+            if (SearchMode == "UnpaidInvoiceByProject" || SearchMode == "PaidInvoiceByProject")
                 LoadSearchData(optionalProjectId ?? "");
             else
                 LoadSearchData("");
@@ -63,9 +65,12 @@ namespace JRSApplication
         {
             dtgvAlldata.AutoGenerateColumns = true;
 
-            if (SearchMode == "UnpaidInvoiceByProject")
+            if (SearchMode == "UnpaidInvoiceByProject" || SearchMode == "PaidInvoiceByProject")
             {
                 dtgvAlldata.DataSource = searchService.SearchData(SearchMode, keywordOrProjectId);
+
+                // *** ตั้งหัวคอลัมน์เป็นภาษาไทยสำหรับใบแจ้งหนี้ที่ยังไม่ชำระ
+                SetupUnpaidInvoiceGridHeaders();
             }
             else
             {
@@ -73,10 +78,42 @@ namespace JRSApplication
             }
         }
 
-        // textbox ค้นหา (ชื่อ control = txtSearch, event name จะชื่ออะไรก็ได้)
+        // *** ฟังก์ชันตั้ง HeaderText ภาษาไทย (ใช้กับ inv_* จากฐานข้อมูล)
+        private void SetupUnpaidInvoiceGridHeaders()
+        {
+            if (dtgvAlldata.Columns.Contains("inv_id"))
+                dtgvAlldata.Columns["inv_id"].HeaderText = "เลขที่ใบแจ้งหนี้";
+
+            if (dtgvAlldata.Columns.Contains("inv_date"))
+                dtgvAlldata.Columns["inv_date"].HeaderText = "วันที่ออก";
+
+            if (dtgvAlldata.Columns.Contains("inv_duedate"))
+                dtgvAlldata.Columns["inv_duedate"].HeaderText = "กำหนดชำระ";
+
+            if (dtgvAlldata.Columns.Contains("pro_id"))
+                dtgvAlldata.Columns["pro_id"].HeaderText = "รหัสโครงการ";
+
+            if (dtgvAlldata.Columns.Contains("cus_id"))
+                dtgvAlldata.Columns["cus_id"].HeaderText = "รหัสลูกค้า";
+
+            if (dtgvAlldata.Columns.Contains("emp_id"))
+            {
+                dtgvAlldata.Columns["emp_id"].HeaderText = "รหัสพนักงาน";
+                // ถ้าไม่อยากให้โชว์ก็ซ่อน
+                // dtgvAlldata.Columns["emp_id"].Visible = false;
+            }
+
+            if (dtgvAlldata.Columns.Contains("inv_method"))
+                dtgvAlldata.Columns["inv_method"].HeaderText = "วิธีการชำระเงิน";
+
+            if (dtgvAlldata.Columns.Contains("inv_status"))
+                dtgvAlldata.Columns["inv_status"].HeaderText = "สถานะใบแจ้งหนี้";
+        }
+
+        // textbox ค้นหา
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (SearchMode == "UnpaidInvoiceByProject")
+            if (SearchMode == "UnpaidInvoiceByProject" || SearchMode == "PaidInvoiceByProject")
             {
                 if (dtgvAlldata.DataSource is DataTable table)
                 {
@@ -98,12 +135,10 @@ namespace JRSApplication
             }
             else
             {
-                // โหมดอื่นใช้ service ตามเดิม
                 LoadSearchData(txtSearch.Text);
             }
         }
 
-        // ถ้า designer ยังอ้าง event txtKeyword_TextChanged อยู่ ให้ forward มาที่ตัวหลัก
         private void txtKeyword_TextChanged(object sender, EventArgs e)
         {
             txtSearch_TextChanged(sender, e);
@@ -172,14 +207,43 @@ namespace JRSApplication
                     SelectedPhone = selectedRow.Cells["วิธีชำระเงิน"].Value?.ToString() ?? "";
                     SelectedEmail = selectedRow.Cells["สถานะ"].Value?.ToString() ?? "";
                 }
-                else if (SearchMode == "UnpaidInvoiceByProject")
+                else if (SearchMode == "UnpaidInvoiceByProject" || SearchMode == "PaidInvoiceByProject")
                 {
-                    SelectedID = selectedRow.Cells["inv_id"].Value?.ToString() ?? "";
-                    SelectedCusID = selectedRow.Cells["cus_id"].Value?.ToString() ?? "";
-                    SelectedLastName = selectedRow.Cells["pro_id"].Value?.ToString() ?? "";
-                    SelectedPhone = selectedRow.Cells["inv_method"].Value?.ToString() ?? "";
-                    SelectedEmail = selectedRow.Cells["inv_status"].Value?.ToString() ?? "";
+                    // หา key ของใบแจ้งหนี้ให้ได้แน่ ๆ
+                    string invKey = "";
+
+                    // 1) ถ้ามีคอลัมน์ inv_id ใช้อันนี้ก่อน
+                    if (dtgvAlldata.Columns.Contains("inv_id"))
+                    {
+                        invKey = selectedRow.Cells["inv_id"].Value?.ToString() ?? "";
+                    }
+                    // 2) บางกรณี query อาจตั้งชื่อว่า inv_no
+                    else if (dtgvAlldata.Columns.Contains("inv_no"))
+                    {
+                        invKey = selectedRow.Cells["inv_no"].Value?.ToString() ?? "";
+                    }
+                    // 3) เผื่อในอนาคตไปเปลี่ยนชื่อคอลัมน์เป็นภาษาไทย
+                    else if (dtgvAlldata.Columns.Contains("เลขที่ใบแจ้งหนี้"))
+                    {
+                        invKey = selectedRow.Cells["เลขที่ใบแจ้งหนี้"].Value?.ToString() ?? "";
+                    }
+
+                    SelectedID = invKey;
+
+                    // อื่น ๆ เหมือนเดิม แต่ใส่เงื่อนไขเผื่อคอลัมน์ไม่มี
+                    if (dtgvAlldata.Columns.Contains("cus_id"))
+                        SelectedCusID = selectedRow.Cells["cus_id"].Value?.ToString() ?? "";
+
+                    if (dtgvAlldata.Columns.Contains("pro_id"))
+                        SelectedLastName = selectedRow.Cells["pro_id"].Value?.ToString() ?? "";
+
+                    if (dtgvAlldata.Columns.Contains("inv_method"))
+                        SelectedPhone = selectedRow.Cells["inv_method"].Value?.ToString() ?? "";
+
+                    if (dtgvAlldata.Columns.Contains("inv_status"))
+                        SelectedEmail = selectedRow.Cells["inv_status"].Value?.ToString() ?? "";
                 }
+
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -202,7 +266,7 @@ namespace JRSApplication
             dtgvAlldata.DefaultCellStyle.SelectionForeColor = Color.White;
             dtgvAlldata.BackgroundColor = Color.White;
             dtgvAlldata.EnableHeadersVisualStyles = false;
-            dtgvAlldata.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dtgvAlldata.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dtgvAlldata.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dtgvAlldata.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dtgvAlldata.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
@@ -254,12 +318,20 @@ namespace JRSApplication
             {
                 cmbSearchBy.Items.Add("เลขที่ใบแจ้งหนี้");
             }
-
+            // --- We now check for BOTH invoice modes here ---
+            else if (SearchMode == "UnpaidInvoiceByProject" || SearchMode == "PaidInvoiceByProject")
+            {
+                // Now, this will run for both paid and unpaid invoice searches.
+                cmbSearchBy.Items.Add("เลขที่ใบแจ้งหนี้");
+                cmbSearchBy.Items.Add("สถานะใบแจ้งหนี้");
+                cmbSearchBy.Items.Add("วันที่ออก");
+                cmbSearchBy.Items.Add("กำหนดชำระ");
+                cmbSearchBy.Items.Add("รหัสลูกค้า");
+            }
             if (cmbSearchBy.Items.Count > 0)
                 cmbSearchBy.SelectedIndex = 0;
         }
 
-        // ปุ่มค้นหาแบบใช้คอลัมน์ที่เลือก
         private void btnSearch_Click(object sender, EventArgs e)
         {
             if (dtgvAlldata.DataSource is DataTable table)
@@ -272,10 +344,20 @@ namespace JRSApplication
                     return;
                 }
 
+                if (SearchMode == "UnpaidInvoiceByProject")
+                {
+                    // ใช้เกณฑ์เดียวกับการพิมพ์ค้นหา
+                    table.DefaultView.RowFilter =
+                        $"CONVERT(inv_id, 'System.String') LIKE '%{keyword}%'" +
+                        $" OR CONVERT(inv_status, 'System.String') LIKE '%{keyword}%'" +
+                        $" OR CONVERT(cus_id, 'System.String') LIKE '%{keyword}%'";
+                    return;
+                }
+
                 string selectedColumn = cmbSearchBy.SelectedItem?.ToString();
                 if (string.IsNullOrEmpty(selectedColumn))
                 {
-                    MessageBox.Show("⚠️ Please select a search column.", "Search",
+                    MessageBox.Show("กรุณาเลือกคอลัมน์สำหรับค้นหา", "Search",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
@@ -290,18 +372,16 @@ namespace JRSApplication
             this.Close();
         }
 
-        // ฟังก์ชัน escape สำหรับ RowFilter
         private static string EscapeLikeValue(string value)
         {
             if (string.IsNullOrEmpty(value))
                 return string.Empty;
 
             return value
-                .Replace("[", "[[]")   // escape [
-                                       //.Replace("]", "[]]")  // ไม่ต้อง escape ] แล้ว
-                .Replace("%", "[%]")   // escape %
-                .Replace("*", "[*]")   // escape *
-                .Replace("'", "''");   // escape single quote
+                .Replace("[", "[[]")
+                .Replace("%", "[%]")
+                .Replace("*", "[*]")
+                .Replace("'", "''");
         }
     }
 }

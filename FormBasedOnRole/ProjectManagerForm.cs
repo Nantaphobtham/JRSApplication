@@ -1,9 +1,11 @@
 ﻿using JRSApplication.Components.Models;
+using JRSApplication.Components.Service;
 using JRSApplication.ProjectManager;
 using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using JRSApplication.Components.Service;
 
 namespace JRSApplication
 {
@@ -51,6 +53,14 @@ namespace JRSApplication
             LoadUserControl(new ProjectData());
             txtFunctionname.Text = "ตรวจสอบข้อมูลโครงการ";
             txtsubFunctionname.Visible = false;
+
+            btnProjectInformation.BackColor = Color.White;
+            btnPaymentsInfomation.BackColor = Color.Transparent;
+            btnPurchaseOrder.BackColor = Color.Transparent;
+            btnProjectPhaseUpdate.BackColor = Color.Transparent;
+            btnChooseSubcontractors.BackColor = Color.Transparent;
+            btnRequestsforApproval.BackColor = Color.Transparent;
+            btnAllocateEmployee.BackColor = Color.Transparent;
         }
 
         private void btnPaymentsInfomation_Click(object sender, EventArgs e)
@@ -58,6 +68,14 @@ namespace JRSApplication
             LoadUserControl(new CheckProjectPay());
             txtFunctionname.Text = "ตรวจสอบการชำระเงินโครงการ";
             txtsubFunctionname.Visible = false;
+
+            btnProjectInformation.BackColor = Color.Transparent;
+            btnPaymentsInfomation.BackColor = Color.White;
+            btnPurchaseOrder.BackColor = Color.Transparent;
+            btnProjectPhaseUpdate.BackColor = Color.Transparent;
+            btnChooseSubcontractors.BackColor = Color.Transparent;
+            btnRequestsforApproval.BackColor = Color.Transparent;
+            btnAllocateEmployee.BackColor = Color.Transparent;
         }
 
         private void btnPurchaseOrder_Click(object sender, EventArgs e)
@@ -65,6 +83,14 @@ namespace JRSApplication
             LoadUserControl(new ApprovePurchaseOrder(_empID));
             txtFunctionname.Text = "อนุมัติใบสั่งซื้อ";
             txtsubFunctionname.Visible = false;
+
+            btnProjectInformation.BackColor = Color.Transparent;
+            btnPaymentsInfomation.BackColor = Color.Transparent;
+            btnPurchaseOrder.BackColor = Color.White;
+            btnProjectPhaseUpdate.BackColor = Color.Transparent;
+            btnChooseSubcontractors.BackColor = Color.Transparent;
+            btnRequestsforApproval.BackColor = Color.Transparent;
+            btnAllocateEmployee.BackColor = Color.Transparent;
         }
 
         private void btnChooseSubcontractors_Click(object sender, EventArgs e)
@@ -72,6 +98,14 @@ namespace JRSApplication
             LoadUserControl(new DetermineSubcontractors(_empID));
             txtFunctionname.Text = "กำหนดผู้รับเหมา";
             txtsubFunctionname.Visible = false;
+
+            btnProjectInformation.BackColor = Color.Transparent;
+            btnPaymentsInfomation.BackColor = Color.Transparent;
+            btnPurchaseOrder.BackColor = Color.Transparent;
+            btnProjectPhaseUpdate.BackColor = Color.Transparent;
+            btnChooseSubcontractors.BackColor = Color.White;
+            btnRequestsforApproval.BackColor = Color.Transparent;
+            btnAllocateEmployee.BackColor = Color.Transparent;
         }
 
         private void btnAllocateEmployee_Click(object sender, EventArgs e)
@@ -79,6 +113,14 @@ namespace JRSApplication
             LoadUserControl(new AllocatePersonnel());
             txtFunctionname.Text = "จัดสรรบุคลากร";
             txtsubFunctionname.Visible = false;
+
+            btnProjectInformation.BackColor = Color.Transparent;
+            btnPaymentsInfomation.BackColor = Color.Transparent;
+            btnPurchaseOrder.BackColor = Color.Transparent;
+            btnProjectPhaseUpdate.BackColor = Color.Transparent;
+            btnChooseSubcontractors.BackColor = Color.Transparent;
+            btnRequestsforApproval.BackColor = Color.Transparent;
+            btnAllocateEmployee.BackColor = Color.Transparent;
         }
 
         private void btnProjectPhaseUpdate_Click(object sender, EventArgs e)
@@ -87,6 +129,13 @@ namespace JRSApplication
             txtFunctionname.Text = "ปรับปรุงข้อมูลโครงการ";
             txtsubFunctionname.Visible = true;
             txtsubFunctionname.Text = "ปรับปรุงข้อมูลเฟส";
+
+            btnProjectInformation.BackColor = Color.Transparent;
+            btnPaymentsInfomation.BackColor = Color.Transparent;
+            btnPurchaseOrder.BackColor = Color.Transparent;
+            btnProjectPhaseUpdate.BackColor = Color.White;
+            btnChooseSubcontractors.BackColor = Color.Transparent;
+            btnRequestsforApproval.BackColor = Color.Transparent;
         }
 
         private void btnHeadmenu_Click(object sender, EventArgs e)
@@ -103,6 +152,13 @@ namespace JRSApplication
             txtFunctionname.Text = "ปรับปรุงข้อมูลโครงการ";
             txtsubFunctionname.Visible = true;
             txtsubFunctionname.Text = "รายการคำขออนุมัติผลการดำเนินงาน";
+
+            btnProjectInformation.BackColor = Color.Transparent;
+            btnPaymentsInfomation.BackColor = Color.Transparent;
+            btnPurchaseOrder.BackColor = Color.Transparent;
+            btnProjectPhaseUpdate.BackColor = Color.Transparent;
+            btnChooseSubcontractors.BackColor = Color.Transparent;
+            btnRequestsforApproval.BackColor = Color.White;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -137,6 +193,17 @@ namespace JRSApplication
                     menuExpand = false;
                 }
             }
+        }
+        private void Profile_Click(object sender, EventArgs e)
+        {
+            // Create an instance of your new user control, passing the required data
+            var changePasswordControl = new ChangePassword1(this._empID, this.userFullName, this.userRole);
+
+            // Use your existing method to load it into the body
+            LoadUserControl(changePasswordControl);
+
+            // Optionally update the header text
+            txtFunctionname.Text = "เปลี่ยนรหัสผ่าน";
         }
     }
 }

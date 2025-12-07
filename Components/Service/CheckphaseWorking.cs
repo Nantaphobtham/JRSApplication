@@ -1,4 +1,5 @@
-﻿using JRSApplication.Data_Access_Layer;
+﻿using JRSApplication.Components;
+using JRSApplication.Data_Access_Layer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,14 +11,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace JRSApplication.Components.Service
 {
     public partial class CheckphaseWorking : Form
     {
-        private string _workId; // Work ID ที่ส่งมาจาก ProjectPhaseListRequestsforApproval.cs
-        private int _phaseId; // Phase ID ที่ส่งมาจาก ProjectPhaseListRequestsforApproval.cs
-        private int _projectId; 
+        private string _workId;   // Work ID ที่ส่งมาจาก ProjectPhaseListRequestsforApproval.cs
+        private int _phaseId;     // Phase ID ที่ส่งมาจาก ProjectPhaseListRequestsforApproval.cs
+        private int _projectId;
+
         public CheckphaseWorking(string workId, int phaseId, int projectId)
         {
             InitializeComponent();
@@ -26,6 +27,7 @@ namespace JRSApplication.Components.Service
             _projectId = projectId;
             LoadFullData();
         }
+
         private void LoadFullData()
         {
             var dal = new PhaseWorkDAL();
@@ -33,7 +35,7 @@ namespace JRSApplication.Components.Service
 
             if (dataRows == null || dataRows.Count == 0) return;
 
-            // 👉 แสดง Project / Phase
+            // แสดงข้อมูล Project / Phase
             var first = dataRows[0];
             txtProjectID.Text = first.ProjectID.ToString();
             txtProjectname.Text = first.ProjectName;
@@ -43,7 +45,7 @@ namespace JRSApplication.Components.Service
             txtPhaseNo.Text = first.PhaseNo.ToString();
             txtPhaseDetail.Text = first.PhaseDetail;
 
-            // 👉 จัดกลุ่มงานจากข้อมูลแถวเดียว (group by work_id)
+            // group by work_id
             var workGroups = dataRows
                 .GroupBy(r => r.WorkID)
                 .Select(g => new
@@ -53,17 +55,17 @@ namespace JRSApplication.Components.Service
                     Pictures = g.Where(x => x.PicData != null).ToList()
                 }).ToList();
 
-            // 👉 Loop สร้าง UI
             int currentY = 10;
             foreach (var workItem in workGroups)
             {
                 currentY += CreateWorkSection(workItem.Work, workItem.Pictures, currentY) + 20;
             }
         }
+
         private int CreateWorkSection(
-                    JRSApplication.Data_Access_Layer.PhaseWorkDAL.PhaseWorkingFullRow work,
-                    List<JRSApplication.Data_Access_Layer.PhaseWorkDAL.PhaseWorkingFullRow> pictures,
-                    int yOffset)
+            PhaseWorkDAL.PhaseWorkingFullRow work,
+            List<PhaseWorkDAL.PhaseWorkingFullRow> pictures,
+            int yOffset)
         {
             int baseHeight = 540;
             int additionalHeightPerPicture = 250;
@@ -84,30 +86,30 @@ namespace JRSApplication.Components.Service
 
             Font f = new Font("Segoe UI", 15.75f, FontStyle.Regular);
 
-            // 🔹 WorkID
+            // WorkID
             container.Controls.Add(CreateLabel("รหัสงาน", new Point(40, 10), f));
             container.Controls.Add(CreateTextbox(work.WorkID, new Point(121, 8), new Size(237, 35), f));
 
-            // 🔹 Status
+            // Status
             container.Controls.Add(CreateLabel("สถานะงาน", new Point(20, 52), f));
             container.Controls.Add(CreateTextbox(work.WorkStatus, new Point(121, 50), new Size(237, 35), f));
 
-            // 🔹 Start/End Dates
+            // Start/End Dates
             container.Controls.Add(CreateLabel("วันที่ดำเนินการ", new Point(402, 10), f));
             container.Controls.Add(CreateTextbox(work.WorkDate.ToString("yyyy-MM-dd"), new Point(538, 8), new Size(237, 35), f));
 
             container.Controls.Add(CreateLabel("วันที่สิ้นสุด", new Point(439, 57), f));
             container.Controls.Add(CreateTextbox(work.WorkEndDate?.ToString("yyyy-MM-dd") ?? "", new Point(538, 52), new Size(237, 35), f));
 
-            // 🔹 รายละเอียด
+            // รายละเอียด
             container.Controls.Add(CreateLabel("รายละเอียด\nการดำเนินงาน", new Point(7, 102), f, ContentAlignment.MiddleRight));
             container.Controls.Add(CreateMultilineTextbox(work.WorkDetail, new Point(142, 99), new Size(633, 65), f));
 
-            // 🔹 หมายเหตุ
+            // หมายเหตุ
             container.Controls.Add(CreateLabel("หมายเหตุ", new Point(48, 181), f));
             container.Controls.Add(CreateMultilineTextbox(work.WorkRemark, new Point(142, 164), new Size(633, 65), f));
 
-            // 🔹 รูปภาพและคำอธิบาย
+            // รูปภาพ + คำอธิบาย
             int px = 17, py = 240;
             int count = 0;
 
@@ -127,13 +129,9 @@ namespace JRSApplication.Components.Service
 
                 container.Controls.Add(pb);
 
-                // Label
                 container.Controls.Add(CreateLabel("คำอธิบายรูปภาพ", new Point(px - 5, py + 173), f));
-
-                // Description
                 container.Controls.Add(CreateMultilineTextbox(pic.PicDescription, new Point(px, py + 206), new Size(349, 62), f));
 
-                // จัดวางแถว
                 count++;
                 if (count % 2 == 0)
                 {
@@ -146,10 +144,11 @@ namespace JRSApplication.Components.Service
                 }
             }
 
-            // 👉 Add เข้า panelWork
+            // Add เข้า panel บนฟอร์ม (สมมติชื่อ Work)
             Work.Controls.Add(container);
             return container.Height;
         }
+
         private Label CreateLabel(string text, Point location, Font font, ContentAlignment align = ContentAlignment.MiddleLeft)
         {
             return new Label
@@ -194,16 +193,28 @@ namespace JRSApplication.Components.Service
         {
             var dal = new PhaseWorkDAL();
             dal.UpdateWorkStatus(_workId, WorkStatus.Completed, txtRemark.Text);
-            MessageBox.Show("อนุมัติผลการทำงานเรียบร้อยแล้ว ✔️", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            this.Close(); // ปิดฟอร์มถ้าต้องการ
+
+            MessageBox.Show("อนุมัติผลการทำงานเรียบร้อยแล้ว ✔️",
+                            "สำเร็จ",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void btnReject_Click(object sender, EventArgs e)
         {
             var dal = new PhaseWorkDAL();
             dal.UpdateWorkStatus(_workId, WorkStatus.Rejected, txtRemark.Text);
-            MessageBox.Show("ไม่อนุมัติผลการทำงาน ❌", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            this.Close(); // ปิดฟอร์มถ้าต้องการ
+
+            MessageBox.Show("ไม่อนุมัติผลการทำงาน ❌",
+                            "แจ้งเตือน",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }

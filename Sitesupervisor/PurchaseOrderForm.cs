@@ -19,7 +19,8 @@ namespace JRSApplication
 {
     public partial class PurchaseOrderForm : UserControl
     {
-        private readonly string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+        private readonly string connectionString =
+            ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
         private readonly string _empId;
 
         private BindingList<MaterialDetail> materialList = new BindingList<MaterialDetail>();
@@ -35,7 +36,7 @@ namespace JRSApplication
             "ลัง","แกลลอน","ถ้วย","คู่","เม็ด","ฟุต","ตัน","ชั้น","ช่อง"
         };
 
-        // ✅ เก็บรายการใบสั่งซื้อทั้งหมด ไว้ใช้กับ Searchbox
+        // เก็บรายการใบสั่งซื้อทั้งหมด ไว้ใช้กับ Searchbox
         private List<PurchaseOrder> _allPurchaseOrders = new List<PurchaseOrder>();
 
         public PurchaseOrderForm(string empId)
@@ -43,7 +44,7 @@ namespace JRSApplication
             InitializeComponent();
             _empId = empId;
 
-            // ✅ สร้าง column และตกแต่ง
+            // สร้าง column และตกแต่ง
             InitializePOGridColumns();
             InitializeMaterialGridColumns();
 
@@ -54,16 +55,18 @@ namespace JRSApplication
             dtgvPurchaseOrderList.ClearSelection();
             dtgvMaterialList.ClearSelection();
 
+            btnEditOrder.Click += btnEditOrder_Click;
+
             // ComboBox หน่วยนับ
             cmbUnit.DataSource = unitList;
             cmbUnit.SelectedIndex = 0;
             cmbUnit.AutoCompleteMode = AutoCompleteMode.None;
             cmbUnit.AutoCompleteSource = AutoCompleteSource.None;
 
-            // ✅ โหลดข้อมูลใบสั่งซื้อ (เก็บใน _allPurchaseOrders ด้วย)
+            // โหลดข้อมูลใบสั่งซื้อ (เก็บใน _allPurchaseOrders ด้วย)
             LoadAllPurchaseOrders();
 
-            // ✅ ผูก Searchbox ให้ใช้ role Sitesupervisor / ฟังก์ชัน "ออกใบสั่งซื้อ"
+            // ผูก Searchbox ให้ใช้ role Sitesupervisor / ฟังก์ชัน "ออกใบสั่งซื้อ"
             try
             {
                 searchboxControl1.DefaultRole = "Sitesupervisor";
@@ -80,6 +83,9 @@ namespace JRSApplication
             // Event เดิม
             dtgvPurchaseOrderList.CellDoubleClick += dtgvPurchaseOrderList_CellDoubleClick;
             dtgvPurchaseOrderList.CellFormatting += dtgvPurchaseOrderList_CellFormatting;
+            dtgvPurchaseOrderList.CellMouseDown += dtgvPurchaseOrderList_CellMouseDown;
+            dtgvPurchaseOrderList.CellMouseLeave += dtgvPurchaseOrderList_CellMouseLeave;
+
             dtgvMaterialList.CellClick += dtgvMaterialList_CellClick;
 
             txtQuantity.TextChanged += txtQuantity_TextChanged;
@@ -90,9 +96,10 @@ namespace JRSApplication
             btnEditMaterial.Click += btnEditMaterial_Click;
             btnAddOrder.Click += btnAddOrder_Click;
             btnSaveOrder.Click += btnSaveOrder_Click;
-        }
 
-        // ================= Searchbox → filter dtgvPurchaseOrderList =================
+            // ปุ่มยกเลิกใบสั่งซื้อ (btnDeleteOrder มีอยู่แล้วใน Designer)
+            btnDeleteOrder.Click += btnDeleteOrder_Click;
+        }
 
         // ================= Searchbox → filter dtgvPurchaseOrderList =================
 
@@ -135,7 +142,7 @@ namespace JRSApplication
                 if (text.Contains("ยกเลิก"))
                     return "canceled";
 
-                // ถ้าพิมพ์อังกฤษอยู่แล้ว เช่น approved, submitted
+                // อังกฤษเดิม
                 return text;
             }
 
@@ -158,7 +165,7 @@ namespace JRSApplication
                     break;
 
                 case "สถานะใบสั่งซื้อ":
-                    string statusKey = MapStatusKeyword(qLower);   // แปลงไทย -> code
+                    string statusKey = MapStatusKeyword(qLower);
                     filtered = baseList.Where(o =>
                         !string.IsNullOrEmpty(o.OrderStatus) &&
                         o.OrderStatus.ToLowerInvariant().Contains(statusKey));
@@ -319,7 +326,7 @@ namespace JRSApplication
             grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
         }
 
-        // ---------------- Event Handlers ----------------
+        // ---------------- Event Handlers (วัสดุ) ----------------
         private void txtQuantity_TextChanged(object sender, EventArgs e) => CalculateTotalPrice();
         private void txtUnitPrice_TextChanged(object sender, EventArgs e) => CalculateTotalPrice();
 
@@ -343,6 +350,61 @@ namespace JRSApplication
             cmbUnit.SelectionStart = cmbUnit.Text.Length;
             cmbUnit.DroppedDown = true;
         }
+
+        // ---------------- ปุ่ม / ฟังก์ชันใบสั่งซื้อ ----------------
+
+        private void btnEditOrder_Click(object sender, EventArgs e)
+        {
+            // 1) ต้องมีการเลือกใบสั่งซื้อในตารางด้านซ้ายก่อน
+            if (dtgvPurchaseOrderList.CurrentRow == null)
+            {
+                MessageBox.Show("กรุณาเลือกใบสั่งซื้อที่จะแก้ไข",
+                                "แจ้งเตือน",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 2) ดึง object PurchaseOrder จากแถวที่เลือก
+            var po = dtgvPurchaseOrderList.CurrentRow.DataBoundItem as PurchaseOrder;
+            if (po == null) return;
+
+            // ถ้าไม่อนุญาตให้แก้ไขใบที่อนุมัติแล้ว / ยกเลิกแล้ว ให้เช็คสถานะที่นี่
+            if (string.Equals(po.OrderStatus, "approved", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("ใบสั่งซื้อที่อนุมัติแล้ว ไม่สามารถแก้ไขได้",
+                                "แจ้งเตือน",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                return;
+            }
+            if (string.Equals(po.OrderStatus, "canceled", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("ใบสั่งซื้อที่ถูกยกเลิกแล้ว ไม่สามารถแก้ไขได้",
+                                "แจ้งเตือน",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                return;
+            }
+
+            // 3) โหลดข้อมูลใบสั่งซื้อ + รายการวัสดุเข้าฟอร์ม (ใช้เมธอดเดิมที่คุณมีอยู่)
+            ShowPurchaseOrderDetails(po);
+
+            // 4) เปิดโหมดแก้ไข: ให้ textboxes / comboboxs / ปุ่มวัสดุ แก้ไขได้
+            EnableAllSections();          // เมธอดนี้ของคุณ enable textbox/combobox ต่าง ๆ อยู่แล้ว
+
+            // ปรับปุ่มด้านวัสดุ
+            btnAddMaterial.Enabled = true;         // ใช้บันทึกทั้งเพิ่มใหม่/แก้ไข
+            btnEditMaterial.Enabled = false;      // จะ enable หลังจากเลือกแถววัสดุ
+            btnAddMaterial.Text = "บันทึกแก้ไข";
+            btnAddMaterial.BackColor = Color.Orange;
+
+            // ปุ่มบันทึกใบสั่งซื้อ
+            btnSaveOrder.Enabled = true;
+            // ถ้าอยากให้ user เห็นว่าเป็นโหมดแก้ไขจริง ๆ
+            //btnSaveOrder.Text = "บันทึกการแก้ไข";
+        }
+
 
         private void btnAddOrder_Click(object sender, EventArgs e)
         {
@@ -389,11 +451,14 @@ namespace JRSApplication
 
                 if (newOrderId <= 0)
                 {
-                    MessageBox.Show("เกิดข้อผิดพลาดในการบันทึกใบสั่งซื้อ", "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("เกิดข้อผิดพลาดในการบันทึกใบสั่งซื้อ", "ผิดพลาด",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                MessageBox.Show("บันทึกใบสั่งซื้อเรียบร้อยแล้ว", "สำเร็จ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("บันทึกใบสั่งซื้อเรียบร้อยแล้ว", "สำเร็จ",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 ClearOrderForm();
                 ClearMaterialForm();
                 materialList.Clear();
@@ -404,9 +469,84 @@ namespace JRSApplication
             }
             catch (Exception ex)
             {
-                MessageBox.Show("เกิดข้อผิดพลาด: " + ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("เกิดข้อผิดพลาด: " + ex.Message, "Exception",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        // ปุ่ม “ยกเลิกใบสั่งซื้อ” ใช้ btnDeleteOrder
+        private void btnDeleteOrder_Click(object sender, EventArgs e)
+        {
+            if (dtgvPurchaseOrderList.CurrentRow == null)
+            {
+                MessageBox.Show("กรุณาเลือกใบสั่งซื้อที่ต้องการยกเลิก",
+                                "แจ้งเตือน",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+            }
+            else
+            {
+                var po = dtgvPurchaseOrderList.CurrentRow.DataBoundItem as PurchaseOrder;
+                if (po == null) return;
+
+                // ถ้าอนุมัติแล้ว ไม่ให้ยกเลิก
+                if (string.Equals(po.OrderStatus, "approved", StringComparison.OrdinalIgnoreCase))
+                {
+                    MessageBox.Show("ใบสั่งซื้อที่อนุมัติแล้ว ไม่สามารถยกเลิกได้",
+                                    "แจ้งเตือน",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                    return;
+                }
+
+                // ถ้ายกเลิกไปแล้ว
+                if (string.Equals(po.OrderStatus, "canceled", StringComparison.OrdinalIgnoreCase))
+                {
+                    MessageBox.Show("ใบสั่งซื้อนี้ถูกยกเลิกไปแล้ว",
+                                    "แจ้งเตือน",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                    return;
+                }
+
+                var confirm = MessageBox.Show(
+                    $"ต้องการยกเลิกใบสั่งซื้อเลขที่ {po.OrderNumber} หรือไม่?",
+                    "ยืนยันการยกเลิก",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (confirm != DialogResult.Yes)
+                    return;
+
+                try
+                {
+                    var dal = new PurchaseOrderDAL();
+                    // ต้องมีเมทอดนี้ใน DAL (ดูตัวอย่างด้านล่าง)
+                    dal.UpdateOrderStatus(
+                        po.OrderId,
+                        "canceled",
+                        "ยกเลิกโดยผู้ใช้ ",
+                        _empId
+                        );
+
+                    MessageBox.Show("ยกเลิกใบสั่งซื้อเรียบร้อยแล้ว",
+                                    "สำเร็จ",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+
+                    LoadAllPurchaseOrders();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("ไม่สามารถยกเลิกใบสั่งซื้อได้ : " + ex.Message,
+                                    "ผิดพลาด",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        // ---------------- ปุ่ม / ฟังก์ชันวัสดุ ----------------
 
         private void btnAddMaterial_Click(object sender, EventArgs e)
         {
@@ -469,6 +609,8 @@ namespace JRSApplication
             txtUnitPrice.ReadOnly = false;
             txtQuantity.ReadOnly = false;
             cmbUnit.Enabled = true;
+
+            txtMaterialName.Focus();
         }
 
         private void dtgvMaterialList_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -477,6 +619,7 @@ namespace JRSApplication
             {
                 DataGridViewRow row = dtgvMaterialList.Rows[e.RowIndex];
 
+                // ดึงค่าจากแถวที่เลือกมาใส่ textbox
                 txtMaterialName.Text = row.Cells["MatDetail"].Value?.ToString();
                 txtUnitPrice.Text = row.Cells["MatPrice"].Value?.ToString();
                 txtQuantity.Text = row.Cells["MatQuantity"].Value?.ToString();
@@ -485,16 +628,21 @@ namespace JRSApplication
                 CalculateTotalPrice();
                 editingRowIndex = e.RowIndex;
 
-                txtMaterialName.ReadOnly = true;
-                txtUnitPrice.ReadOnly = true;
-                txtQuantity.ReadOnly = true;
-                cmbUnit.Enabled = false;
+                // สำคัญ: "อย่าล็อก" ช่องอีก ปล่อยให้สถานะ ReadOnly/Enabled
+                // เป็นไปตามที่ ShowPurchaseOrderDetails / btnAddOrder ตั้งค่าไว้
 
-                btnAddMaterial.Text = "บันทึกแก้ไข";
-                btnAddMaterial.BackColor = Color.Orange;
-                btnEditMaterial.Enabled = true;
+                // แค่เปลี่ยนโหมดปุ่มให้รู้ว่าเป็นการแก้ไข
+                if (btnAddMaterial.Enabled)
+                {
+                    btnAddMaterial.Text = "บันทึกแก้ไข";
+                    btnAddMaterial.BackColor = Color.Orange;
+                }
+
+                // ถ้าอยากใช้ปุ่ม "แก้ไข" แยก ก็ enable ไว้ (จะใช้หรือไม่ใช้ก็ได้)
+                btnEditMaterial.Enabled = btnAddMaterial.Enabled;
             }
         }
+
 
         private void btnSearchProject_Click(object sender, EventArgs e)
         {
@@ -512,7 +660,7 @@ namespace JRSApplication
             if (e.RowIndex < 0) return;
 
             var row = dtgvPurchaseOrderList.Rows[e.RowIndex];
-            var po = row.DataBoundItem as JRSApplication.Components.Models.PurchaseOrder;
+            var po = row.DataBoundItem as PurchaseOrder;
             if (po == null) return;
 
             ShowPurchaseOrderDetails(po);
@@ -522,10 +670,14 @@ namespace JRSApplication
         {
             if (po == null) return;
 
+            // ── ข้อมูลหัวใบสั่งซื้อ ─────────────────────
             txtOrderNO.Text = po.OrderNumber;
             txtOrderDetail.Text = po.OrderDetail;
-            dtpOrderDate.Value = po.OrderDate == DateTime.MinValue ? DateTime.Today : po.OrderDate;
+            dtpOrderDate.Value = po.OrderDate == DateTime.MinValue
+                ? DateTime.Today
+                : po.OrderDate;
 
+            // ── โหลดรายการวัสดุจากฐานข้อมูล ─────────────
             var dal = new PurchaseOrderDAL();
             var materials = dal.GetMaterialDetailsByOrderId(po.OrderId);
 
@@ -549,13 +701,28 @@ namespace JRSApplication
             dtgvMaterialList.ClearSelection();
             UpdateMaterialSummary();
 
-            txtMaterialName.ReadOnly = true;
-            txtUnitPrice.ReadOnly = true;
-            txtQuantity.ReadOnly = true;
-            cmbUnit.Enabled = false;
-            btnAddMaterial.Enabled = false;
-            btnEditMaterial.Enabled = false;
+            // ── ตัดสินใจว่าใบนี้อนุญาตให้แก้ไขวัสดุได้ไหม ──
+            // ถ้าไม่อยากเช็คสถานะเลย ให้ใช้ `bool canEditMaterials = true;`
+            bool canEditMaterials =
+                !string.Equals(po.OrderStatus, "approved", StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(po.OrderStatus, "canceled", StringComparison.OrdinalIgnoreCase);
+
+            // ช่องสำหรับแก้ไขวัสดุ (ด้านขวา)
+            txtMaterialName.ReadOnly = !canEditMaterials;
+            txtUnitPrice.ReadOnly = !canEditMaterials;
+            txtQuantity.ReadOnly = !canEditMaterials;
+            cmbUnit.Enabled = canEditMaterials;
+
+            // ปุ่มวัสดุ
+            btnAddMaterial.Enabled = canEditMaterials;   // ใช้ทั้งเพิ่มใหม่ + บันทึกแก้ไข
+            btnEditMaterial.Enabled = false;             // จะ enable หลังจากเลือกแถว
+            editingRowIndex = null;
+
+            // เคลียร์ฟอร์มแก้ไขวัสดุ
+            ClearMaterialForm();
         }
+
+
 
         // ---------------- Helpers ----------------
         private void CalculateTotalPrice()
@@ -733,7 +900,7 @@ namespace JRSApplication
                             e.Value = "ไม่อนุมัติ";
                             break;
                         case "canceled":
-                            e.Value = "ไม่อนุมัติ";
+                            e.Value = "ยกเลิกแล้ว";
                             break;
                     }
                 }
@@ -760,7 +927,7 @@ namespace JRSApplication
             if (hoveredRowIndex >= 0 && hoveredRowIndex < dtgvPurchaseOrderList.Rows.Count)
             {
                 var row = dtgvPurchaseOrderList.Rows[hoveredRowIndex];
-                var po = row.DataBoundItem as JRSApplication.Components.Models.PurchaseOrder;
+                var po = row.DataBoundItem as PurchaseOrder;
 
                 if (po != null)
                 {
@@ -788,13 +955,17 @@ namespace JRSApplication
 
         private void ShowReport(PurchaseOrder po, List<MaterialDetail> materials)
         {
-            var reportViewer = new ReportViewer();
-            reportViewer.ProcessingMode = ProcessingMode.Local;
+            var reportViewer = new ReportViewer
+            {
+                ProcessingMode = ProcessingMode.Local
+            };
             reportViewer.LocalReport.ReportPath = "POreport.rdlc";
 
             reportViewer.LocalReport.DataSources.Clear();
-            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("PurchaseOrderDataSet", new List<PurchaseOrder> { po }));
-            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("MaterialDetailDataSet", materials));
+            reportViewer.LocalReport.DataSources.Add(
+                new ReportDataSource("PurchaseOrderDataSet", new List<PurchaseOrder> { po }));
+            reportViewer.LocalReport.DataSources.Add(
+                new ReportDataSource("MaterialDetailDataSet", materials));
 
             reportViewer.RefreshReport();
         }
@@ -803,7 +974,8 @@ namespace JRSApplication
         {
             if (dtgvPurchaseOrderList.CurrentRow == null)
             {
-                MessageBox.Show("กรุณาเลือกใบสั่งซื้อก่อน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("กรุณาเลือกใบสั่งซื้อก่อน", "แจ้งเตือน",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

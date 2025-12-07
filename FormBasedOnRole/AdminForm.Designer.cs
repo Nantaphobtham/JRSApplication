@@ -70,6 +70,7 @@ namespace JRSApplication
             this.PicLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PicLogo.TabIndex = 0;
             this.PicLogo.TabStop = false;
+            this.PicLogo.Click += new System.EventHandler(this.Profile_Click);
             // 
             // Siderbar
             // 
@@ -234,6 +235,7 @@ namespace JRSApplication
             this.Profile.Size = new System.Drawing.Size(80, 80);
             this.Profile.TabIndex = 1;
             this.Profile.TabStop = false;
+            this.Profile.Click += new System.EventHandler(this.Profile_Click);
             // 
             // AdminForm
             // 

@@ -129,7 +129,7 @@ namespace JRSApplication
             switch (role)
             {
                 case "Admin":
-                    dashboard = new AdminForm(fullName, role);
+                    dashboard = new AdminForm(fullName, role, empId);
                     break;
 
                 case "Projectmanager":

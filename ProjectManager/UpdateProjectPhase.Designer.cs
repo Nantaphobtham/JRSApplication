@@ -66,8 +66,11 @@
             this.txtPictureDescription = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnInsertPicture = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.starAssignDescription = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.pnlProjectDetail.SuspendLayout();
             this.pnlWorkHistory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPhaseWorkingHistory)).BeginInit();
@@ -245,6 +248,9 @@
             // pnlMailDescription
             // 
             this.pnlMailDescription.BackColor = System.Drawing.Color.White;
+            this.pnlMailDescription.Controls.Add(this.label9);
+            this.pnlMailDescription.Controls.Add(this.label8);
+            this.pnlMailDescription.Controls.Add(this.starAssignDescription);
             this.pnlMailDescription.Controls.Add(this.dtgvDetailSubcontractorWork);
             this.pnlMailDescription.Controls.Add(this.btnEdit);
             this.pnlMailDescription.Controls.Add(this.btnSave);
@@ -504,17 +510,6 @@
             this.btnInsertPicture.UseVisualStyleBackColor = false;
             this.btnInsertPicture.Click += new System.EventHandler(this.btnInsertPicture_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(318, 5);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(148, 30);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "รายการรูปภาพ";
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -526,6 +521,50 @@
             this.label7.TabIndex = 5;
             this.label7.Text = "โปรดเลือกไฟล์รูปภาพที่มีขนาดไม่เกิน 5 MB ต่อไฟล์ และจำกัดจำนวนไม่เกิน 10 รูปภาพต่" +
     "อครั้ง";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(318, 5);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(148, 30);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "รายการรูปภาพ";
+            // 
+            // starAssignDescription
+            // 
+            this.starAssignDescription.AutoSize = true;
+            this.starAssignDescription.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starAssignDescription.ForeColor = System.Drawing.Color.Red;
+            this.starAssignDescription.Location = new System.Drawing.Point(1181, 15);
+            this.starAssignDescription.Name = "starAssignDescription";
+            this.starAssignDescription.Size = new System.Drawing.Size(22, 30);
+            this.starAssignDescription.TabIndex = 41;
+            this.starAssignDescription.Text = "*";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.Red;
+            this.label8.Location = new System.Drawing.Point(1339, 15);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(22, 30);
+            this.label8.TabIndex = 42;
+            this.label8.Text = "*";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.Red;
+            this.label9.Location = new System.Drawing.Point(976, 89);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(22, 30);
+            this.label9.TabIndex = 43;
+            this.label9.Text = "*";
             // 
             // UpdateProjectPhase
             // 
@@ -593,5 +632,8 @@
         private System.Windows.Forms.ComboBox cmbWorkstatusOfSupplier;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label starAssignDescription;
     }
 }

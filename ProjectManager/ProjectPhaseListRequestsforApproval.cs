@@ -3,12 +3,8 @@ using JRSApplication.Components.Service;
 using JRSApplication.Data_Access_Layer;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace JRSApplication
@@ -16,6 +12,10 @@ namespace JRSApplication
     public partial class ProjectPhaseListRequestsforApproval : UserControl
     {
         private List<PhaseWorking> allPhaseWorkingList;
+
+        // เก็บค่าการค้นหาปัจจุบันของ Searchbox
+        private string _currentSearchBy = "ทั้งหมด";
+        private string _currentKeyword = "";
 
         // Model สำหรับ Grid
         private class ProjectPhaseWithWorkCount
@@ -39,42 +39,142 @@ namespace JRSApplication
         {
             InitializeComponent();
 
-            LoadProjectPhasesWithWorkCount();
-
-            CustomProjectPhaseGrid();
-
-            // ✅ ผูก Searchbox สำหรับ Project Manager
+            // ------------------------------
+            // ตั้งค่า Searchbox (ตามบทบาท Projectmanager)
+            // ------------------------------
             try
             {
-                // ชื่อ function นี้ต้องไปเพิ่มใน SearchboxControl ด้วย
                 searchboxControl1.DefaultRole = "Projectmanager";
                 searchboxControl1.DefaultFunction = "รายการเฟสที่รออนุมัติ";
-                searchboxControl1.SetRoleAndFunction("Projectmanager", "รายการเฟสที่รออนุมัติ");
-
+                searchboxControl1.SetRoleAndFunction("Projectmanager", "ผลการอนุมัติเฟส");
                 searchboxControl1.SearchTriggered += SearchboxPhaseApproval_SearchTriggered;
             }
-            catch { }
+            catch
+            {
+            }
+
+            CustomProjectPhaseGrid();   // ตั้ง style ของ grid
+            LoadProjectPhasesWithWorkCount();
         }
 
-        // =============== Searchbox -> Filter Grid ==================
+        // ================== Event จาก Searchbox ==================
 
         private void SearchboxPhaseApproval_SearchTriggered(object sender, SearchEventArgs e)
         {
-            ApplyPhaseListFilter(e.SearchBy, e.Keyword);
+            _currentSearchBy = e.SearchBy;
+            _currentKeyword = e.Keyword;
+
+            ApplyPhaseListFilter(_currentSearchBy, _currentKeyword);
         }
+
+        // =============== Helper: เตรียมคอลัมน์ / Bind ==================
+
+        private void EnsureGridColumns()
+        {
+            var grid = dtgvRequestApproval;
+
+            if (grid.Columns.Count > 0)
+                return;    // เคยสร้างแล้ว
+
+            grid.AutoGenerateColumns = false;
+            grid.Columns.Clear();
+
+            // ซ่อน PhaseID แต่ต้องมีไว้ใช้
+            grid.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "PhaseID",
+                DataPropertyName = "PhaseID",
+                HeaderText = "รหัสเฟส",
+                Visible = false
+            });
+
+            grid.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "ProID",
+                DataPropertyName = "ProID",
+                HeaderText = "รหัสโครงการ"
+            });
+
+            grid.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "PhaseNo",
+                DataPropertyName = "PhaseNo",
+                HeaderText = "เฟสที่"
+            });
+
+            grid.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "PhaseDetail",
+                DataPropertyName = "PhaseDetail",
+                HeaderText = "รายละเอียดเฟส"
+            });
+
+            grid.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "PhaseBudget",
+                DataPropertyName = "PhaseBudget",
+                HeaderText = "งบประมาณ"
+            });
+
+            grid.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "PhasePercent",
+                DataPropertyName = "PhasePercent",
+                HeaderText = "เปอร์เซ็นต์เฟส"
+            });
+
+            // ซ่อนสถานะอังกฤษ
+            grid.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "PhaseStatus",
+                DataPropertyName = "PhaseStatus",
+                HeaderText = "สถานะ (อังกฤษ)",
+                Visible = false
+            });
+
+            grid.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "WorkCount",
+                DataPropertyName = "WorkCount",
+                HeaderText = "จำนวนงานในเฟส"
+            });
+
+            // ซ่อน WorkID
+            grid.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "WorkID",
+                DataPropertyName = "WorkID",
+                HeaderText = "รหัสงาน",
+                Visible = false
+            });
+
+            grid.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "PhaseStatusThai",
+                DataPropertyName = "PhaseStatusThai",
+                HeaderText = "สถานะ"
+            });
+        }
+
+        private void BindGrid(List<ProjectPhaseWithWorkCount> list)
+        {
+            EnsureGridColumns();
+            dtgvRequestApproval.DataSource = null;
+            dtgvRequestApproval.DataSource = list;
+        }
+
+        // =============== Apply Filter ให้ Grid ==================
 
         private void ApplyPhaseListFilter(string searchBy, string keyword)
         {
             if (_displayList == null) return;
 
             string q = (keyword ?? "").Trim().ToLowerInvariant();
-
             IEnumerable<ProjectPhaseWithWorkCount> baseList = _displayList;
 
-            if (string.IsNullOrEmpty(q))
+            if (string.IsNullOrEmpty(q) || searchBy == "ทั้งหมด")
             {
-                dtgvRequestApproval.DataSource = null;
-                dtgvRequestApproval.DataSource = baseList.ToList();
+                BindGrid(baseList.ToList());
                 return;
             }
 
@@ -100,7 +200,7 @@ namespace JRSApplication
                          p.PhaseStatus.ToLowerInvariant().Contains(q)));
                     break;
 
-                default: // ทั้งหมด
+                default: // ทั้งหมด/กรณีอื่น
                     filtered = baseList.Where(p =>
                         p.ProID.ToString().ToLowerInvariant().Contains(q) ||
                         p.PhaseNo.ToString().ToLowerInvariant().Contains(q) ||
@@ -111,30 +211,37 @@ namespace JRSApplication
                     break;
             }
 
-            dtgvRequestApproval.DataSource = null;
-            dtgvRequestApproval.DataSource = filtered.ToList();
+            BindGrid(filtered.ToList());
         }
 
-        // ================= Data load เดิม =========================
+        // ================= Load Data =========================
 
         private void LoadProjectPhasesWithWorkCount()
         {
             var phaseDal = new PhaseDAL();
             var allPhases = phaseDal.GetAllProjectPhase();
+
             var workDal = new PhaseWorkDAL();
             var allWorkings = workDal.GetAllPhaseWorking();
-
-            var validStatuses = new[] {
-                WorkStatus.InProgress,
-                WorkStatus.Completed,
-                WorkStatus.Rejected
-            };
 
             var displayList = allPhases
                 .Select(p =>
                 {
-                    var works = allWorkings.Where(w => w.PhaseID == p.PhaseID).ToList();
-                    var firstWork = works.FirstOrDefault();
+                    // งานทั้งหมดของเฟสนี้
+                    var works = allWorkings
+                        .Where(w => w.PhaseID == p.PhaseID)
+                        .ToList();
+
+                    // งานล่าสุด (ถ้ามี)
+                    var lastWork = works
+                        .OrderByDescending(w => w.WorkDate)
+                        .FirstOrDefault();
+
+                    // เอาสถานะจากงานล่าสุดก่อน ถ้าไม่มีให้ใช้ phase_status จากตาราง phase
+                    string lastStatus = lastWork?.WorkStatus;
+                    if (string.IsNullOrEmpty(lastStatus))
+                        lastStatus = p.PhaseStatus;   // สมมติว่า PhaseModel มี property PhaseStatus แม็พกับคอลัมน์ phase_status
+
                     return new ProjectPhaseWithWorkCount
                     {
                         PhaseID = p.PhaseID,
@@ -143,56 +250,41 @@ namespace JRSApplication
                         PhaseDetail = p.PhaseDetail,
                         PhaseBudget = p.PhaseBudget,
                         PhasePercent = p.PhasePercent,
-                        PhaseStatus = p.PhaseStatus,
-                        PhaseStatusThai = WorkStatus.GetDisplayName(p.PhaseStatus),
                         WorkCount = works.Count,
-                        WorkID = firstWork != null ? firstWork.WorkID : null
+                        WorkID = lastWork?.WorkID,
+                        PhaseStatus = lastStatus ?? string.Empty,
+                        PhaseStatusThai = !string.IsNullOrEmpty(lastStatus)
+                                            ? WorkStatus.GetDisplayName(lastStatus)
+                                            : string.Empty
                     };
                 })
-                .Where(x => x.WorkCount > 0 &&
-                            validStatuses.Contains(
-                                allWorkings.FirstOrDefault(w => w.WorkID == x.WorkID)?.WorkStatus
-                            ))
-                .OrderBy(p => p.PhaseNo)
+                // เรียงให้โครงการเหมือนเดิม แต่ให้ Completed ไปอยู่ล่างสุด
+                .OrderBy(p => p.ProID)
+                .ThenBy(p =>
+                    string.Equals(p.PhaseStatus, WorkStatus.Completed,
+                                  StringComparison.OrdinalIgnoreCase)
+                        ? 1  // Completed → กลุ่มล่าง
+                        : 0) // อื่น ๆ → กลุ่มบน
+                .ThenBy(p => p.PhaseNo)
                 .ToList();
 
             _displayList = displayList;
 
-            dtgvRequestApproval.DataSource = null;
-            dtgvRequestApproval.DataSource = _displayList;
+            // ถ้ายังไม่มีเงื่อนไขค้นหา → แสดงทั้งหมด
+            if (string.IsNullOrWhiteSpace(_currentKeyword) || _currentSearchBy == "ทั้งหมด")
+            {
+                BindGrid(_displayList);
+            }
+            else
+            {
+                ApplyPhaseListFilter(_currentSearchBy, _currentKeyword);
+            }
         }
+
 
         private void CustomProjectPhaseGrid()
         {
             var grid = dtgvRequestApproval;
-
-            grid.AutoGenerateColumns = true;
-
-            if (grid.Columns.Contains("PhaseID"))
-                grid.Columns["PhaseID"].HeaderText = "รหัสเฟส";
-            if (grid.Columns.Contains("ProID"))
-                grid.Columns["ProID"].HeaderText = "รหัสโครงการ";
-            if (grid.Columns.Contains("PhaseNo"))
-                grid.Columns["PhaseNo"].HeaderText = "เฟสที่";
-            if (grid.Columns.Contains("WorkCount"))
-                grid.Columns["WorkCount"].HeaderText = "จำนวนงานในเฟส";
-            if (grid.Columns.Contains("PhaseDetail"))
-                grid.Columns["PhaseDetail"].HeaderText = "รายละเอียดเฟส";
-            if (grid.Columns.Contains("PhaseBudget"))
-                grid.Columns["PhaseBudget"].HeaderText = "งบประมาณ";
-            if (grid.Columns.Contains("PhasePercent"))
-                grid.Columns["PhasePercent"].HeaderText = "เปอร์เซ็นต์เฟส";
-            if (grid.Columns.Contains("PhaseStatus"))
-                grid.Columns["PhaseStatus"].HeaderText = "สถานะ (อังกฤษ)";
-            if (grid.Columns.Contains("PhaseStatusThai"))
-                grid.Columns["PhaseStatusThai"].HeaderText = "สถานะ";
-
-            if (grid.Columns.Contains("PhaseID"))
-                grid.Columns["PhaseID"].Visible = false;
-            if (grid.Columns.Contains("PhaseStatus"))
-                grid.Columns["PhaseStatus"].Visible = false;
-            if (grid.Columns.Contains("WorkID"))
-                grid.Columns["WorkID"].Visible = false;
 
             grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             grid.MultiSelect = false;
@@ -238,12 +330,20 @@ namespace JRSApplication
 
                 if (string.IsNullOrEmpty(workId))
                 {
-                    MessageBox.Show("เฟสนี้ยังไม่มีข้อมูลการทำงาน", "แจ้งเตือน", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("เฟสนี้ยังไม่มีข้อมูลการทำงาน",
+                                    "แจ้งเตือน",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
                     return;
                 }
 
-                var detailForm = new CheckphaseWorking(workId, phaseId, proId);
-                detailForm.ShowDialog();
+                using (var detailForm = new CheckphaseWorking(workId, phaseId, proId))
+                {
+                    if (detailForm.ShowDialog() == DialogResult.OK)
+                    {
+                        LoadProjectPhasesWithWorkCount();
+                    }
+                }
             }
         }
     }

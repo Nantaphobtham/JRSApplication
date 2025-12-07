@@ -261,38 +261,57 @@ namespace JRSApplication
             }
 
             decimal sumPercent = 0;
+            bool hasCompleted = false;
             bool hasInProgress = false;
-            bool hasNotStarted = false;
 
             foreach (var phase in phases)
             {
                 if (phase.PhaseStatus == WorkStatus.Completed)
                 {
                     sumPercent += phase.PhasePercent;
+                    hasCompleted = true;
                 }
                 else if (phase.PhaseStatus == WorkStatus.InProgress)
                 {
                     hasInProgress = true;
                 }
-                else if (phase.PhaseStatus == WorkStatus.NotStarted)
-                {
-                    hasNotStarted = true;
-                }
             }
 
-            txtSumpercent.Text = $"{sumPercent:N2} %";
+            txtSumpercent.Text = $"{sumPercent:N2}";
 
             string status;
-            if (sumPercent == 100)
+            if (sumPercent >= 100m)
+            {
                 status = "เสร็จสิ้น";
-            else if (hasInProgress)
+                txtStatus.BackColor = Color.LightGreen;
+                txtStatus.ForeColor= Color.Black;
+
+                txtSumpercent.BackColor = Color.LightGreen;
+                txtSumpercent.ForeColor = Color.Black;
+            }
+            else if (hasInProgress || hasCompleted)
+            {
+                // มีเฟสที่ทำไปแล้วบางส่วน (Completed บางเฟส หรือ InProgress บางเฟส)
                 status = "กำลังดำเนินการ";
-            else if (hasNotStarted)
-                status = "ยังไม่เริ่ม";
+                txtStatus.BackColor = Color.Yellow;
+                txtStatus.ForeColor = Color.Black;
+
+                txtSumpercent.BackColor = Color.Yellow;
+                txtSumpercent.ForeColor = Color.Black;
+            }
             else
-                status = "ไม่ทราบสถานะ";
+            {
+                // ยังไม่มีเฟสไหนเริ่มเลย
+                status = "ยังไม่เริ่ม";
+                txtStatus.BackColor = Color.Yellow;
+                txtStatus.ForeColor = Color.Black;
+
+                txtSumpercent.BackColor = Color.Yellow;
+                txtSumpercent.ForeColor = Color.Black;
+            }
 
             txtStatus.Text = status;
+
         }
 
         private void CustomizeDataGridViewPhase()

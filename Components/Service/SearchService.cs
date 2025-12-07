@@ -7,7 +7,8 @@ namespace JRSApplication
 {
     public class SearchService
     {
-        private string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+        private string connectionString =
+            ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
         public DataTable GetPhasesByProjectId(string projectId)
         {
@@ -49,88 +50,118 @@ namespace JRSApplication
                 if (searchType == "Customer")
                 {
                     query = @"
-                SELECT cus_id AS 'ID', cus_name AS 'ชื่อ', cus_lname AS 'นามสกุล',
-                       cus_id_card AS 'เลขบัตรประชาชน', cus_tel AS 'เบอร์โทร', cus_email AS 'อีเมล'
-                FROM customer
-                WHERE cus_name LIKE @Keyword OR cus_lname LIKE @Keyword
-            ";
+                        SELECT cus_id AS 'ID', cus_name AS 'ชื่อ', cus_lname AS 'นามสกุล',
+                               cus_id_card AS 'เลขบัตรประชาชน', cus_tel AS 'เบอร์โทร', cus_email AS 'อีเมล'
+                        FROM customer
+                        WHERE cus_name LIKE @Keyword OR cus_lname LIKE @Keyword
+                    ";
                 }
                 else if (searchType == "Employee")
                 {
                     query = @"
-                SELECT emp_id AS 'ID', emp_name AS 'ชื่อ', emp_lname AS 'นามสกุล',
-                       emp_pos AS 'ตำแหน่ง', emp_tel AS 'เบอร์โทร'
-                FROM employee
-                WHERE emp_name LIKE @Keyword OR emp_lname LIKE @Keyword
-            ";
+                        SELECT emp_id AS 'ID', emp_name AS 'ชื่อ', emp_lname AS 'นามสกุล',
+                               emp_pos AS 'ตำแหน่ง', emp_tel AS 'เบอร์โทร'
+                        FROM employee
+                        WHERE emp_name LIKE @Keyword OR emp_lname LIKE @Keyword
+                    ";
                 }
                 else if (searchType == "Supplier")
                 {
                     query = @"
-                SELECT sup_id AS 'ID', sup_name AS 'ชื่อบริษัท', sup_juristic AS 'เลขทะเบียนนิติบุคคล',
-                       sup_tel AS 'เบอร์โทร', sup_address AS 'ที่อยู่', sup_email AS 'อีเมล'
-                FROM supplier
-                WHERE sup_name LIKE @Keyword OR sup_juristic LIKE @Keyword
-            ";
+                        SELECT sup_id AS 'ID', sup_name AS 'ชื่อบริษัท', sup_juristic AS 'เลขทะเบียนนิติบุคคล',
+                               sup_tel AS 'เบอร์โทร', sup_address AS 'ที่อยู่', sup_email AS 'อีเมล'
+                        FROM supplier
+                        WHERE sup_name LIKE @Keyword OR sup_juristic LIKE @Keyword
+                    ";
                 }
                 else if (searchType == "Project")
                 {
                     query = @"
-                SELECT 
-                    p.pro_id AS 'รหัสโครงการ',
-                    p.pro_name AS 'ชื่อโครงการ',
-                    p.pro_number AS 'เลขที่สัญญา',
-                    p.pro_address AS 'สถานที่',
-                    p.pro_budget AS 'งบประมาณ',
-                    c.cus_id AS 'รหัสลูกค้า',
-                    CONCAT(c.cus_name, ' ', c.cus_lname) AS 'ลูกค้า',
-                    c.cus_tel AS 'เบอร์โทร',
-                    c.cus_email AS 'อีเมล',
-                    CONCAT(e.emp_name, ' ', e.emp_lname) AS 'พนักงานดูแล'
-                FROM project p
-                LEFT JOIN customer c ON p.cus_id = c.cus_id
-                LEFT JOIN employee e ON p.emp_id = e.emp_id
-                WHERE p.pro_name LIKE @Keyword OR p.pro_id LIKE @Keyword
-            ";
+                        SELECT 
+                            p.pro_id AS 'รหัสโครงการ',
+                            p.pro_name AS 'ชื่อโครงการ',
+                            p.pro_number AS 'เลขที่สัญญา',
+                            p.pro_address AS 'สถานที่',
+                            p.pro_budget AS 'งบประมาณ',
+                            c.cus_id AS 'รหัสลูกค้า',
+                            CONCAT(c.cus_name, ' ', c.cus_lname) AS 'ลูกค้า',
+                            c.cus_tel AS 'เบอร์โทร',
+                            c.cus_email AS 'อีเมล',
+                            CONCAT(e.emp_name, ' ', e.emp_lname) AS 'พนักงานดูแล'
+                        FROM project p
+                        LEFT JOIN customer c ON p.cus_id = c.cus_id
+                        LEFT JOIN employee e ON p.emp_id = e.emp_id
+                        WHERE p.pro_name LIKE @Keyword OR p.pro_id LIKE @Keyword
+                    ";
                 }
                 else if (searchType == "Invoice")
                 {
                     query = @"
-                SELECT 
-                    inv_id        AS 'เลขที่ใบแจ้งหนี้',
-                    inv_date      AS 'วันที่ออก',
-                    inv_status    AS 'สถานะ',
-                    inv_method    AS 'วิธีชำระเงิน',
-                    cus_id        AS 'รหัสลูกค้า',
-                    pro_id        AS 'รหัสโครงการ',
-                    emp_id        AS 'รหัสพนักงาน',
-                    inv_duedate   AS 'กำหนดชำระ',
-                    paid_date     AS 'วันที่ชำระ'
-                FROM invoice
-                WHERE pro_id LIKE @Keyword OR CAST(inv_id AS CHAR) LIKE @Keyword
-            ";
+                        SELECT 
+                            inv_id        AS 'เลขที่ใบแจ้งหนี้',
+                            inv_date      AS 'วันที่ออก',
+                            inv_status    AS 'สถานะ',
+                            inv_method    AS 'วิธีชำระเงิน',
+                            cus_id        AS 'รหัสลูกค้า',
+                            pro_id        AS 'รหัสโครงการ',
+                            emp_id        AS 'รหัสพนักงาน',
+                            inv_duedate   AS 'กำหนดชำระ',
+                            paid_date     AS 'วันที่ชำระ'
+                        FROM invoice
+                        WHERE pro_id LIKE @Keyword OR CAST(inv_id AS CHAR) LIKE @Keyword
+                    ";
                 }
                 else if (searchType == "UnpaidInvoiceByProject")
                 {
+                    // ใบแจ้งหนี้ที่ยังไม่ชำระ = สถานะ 'รอชำระเงิน' หรือยังไม่ได้ตั้งค่า (NULL)
                     query = @"
-                SELECT 
-                    inv_id,
-                    DATE_FORMAT(inv_date,'%Y-%m-%d')     AS inv_date,
-                    DATE_FORMAT(inv_duedate,'%Y-%m-%d')  AS inv_duedate,
-                    pro_id,
-                    cus_id,
-                    emp_id,
-                    inv_method,
-                    inv_status
-                FROM invoice
-                WHERE pro_id = @projectId
-                  AND inv_status = 'รอชำระเงิน'
-                ORDER BY inv_date DESC, inv_id DESC;
-            ";
+                        SELECT 
+                            inv_id,
+                            DATE_FORMAT(inv_date, '%Y-%m-%d')    AS inv_date,
+                            DATE_FORMAT(inv_duedate, '%Y-%m-%d') AS inv_duedate,
+                            pro_id,
+                            cus_id,
+                            emp_id,
+                            inv_method,
+                            inv_status
+                        FROM invoice
+                        WHERE pro_id = @projectId
+                          AND (inv_status IS NULL OR inv_status = 'รอชำระเงิน')
+                        ORDER BY inv_date DESC, inv_id DESC;
+                    ";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@projectId", keyword); // keyword = pro_id
+                        cmd.Parameters.AddWithValue("@projectId", keyword); // keyword = projectId
+                        using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                        {
+                            adapter.Fill(dt);
+                        }
+                    }
+                    return dt;
+                }
+                else if (searchType == "PaidInvoiceByProject")
+                {
+                    // ใบแจ้งหนี้ที่ชำระแล้ว
+                    query = @"
+                        SELECT 
+                            inv_id,
+                            DATE_FORMAT(inv_date, '%Y-%m-%d')    AS inv_date,
+                            DATE_FORMAT(inv_duedate, '%Y-%m-%d') AS inv_duedate,
+                            pro_id,
+                            cus_id,
+                            emp_id,
+                            inv_method,
+                            inv_status
+                        FROM invoice
+                        WHERE pro_id = @projectId
+                          AND inv_status = 'ชำระแล้ว'
+                        ORDER BY inv_date DESC, inv_id DESC;
+                    ";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@projectId", keyword); // keyword = projectId
                         using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                         {
                             adapter.Fill(dt);
@@ -139,6 +170,7 @@ namespace JRSApplication
                     return dt;
                 }
 
+                // กรณีอื่น ๆ ใช้ @Keyword ตามปกติ
                 if (string.IsNullOrWhiteSpace(query))
                     return dt;
 
@@ -155,12 +187,9 @@ namespace JRSApplication
             return dt;
         }
 
-
-
         public DataTable GetAllInvoices()
         {
-            string connStr = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
-            using (MySqlConnection conn = new MySqlConnection(connStr))
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 string query = @"
                     SELECT 
@@ -188,7 +217,6 @@ namespace JRSApplication
 
         public DataTable GetDraftInvoicesByProject(string projectId)
         {
-            // ★ เพิ่ม inv_status เพื่อให้กริดบนเอาไปโชว์และทำสีได้
             string query = @"
                 SELECT 
                     i.inv_id,
@@ -307,7 +335,6 @@ namespace JRSApplication
 
         public DataTable GetPaidInvoices()
         {
-            // เปลี่ยน inv_no -> inv_id
             string query = @"
                 SELECT 
                     i.inv_id,
