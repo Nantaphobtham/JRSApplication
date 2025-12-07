@@ -34,11 +34,9 @@
             this.label18 = new System.Windows.Forms.Label();
             this.starAssignDescription = new System.Windows.Forms.Label();
             this.stardueDate = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
             this.starstartDate = new System.Windows.Forms.Label();
             this.starSeclectPhase = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -54,7 +52,6 @@
             this.txtPorjectID = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.txtDate = new System.Windows.Forms.TextBox();
             this.txtContractnumber = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.txtProjectName = new System.Windows.Forms.TextBox();
@@ -80,6 +77,9 @@
             this.dtgvAssignment = new System.Windows.Forms.DataGridView();
             this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.label1 = new System.Windows.Forms.Label();
+            this.txtDate = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
             this.pnlInfomation.SuspendLayout();
             this.pnlsubInfo.SuspendLayout();
             this.pnlActionMenu.SuspendLayout();
@@ -155,6 +155,7 @@
             this.starRemark.Size = new System.Drawing.Size(22, 30);
             this.starRemark.TabIndex = 41;
             this.starRemark.Text = "*";
+            this.starRemark.Visible = false;
             // 
             // label18
             // 
@@ -166,6 +167,7 @@
             this.label18.Size = new System.Drawing.Size(22, 30);
             this.label18.TabIndex = 40;
             this.label18.Text = "*";
+            this.label18.Visible = false;
             // 
             // starAssignDescription
             // 
@@ -177,6 +179,7 @@
             this.starAssignDescription.Size = new System.Drawing.Size(22, 30);
             this.starAssignDescription.TabIndex = 40;
             this.starAssignDescription.Text = "*";
+            this.starAssignDescription.Visible = false;
             // 
             // stardueDate
             // 
@@ -188,17 +191,7 @@
             this.stardueDate.Size = new System.Drawing.Size(22, 30);
             this.stardueDate.TabIndex = 39;
             this.stardueDate.Text = "*";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.ForeColor = System.Drawing.Color.Red;
-            this.label15.Location = new System.Drawing.Point(1078, 214);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(22, 30);
-            this.label15.TabIndex = 38;
-            this.label15.Text = "*";
+            this.stardueDate.Visible = false;
             // 
             // starstartDate
             // 
@@ -210,6 +203,7 @@
             this.starstartDate.Size = new System.Drawing.Size(22, 30);
             this.starstartDate.TabIndex = 38;
             this.starstartDate.Text = "*";
+            this.starstartDate.Visible = false;
             // 
             // starSeclectPhase
             // 
@@ -221,6 +215,7 @@
             this.starSeclectPhase.Size = new System.Drawing.Size(22, 30);
             this.starSeclectPhase.TabIndex = 37;
             this.starSeclectPhase.Text = "*";
+            this.starSeclectPhase.Visible = false;
             // 
             // label14
             // 
@@ -231,16 +226,6 @@
             this.label14.Size = new System.Drawing.Size(93, 30);
             this.label14.TabIndex = 36;
             this.label14.Text = "วันที่สิ้นสุด";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(988, 214);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(84, 30);
-            this.label6.TabIndex = 35;
-            this.label6.Text = "ระยะเวลา";
             // 
             // label13
             // 
@@ -395,17 +380,6 @@
             this.label19.Size = new System.Drawing.Size(110, 30);
             this.label19.TabIndex = 20;
             this.label19.Text = "เลขที่สัญญา";
-            // 
-            // txtDate
-            // 
-            this.txtDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtDate.Enabled = false;
-            this.txtDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDate.Location = new System.Drawing.Point(993, 244);
-            this.txtDate.Name = "txtDate";
-            this.txtDate.Size = new System.Drawing.Size(160, 35);
-            this.txtDate.TabIndex = 19;
-            this.txtDate.TextChanged += new System.EventHandler(this.txtDate_TextChanged);
             // 
             // txtContractnumber
             // 
@@ -687,9 +661,6 @@
             // searchboxControl1
             // 
             this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.DefaultFunction = "จัดการบัญชีผู้ใช้";
-            this.searchboxControl1.DefaultRole = "Admin";
-            this.searchboxControl1.Keyword = "";
             this.searchboxControl1.Location = new System.Drawing.Point(894, 26);
             this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.searchboxControl1.Name = "searchboxControl1";
@@ -706,6 +677,39 @@
             this.label1.Size = new System.Drawing.Size(231, 30);
             this.label1.TabIndex = 9;
             this.label1.Text = "ข้อมูลการจ้างผู้รับเหมา";
+            // 
+            // txtDate
+            // 
+            this.txtDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtDate.Enabled = false;
+            this.txtDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDate.Location = new System.Drawing.Point(993, 244);
+            this.txtDate.Name = "txtDate";
+            this.txtDate.Size = new System.Drawing.Size(160, 35);
+            this.txtDate.TabIndex = 19;
+            this.txtDate.TextChanged += new System.EventHandler(this.txtDate_TextChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(988, 214);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(84, 30);
+            this.label6.TabIndex = 35;
+            this.label6.Text = "ระยะเวลา";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.ForeColor = System.Drawing.Color.Red;
+            this.label15.Location = new System.Drawing.Point(1078, 214);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(22, 30);
+            this.label15.TabIndex = 38;
+            this.label15.Text = "*";
+            this.label15.Visible = false;
             // 
             // DetermineSubcontractors
             // 
