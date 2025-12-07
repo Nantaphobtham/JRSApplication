@@ -246,6 +246,27 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.btnInvoice_Click);
             // 
+            // Body
+            // 
+            this.Body.Controls.Add(this.PicLogo);
+            this.Body.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Body.Location = new System.Drawing.Point(448, 155);
+            this.Body.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Body.Name = "Body";
+            this.Body.Size = new System.Drawing.Size(1492, 945);
+            this.Body.TabIndex = 3;
+            // 
+            // PicLogo
+            // 
+            this.PicLogo.Image = global::JRSApplication.Properties.Resources.logo;
+            this.PicLogo.Location = new System.Drawing.Point(416, 39);
+            this.PicLogo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PicLogo.Name = "PicLogo";
+            this.PicLogo.Size = new System.Drawing.Size(1820, 1097);
+            this.PicLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.PicLogo.TabIndex = 0;
+            this.PicLogo.TabStop = false;
+            // 
             // AccountantForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
