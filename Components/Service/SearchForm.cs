@@ -362,6 +362,7 @@ namespace JRSApplication
                     return;
                 }
 
+
                 table.DefaultView.RowFilter =
                     $"CONVERT([{selectedColumn}], 'System.String') LIKE '%{keyword}%'";
             }
