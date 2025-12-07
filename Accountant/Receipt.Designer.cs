@@ -99,8 +99,9 @@
             // 
             // dtgvInvoice
             // 
+            this.dtgvInvoice.BackgroundColor = System.Drawing.SystemColors.ActiveBorder;
             this.dtgvInvoice.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvInvoice.Location = new System.Drawing.Point(25, 121);
+            this.dtgvInvoice.Location = new System.Drawing.Point(21, 116);
             this.dtgvInvoice.Name = "dtgvInvoice";
             this.dtgvInvoice.Size = new System.Drawing.Size(1521, 191);
             this.dtgvInvoice.TabIndex = 36;
@@ -480,7 +481,7 @@
             // 
             this.btn1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
             this.btn1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold);
-            this.btn1.Location = new System.Drawing.Point(1362, 64);
+            this.btn1.Location = new System.Drawing.Point(184, 14);
             this.btn1.Name = "btn1";
             this.btn1.Size = new System.Drawing.Size(181, 51);
             this.btn1.TabIndex = 83;
@@ -559,7 +560,7 @@
             this.Controls.Add(this.dtgvInvoice);
             this.Controls.Add(this.Topic1);
             this.Name = "Receipt";
-            this.Size = new System.Drawing.Size(1389, 783);
+            this.Size = new System.Drawing.Size(1372, 766);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvReceiptDetail)).EndInit();
             this.panel4.ResumeLayout(false);

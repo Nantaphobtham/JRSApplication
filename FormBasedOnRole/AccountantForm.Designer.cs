@@ -230,7 +230,7 @@
             // 
             // Body
             // 
-            this.Body.BackColor = System.Drawing.Color.White;
+            this.Body.BackColor = System.Drawing.SystemColors.Window;
             this.Body.Controls.Add(this.PicLogo);
             this.Body.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Body.Location = new System.Drawing.Point(336, 126);
@@ -240,6 +240,7 @@
             // 
             // PicLogo
             // 
+            this.PicLogo.BackColor = System.Drawing.Color.White;
             this.PicLogo.Image = global::JRSApplication.Properties.Resources.logo;
             this.PicLogo.Location = new System.Drawing.Point(110, 32);
             this.PicLogo.Name = "PicLogo";

@@ -189,31 +189,35 @@ namespace JRSApplication
 
         public DataTable GetAllInvoices()
         {
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                string query = @"
-                    SELECT 
-                        i.inv_id,
-                        i.inv_date,
-                        i.inv_duedate,
-                        i.inv_status,
-                        i.paid_date,
-                        i.pro_id,
-                        i.cus_id,
-                        i.phase_id
-                    FROM invoice i
-                    WHERE i.inv_status = 'รอชำระเงิน' OR i.inv_status IS NULL
-                ";
+            DataTable dt = new DataTable();
 
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
-                {
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    return dt;
-                }
+            string query = @"
+        SELECT 
+            i.inv_id,
+            i.inv_date,
+            i.inv_duedate,
+            i.inv_status,
+            i.paid_date,
+            i.pro_id,
+            i.cus_id,
+            i.phase_id,
+            pp.phase_no        -- <<< NEW COLUMN FROM project_phase
+        FROM jrsconstruction.invoice i
+        LEFT JOIN jrsconstruction.project_phase pp
+            ON i.phase_id = pp.phase_id
+        ORDER BY i.inv_date DESC;";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+            {
+                conn.Open();
+                adapter.Fill(dt);
             }
+
+            return dt;
         }
+
 
         public DataTable GetDraftInvoicesByProject(string projectId)
         {

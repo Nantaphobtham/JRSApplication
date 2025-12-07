@@ -87,18 +87,25 @@ namespace JRSApplication.Data_Access_Layer
             }
         }
 
-
         public DataTable GetAllInvoices()
         {
             DataTable dt = new DataTable();
-            string query = @"SELECT inv_no AS 'เลขที่ใบแจ้งหนี้',
-                            inv_date AS 'วันที่ออกใบแจ้งหนี้',
-                            inv_duedate AS 'กำหนดชำระ',
-                            cus_id AS 'รหัสลูกค้า',
-                            pro_id AS 'รหัสโครงการ',
-                            phase_id AS 'เฟสงาน'
-                     FROM invoice
-                     ORDER BY inv_date DESC";
+
+            string query = @"
+        SELECT 
+            i.inv_id,
+            i.inv_date,
+            i.inv_duedate,
+            i.inv_status,
+            i.paid_date,
+            i.pro_id,
+            i.cus_id,
+            i.phase_id,
+            pp.phase_no         -- <<< NEW COLUMN
+        FROM jrsconstruction.invoice i
+        LEFT JOIN jrsconstruction.project_phase pp
+            ON i.phase_id = pp.phase_id
+        ORDER BY i.inv_date DESC;";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -110,6 +117,8 @@ namespace JRSApplication.Data_Access_Layer
 
             return dt;
         }
+
+
 
         public DataTable GetUnpaidInvoicesByProject(string proId)
         {

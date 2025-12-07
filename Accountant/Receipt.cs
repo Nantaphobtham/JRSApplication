@@ -45,13 +45,13 @@ namespace JRSApplication.Accountant
             dtgvInvoice.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dtgvInvoice.DefaultCellStyle.SelectionBackColor = Color.DarkBlue;
             dtgvInvoice.DefaultCellStyle.SelectionForeColor = Color.White;
-            dtgvInvoice.BackgroundColor = Color.White;
+            dtgvInvoice.BackgroundColor = Color.FromArgb(171, 171, 171);
 
             dtgvInvoice.EnableHeadersVisualStyles = false;
             dtgvInvoice.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dtgvInvoice.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dtgvInvoice.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dtgvInvoice.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            dtgvInvoice.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
             dtgvInvoice.ColumnHeadersHeight = 30;
 
             dtgvInvoice.DefaultCellStyle.Font = new Font("Segoe UI", 12);
@@ -178,6 +178,7 @@ namespace JRSApplication.Accountant
 
             // ✅ เปลี่ยนชื่อหัวคอลัมน์เป็นภาษาไทย
             RenameInvoiceHeaders();
+            ArrangeInvoiceColumns();
         }
 
         private void RenameInvoiceHeaders()
@@ -185,28 +186,21 @@ namespace JRSApplication.Accountant
             try
             {
                 dtgvInvoice.Columns["inv_id"].HeaderText = "เลขที่ใบแจ้งหนี้";
+                dtgvInvoice.Columns["pro_id"].HeaderText = "เลขที่สัญญา";
+                dtgvInvoice.Columns["pro_name"].HeaderText = "ชื่อโครงการ";
+                dtgvInvoice.Columns["phase_no"].HeaderText = "เฟสที่";
+                if (dtgvInvoice.Columns.Contains("phase_id"))
+                {
+                    dtgvInvoice.Columns["phase_id"].Visible = false;
+                }
+
                 dtgvInvoice.Columns["inv_date"].HeaderText = "วันที่ออกใบแจ้งหนี้";
                 dtgvInvoice.Columns["inv_duedate"].HeaderText = "วันครบกำหนดชำระ";
                 dtgvInvoice.Columns["inv_status"].HeaderText = "สถานะใบแจ้งหนี้";
                 dtgvInvoice.Columns["inv_method"].HeaderText = "วิธีการชำระเงิน";
                 dtgvInvoice.Columns["paid_date"].HeaderText = "วันที่ชำระเงิน";
-
-                dtgvInvoice.Columns["emp_id"].HeaderText = "รหัสพนักงาน";
                 dtgvInvoice.Columns["emp_fullname"].HeaderText = "ชื่อพนักงานผู้ออกใบแจ้งหนี้";
 
-                dtgvInvoice.Columns["pro_id"].HeaderText = "รหัสโครงการ";
-                dtgvInvoice.Columns["pro_name"].HeaderText = "ชื่อโครงการ";
-
-                dtgvInvoice.Columns["cus_fullname"].HeaderText = "ชื่อลูกค้า";
-                dtgvInvoice.Columns["cus_id_card"].HeaderText = "เลขบัตรประชาชนลูกค้า";
-                dtgvInvoice.Columns["cus_address"].HeaderText = "ที่อยู่ลูกค้า";
-
-                //dtgvInvoice.Columns["phase_id"].HeaderText = "รหัสเฟสงาน";
-                dtgvInvoice.Columns["phase_no"].HeaderText = "ลำดับเฟสงาน";
-                if (dtgvInvoice.Columns.Contains("phase_id"))
-                {
-                    dtgvInvoice.Columns["phase_id"].Visible = false;
-                }
             }
 
             catch { /* ถ้ามีบางคอลัมน์ไม่มี ไม่ต้อง Error */ }
@@ -367,22 +361,6 @@ namespace JRSApplication.Accountant
                 MessageBox.Show("เกิดข้อผิดพลาด: " + ex.Message, "ผิดพลาด",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-        private static decimal ParseMoney(string s)
-        {
-            if (string.IsNullOrWhiteSpace(s)) return 0m;
-
-            if (decimal.TryParse(s,
-                NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
-                CultureInfo.CurrentCulture, out var v)) return v;
-
-            if (decimal.TryParse(s,
-                NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
-                CultureInfo.InvariantCulture, out v)) return v;
-
-            // last resort: keep only digits/.,,
-            var cleaned = new string(s.Where(ch => char.IsDigit(ch) || ch == '.' || ch == ',').ToArray());
-            return decimal.TryParse(cleaned, NumberStyles.Number, CultureInfo.InvariantCulture, out v) ? v : 0m;
         }
 
         // Returns the first row from dtgvReceiptDetail as (detail, qtyText, priceText)
@@ -581,6 +559,80 @@ namespace JRSApplication.Accountant
             dtpReceiptDate.Value = Convert.ToDateTime(row["receipt_date"]);
             txtReason.Text = row["receipt_remark"].ToString(); // The remark you want to edit
         }
+        private void ArrangeInvoiceColumns()
+        {
+            var g = dtgvInvoice;
+            if (g.Columns.Count == 0) return;
+
+            try
+            {
+                // ====== HIDE COLUMNS YOU DON'T WANT TO SEE ======
+                string[] hideCols =
+                {
+            "cus_id",
+            "cus_fullname",
+            "cus_id_card",
+            "cus_address",
+            "phase_id",
+            "emp_id"
+        };
+
+                foreach (var name in hideCols)
+                {
+                    if (g.Columns.Contains(name))
+                        g.Columns[name].Visible = false;
+                }
+
+                // ====== ORDER VISIBLE COLUMNS ======
+                // Use one counter so we can easily control left-to-right order.
+                int idx = 0;
+
+                // 1  รหัสใบแจ้งหนี้
+                if (g.Columns.Contains("inv_id"))
+                    g.Columns["inv_id"].DisplayIndex = idx++;
+
+                // 2  รหัสโครงการ
+                if (g.Columns.Contains("pro_id"))
+                    g.Columns["pro_id"].DisplayIndex = idx++;
+
+                // 3  ชื่อโครงการ
+                if (g.Columns.Contains("pro_name"))
+                    g.Columns["pro_name"].DisplayIndex = idx++;
+
+                // 4  เฟสงาน (ถ้าอยากให้แทรกตรงนี้; ถ้าไม่ใช้ ให้ลบออก)
+                if (g.Columns.Contains("phase_no"))
+                    g.Columns["phase_no"].DisplayIndex = idx++;
+
+                // 5  วันที่ออกใบแจ้งหนี้
+                if (g.Columns.Contains("inv_date"))
+                    g.Columns["inv_date"].DisplayIndex = idx++;
+
+                // 6  วันครบกำหนดชำระ
+                if (g.Columns.Contains("inv_duedate"))
+                    g.Columns["inv_duedate"].DisplayIndex = idx++;
+
+                // 7  สถานะใบแจ้งหนี้
+                if (g.Columns.Contains("inv_status"))
+                    g.Columns["inv_status"].DisplayIndex = idx++;
+
+                // 8  วิธีการชำระเงิน
+                if (g.Columns.Contains("inv_method"))
+                    g.Columns["inv_method"].DisplayIndex = idx++;
+
+                // 9  วันที่ชำระเงิน
+                if (g.Columns.Contains("paid_date"))
+                    g.Columns["paid_date"].DisplayIndex = idx++;
+
+                // 10 ชื่อพนักงานผู้ออกใบแจ้งหนี้
+                if (g.Columns.Contains("emp_fullname"))
+                    g.Columns["emp_fullname"].DisplayIndex = idx++;
+            }
+            catch
+            {
+                // ถ้ามีบางคอลัมน์ไม่มี ก็ไม่ต้อง error
+            }
+        }
 
     }
+
 }
