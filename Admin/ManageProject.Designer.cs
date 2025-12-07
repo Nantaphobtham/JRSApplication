@@ -1198,7 +1198,7 @@
             this.txtWorkingDate.Size = new System.Drawing.Size(220, 36);
             this.txtWorkingDate.TabIndex = 2;
             this.txtWorkingDate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtWorkingDate.TextChanged += new System.EventHandler(this.txtWorkingDate_TextChanged);
+            
             // 
             // panel3
             // 
@@ -1262,7 +1262,6 @@
             this.dtpkStartDate.Name = "dtpkStartDate";
             this.dtpkStartDate.Size = new System.Drawing.Size(177, 35);
             this.dtpkStartDate.TabIndex = 3;
-            this.dtpkStartDate.ValueChanged += new System.EventHandler(this.dtpkStartDate_ValueChanged);
             // 
             // lblStartDate
             // 
@@ -1463,7 +1462,6 @@
             this.dtgvProject.Name = "dtgvProject";
             this.dtgvProject.Size = new System.Drawing.Size(1514, 270);
             this.dtgvProject.TabIndex = 5;
-            this.dtgvProject.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgvProject_CellClick);
             // 
             // lblToppic1
             // 
