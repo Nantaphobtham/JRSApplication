@@ -80,12 +80,12 @@
             // Siderbar
             // 
             this.Siderbar.BackgroundImage = global::JRSApplication.Properties.Resources.sidebar;
-            this.Siderbar.Controls.Add(this.btnProjectInformation);
+            this.Siderbar.Controls.Add(this.btnPaymentsInfomation);
+            this.Siderbar.Controls.Add(this.btnPurchaseOrder);
             this.Siderbar.Controls.Add(this.menuContainer);
             this.Siderbar.Controls.Add(this.btnChooseSubcontractors);
             this.Siderbar.Controls.Add(this.btnAllocateEmployee);
-            this.Siderbar.Controls.Add(this.btnPurchaseOrder);
-            this.Siderbar.Controls.Add(this.btnPaymentsInfomation);
+            this.Siderbar.Controls.Add(this.btnProjectInformation);
             this.Siderbar.Dock = System.Windows.Forms.DockStyle.Left;
             this.Siderbar.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Siderbar.Location = new System.Drawing.Point(0, 126);
