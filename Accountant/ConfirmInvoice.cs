@@ -477,7 +477,7 @@ namespace JRSApplication.Accountant
                 Name = "inv_detail",
                 HeaderText = "รายละเอียด",
                 DataPropertyName = "inv_detail",
-                Width = 260,
+                Width = 300,
                 DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleLeft }
             });
 
