@@ -131,6 +131,34 @@ namespace JRSApplication.Accountant
             txtPhaseID.Text = row.Cells["phase_no"]?.Value?.ToString()
                    ?? row.Cells["phase_id"]?.Value?.ToString()
                    ?? "";
+            // ✅ แสดง phase_budget ที่ label2
+            if (dtgvInvoice.Columns.Contains("phase_budget"))
+            {
+                var cellValue = row.Cells["phase_budget"]?.Value;
+
+                if (cellValue != null && cellValue != DBNull.Value)
+                {
+                    if (decimal.TryParse(cellValue.ToString(), out decimal budget))
+                    {
+                        // แสดงเป็นตัวเลข 2 ตำแหน่ง (เช่น 100,000.00)
+                        textBox2.Text = budget.ToString("N2");
+                    }
+                    else
+                    {
+                        // ถ้า parse ไม่ได้ก็โชว์ดิบๆ ไปก่อน
+                        textBox2.Text = cellValue.ToString();
+                    }
+                }
+                else
+                {
+                    textBox2.Text = string.Empty;
+                }
+            }
+            else
+            {
+                // กรณี query ฝั่ง DAL ยังไม่มีคอลัมน์ phase_budget
+                label2.Text = string.Empty;
+            }
 
             // 🔸 Auto-generate receipt_id into the textbox and lock it
             try
@@ -636,3 +664,4 @@ namespace JRSApplication.Accountant
     }
 
 }
+

@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.Topic1 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.dtgvInvoice = new System.Windows.Forms.DataGridView();
             this.label3 = new System.Windows.Forms.Label();
@@ -70,20 +69,12 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.dtpReceiptDate = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvReceiptDetail)).BeginInit();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // Topic1
-            // 
-            this.Topic1.AutoSize = true;
-            this.Topic1.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Topic1.Location = new System.Drawing.Point(27, 17);
-            this.Topic1.Name = "Topic1";
-            this.Topic1.Size = new System.Drawing.Size(151, 30);
-            this.Topic1.TabIndex = 28;
-            this.Topic1.Text = "ค้นหาโครงการ";
             // 
             // label1
             // 
@@ -99,8 +90,8 @@
             // 
             this.dtgvInvoice.BackgroundColor = System.Drawing.SystemColors.ActiveBorder;
             this.dtgvInvoice.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvInvoice.Location = new System.Drawing.Point(28, 143);
-            this.dtgvInvoice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtgvInvoice.Location = new System.Drawing.Point(30, 151);
+            this.dtgvInvoice.Margin = new System.Windows.Forms.Padding(4);
             this.dtgvInvoice.Name = "dtgvInvoice";
             this.dtgvInvoice.Size = new System.Drawing.Size(2028, 235);
             this.dtgvInvoice.TabIndex = 36;
@@ -142,7 +133,7 @@
             this.txtCusName.Enabled = false;
             this.txtCusName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCusName.Location = new System.Drawing.Point(245, 495);
-            this.txtCusName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtCusName.Margin = new System.Windows.Forms.Padding(4);
             this.txtCusName.Name = "txtCusName";
             this.txtCusName.ReadOnly = true;
             this.txtCusName.Size = new System.Drawing.Size(319, 35);
@@ -174,7 +165,7 @@
             this.txtCusIDCard.Enabled = false;
             this.txtCusIDCard.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCusIDCard.Location = new System.Drawing.Point(245, 545);
-            this.txtCusIDCard.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtCusIDCard.Margin = new System.Windows.Forms.Padding(4);
             this.txtCusIDCard.Name = "txtCusIDCard";
             this.txtCusIDCard.ReadOnly = true;
             this.txtCusIDCard.Size = new System.Drawing.Size(319, 35);
@@ -196,7 +187,7 @@
             this.txtCusAddress.Enabled = false;
             this.txtCusAddress.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCusAddress.Location = new System.Drawing.Point(245, 596);
-            this.txtCusAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtCusAddress.Margin = new System.Windows.Forms.Padding(4);
             this.txtCusAddress.Multiline = true;
             this.txtCusAddress.Name = "txtCusAddress";
             this.txtCusAddress.ReadOnly = true;
@@ -219,7 +210,7 @@
             this.txtPhaseID.Enabled = false;
             this.txtPhaseID.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPhaseID.Location = new System.Drawing.Point(971, 596);
-            this.txtPhaseID.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPhaseID.Margin = new System.Windows.Forms.Padding(4);
             this.txtPhaseID.Name = "txtPhaseID";
             this.txtPhaseID.ReadOnly = true;
             this.txtPhaseID.Size = new System.Drawing.Size(319, 35);
@@ -241,7 +232,7 @@
             this.txtProName.Enabled = false;
             this.txtProName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProName.Location = new System.Drawing.Point(971, 545);
-            this.txtProName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtProName.Margin = new System.Windows.Forms.Padding(4);
             this.txtProName.Name = "txtProName";
             this.txtProName.ReadOnly = true;
             this.txtProName.Size = new System.Drawing.Size(319, 35);
@@ -263,7 +254,7 @@
             this.txtContractNo.Enabled = false;
             this.txtContractNo.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtContractNo.Location = new System.Drawing.Point(971, 495);
-            this.txtContractNo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtContractNo.Margin = new System.Windows.Forms.Padding(4);
             this.txtContractNo.Name = "txtContractNo";
             this.txtContractNo.ReadOnly = true;
             this.txtContractNo.Size = new System.Drawing.Size(319, 35);
@@ -295,7 +286,7 @@
             this.txtEmpName.Enabled = false;
             this.txtEmpName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtEmpName.Location = new System.Drawing.Point(1736, 540);
-            this.txtEmpName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtEmpName.Margin = new System.Windows.Forms.Padding(4);
             this.txtEmpName.Name = "txtEmpName";
             this.txtEmpName.ReadOnly = true;
             this.txtEmpName.Size = new System.Drawing.Size(319, 35);
@@ -317,7 +308,7 @@
             this.txtInvNo.Enabled = false;
             this.txtInvNo.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtInvNo.Location = new System.Drawing.Point(1736, 487);
-            this.txtInvNo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtInvNo.Margin = new System.Windows.Forms.Padding(4);
             this.txtInvNo.Name = "txtInvNo";
             this.txtInvNo.ReadOnly = true;
             this.txtInvNo.Size = new System.Drawing.Size(319, 35);
@@ -358,7 +349,7 @@
             this.txtReceiptNo.Enabled = false;
             this.txtReceiptNo.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtReceiptNo.Location = new System.Drawing.Point(33, 850);
-            this.txtReceiptNo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtReceiptNo.Margin = new System.Windows.Forms.Padding(4);
             this.txtReceiptNo.Name = "txtReceiptNo";
             this.txtReceiptNo.Size = new System.Drawing.Size(319, 35);
             this.txtReceiptNo.TabIndex = 70;
@@ -387,7 +378,7 @@
             // 
             this.txtReason.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtReason.Location = new System.Drawing.Point(33, 954);
-            this.txtReason.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtReason.Margin = new System.Windows.Forms.Padding(4);
             this.txtReason.Multiline = true;
             this.txtReason.Name = "txtReason";
             this.txtReason.Size = new System.Drawing.Size(665, 114);
@@ -407,7 +398,7 @@
             // 
             this.dtgvReceiptDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgvReceiptDetail.Location = new System.Drawing.Point(1087, 753);
-            this.dtgvReceiptDetail.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtgvReceiptDetail.Margin = new System.Windows.Forms.Padding(4);
             this.dtgvReceiptDetail.Name = "dtgvReceiptDetail";
             this.dtgvReceiptDetail.Size = new System.Drawing.Size(975, 319);
             this.dtgvReceiptDetail.TabIndex = 77;
@@ -418,7 +409,7 @@
             this.panel4.Controls.Add(this.button5);
             this.panel4.Controls.Add(this.button3);
             this.panel4.Location = new System.Drawing.Point(-164, 1076);
-            this.panel4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel4.Margin = new System.Windows.Forms.Padding(4);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(2220, 140);
             this.panel4.TabIndex = 79;
@@ -428,7 +419,7 @@
             this.button6.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.button6.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button6.Location = new System.Drawing.Point(1251, 28);
-            this.button6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button6.Margin = new System.Windows.Forms.Padding(4);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(275, 84);
             this.button6.TabIndex = 47;
@@ -441,7 +432,7 @@
             this.button5.BackColor = System.Drawing.Color.Lime;
             this.button5.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button5.Location = new System.Drawing.Point(1944, 28);
-            this.button5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button5.Margin = new System.Windows.Forms.Padding(4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(215, 84);
             this.button5.TabIndex = 46;
@@ -454,7 +445,7 @@
             this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.button3.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.Location = new System.Drawing.Point(1679, 28);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(215, 84);
             this.button3.TabIndex = 44;
@@ -469,7 +460,7 @@
             this.dtpPaidDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpPaidDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpPaidDate.Location = new System.Drawing.Point(1736, 591);
-            this.dtpPaidDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpPaidDate.Margin = new System.Windows.Forms.Padding(4);
             this.dtpPaidDate.Name = "dtpPaidDate";
             this.dtpPaidDate.Size = new System.Drawing.Size(319, 35);
             this.dtpPaidDate.TabIndex = 81;
@@ -478,8 +469,8 @@
             // 
             this.btn1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
             this.btn1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold);
-            this.btn1.Location = new System.Drawing.Point(245, 17);
-            this.btn1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btn1.Location = new System.Drawing.Point(33, 18);
+            this.btn1.Margin = new System.Windows.Forms.Padding(4);
             this.btn1.Name = "btn1";
             this.btn1.Size = new System.Drawing.Size(241, 63);
             this.btn1.TabIndex = 83;
@@ -498,7 +489,7 @@
             this.textBox1.Enabled = false;
             this.textBox1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(1736, 645);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(319, 35);
@@ -511,10 +502,32 @@
             this.dtpReceiptDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpReceiptDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpReceiptDate.Location = new System.Drawing.Point(380, 850);
-            this.dtpReceiptDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpReceiptDate.Margin = new System.Windows.Forms.Padding(4);
             this.dtpReceiptDate.Name = "dtpReceiptDate";
             this.dtpReceiptDate.Size = new System.Drawing.Size(319, 35);
             this.dtpReceiptDate.TabIndex = 87;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 17.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(775, 641);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(146, 31);
+            this.label2.TabIndex = 89;
+            this.label2.Text = "ยอดเงินเฟสงาน";
+            // 
+            // textBox2
+            // 
+            this.textBox2.BackColor = System.Drawing.SystemColors.Control;
+            this.textBox2.Enabled = false;
+            this.textBox2.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox2.Location = new System.Drawing.Point(971, 641);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
+            this.textBox2.Size = new System.Drawing.Size(319, 35);
+            this.textBox2.TabIndex = 88;
             // 
             // Receipt
             // 
@@ -522,6 +535,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.CausesValidation = false;
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.dtpReceiptDate);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.btn1);
@@ -558,10 +573,9 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dtgvInvoice);
-            this.Controls.Add(this.Topic1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Receipt";
-            this.Size = new System.Drawing.Size(1812, 926);
+            this.Size = new System.Drawing.Size(1795, 909);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvReceiptDetail)).EndInit();
             this.panel4.ResumeLayout(false);
@@ -571,7 +585,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label Topic1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dtgvInvoice;
         private System.Windows.Forms.Label label3;
@@ -612,5 +625,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.DateTimePicker dtpReceiptDate;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }
