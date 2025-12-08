@@ -32,6 +32,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.starIdcard = new System.Windows.Forms.Label();
+            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.txtDueDate = new System.Windows.Forms.DateTimePicker();
             this.label16 = new System.Windows.Forms.Label();
             this.dtpInvoiceDate = new System.Windows.Forms.DateTimePicker();
@@ -63,7 +64,6 @@
             this.dgvInvoices = new System.Windows.Forms.DataGridView();
             this.label20 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInvoiceDetails)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInvoices)).BeginInit();
@@ -107,7 +107,7 @@
             this.panel3.Controls.Add(this.label20);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel3.Location = new System.Drawing.Point(0, 88);
-            this.panel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(2075, 1086);
             this.panel3.TabIndex = 28;
@@ -150,12 +150,24 @@
             this.starIdcard.TabIndex = 89;
             this.starIdcard.Text = "*";
             // 
+            // searchboxControl1
+            // 
+            this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.DefaultFunction = "จัดการบัญชีผู้ใช้";
+            this.searchboxControl1.DefaultRole = "Admin";
+            this.searchboxControl1.Keyword = "";
+            this.searchboxControl1.Location = new System.Drawing.Point(1208, 26);
+            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2);
+            this.searchboxControl1.Name = "searchboxControl1";
+            this.searchboxControl1.Size = new System.Drawing.Size(855, 57);
+            this.searchboxControl1.TabIndex = 68;
+            // 
             // txtDueDate
             // 
             this.txtDueDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDueDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.txtDueDate.Location = new System.Drawing.Point(837, 548);
-            this.txtDueDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtDueDate.Margin = new System.Windows.Forms.Padding(4);
             this.txtDueDate.Name = "txtDueDate";
             this.txtDueDate.Size = new System.Drawing.Size(296, 35);
             this.txtDueDate.TabIndex = 66;
@@ -175,7 +187,7 @@
             this.dtpInvoiceDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpInvoiceDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpInvoiceDate.Location = new System.Drawing.Point(504, 548);
-            this.dtpInvoiceDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpInvoiceDate.Margin = new System.Windows.Forms.Padding(4);
             this.dtpInvoiceDate.Name = "dtpInvoiceDate";
             this.dtpInvoiceDate.Size = new System.Drawing.Size(296, 35);
             this.dtpInvoiceDate.TabIndex = 64;
@@ -195,7 +207,7 @@
             this.txtCustomerAddress.Enabled = false;
             this.txtCustomerAddress.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCustomerAddress.Location = new System.Drawing.Point(39, 964);
-            this.txtCustomerAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtCustomerAddress.Margin = new System.Windows.Forms.Padding(4);
             this.txtCustomerAddress.Multiline = true;
             this.txtCustomerAddress.Name = "txtCustomerAddress";
             this.txtCustomerAddress.Size = new System.Drawing.Size(773, 95);
@@ -217,7 +229,7 @@
             this.txtCustomerIDCard.Enabled = false;
             this.txtCustomerIDCard.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCustomerIDCard.Location = new System.Drawing.Point(520, 868);
-            this.txtCustomerIDCard.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtCustomerIDCard.Margin = new System.Windows.Forms.Padding(4);
             this.txtCustomerIDCard.Name = "txtCustomerIDCard";
             this.txtCustomerIDCard.Size = new System.Drawing.Size(476, 35);
             this.txtCustomerIDCard.TabIndex = 60;
@@ -238,7 +250,7 @@
             this.txtCustomerName.Enabled = false;
             this.txtCustomerName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCustomerName.Location = new System.Drawing.Point(39, 868);
-            this.txtCustomerName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtCustomerName.Margin = new System.Windows.Forms.Padding(4);
             this.txtCustomerName.Name = "txtCustomerName";
             this.txtCustomerName.Size = new System.Drawing.Size(449, 35);
             this.txtCustomerName.TabIndex = 58;
@@ -259,7 +271,7 @@
             this.textBox7.Enabled = false;
             this.textBox7.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox7.Location = new System.Drawing.Point(39, 757);
-            this.textBox7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox7.Margin = new System.Windows.Forms.Padding(4);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(193, 35);
             this.textBox7.TabIndex = 56;
@@ -279,7 +291,7 @@
             this.txtProjectID.Enabled = false;
             this.txtProjectID.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProjectID.Location = new System.Drawing.Point(645, 656);
-            this.txtProjectID.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtProjectID.Margin = new System.Windows.Forms.Padding(4);
             this.txtProjectID.Name = "txtProjectID";
             this.txtProjectID.Size = new System.Drawing.Size(456, 35);
             this.txtProjectID.TabIndex = 54;
@@ -300,7 +312,7 @@
             this.txtProjectName.Enabled = false;
             this.txtProjectName.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProjectName.Location = new System.Drawing.Point(39, 656);
-            this.txtProjectName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtProjectName.Margin = new System.Windows.Forms.Padding(4);
             this.txtProjectName.Name = "txtProjectName";
             this.txtProjectName.Size = new System.Drawing.Size(576, 35);
             this.txtProjectName.TabIndex = 52;
@@ -331,7 +343,7 @@
             this.txtInvoiceNumber.Enabled = false;
             this.txtInvoiceNumber.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtInvoiceNumber.Location = new System.Drawing.Point(39, 548);
-            this.txtInvoiceNumber.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtInvoiceNumber.Margin = new System.Windows.Forms.Padding(4);
             this.txtInvoiceNumber.Name = "txtInvoiceNumber";
             this.txtInvoiceNumber.Size = new System.Drawing.Size(427, 35);
             this.txtInvoiceNumber.TabIndex = 48;
@@ -342,7 +354,7 @@
             this.button5.BackColor = System.Drawing.Color.Lime;
             this.button5.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button5.Location = new System.Drawing.Point(1581, 986);
-            this.button5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button5.Margin = new System.Windows.Forms.Padding(4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(265, 74);
             this.button5.TabIndex = 47;
@@ -384,7 +396,7 @@
             // 
             this.txtFilePath.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtFilePath.Location = new System.Drawing.Point(1564, 901);
-            this.txtFilePath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtFilePath.Margin = new System.Windows.Forms.Padding(4);
             this.txtFilePath.Name = "txtFilePath";
             this.txtFilePath.Size = new System.Drawing.Size(244, 49);
             this.txtFilePath.TabIndex = 35;
@@ -397,7 +409,7 @@
             this.dtpPaymentDate.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpPaymentDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpPaymentDate.Location = new System.Drawing.Point(1816, 902);
-            this.dtpPaymentDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpPaymentDate.Margin = new System.Windows.Forms.Padding(4);
             this.dtpPaymentDate.Name = "dtpPaymentDate";
             this.dtpPaymentDate.Size = new System.Drawing.Size(243, 35);
             this.dtpPaymentDate.TabIndex = 33;
@@ -407,7 +419,7 @@
             this.comboPaymentMethod.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboPaymentMethod.FormattingEnabled = true;
             this.comboPaymentMethod.Location = new System.Drawing.Point(1307, 903);
-            this.comboPaymentMethod.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboPaymentMethod.Margin = new System.Windows.Forms.Padding(4);
             this.comboPaymentMethod.Name = "comboPaymentMethod";
             this.comboPaymentMethod.Size = new System.Drawing.Size(243, 38);
             this.comboPaymentMethod.TabIndex = 32;
@@ -416,7 +428,7 @@
             // 
             this.dgvInvoiceDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvInvoiceDetails.Location = new System.Drawing.Point(1299, 484);
-            this.dgvInvoiceDetails.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvInvoiceDetails.Margin = new System.Windows.Forms.Padding(4);
             this.dgvInvoiceDetails.Name = "dgvInvoiceDetails";
             this.dgvInvoiceDetails.Size = new System.Drawing.Size(764, 358);
             this.dgvInvoiceDetails.TabIndex = 18;
@@ -445,7 +457,7 @@
             // 
             this.dgvInvoices.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvInvoices.Location = new System.Drawing.Point(27, 100);
-            this.dgvInvoices.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvInvoices.Margin = new System.Windows.Forms.Padding(4);
             this.dgvInvoices.Name = "dgvInvoices";
             this.dgvInvoices.Size = new System.Drawing.Size(2036, 324);
             this.dgvInvoices.TabIndex = 15;
@@ -467,25 +479,13 @@
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
             this.button1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.Location = new System.Drawing.Point(13, 15);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(260, 63);
             this.button1.TabIndex = 67;
             this.button1.Text = "ค้นหาโครงการ";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.btnSearchProject_Click);
-            // 
-            // searchboxControl1
-            // 
-            this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.DefaultFunction = "จัดการบัญชีผู้ใช้";
-            this.searchboxControl1.DefaultRole = "Admin";
-            this.searchboxControl1.Keyword = "";
-            this.searchboxControl1.Location = new System.Drawing.Point(897, 15);
-            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.searchboxControl1.Name = "searchboxControl1";
-            this.searchboxControl1.Size = new System.Drawing.Size(650, 50);
-            this.searchboxControl1.TabIndex = 68;
             // 
             // ConfirmInvoice
             // 
@@ -494,7 +494,7 @@
             this.AutoScroll = true;
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.button1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ConfirmInvoice";
             this.Size = new System.Drawing.Size(2075, 1174);
             this.panel3.ResumeLayout(false);
