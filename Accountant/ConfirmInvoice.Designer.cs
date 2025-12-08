@@ -30,9 +30,7 @@
         {
             this.panel3 = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.starIdcard = new System.Windows.Forms.Label();
-            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.txtDueDate = new System.Windows.Forms.DateTimePicker();
             this.label16 = new System.Windows.Forms.Label();
             this.dtpInvoiceDate = new System.Windows.Forms.DateTimePicker();
@@ -64,6 +62,8 @@
             this.dgvInvoices = new System.Windows.Forms.DataGridView();
             this.label20 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.searchboxControl1 = new JRSApplication.SearchboxControl();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInvoiceDetails)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInvoices)).BeginInit();
@@ -71,8 +71,8 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.label7);
             this.panel3.Controls.Add(this.label2);
+            this.panel3.Controls.Add(this.label7);
             this.panel3.Controls.Add(this.starIdcard);
             this.panel3.Controls.Add(this.searchboxControl1);
             this.panel3.Controls.Add(this.txtDueDate);
@@ -119,48 +119,24 @@
             this.label7.BackColor = System.Drawing.Color.Transparent;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.Color.Red;
-            this.label7.Location = new System.Drawing.Point(1489, 698);
+            this.label7.Location = new System.Drawing.Point(1980, 863);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(22, 30);
             this.label7.TabIndex = 91;
             this.label7.Text = "*";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(1351, 700);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(22, 30);
-            this.label2.TabIndex = 90;
-            this.label2.Text = "*";
-            // 
             // starIdcard
             // 
             this.starIdcard.AutoSize = true;
             this.starIdcard.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.starIdcard.ForeColor = System.Drawing.Color.Red;
-            this.starIdcard.Location = new System.Drawing.Point(1073, 700);
+            this.starIdcard.Location = new System.Drawing.Point(1352, 860);
             this.starIdcard.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.starIdcard.Name = "starIdcard";
             this.starIdcard.Size = new System.Drawing.Size(22, 30);
             this.starIdcard.TabIndex = 89;
             this.starIdcard.Text = "*";
-            // 
-            // searchboxControl1
-            // 
-            this.searchboxControl1.BackColor = System.Drawing.Color.White;
-            this.searchboxControl1.DefaultFunction = "จัดการบัญชีผู้ใช้";
-            this.searchboxControl1.DefaultRole = "Admin";
-            this.searchboxControl1.Keyword = "";
-            this.searchboxControl1.Location = new System.Drawing.Point(1208, 26);
-            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2);
-            this.searchboxControl1.Name = "searchboxControl1";
-            this.searchboxControl1.Size = new System.Drawing.Size(855, 57);
-            this.searchboxControl1.TabIndex = 68;
             // 
             // txtDueDate
             // 
@@ -353,10 +329,10 @@
             // 
             this.button5.BackColor = System.Drawing.Color.Lime;
             this.button5.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(1581, 986);
+            this.button5.Location = new System.Drawing.Point(1474, 964);
             this.button5.Margin = new System.Windows.Forms.Padding(4);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(265, 74);
+            this.button5.Size = new System.Drawing.Size(334, 74);
             this.button5.TabIndex = 47;
             this.button5.Text = "ยืนยันการชำระเงิน";
             this.button5.UseVisualStyleBackColor = false;
@@ -366,7 +342,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 17.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(1833, 858);
+            this.label5.Location = new System.Drawing.Point(1819, 859);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(123, 31);
             this.label5.TabIndex = 41;
@@ -376,7 +352,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 17.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(1556, 859);
+            this.label4.Location = new System.Drawing.Point(1467, 862);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(192, 31);
             this.label4.TabIndex = 40;
@@ -386,7 +362,7 @@
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Segoe UI", 17.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(1299, 862);
+            this.label15.Location = new System.Drawing.Point(1214, 860);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(107, 31);
             this.label15.TabIndex = 39;
@@ -395,10 +371,10 @@
             // txtFilePath
             // 
             this.txtFilePath.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFilePath.Location = new System.Drawing.Point(1564, 901);
+            this.txtFilePath.Location = new System.Drawing.Point(1473, 901);
             this.txtFilePath.Margin = new System.Windows.Forms.Padding(4);
             this.txtFilePath.Name = "txtFilePath";
-            this.txtFilePath.Size = new System.Drawing.Size(244, 49);
+            this.txtFilePath.Size = new System.Drawing.Size(335, 49);
             this.txtFilePath.TabIndex = 35;
             this.txtFilePath.Text = "เลือกไฟล์";
             this.txtFilePath.UseVisualStyleBackColor = true;
@@ -418,7 +394,7 @@
             // 
             this.comboPaymentMethod.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboPaymentMethod.FormattingEnabled = true;
-            this.comboPaymentMethod.Location = new System.Drawing.Point(1307, 903);
+            this.comboPaymentMethod.Location = new System.Drawing.Point(1222, 901);
             this.comboPaymentMethod.Margin = new System.Windows.Forms.Padding(4);
             this.comboPaymentMethod.Name = "comboPaymentMethod";
             this.comboPaymentMethod.Size = new System.Drawing.Size(243, 38);
@@ -427,10 +403,10 @@
             // dgvInvoiceDetails
             // 
             this.dgvInvoiceDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvInvoiceDetails.Location = new System.Drawing.Point(1299, 484);
+            this.dgvInvoiceDetails.Location = new System.Drawing.Point(1222, 484);
             this.dgvInvoiceDetails.Margin = new System.Windows.Forms.Padding(4);
             this.dgvInvoiceDetails.Name = "dgvInvoiceDetails";
-            this.dgvInvoiceDetails.Size = new System.Drawing.Size(764, 358);
+            this.dgvInvoiceDetails.Size = new System.Drawing.Size(841, 358);
             this.dgvInvoiceDetails.TabIndex = 18;
             // 
             // label3
@@ -487,6 +463,30 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.btnSearchProject_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(1717, 860);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(22, 30);
+            this.label2.TabIndex = 92;
+            this.label2.Text = "*";
+            // 
+            // searchboxControl1
+            // 
+            this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.DefaultFunction = "จัดการบัญชีผู้ใช้";
+            this.searchboxControl1.DefaultRole = "Admin";
+            this.searchboxControl1.Keyword = "";
+            this.searchboxControl1.Location = new System.Drawing.Point(1208, 26);
+            this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2);
+            this.searchboxControl1.Name = "searchboxControl1";
+            this.searchboxControl1.Size = new System.Drawing.Size(855, 57);
+            this.searchboxControl1.TabIndex = 68;
+            // 
             // ConfirmInvoice
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -541,7 +541,7 @@
         private System.Windows.Forms.Button button1;
         private SearchboxControl searchboxControl1;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label starIdcard;
+        private System.Windows.Forms.Label label2;
     }
 }
