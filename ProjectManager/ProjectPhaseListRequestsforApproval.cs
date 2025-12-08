@@ -224,6 +224,13 @@ namespace JRSApplication
             var workDal = new PhaseWorkDAL();
             var allWorkings = workDal.GetAllPhaseWorking();
 
+            // สถานะที่อนุญาตให้แสดงบนหน้านี้
+            var allowedStatuses = new[]
+            {
+        WorkStatus.InProgress,   // กำลังดำเนินการ
+        WorkStatus.Completed     // อนุมัติแล้ว / เสร็จสมบูรณ์
+    };
+
             var displayList = allPhases
                 .Select(p =>
                 {
@@ -240,7 +247,7 @@ namespace JRSApplication
                     // เอาสถานะจากงานล่าสุดก่อน ถ้าไม่มีให้ใช้ phase_status จากตาราง phase
                     string lastStatus = lastWork?.WorkStatus;
                     if (string.IsNullOrEmpty(lastStatus))
-                        lastStatus = p.PhaseStatus;   // สมมติว่า PhaseModel มี property PhaseStatus แม็พกับคอลัมน์ phase_status
+                        lastStatus = p.PhaseStatus;
 
                     return new ProjectPhaseWithWorkCount
                     {
@@ -258,19 +265,20 @@ namespace JRSApplication
                                             : string.Empty
                     };
                 })
-                // เรียงให้โครงการเหมือนเดิม แต่ให้ Completed ไปอยู่ล่างสุด
+                // แสดงเฉพาะ กำลังดำเนินการ + อนุมัติแล้ว
+                .Where(x => allowedStatuses.Contains(x.PhaseStatus))
+                // เรียง: โครงการก่อน, แล้วให้ Completed ไปอยู่ล่างสุด
                 .OrderBy(p => p.ProID)
                 .ThenBy(p =>
                     string.Equals(p.PhaseStatus, WorkStatus.Completed,
                                   StringComparison.OrdinalIgnoreCase)
                         ? 1  // Completed → กลุ่มล่าง
-                        : 0) // อื่น ๆ → กลุ่มบน
+                        : 0) // InProgress → กลุ่มบน
                 .ThenBy(p => p.PhaseNo)
                 .ToList();
 
             _displayList = displayList;
 
-            // ถ้ายังไม่มีเงื่อนไขค้นหา → แสดงทั้งหมด
             if (string.IsNullOrWhiteSpace(_currentKeyword) || _currentSearchBy == "ทั้งหมด")
             {
                 BindGrid(_displayList);
@@ -280,6 +288,7 @@ namespace JRSApplication
                 ApplyPhaseListFilter(_currentSearchBy, _currentKeyword);
             }
         }
+
 
 
         private void CustomProjectPhaseGrid()

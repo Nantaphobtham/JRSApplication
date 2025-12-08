@@ -1,14 +1,14 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Windows.Forms;
+using System.Configuration;                  // <— added
+using MySql.Data.MySqlClient;               // <— added
+using JRSApplication.Data_Access_Layer;
 using System.Globalization;
 using System.Linq;
-using System.Windows.Forms;
-using System.Configuration;
-using MySql.Data.MySqlClient;
-
-using JRSApplication.Data_Access_Layer;
+using System.Drawing.Printing;
+using System.ComponentModel;
 
 namespace JRSApplication.Accountant
 {
@@ -18,15 +18,15 @@ namespace JRSApplication.Accountant
         private ReceiptDAL receiptDAL = new ReceiptDAL();
         private string currentInvId;
 
-        // ใช้สำหรับ GenerateNextReceiptId()
-        private readonly string _cs =
-            ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
+        // for GenerateNextReceiptId()
+        private readonly string _cs = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
 
         public Receipt()
         {
             InitializeComponent();
 
-            // กันไม่ให้รันตอนอยู่ใน Designer
+            // 🔒 ป้องกันไม่ให้รันโค้ดฐานข้อมูลใน Design Mode
             if (LicenseManager.UsageMode == LicenseUsageMode.Runtime)
             {
                 invoiceDAL = new InvoiceDAL();
@@ -34,6 +34,7 @@ namespace JRSApplication.Accountant
                 CustomizeDataGridView();
             }
         }
+
 
         private void CustomizeDataGridView()
         {
@@ -68,7 +69,7 @@ namespace JRSApplication.Accountant
             dtgvInvoice.AllowUserToResizeRows = false;
         }
 
-        // สร้างเลขที่ใบเสร็จ REC_0001, REC_0002, ...
+        // 🔹 UI-side generator: next REC_XXXX (no new DAL methods)
         private string GenerateNextReceiptId()
         {
             using (var conn = new MySqlConnection(_cs))
@@ -76,11 +77,11 @@ namespace JRSApplication.Accountant
                 conn.Open();
 
                 const string sql = @"
-                    SELECT COALESCE(
-                               MAX(CAST(SUBSTRING(receipt_id, 5) AS UNSIGNED)), 0
-                           )
-                    FROM receipt
-                    WHERE receipt_id LIKE 'REC\_%' ESCAPE '\\';";
+            SELECT COALESCE(
+                       MAX(CAST(SUBSTRING(receipt_id, 5) AS UNSIGNED)), 0
+                   )
+            FROM receipt
+            WHERE receipt_id LIKE 'REC\_%' ESCAPE '\\';";
 
                 using (var cmd = new MySqlCommand(sql, conn))
                 {
@@ -94,13 +95,16 @@ namespace JRSApplication.Accountant
             }
         }
 
+
         private void dtgvInvoice_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
             var row = dtgvInvoice.Rows[e.RowIndex];
 
+            // inv_id is a string (e.g. "INV_0005")
             currentInvId = row.Cells["inv_id"]?.Value?.ToString() ?? string.Empty;
+
             if (string.IsNullOrWhiteSpace(currentInvId))
             {
                 MessageBox.Show("ไม่พบเลขที่ใบแจ้งหนี้ (inv_id)", "แจ้งเตือน",
@@ -108,7 +112,7 @@ namespace JRSApplication.Accountant
                 return;
             }
 
-            // ข้อมูลหัวใบเสร็จ
+            // 🧾 ชำระเงิน/หัวตาราง
             txtInvNo.Text = row.Cells["inv_id"]?.Value?.ToString() ?? "";
             txtEmpName.Text = row.Cells["emp_fullname"]?.Value?.ToString() ?? "";
             dtpPaidDate.Value = row.Cells["paid_date"]?.Value is DateTime dt
@@ -116,24 +120,52 @@ namespace JRSApplication.Accountant
                                 : DateTime.Now;
             textBox1.Text = row.Cells["inv_method"]?.Value?.ToString();
 
-            // ลูกค้า
+            // 👤 ลูกค้า
             txtCusName.Text = row.Cells["cus_fullname"]?.Value?.ToString();
             txtCusIDCard.Text = row.Cells["cus_id_card"]?.Value?.ToString();
             txtCusAddress.Text = row.Cells["cus_address"]?.Value?.ToString();
 
-            // โครงการ
+            // 🏗️ โครงการ
             txtContractNo.Text = row.Cells["pro_id"]?.Value?.ToString();
             txtProName.Text = row.Cells["pro_name"]?.Value?.ToString();
             txtPhaseID.Text = row.Cells["phase_no"]?.Value?.ToString()
-                                 ?? row.Cells["phase_id"]?.Value?.ToString()
-                                 ?? "";
+                   ?? row.Cells["phase_id"]?.Value?.ToString()
+                   ?? "";
+            // ✅ แสดง phase_budget ที่ label2
+            if (dtgvInvoice.Columns.Contains("phase_budget"))
+            {
+                var cellValue = row.Cells["phase_budget"]?.Value;
 
-            // สร้างเลขที่ใบเสร็จให้เลย
+                if (cellValue != null && cellValue != DBNull.Value)
+                {
+                    if (decimal.TryParse(cellValue.ToString(), out decimal budget))
+                    {
+                        // แสดงเป็นตัวเลข 2 ตำแหน่ง (เช่น 100,000.00)
+                        textBox2.Text = budget.ToString("N2");
+                    }
+                    else
+                    {
+                        // ถ้า parse ไม่ได้ก็โชว์ดิบๆ ไปก่อน
+                        textBox2.Text = cellValue.ToString();
+                    }
+                }
+                else
+                {
+                    textBox2.Text = string.Empty;
+                }
+            }
+            else
+            {
+                // กรณี query ฝั่ง DAL ยังไม่มีคอลัมน์ phase_budget
+                label2.Text = string.Empty;
+            }
+
+            // 🔸 Auto-generate receipt_id into the textbox and lock it
             try
             {
                 string nextRec = GenerateNextReceiptId();
                 txtReceiptNo.Text = nextRec;
-                txtReceiptNo.ReadOnly = true;
+                txtReceiptNo.ReadOnly = true;     // or txtReceiptNo.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -142,26 +174,27 @@ namespace JRSApplication.Accountant
                     "ผิดพลาด", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+            // เตรียม columns และโหลดรายละเอียดจาก DB ด้วย inv_id (string)
             SetupReceiptDetailGrid();
             LoadInvoiceDetailForReceipt(currentInvId);
         }
 
         private void LoadInvoiceDetailForReceipt(string invId)
         {
-            SetupReceiptDetailGrid();
+            SetupReceiptDetailGrid(); // Prepare the grid
+
+            // Keep your existing call signature (string invId)
             DataTable dt = InvoiceDAL.GetInvoiceDetail(invId);
             dtgvReceiptDetail.DataSource = dt;
         }
 
         private void btnSearchProject_Click(object sender, EventArgs e)
         {
-            using (var searchForm = new SearchForm("Project"))
+            SearchForm searchForm = new SearchForm("Project");
+            if (searchForm.ShowDialog() == DialogResult.OK)
             {
-                if (searchForm.ShowDialog() == DialogResult.OK)
-                {
-                    string selectedProjectId = searchForm.SelectedID;
-                    LoadInvoiceDataByProject(selectedProjectId);
-                }
+                string selectedProjectId = searchForm.SelectedID;
+                LoadInvoiceDataByProject(selectedProjectId);
             }
         }
 
@@ -171,16 +204,12 @@ namespace JRSApplication.Accountant
             dtgvInvoice.AutoGenerateColumns = true;
             dtgvInvoice.DataSource = dt;
 
-            RenameInvoiceHeadersAndOrder();
             // ✅ เปลี่ยนชื่อหัวคอลัมน์เป็นภาษาไทย
             RenameInvoiceHeaders();
             ArrangeInvoiceColumns();
         }
 
-        /// <summary>
-        /// ตั้งหัวคอลัมน์เป็นไทย + เรียงลำดับ + ซ่อนคอลัมน์ที่ไม่ใช้
-        /// </summary>
-        private void RenameInvoiceHeadersAndOrder()
+        private void RenameInvoiceHeaders()
         {
             try
             {
@@ -202,34 +231,9 @@ namespace JRSApplication.Accountant
 
             }
 
-                if (cols.Contains("emp_id"))
-                {
-                    cols["emp_id"].HeaderText = "รหัสพนักงาน";
-                    cols["emp_id"].DisplayIndex = idx++;
-                }
-
-                // ===== คอลัมน์ที่ไม่ใช้ ซ่อนออก =====
-                string[] unused =
-                {
-                    "inv_method",
-                    "emp_fullname",
-                    "cus_fullname",
-                    "cus_id_card",
-                    "cus_address",
-                    "phase_id"
-                };
-
-                foreach (var name in unused)
-                {
-                    if (cols.Contains(name))
-                        cols[name].Visible = false;
-                }
-            }
-            catch
-            {
-                // ถ้าบางคอลัมน์ไม่มี ก็ข้ามไป
-            }
+            catch { /* ถ้ามีบางคอลัมน์ไม่มี ไม่ต้อง Error */ }
         }
+
 
         private void SetupReceiptDetailGrid()
         {
@@ -239,15 +243,12 @@ namespace JRSApplication.Accountant
             dtgvReceiptDetail.AllowUserToAddRows = false;
             dtgvReceiptDetail.ReadOnly = true;
             dtgvReceiptDetail.BackgroundColor = Color.White;
-            dtgvReceiptDetail.BorderStyle = BorderStyle.FixedSingle;
+            dtgvReceiptDetail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             dtgvReceiptDetail.GridColor = Color.LightGray;
             dtgvReceiptDetail.DefaultCellStyle.Font = new Font("Tahoma", 11);
-            dtgvReceiptDetail.ColumnHeadersDefaultCellStyle.Font =
-                new Font("Tahoma", 12, FontStyle.Bold);
-            dtgvReceiptDetail.ColumnHeadersDefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleCenter;
-            dtgvReceiptDetail.DefaultCellStyle.Alignment =
-                DataGridViewContentAlignment.MiddleCenter;
+            dtgvReceiptDetail.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 12, FontStyle.Bold);
+            dtgvReceiptDetail.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dtgvReceiptDetail.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dtgvReceiptDetail.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             dtgvReceiptDetail.Columns.Add(new DataGridViewTextBoxColumn
@@ -289,7 +290,6 @@ namespace JRSApplication.Accountant
                 Width = 120
             });
 
-            dtgvReceiptDetail.CellFormatting -= dtgvReceiptDetail_CellFormatting;
             dtgvReceiptDetail.CellFormatting += dtgvReceiptDetail_CellFormatting;
         }
 
@@ -304,7 +304,7 @@ namespace JRSApplication.Accountant
                 decimal price = 0m;
                 decimal.TryParse(Convert.ToString(row.Cells["inv_price"]?.Value), out price);
 
-                decimal qty = 1m;
+                decimal qty = 1m; // fallback 1 if not numeric
                 if (decimal.TryParse(Convert.ToString(row.Cells["inv_quantity"]?.Value), out var q))
                     qty = q;
 
@@ -326,8 +326,10 @@ namespace JRSApplication.Accountant
             {
                 MessageBox.Show("กรุณาเลือกใบแจ้งหนี้ก่อน", "แจ้งเตือน",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
 
+            // Get or generate receipt_id
             string receiptId = txtReceiptNo.Text.Trim();
             if (string.IsNullOrWhiteSpace(receiptId))
             {
@@ -350,6 +352,7 @@ namespace JRSApplication.Accountant
 
             try
             {
+                // InsertReceipt now expects receipt_id (we already modified DAL)
                 int result = receiptDAL.InsertReceipt(receiptId, receiptDate, remark, currentInvId);
 
                 if (result > 0)
@@ -365,13 +368,14 @@ namespace JRSApplication.Accountant
             }
             catch (MySqlException ex) when (ex.Message.Contains("Duplicate"))
             {
+                // Rare edge case if two users saved concurrently
                 MessageBox.Show("เลขที่ใบเสร็จนี้ถูกใช้งานแล้ว กำลังสร้างใหม่ให้...",
                     "ข้อมูลซ้ำ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 string fresh = GenerateNextReceiptId();
-                txtReceiptNo.Text = fresh;
-                txtReceiptNo.ReadOnly = true;
+                txtReceiptNo.Text = fresh; txtReceiptNo.ReadOnly = true;
 
+                // Try once more
                 int retry = receiptDAL.InsertReceipt(fresh, receiptDate, remark, currentInvId);
                 if (retry > 0)
                     MessageBox.Show("บันทึกใบเสร็จรับเงินสำเร็จ", "สำเร็จ",
@@ -444,7 +448,7 @@ namespace JRSApplication.Accountant
             table.Columns.Add("phase_budget", typeof(decimal));
             table.Columns.Add("inv_remark");
             table.Columns.Add("subtotal", typeof(decimal));
-            table.Columns.Add("vat", typeof(string));
+            table.Columns.Add("vat", typeof(string)); // Keep as string
             table.Columns.Add("grand_total", typeof(decimal));
             table.Columns.Add("ToDate");
             table.Columns.Add("inv_detail");
@@ -465,11 +469,17 @@ namespace JRSApplication.Accountant
                     subtotal += extraPrice;
             }
 
-            // ไม่มี VAT → แสดง "-" และ grand = subtotal
+            // --- MODIFIED CODE STARTS HERE ---
+
+            // 1. Force the VAT display text to always be a dash.
             string vatDisplayText = "-";
+
+            // 2. Make the grand total equal to the subtotal.
             decimal grand = subtotal;
 
-            var thaiCulture = new CultureInfo("th-TH");
+            // --- MODIFIED CODE ENDS HERE ---
+
+            var thaiCulture = new System.Globalization.CultureInfo("th-TH");
             string toDate = DateTime.Now.ToString("d MMMM yyyy", thaiCulture);
 
             table.Rows.Add(
@@ -483,8 +493,8 @@ namespace JRSApplication.Accountant
                 phaseBudget,
                 remark,
                 subtotal,
-                vatDisplayText,
-                grand,
+                vatDisplayText, // This will now always be "-"
+                grand,          // This will now be the same as subtotal
                 toDate,
                 invDetail ?? DBNull.Value.ToString(),
                 invQty ?? DBNull.Value.ToString(),
@@ -496,8 +506,10 @@ namespace JRSApplication.Accountant
             frm.ShowDialog();
         }
 
+        // This goes into your ReceiptForm.cs
         private void btnEdit_Click(object sender, EventArgs e)
         {
+            // Step 1: Get the Project ID from your form's textbox (e.g., txtProjectID)
             var projectId = txtContractNo.Text?.Trim();
             if (string.IsNullOrWhiteSpace(projectId))
             {
@@ -506,21 +518,30 @@ namespace JRSApplication.Accountant
                 return;
             }
 
+            // Step 2: Open the SearchForm in "PaidInvoiceByProject" mode
+            // This will show only invoices that have already been paid for the selected project.
             using (var searchForm = new SearchForm("PaidInvoiceByProject", projectId))
             {
+                // If the user closes the form without selecting anything, stop.
                 if (searchForm.ShowDialog() != DialogResult.OK)
+                {
                     return;
+                }
 
+                // Step 3: Get the ID of the selected *paid* invoice
                 var selectedInvoiceId = searchForm.SelectedID;
                 if (string.IsNullOrWhiteSpace(selectedInvoiceId))
                 {
+                    // This case is unlikely if DialogResult is OK, but it's good practice to check.
                     MessageBox.Show("ไม่พบเลขที่ใบแจ้งหนี้ที่เลือก", "แจ้งเตือน",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
+                // Step 4: Load the existing receipt data using the invoice ID
                 try
                 {
+                    // Call a new method to load the receipt and its details
                     LoadReceiptByInvoiceId(selectedInvoiceId);
                 }
                 catch (Exception ex)
@@ -533,33 +554,38 @@ namespace JRSApplication.Accountant
 
         private void LoadReceiptByInvoiceId(string invoiceId)
         {
+            // Use 'receiptDAL' which is defined in your class.
+            // This calls the new method we will add to ReceiptDAL.cs.
             DataTable receiptData = receiptDAL.GetReceiptDetailsByInvoiceId(invoiceId);
 
             if (receiptData == null || receiptData.Rows.Count == 0)
+            {
                 throw new Exception("ไม่พบข้อมูลใบเสร็จที่ตรงกับใบแจ้งหนี้ที่เลือก");
+            }
 
             DataRow row = receiptData.Rows[0];
 
-            // Customer
+            // --- Populate all the textboxes and controls ---
+            // Customer Info
             txtCusName.Text = row["cus_fullname"].ToString();
             txtCusIDCard.Text = row["cus_id_card"].ToString();
             txtCusAddress.Text = row["cus_address"].ToString();
 
-            // Project
-            txtContractNo.Text = row["pro_id"].ToString();
+            // Project Info
+            txtContractNo.Text = row["pro_id"].ToString(); // Assuming this is where you show the project ID
             txtProName.Text = row["pro_name"].ToString();
             txtPhaseID.Text = row["phase_no"].ToString();
 
-            // Invoice / payment
+            // Payment Info
             txtInvNo.Text = row["inv_id"].ToString();
             txtEmpName.Text = row["emp_fullname"].ToString();
             dtpPaidDate.Value = Convert.ToDateTime(row["paid_date"]);
-            textBox1.Text = row["inv_method"].ToString();
+            textBox1.Text = row["inv_method"].ToString(); // The payment method textbox
 
-            // Receipt
+            // Receipt Info
             txtReceiptNo.Text = row["receipt_id"].ToString();
             dtpReceiptDate.Value = Convert.ToDateTime(row["receipt_date"]);
-            txtReason.Text = row["receipt_remark"].ToString();
+            txtReason.Text = row["receipt_remark"].ToString(); // The remark you want to edit
         }
         private void ArrangeInvoiceColumns()
         {
@@ -638,3 +664,4 @@ namespace JRSApplication.Accountant
     }
 
 }
+

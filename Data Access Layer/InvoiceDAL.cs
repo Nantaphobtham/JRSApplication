@@ -197,7 +197,8 @@ namespace JRSApplication.Data_Access_Layer
                             customer.cus_id_card,
                             customer.cus_address,
                             invoice.phase_id,
-                            project_phase.phase_no      as phase_no
+                            project_phase.phase_no      as phase_no,
+                            project_phase.phase_budget as phase_budget
                             FROM invoice
                             JOIN project ON invoice.pro_id = project.pro_id
                             JOIN customer ON project.cus_id = customer.cus_id
