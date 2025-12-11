@@ -205,7 +205,7 @@ namespace JRSApplication.Accountant
             dtgvInvoice.DataSource = dt;
 
             // ✅ เปลี่ยนชื่อหัวคอลัมน์เป็นภาษาไทย
-            //RenameInvoiceHeaders();
+            RenameInvoiceHeaders();
             ArrangeInvoiceColumns();
         }
 
@@ -651,6 +651,11 @@ namespace JRSApplication.Accountant
                 if (g.Columns.Contains("phase_no"))
                     g.Columns["phase_no"].DisplayIndex = idx++;
 
+                if (g.Columns.Contains("phase_budget"))
+                    g.Columns["phase_budget"].Visible = false;
+
+                if (g.Columns.Contains("phase_id"))
+                    g.Columns["phase_id"].Visible = false;
                 // 5  วันที่ออกใบแจ้งหนี้
                 if (g.Columns.Contains("inv_date"))
                     g.Columns["inv_date"].DisplayIndex = idx++;
