@@ -120,7 +120,7 @@ namespace JRSApplication
             btnProjectPhaseUpdate.BackColor = Color.Transparent;
             btnChooseSubcontractors.BackColor = Color.Transparent;
             btnRequestsforApproval.BackColor = Color.Transparent;
-            btnAllocateEmployee.BackColor = Color.Transparent;
+            btnAllocateEmployee.BackColor = Color.White;
         }
 
         private void btnProjectPhaseUpdate_Click(object sender, EventArgs e)

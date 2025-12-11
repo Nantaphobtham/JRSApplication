@@ -261,38 +261,66 @@ namespace JRSApplication
 
             var defaultItem = new ComboBoxItem { Text = "-- เลือกสถานะ --", Value = "" };
             cmbWorkstatusOfSupplier.Items.Add(defaultItem);
-            cmbWorkStatus.Items.Add(defaultItem);
-
-            // เดิม: มี Completed ด้วย
-            // var pmStatuses = new List<string> { WorkStatus.InProgress, WorkStatus.Completed };
-
-            // แก้เป็น: เอา Completed (อนุมัติแล้ว) ออก
-            var pmStatuses = new List<string>
-    {
-        WorkStatus.InProgress   // กำลังดำเนินการ
-        // ถ้าต้องการเพิ่มสถานะอื่นก็ใส่เพิ่มตรงนี้ เช่น WorkStatus.NotStarted
-    };
-
-            foreach (var status in pmStatuses)
+            cmbWorkStatus.Items.Add(new ComboBoxItem
             {
-                cmbWorkstatusOfSupplier.Items.Add(new ComboBoxItem
+                Text = defaultItem.Text,
+                Value = defaultItem.Value
+            });
+
+            List<string> statusesForThisUser;
+
+            // ใช้ค่าจาก emp_pos ใน DB
+            if (string.Equals(_userRole, "Projectmanager", StringComparison.OrdinalIgnoreCase))
+            {
+                // PM เห็นทั้ง InProgress และ Completed
+                statusesForThisUser = new List<string>
+        {
+            WorkStatus.InProgress,
+            WorkStatus.Completed
+        };
+            }
+            else if (string.Equals(_userRole, "Sitesupervisor", StringComparison.OrdinalIgnoreCase))
+            {
+                // Site supervisor เห็นแค่ InProgress (ไม่เห็น Completed เลย)
+                statusesForThisUser = new List<string>
+        {
+            WorkStatus.InProgress
+        };
+            }
+            else
+            {
+                // role อื่น ๆ (Admin, Accountant) จะให้เหมือน PM หรือจะปรับเองก็ได้
+                statusesForThisUser = new List<string>
+        {
+            WorkStatus.InProgress,
+            WorkStatus.Completed
+        };
+            }
+
+            foreach (var status in statusesForThisUser)
+            {
+                var item = new ComboBoxItem
                 {
                     Text = WorkStatus.GetDisplayName(status),
                     Value = status
-                });
+                };
 
+                cmbWorkstatusOfSupplier.Items.Add(item);
                 cmbWorkStatus.Items.Add(new ComboBoxItem
                 {
-                    Text = WorkStatus.GetDisplayName(status),
-                    Value = status
+                    Text = item.Text,
+                    Value = item.Value
                 });
             }
 
             cmbWorkstatusOfSupplier.SelectedIndex = 0;
             cmbWorkStatus.SelectedIndex = 0;
+
             cmbWorkstatusOfSupplier.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbWorkStatus.DropDownStyle = ComboBoxStyle.DropDownList;
         }
+
+
 
 
         private string GetSelectedStatus(ComboBox cmb)
