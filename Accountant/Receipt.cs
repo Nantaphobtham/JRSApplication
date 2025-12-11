@@ -249,6 +249,7 @@ namespace JRSApplication.Accountant
 
                 if (cols.Contains("emp_fullname"))
                     cols["emp_fullname"].HeaderText = "ชื่อพนักงานผู้ออกใบแจ้งหนี้";
+            }
 
             catch { /* ถ้ามีบางคอลัมน์ไม่มี ไม่ต้อง Error */ }
         }
