@@ -55,6 +55,9 @@
             // searchboxControl1
             // 
             this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.DefaultFunction = "จัดการบัญชีผู้ใช้";
+            this.searchboxControl1.DefaultRole = "Admin";
+            this.searchboxControl1.Keyword = "";
             this.searchboxControl1.Location = new System.Drawing.Point(918, 12);
             this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.searchboxControl1.Name = "searchboxControl1";

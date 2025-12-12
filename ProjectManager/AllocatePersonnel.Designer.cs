@@ -125,10 +125,11 @@
             // 
             this.btnSearchEmployee.AutoSize = true;
             this.btnSearchEmployee.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
+            this.btnSearchEmployee.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchEmployee.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchEmployee.Location = new System.Drawing.Point(834, 46);
             this.btnSearchEmployee.Name = "btnSearchEmployee";
-            this.btnSearchEmployee.Size = new System.Drawing.Size(152, 40);
+            this.btnSearchEmployee.Size = new System.Drawing.Size(152, 42);
             this.btnSearchEmployee.TabIndex = 38;
             this.btnSearchEmployee.Text = "ค้นหาพนักงาน";
             this.btnSearchEmployee.UseVisualStyleBackColor = false;
@@ -137,10 +138,11 @@
             // 
             this.btnSearchProject.AutoSize = true;
             this.btnSearchProject.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
+            this.btnSearchProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchProject.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchProject.Location = new System.Drawing.Point(12, 46);
             this.btnSearchProject.Name = "btnSearchProject";
-            this.btnSearchProject.Size = new System.Drawing.Size(138, 40);
+            this.btnSearchProject.Size = new System.Drawing.Size(140, 42);
             this.btnSearchProject.TabIndex = 37;
             this.btnSearchProject.Text = "ค้นหาโครงการ";
             this.btnSearchProject.UseVisualStyleBackColor = false;
@@ -436,6 +438,9 @@
             // searchboxControl1
             // 
             this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.DefaultFunction = "จัดการบัญชีผู้ใช้";
+            this.searchboxControl1.DefaultRole = "Admin";
+            this.searchboxControl1.Keyword = "";
             this.searchboxControl1.Location = new System.Drawing.Point(887, 14);
             this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.searchboxControl1.Name = "searchboxControl1";

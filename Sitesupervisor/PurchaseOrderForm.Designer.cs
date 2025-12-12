@@ -73,7 +73,6 @@
             this.btnDeleteOrder = new System.Windows.Forms.Button();
             this.btnEditOrder = new System.Windows.Forms.Button();
             this.btnAddOrder = new System.Windows.Forms.Button();
-            this.btnPrintOrder = new System.Windows.Forms.Button();
             this.btnSaveOrder = new System.Windows.Forms.Button();
             this.pnlStep2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -133,7 +132,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1177, 555);
+            this.panel1.Size = new System.Drawing.Size(1160, 555);
             this.panel1.TabIndex = 0;
             // 
             // cmbUnit
@@ -153,10 +152,11 @@
             // 
             this.btnSearchProject.AutoSize = true;
             this.btnSearchProject.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
+            this.btnSearchProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchProject.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchProject.Location = new System.Drawing.Point(35, 249);
             this.btnSearchProject.Name = "btnSearchProject";
-            this.btnSearchProject.Size = new System.Drawing.Size(138, 40);
+            this.btnSearchProject.Size = new System.Drawing.Size(140, 42);
             this.btnSearchProject.TabIndex = 13;
             this.btnSearchProject.Text = "ค้นหาโครงการ";
             this.btnSearchProject.UseVisualStyleBackColor = false;
@@ -567,12 +567,11 @@
             this.pnlActionMenu.Controls.Add(this.btnDeleteOrder);
             this.pnlActionMenu.Controls.Add(this.btnEditOrder);
             this.pnlActionMenu.Controls.Add(this.btnAddOrder);
-            this.pnlActionMenu.Controls.Add(this.btnPrintOrder);
             this.pnlActionMenu.Controls.Add(this.btnSaveOrder);
             this.pnlActionMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlActionMenu.Location = new System.Drawing.Point(0, 555);
             this.pnlActionMenu.Name = "pnlActionMenu";
-            this.pnlActionMenu.Size = new System.Drawing.Size(1177, 94);
+            this.pnlActionMenu.Size = new System.Drawing.Size(1160, 94);
             this.pnlActionMenu.TabIndex = 1;
             // 
             // btnDeleteOrder
@@ -617,20 +616,6 @@
             this.btnAddOrder.UseVisualStyleBackColor = false;
             this.btnAddOrder.Click += new System.EventHandler(this.btnAddOrder_Click);
             // 
-            // btnPrintOrder
-            // 
-            this.btnPrintOrder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
-            this.btnPrintOrder.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(255)))), ((int)(((byte)(78)))));
-            this.btnPrintOrder.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPrintOrder.Location = new System.Drawing.Point(30, 18);
-            this.btnPrintOrder.Name = "btnPrintOrder";
-            this.btnPrintOrder.Size = new System.Drawing.Size(175, 58);
-            this.btnPrintOrder.TabIndex = 6;
-            this.btnPrintOrder.Text = "พิมพ์ใบสั่งซื้อ";
-            this.btnPrintOrder.UseVisualStyleBackColor = false;
-            this.btnPrintOrder.Visible = false;
-            this.btnPrintOrder.Click += new System.EventHandler(this.btnPrintOrder_Click);
-            // 
             // btnSaveOrder
             // 
             this.btnSaveOrder.BackColor = System.Drawing.Color.Lime;
@@ -652,7 +637,7 @@
             this.pnlStep2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStep2.Location = new System.Drawing.Point(0, 649);
             this.pnlStep2.Name = "pnlStep2";
-            this.pnlStep2.Size = new System.Drawing.Size(1177, 10);
+            this.pnlStep2.Size = new System.Drawing.Size(1160, 10);
             this.pnlStep2.TabIndex = 2;
             // 
             // panel4
@@ -664,7 +649,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel4.Location = new System.Drawing.Point(0, 659);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1177, 305);
+            this.panel4.Size = new System.Drawing.Size(1160, 305);
             this.panel4.TabIndex = 3;
             // 
             // dtgvPurchaseOrderList
@@ -710,7 +695,7 @@
             this.Controls.Add(this.pnlActionMenu);
             this.Controls.Add(this.panel1);
             this.Name = "PurchaseOrderForm";
-            this.Size = new System.Drawing.Size(1177, 915);
+            this.Size = new System.Drawing.Size(1160, 915);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvMaterialList)).EndInit();
@@ -763,7 +748,6 @@
         private System.Windows.Forms.ComboBox cmbDueDate;
         private System.Windows.Forms.Label starDueDate;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Button btnPrintOrder;
         private System.Windows.Forms.DataGridView dtgvMaterialList;
         private System.Windows.Forms.Label lblSummation;
         private System.Windows.Forms.Panel panel2;

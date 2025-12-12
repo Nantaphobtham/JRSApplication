@@ -187,34 +187,27 @@ namespace JRSApplication.ProjectManager
             {
                 Name = "colOrderDate",
                 DataPropertyName = "OrderDate",
-                HeaderText = "วันที่สั่งซื้อ",
+                HeaderText = "วันที่ส่งคำร้อง",
                 DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" },
                 Width = 110
             });
 
             dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = "colOrderDetail",
-                DataPropertyName = "OrderDetail",
-                HeaderText = "รายละเอียด",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-            });
-
-            dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
-            {
                 Name = "colDueDate",
                 DataPropertyName = "OrderDueDate",
-                HeaderText = "กำหนดส่งกลับ",
+                HeaderText = "วันที่ต้องอนุมัติ",
                 DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" },
                 Width = 120
             });
 
             dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = "colStatus",
-                DataPropertyName = "OrderStatus",
-                HeaderText = "สถานะใบสั่งซื้อ",
-                Width = 130
+                Name = "colApprovedDate",
+                DataPropertyName = "ApprovedDate",
+                HeaderText = "วันที่อนุมัติ",
+                DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" },
+                Width = 120
             });
 
             dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
@@ -233,13 +226,22 @@ namespace JRSApplication.ProjectManager
                 Width = 160
             });
 
+
             dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = "colApprovedDate",
-                DataPropertyName = "ApprovedDate",
-                HeaderText = "วันที่อนุมัติ",
-                DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" },
-                Width = 120
+                Name = "colOrderDetail",
+                DataPropertyName = "OrderDetail",
+                HeaderText = "รายละเอียด",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });      
+
+            dtgvListofPO.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "colStatus",
+                DataPropertyName = "OrderStatus",
+                HeaderText = "สถานะใบสั่งซื้อ",
+                
+                Width = 130
             });
         }
 
@@ -334,22 +336,22 @@ namespace JRSApplication.ProjectManager
                     case "approved":
                     case "อนุมัติ":
                         e.Value = "อนุมัติ";
-                        e.CellStyle.BackColor = Color.FromArgb(46, 204, 113); // เขียว
-                        e.CellStyle.ForeColor = Color.White;
+                        e.CellStyle.BackColor = Color.FromArgb(0, 255, 0); // เขียว
+                        e.CellStyle.ForeColor = Color.Black;
                         break;
 
                     case "rejected":
                     case "ไม่อนุมัติ":
                         e.Value = "ไม่อนุมัติ";
-                        e.CellStyle.BackColor = Color.FromArgb(231, 76, 60); // แดง
-                        e.CellStyle.ForeColor = Color.White;
+                        e.CellStyle.BackColor = Color.FromArgb(255, 0, 0); // แดง
+                        e.CellStyle.ForeColor = Color.Black;
                         break;
 
                     case "submitted":
                     case "รออนุมัติ":
                         e.Value = "รออนุมัติ";
-                        e.CellStyle.BackColor = Color.FromArgb(52, 152, 219); // ฟ้า
-                        e.CellStyle.ForeColor = Color.White;
+                        e.CellStyle.BackColor = Color.FromArgb(255, 255, 0); // เหลือง
+                        e.CellStyle.ForeColor = Color.Black;
                         break;
 
                     case "draft":
@@ -362,7 +364,7 @@ namespace JRSApplication.ProjectManager
                     case "canceled":
                     case "ยกเลิก":
                         e.Value = "ยกเลิก";
-                        e.CellStyle.BackColor = Color.FromArgb(230, 126, 34); // ส้ม
+                        e.CellStyle.BackColor = Color.FromArgb(230, 0, 0); // ส้ม
                         e.CellStyle.ForeColor = Color.White;
                         break;
 

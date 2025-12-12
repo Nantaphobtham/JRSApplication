@@ -86,10 +86,11 @@
             // 
             this.btnSearchProject.AutoSize = true;
             this.btnSearchProject.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
+            this.btnSearchProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchProject.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchProject.Location = new System.Drawing.Point(224, 34);
             this.btnSearchProject.Name = "btnSearchProject";
-            this.btnSearchProject.Size = new System.Drawing.Size(159, 40);
+            this.btnSearchProject.Size = new System.Drawing.Size(159, 42);
             this.btnSearchProject.TabIndex = 40;
             this.btnSearchProject.Text = "ค้นหาโครงการ";
             this.btnSearchProject.UseVisualStyleBackColor = false;
@@ -223,6 +224,9 @@
             // searchboxControl1
             // 
             this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.DefaultFunction = "จัดการบัญชีผู้ใช้";
+            this.searchboxControl1.DefaultRole = "Admin";
+            this.searchboxControl1.Keyword = "";
             this.searchboxControl1.Location = new System.Drawing.Point(876, 183);
             this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.searchboxControl1.Name = "searchboxControl1";
@@ -581,7 +585,7 @@
             this.Controls.Add(this.btnSearchProject);
             this.Controls.Add(this.txtHeaderSearch);
             this.Name = "CheckProjectPay";
-            this.Size = new System.Drawing.Size(1533, 1482);
+            this.Size = new System.Drawing.Size(1516, 1465);
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();

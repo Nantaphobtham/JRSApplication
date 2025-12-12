@@ -97,12 +97,15 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1329, 776);
+            this.panel1.Size = new System.Drawing.Size(1312, 776);
             this.panel1.TabIndex = 0;
             // 
             // searchboxControl1
             // 
             this.searchboxControl1.BackColor = System.Drawing.Color.White;
+            this.searchboxControl1.DefaultFunction = "จัดการบัญชีผู้ใช้";
+            this.searchboxControl1.DefaultRole = "Admin";
+            this.searchboxControl1.Keyword = "";
             this.searchboxControl1.Location = new System.Drawing.Point(788, 180);
             this.searchboxControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.searchboxControl1.Name = "searchboxControl1";
@@ -122,10 +125,11 @@
             // 
             this.button4.AutoSize = true;
             this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button4.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button4.Location = new System.Drawing.Point(211, 39);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(159, 40);
+            this.button4.Size = new System.Drawing.Size(159, 42);
             this.button4.TabIndex = 38;
             this.button4.Text = "ค้นหาโครงการ";
             this.button4.UseVisualStyleBackColor = false;
@@ -543,7 +547,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 776);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1329, 276);
+            this.panel2.Size = new System.Drawing.Size(1312, 276);
             this.panel2.TabIndex = 1;
             // 
             // panel3
@@ -553,7 +557,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel3.Location = new System.Drawing.Point(0, 1052);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1329, 929);
+            this.panel3.Size = new System.Drawing.Size(1312, 929);
             this.panel3.TabIndex = 2;
             // 
             // label15
@@ -593,7 +597,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "CheckProjectPayments";
-            this.Size = new System.Drawing.Size(1329, 954);
+            this.Size = new System.Drawing.Size(1312, 954);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvInvoice)).EndInit();

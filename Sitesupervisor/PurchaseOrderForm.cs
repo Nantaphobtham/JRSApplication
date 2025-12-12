@@ -959,7 +959,11 @@ namespace JRSApplication
             {
                 ProcessingMode = ProcessingMode.Local
             };
-            reportViewer.LocalReport.ReportPath = "POreport.rdlc";
+            var rdlcPath = System.IO.Path.Combine(
+    AppDomain.CurrentDomain.BaseDirectory,
+    "POreport.rdlc"
+);
+            reportViewer.LocalReport.ReportPath = rdlcPath;
 
             reportViewer.LocalReport.DataSources.Clear();
             reportViewer.LocalReport.DataSources.Add(

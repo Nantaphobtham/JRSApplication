@@ -444,6 +444,7 @@
             // 
             this.btnInsertFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
             this.btnInsertFile.Enabled = false;
+            this.btnInsertFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInsertFile.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnInsertFile.Location = new System.Drawing.Point(365, 256);
             this.btnInsertFile.Name = "btnInsertFile";
@@ -458,6 +459,7 @@
             // 
             this.btnSearchProject.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
             this.btnSearchProject.Enabled = false;
+            this.btnSearchProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchProject.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchProject.Location = new System.Drawing.Point(365, 58);
             this.btnSearchProject.Name = "btnSearchProject";
@@ -558,6 +560,7 @@
             // 
             this.btnSearchSupplier.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
             this.btnSearchSupplier.Enabled = false;
+            this.btnSearchSupplier.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchSupplier.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchSupplier.Location = new System.Drawing.Point(36, 58);
             this.btnSearchSupplier.Name = "btnSearchSupplier";
@@ -600,7 +603,7 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.BackColor = System.Drawing.Color.Red;
+            this.btnDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
             this.btnDelete.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnDelete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;

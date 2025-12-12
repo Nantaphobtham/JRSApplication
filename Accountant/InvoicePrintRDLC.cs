@@ -23,8 +23,11 @@ namespace JRSApplication.Accountant
 
         private void InvoicePrintRDLC_Load(object sender, EventArgs e)
         {
-            string reportPath = System.IO.Path.Combine(
-                Application.StartupPath, "Accountant\\InvoiceReport.rdlc");
+            var reportPath = System.IO.Path.Combine(
+    AppDomain.CurrentDomain.BaseDirectory,
+    "Accountant",
+    "InvoiceReport.rdlc"
+);
 
             reportViewer1.LocalReport.ReportPath = reportPath;
             reportViewer1.LocalReport.DataSources.Clear();

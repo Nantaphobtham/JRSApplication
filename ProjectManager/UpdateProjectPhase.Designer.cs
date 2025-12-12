@@ -44,6 +44,9 @@
             this.fpnlDatainfomation = new System.Windows.Forms.FlowLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.pnlMailDescription = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.starAssignDescription = new System.Windows.Forms.Label();
             this.dtgvDetailSubcontractorWork = new System.Windows.Forms.DataGridView();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
@@ -68,9 +71,6 @@
             this.btnInsertPicture = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.starAssignDescription = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
             this.pnlProjectDetail.SuspendLayout();
             this.pnlWorkHistory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvPhaseWorkingHistory)).BeginInit();
@@ -103,10 +103,11 @@
             // 
             this.btnSearchProject.AutoSize = true;
             this.btnSearchProject.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
+            this.btnSearchProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchProject.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchProject.Location = new System.Drawing.Point(19, 21);
             this.btnSearchProject.Name = "btnSearchProject";
-            this.btnSearchProject.Size = new System.Drawing.Size(138, 40);
+            this.btnSearchProject.Size = new System.Drawing.Size(140, 42);
             this.btnSearchProject.TabIndex = 12;
             this.btnSearchProject.Text = "ค้นหาโครงการ";
             this.btnSearchProject.UseVisualStyleBackColor = false;
@@ -271,6 +272,39 @@
             this.pnlMailDescription.Size = new System.Drawing.Size(1460, 241);
             this.pnlMailDescription.TabIndex = 0;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.Red;
+            this.label9.Location = new System.Drawing.Point(976, 89);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(22, 30);
+            this.label9.TabIndex = 43;
+            this.label9.Text = "*";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.Red;
+            this.label8.Location = new System.Drawing.Point(1339, 15);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(22, 30);
+            this.label8.TabIndex = 42;
+            this.label8.Text = "*";
+            // 
+            // starAssignDescription
+            // 
+            this.starAssignDescription.AutoSize = true;
+            this.starAssignDescription.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.starAssignDescription.ForeColor = System.Drawing.Color.Red;
+            this.starAssignDescription.Location = new System.Drawing.Point(1181, 15);
+            this.starAssignDescription.Name = "starAssignDescription";
+            this.starAssignDescription.Size = new System.Drawing.Size(22, 30);
+            this.starAssignDescription.TabIndex = 41;
+            this.starAssignDescription.Text = "*";
+            // 
             // dtgvDetailSubcontractorWork
             // 
             this.dtgvDetailSubcontractorWork.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -285,10 +319,11 @@
             // 
             this.btnEdit.AutoSize = true;
             this.btnEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(153)))), ((int)(((byte)(0)))));
+            this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEdit.Location = new System.Drawing.Point(1186, 193);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(124, 40);
+            this.btnEdit.Size = new System.Drawing.Size(124, 42);
             this.btnEdit.TabIndex = 10;
             this.btnEdit.Text = "แก้ไขข้อมูล";
             this.btnEdit.UseVisualStyleBackColor = false;
@@ -298,10 +333,11 @@
             // 
             this.btnSave.AutoSize = true;
             this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(251)))), ((int)(((byte)(77)))));
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.Location = new System.Drawing.Point(1316, 192);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(124, 40);
+            this.btnSave.Size = new System.Drawing.Size(124, 42);
             this.btnSave.TabIndex = 10;
             this.btnSave.Text = "บันทึกข้อมูล";
             this.btnSave.UseVisualStyleBackColor = false;
@@ -454,10 +490,11 @@
             // 
             this.btnEditPicture.AutoSize = true;
             this.btnEditPicture.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(153)))), ((int)(((byte)(0)))));
+            this.btnEditPicture.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEditPicture.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEditPicture.Location = new System.Drawing.Point(1135, 374);
             this.btnEditPicture.Name = "btnEditPicture";
-            this.btnEditPicture.Size = new System.Drawing.Size(124, 40);
+            this.btnEditPicture.Size = new System.Drawing.Size(126, 42);
             this.btnEditPicture.TabIndex = 5;
             this.btnEditPicture.Text = "แก้ไขรูปภาพ";
             this.btnEditPicture.UseVisualStyleBackColor = false;
@@ -467,10 +504,11 @@
             // 
             this.btnAddPicture.AutoSize = true;
             this.btnAddPicture.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(251)))), ((int)(((byte)(77)))));
+            this.btnAddPicture.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddPicture.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddPicture.Location = new System.Drawing.Point(1274, 374);
             this.btnAddPicture.Name = "btnAddPicture";
-            this.btnAddPicture.Size = new System.Drawing.Size(113, 40);
+            this.btnAddPicture.Size = new System.Drawing.Size(115, 42);
             this.btnAddPicture.TabIndex = 5;
             this.btnAddPicture.Text = "เพิ่มรูปภาพ";
             this.btnAddPicture.UseVisualStyleBackColor = false;
@@ -501,6 +539,7 @@
             // btnInsertPicture
             // 
             this.btnInsertPicture.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(226)))), ((int)(((byte)(249)))));
+            this.btnInsertPicture.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInsertPicture.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnInsertPicture.Location = new System.Drawing.Point(829, 248);
             this.btnInsertPicture.Name = "btnInsertPicture";
@@ -532,39 +571,6 @@
             this.label1.Size = new System.Drawing.Size(148, 30);
             this.label1.TabIndex = 2;
             this.label1.Text = "รายการรูปภาพ";
-            // 
-            // starAssignDescription
-            // 
-            this.starAssignDescription.AutoSize = true;
-            this.starAssignDescription.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.starAssignDescription.ForeColor = System.Drawing.Color.Red;
-            this.starAssignDescription.Location = new System.Drawing.Point(1181, 15);
-            this.starAssignDescription.Name = "starAssignDescription";
-            this.starAssignDescription.Size = new System.Drawing.Size(22, 30);
-            this.starAssignDescription.TabIndex = 41;
-            this.starAssignDescription.Text = "*";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.Color.Red;
-            this.label8.Location = new System.Drawing.Point(1339, 15);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(22, 30);
-            this.label8.TabIndex = 42;
-            this.label8.Text = "*";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.ForeColor = System.Drawing.Color.Red;
-            this.label9.Location = new System.Drawing.Point(976, 89);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(22, 30);
-            this.label9.TabIndex = 43;
-            this.label9.Text = "*";
             // 
             // UpdateProjectPhase
             // 

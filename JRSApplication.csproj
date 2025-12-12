@@ -164,15 +164,19 @@
     </Compile>
     <Compile Include="Accountant\InvoicePrintRDLC.cs">
       <SubType>Form</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Accountant\InvoicePrintRDLC.Designer.cs">
       <DependentUpon>InvoicePrintRDLC.cs</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Accountant\ReceiptPrintRDLC.cs">
       <SubType>Form</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Accountant\ReceiptPrintRDLC.Designer.cs">
       <DependentUpon>ReceiptPrintRDLC.cs</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Accountant\ReceiptDataSet.cs">
       <DependentUpon>ReceiptDataSet.xsd</DependentUpon>
@@ -419,6 +423,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Accountant\InvoicePrintRDLC.resx">
       <DependentUpon>InvoicePrintRDLC.cs</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Accountant\Invoice.resx">
       <DependentUpon>Invoice.cs</DependentUpon>
@@ -434,6 +439,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Accountant\ReceiptPrintRDLC.resx">
       <DependentUpon>ReceiptPrintRDLC.cs</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Accountant\ReceiptReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -521,7 +527,7 @@
     <None Include="Resources\Admin.jpg" />
     <None Include="Resources\Sitesupervisor.jpg" />
     <Content Include="Sitesupervisor\POreport.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Sitesupervisor\PhaseApprovalResult.resx">
       <DependentUpon>PhaseApprovalResult.cs</DependentUpon>

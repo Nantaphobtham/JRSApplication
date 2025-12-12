@@ -29,7 +29,13 @@ namespace JRSApplication.Accountant
             reportViewer1.Reset();
             reportViewer1.ProcessingMode = ProcessingMode.Local;
 
-            reportViewer1.LocalReport.ReportPath = "Accountant\\ReceiptReport.rdlc";
+            var reportPath = System.IO.Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "Accountant",
+                "ReceiptReport.rdlc"
+            );
+
+            reportViewer1.LocalReport.ReportPath = reportPath;
             reportViewer1.LocalReport.DataSources.Clear();
             reportViewer1.LocalReport.DataSources.Add(
                 new ReportDataSource("ReceiptDataSet", reportTable));
