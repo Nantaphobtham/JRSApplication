@@ -15,6 +15,7 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\Users\Gotz\OneDrive\Desktop\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -27,7 +28,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -526,6 +526,7 @@
     <None Include="Resources\Projectmanager.jpg" />
     <None Include="Resources\Admin.jpg" />
     <None Include="Resources\Sitesupervisor.jpg" />
+    <None Include="Resources\176318.png" />
     <Content Include="Sitesupervisor\POreport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

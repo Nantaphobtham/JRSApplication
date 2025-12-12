@@ -205,5 +205,14 @@ namespace JRSApplication
             // Optionally update the header text
             txtFunctionname.Text = "เปลี่ยนรหัสผ่าน";
         }
+        private void Profile_MouseEnter(object sender, EventArgs e)
+        {
+            Profile.Image = Properties.Resources.EditPic;
+        }
+
+        private void Profile_MouseLeave(object sender, EventArgs e)
+        {
+            Profile.Image = Properties.Resources.Accountant;
+        }
     }
 }
