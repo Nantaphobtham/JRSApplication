@@ -122,7 +122,7 @@ namespace JRSApplication
 
         private void Profile_MouseLeave(object sender, EventArgs e)
         {
-            Profile.Image = Properties.Resources.Accountant;
+            Profile.Image = Properties.Resources.Admin;
         }
     }
 }

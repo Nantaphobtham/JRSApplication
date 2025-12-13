@@ -260,6 +260,8 @@
             this.Profile.TabIndex = 1;
             this.Profile.TabStop = false;
             this.Profile.Click += new System.EventHandler(this.Profile_Click);
+            this.Profile.MouseEnter += new System.EventHandler(this.Profile_MouseEnter);
+            this.Profile.MouseLeave += new System.EventHandler(this.Profile_MouseLeave);
             // 
             // txtsubFunctionname
             // 

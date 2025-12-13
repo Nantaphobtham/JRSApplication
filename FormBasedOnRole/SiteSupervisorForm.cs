@@ -23,12 +23,25 @@ namespace JRSApplication
             _empId = empId;
 
             txtName.Text = _fullName;
-            txtPosition.Text = userRole;
+            txtPosition.Text = FormatRole(userRole);
 
             // 🔹 รูปโปรไฟล์ตาม role
             Profile.Image = RoleIconHelper.GetProfileIcon(userRole);
             Profile.SizeMode = PictureBoxSizeMode.Zoom;
             Profile.BackColor = Color.Transparent;
+        }
+        private string FormatRole(string role)
+        {
+            if (string.IsNullOrWhiteSpace(role)) return "";
+
+            switch (role.Trim().ToLowerInvariant())
+            {
+                case "projectmanager": return "Project Manager";
+                case "sitesupervisor": return "Site Supervisor";
+                case "accountant": return "Accountant";
+                case "admin": return "Admin";
+                default: return role; // if unknown, show original
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -131,7 +144,7 @@ namespace JRSApplication
 
         private void Profile_MouseLeave(object sender, EventArgs e)
         {
-            Profile.Image = Properties.Resources.Accountant;
+            Profile.Image = Properties.Resources.Sitesupervisor;
         }
     }
 }
